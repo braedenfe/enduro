@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0BFVCRR6E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-R0BFVCRR6E");
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Long Run Tee in 100% Organic Cotton. Breathable, lightweight, and naturally soft — designed for long efforts in warm conditions. A$99.">
+<title>Long Run Tee — Organic Cotton | enduro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: #FAFAF8;
+  color: #1A1C1B;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: #F0EEE9; }
+::-webkit-scrollbar-thumb { background: #1F3D35; }
+
+/* ─── TOKENS ─── */
+:root {
+  --brand:       #1F3D35;
+  --brand-dark:  #162B25;
+  --brand-deep:  #0E1E1A;
+  --brand-mid:   #254840;
+  --brand-light: #2E5A4F;
+  --brand-glow:  rgba(31,61,53,0.1);
+  --black:       #1A1C1B;
+  --mid:         #F0EEE9;
+  --off-white:   #FAFAF8;
+  --stone:       #7A7D78;
+  --line:        rgba(26,28,27,0.1);
+  --line-strong: rgba(26,28,27,0.18);
+  --dim:         rgba(26,28,27,0.55);
+  --display:     'Cormorant Garamond', Georgia, serif;
+  --heading:     'Barlow Condensed', sans-serif;
+  --sans:        'DM Sans', sans-serif;
+  --ease:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── NAV ─── */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  padding: 0 20px;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  transition: height 0.4s var(--ease), background 0.4s;
+  border-bottom: 1px solid rgba(26,28,27,0.1);
+  background: rgba(250,250,248,0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+#nav.scrolled { height: 52px; }
+.nav-logo { justify-self: start; display: flex; align-items: center; }
+.nav-center { display: flex; gap: 36px; list-style: none; justify-self: center; }
+.nav-center a { font-size: 0.8rem; font-weight: 400; color: rgba(26,28,27,0.6); letter-spacing: 0.02em; transition: color 0.2s; }
+.nav-center a:hover { color: #1A1C1B; }
+.nav-right { display: flex; align-items: center; gap: 18px; justify-self: end; }
+.nav-search, .nav-account { font-size: 0.78rem; color: rgba(26,28,27,0.55); font-weight: 400; transition: color 0.2s; padding: 6px 2px; }
+.nav-search:hover, .nav-account:hover { color: #1A1C1B; }
+.nav-cart-btn { font-family: var(--sans); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; color: white; background: var(--brand); border: 1px solid var(--brand); padding: 8px 18px; transition: background 0.25s; }
+.nav-cart-btn:hover { background: var(--brand-light); }
+.hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; cursor: pointer; z-index: 310; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #1A1C1B; transition: transform 0.35s var(--ease), opacity 0.25s; border-radius: 1px; }
+#mobile-menu { display: none; position: fixed; inset: 0; z-index: 290; background: var(--brand-dark); flex-direction: column; justify-content: center; padding: 0 40px; gap: 4px; }
+#mobile-menu.open { display: flex; }
+#mobile-menu nav a { display: block; font-family: var(--heading); font-size: clamp(2.4rem,9vw,4rem); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #F2F4F0; line-height: 1.2; padding: 6px 0; border-bottom: 1px solid rgba(242,244,240,0.12); transition: color 0.2s, padding-left 0.3s var(--ease); }
+#mobile-menu nav a:first-child { border-top: 1px solid rgba(242,244,240,0.12); }
+
+/* ─── TICKER ─── */
+.ticker-bar { background: var(--brand-dark); padding: 11px 0; overflow: hidden; white-space: nowrap; margin-top: 64px; }
+.ticker-track { display: inline-flex; animation: tickerScroll 36s linear infinite; }
+.ticker-item { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242,244,240,0.85); padding: 0 40px; display: inline-flex; align-items: center; gap: 16px; }
+.ticker-dot { width: 3px; height: 3px; background: rgba(242,244,240,0.4); border-radius: 50%; flex-shrink: 0; }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  border-bottom: 1px solid var(--line);
+}
+.breadcrumb a { transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--brand); }
+.breadcrumb-sep { opacity: 0.4; }
+.breadcrumb-current { color: rgba(26,28,27,0.5); }
+
+/* ─── PRODUCT LAYOUT ─── */
+.product-page {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 0;
+  min-height: 100vh;
+  align-items: start;
+}
+
+/* ─── GALLERY ─── */
+.product-hero-img {
+  position: sticky;
+  top: 64px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #F5F3EE;
+}
+@media (max-width: 960px) {
+  .product-hero-img {
+    position: static;
+  }
+}
+.product-hero-img svg { width: 100%; height: 100%; }
+.gallery-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: rgba(26,28,27,0.45);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+/* ─── PURCHASE PANEL ─── */
+.product-panel {
+  border-left: 1px solid var(--line);
+  min-height: 100vh;
+  position: sticky;
+  top: 64px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+.product-panel::-webkit-scrollbar { width: 2px; }
+.product-panel::-webkit-scrollbar-thumb { background: var(--brand-glow); }
+
+.panel-inner {
+  padding: 40px 36px 48px;
+}
+
+/* breadcrumb-style category */
+.panel-category {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.panel-category::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: var(--brand);
+}
+
+.panel-name {
+  font-family: var(--heading);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1A1C1B;
+  line-height: 0.95;
+  margin-bottom: 6px;
+}
+.panel-name .name-em {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  color: var(--brand);
+  font-size: 0.85em;
+  letter-spacing: 0.03em;
+}
+
+.panel-tagline {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--dim);
+  font-weight: 300;
+  margin-bottom: 24px;
+  margin-top: 14px;
+}
+
+.panel-price {
+  font-family: var(--heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #1A1C1B;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ─── COLOUR SELECTOR ─── */
+.selector-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(26,28,27,0.45);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.selector-label span { font-weight: 300; letter-spacing: 0.04em; color: #1A1C1B; text-transform: none; font-size: 0.75rem; }
+
+.colour-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.colour-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(26,28,27,0.14);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(26,28,27,0.6);
+  letter-spacing: 0.04em;
+  background: transparent;
+}
+.colour-option:hover, .colour-option.active {
+  border-color: var(--brand);
+  color: #1A1C1B;
+}
+.colour-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(26,28,27,0.12);
+}
+
+/* ─── SIZE SELECTOR ─── */
+.size-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.size-btn {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  padding: 11px 16px;
+  border: 1px solid rgba(26,28,27,0.16);
+  background: transparent;
+  color: #1A1C1B;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+  min-width: 52px;
+  text-align: center;
+}
+.size-btn:hover { border-color: var(--brand); color: var(--brand); }
+.size-btn.active { background: var(--brand); border-color: var(--brand); color: white; font-weight: 500; }
+.size-guide-link {
+  font-size: 0.68rem;
+  color: var(--stone);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  display: inline-block;
+  margin-bottom: 24px;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+.size-guide-link:hover { color: var(--brand); }
+
+/* ─── ATC BUTTON ─── */
+.atc-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--brand);
+  color: white;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s;
+  margin-bottom: 10px;
+}
+.atc-btn:hover { background: var(--brand-light); }
+.atc-note {
+  font-size: 0.65rem;
+  color: var(--stone);
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+}
+
+/* ─── FEATURE PILLS ─── */
+.feature-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.feature-pill {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid rgba(26,28,27,0.12);
+  color: rgba(26,28,27,0.5);
+}
+
+/* ─── CONDITIONS WIDGET ─── */
+.conditions-widget {
+  margin-bottom: 24px;
+}
+.conditions-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.conditions-title {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(26,28,27,0.4);
+}
+.unit-toggle {
+  display: flex;
+  border: 1px solid rgba(26,28,27,0.12);
+}
+.unit-btn {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  background: transparent;
+  border: none;
+  color: rgba(26,28,27,0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.unit-btn.active { background: var(--brand); color: #fff; }
+.temp-section { margin-bottom: 16px; }
+.temp-bar-track { height: 5px; background: rgba(26,28,27,0.07); position: relative; overflow: visible; }
+.temp-bar-fill {
+  position: absolute; top: 0; height: 100%;
+  background: linear-gradient(to right, var(--brand), var(--brand-light), #4A8C7A);
+  transition: left 0.4s var(--ease), width 0.4s var(--ease);
+}
+.temp-bar-fill::after {
+  content: ''; position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+  width: 9px; height: 9px; background: var(--brand);
+  border: 2px solid #FAFAF8; border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(31,61,53,0.3);
+}
+.temp-ticks { display: flex; justify-content: space-between; margin-top: 8px; }
+.temp-tick { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.temp-tick-line { width: 1px; height: 4px; background: rgba(26,28,27,0.15); }
+.temp-tick-label { font-size: 0.6rem; font-weight: 400; color: rgba(26,28,27,0.4); white-space: nowrap; }
+.conditions-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.condition-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.condition-bar { width: 100%; height: 3px; background: rgba(26,28,27,0.08); position: relative; overflow: hidden; }
+.condition-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--brand); transition: width 0.5s var(--ease); }
+.condition-bar-fill.partial { background: linear-gradient(to right, var(--brand), rgba(31,61,53,0.4)); }
+.condition-bar-fill.low { background: linear-gradient(to right, var(--brand), rgba(31,61,53,0.2)); }
+.condition-name { font-family: var(--heading); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,28,27,0.4); }
+.condition-item.active .condition-name { color: var(--brand); }
+
+/* ─── ACCORDION ─── */
+.accordion { border-top: 1px solid var(--line); }
+.accordion-item { border-bottom: 1px solid var(--line); }
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1A1C1B;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
+  transition: color 0.2s;
+}
+.accordion-trigger:hover { color: var(--brand); }
+.accordion-icon {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--stone);
+  transition: transform 0.3s var(--ease);
+  flex-shrink: 0;
+}
+.accordion-item.open .accordion-icon { transform: rotate(45deg); }
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease);
+}
+.accordion-item.open .accordion-body { max-height: 800px; }
+.accordion-content {
+  padding: 0 0 20px;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--dim);
+  font-weight: 300;
+}
+.accordion-content p + p { margin-top: 10px; }
+.accordion-content ul { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.accordion-content ul li::before { content: '— '; color: var(--brand); }
+.accordion-content strong { font-weight: 500; color: #1A1C1B; }
+
+/* care icons row */
+.care-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+.care-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); }
+.care-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); }
+.care-icon svg { width: 18px; height: 18px; stroke: var(--stone); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* size table */
+.size-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.75rem; }
+.size-table th { font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.62rem; color: rgba(26,28,27,0.45); padding: 8px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.size-table td { padding: 8px 0; border-bottom: 1px solid rgba(26,28,27,0.06); color: var(--dim); }
+.size-table td:first-child { font-weight: 500; color: #1A1C1B; }
+
+/* ─── TRUST BAR ─── */
+.trust-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.trust-icon { flex-shrink: 0; width: 32px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.trust-icon svg { width: 18px; height: 18px; stroke: var(--brand); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.trust-text-title { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; margin-bottom: 2px; color: #1A1C1B; }
+.trust-text-body { font-size: 0.7rem; color: var(--stone); font-weight: 300; line-height: 1.5; }
+
+/* ─── EDITORIAL SECTION (below grid) ─── */
+.editorial-section {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--line);
+}
+.editorial-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+.editorial-strip:last-child { border-bottom: none; }
+.editorial-img {
+  aspect-ratio: 4 / 3;
+  background: #1A2E20;
+  overflow: hidden;
+  position: relative;
+}
+.editorial-img.light { background: #F5F3EE; }
+.editorial-img svg { width: 100%; height: 100%; }
+.editorial-copy {
+  padding: clamp(32px, 5vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  border-left: 1px solid var(--line);
+}
+.editorial-copy.right-img { border-left: none; border-right: 1px solid var(--line); }
+.editorial-kicker {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.editorial-heading {
+  font-family: var(--heading);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: #1A1C1B;
+}
+.editorial-heading em {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  color: var(--brand);
+  font-size: 0.9em;
+}
+.editorial-body {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--dim);
+  font-weight: 300;
+  max-width: 420px;
+}
+
+/* ─── YOU MAY ALSO LIKE ─── */
+.related-section {
+  padding: 72px 48px;
+  border-top: 1px solid var(--line);
+}
+.related-header {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.related-kicker { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--brand); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.related-kicker::before { content: ''; width: 16px; height: 1px; background: var(--brand); }
+.related-title { font-family: var(--heading); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 0.95; color: #1A1C1B; }
+.related-title em { font-family: var(--display); font-style: italic; font-weight: 300; text-transform: none; color: var(--brand); }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.related-card { background: #fff; border: 1px solid rgba(26,28,27,0.07); overflow: hidden; text-decoration: none; color: inherit; display: block; transition: transform 0.3s var(--ease); }
+.related-card:hover { transform: translateY(-2px); }
+.related-img { aspect-ratio: 3/4; overflow: hidden; position: relative; }
+.related-img svg { width: 100%; height: 100%; transition: transform 0.8s var(--ease); }
+.related-card:hover .related-img svg { transform: scale(1.04); }
+.related-info { padding: 16px; }
+.related-material { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); margin-bottom: 4px; }
+.related-name { font-size: 0.9rem; font-weight: 400; color: #1A1C1B; margin-bottom: 8px; }
+.related-price { font-size: 0.82rem; font-weight: 500; color: #1A1C1B; }
+
+
+/* ─── EXPAND PANELS ─── */
+.expand-panels {
+  border-top: 1px solid var(--line);
+}
+.expand-panel {
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.expand-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 48px;
+  transition: background 0.2s;
+  user-select: none;
+}
+.expand-panel:hover .expand-panel-header { background: rgba(26,28,27,0.02); }
+.expand-panel-num {
+  font-family: var(--heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--brand);
+  flex-shrink: 0;
+  width: 28px;
+}
+.expand-panel-title {
+  font-family: var(--heading);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1A1C1B;
+  flex: 1;
+  line-height: 1;
+}
+.expand-panel-icon {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--stone);
+  transition: transform 0.35s var(--ease);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.expand-panel.open .expand-panel-icon { transform: rotate(45deg); }
+.expand-panel-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease);
+}
+.expand-panel.open .expand-panel-body { max-height: 800px; }
+.expand-panel-content { border-top: 1px solid var(--line); }
+.expand-panel-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 0;
+  min-height: 280px;
+}
+.expand-text {
+  padding: 40px 48px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--dim);
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.expand-text strong { font-weight: 500; color: #1A1C1B; }
+.expand-text ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.expand-text ul li::before { content: '— '; color: var(--brand); }
+.expand-visual {
+  overflow: hidden;
+  border-left: 1px solid var(--line);
+}
+.expand-visual-light { background: #F5F3EE; }
+.expand-visual-dark { background: #1F3D35; }
+.expand-visual svg { width: 100%; height: 100%; }
+
+/* Care icons */
+.expand-care-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+.expand-care-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); min-width: 60px; }
+.expand-care-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); }
+.expand-care-icon svg { width: 18px; height: 18px; stroke: var(--stone); }
+
+/* Size table */
+.expand-size-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 4px; }
+.expand-size-table th { font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.6rem; color: rgba(26,28,27,0.4); padding: 8px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.expand-size-table td { padding: 8px 0; border-bottom: 1px solid rgba(26,28,27,0.05); color: var(--dim); }
+.expand-size-table td:first-child { font-weight: 500; color: #1A1C1B; }
+
+/* Reviews */
+.expand-panel-reviews {
+  grid-template-columns: 220px 1fr !important;
+}
+.expand-review-summary {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-right: 1px solid var(--line);
+  text-align: center;
+}
+.review-score { font-family: var(--heading); font-size: 3.5rem; font-weight: 700; color: var(--brand); line-height: 1; letter-spacing: 0.02em; }
+.review-stars { font-size: 0.9rem; color: var(--brand); letter-spacing: 0.1em; }
+.review-count { font-size: 0.65rem; color: var(--stone); letter-spacing: 0.1em; text-transform: uppercase; }
+.expand-reviews-list { padding: 24px 40px; display: flex; flex-direction: column; gap: 0; }
+.expand-review { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.expand-review:last-child { border-bottom: none; }
+.expand-review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.expand-review-name { font-size: 0.75rem; font-weight: 500; color: #1A1C1B; letter-spacing: 0.04em; }
+.expand-review-stars { font-size: 0.75rem; color: var(--brand); letter-spacing: 0.1em; }
+.expand-review-body { font-size: 0.82rem; line-height: 1.7; color: var(--dim); font-weight: 300; }
+
+/* Panel features list */
+.panel-features { padding-top: 20px; border-top: 1px solid var(--line); }
+.panel-features-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(26,28,27,0.4); margin-bottom: 10px; }
+.panel-features-list { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: var(--dim); font-weight: 300; }
+.panel-features-list li::before { content: '— '; color: var(--brand); }
+
+@media (max-width: 960px) {
+  .expand-panel-header { padding: 20px 24px; gap: 14px; }
+  .expand-panel-inner { grid-template-columns: 1fr; }
+  .expand-visual { display: none; }
+  .expand-text { padding: 24px; }
+  .expand-panel-reviews { grid-template-columns: 1fr !important; }
+  .expand-review-summary { border-right: none; border-bottom: 1px solid var(--line); padding: 24px; flex-direction: row; gap: 16px; justify-content: flex-start; }
+  .expand-reviews-list { padding: 16px 24px; }
+}
+
+
+.product-story {
+  border-top: 1px solid var(--line);
+}
+.story-full-img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  position: relative;
+}
+.story-full-img-dark { background: #1A2E20; }
+.story-img-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 32px;
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em;
+}
+.story-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+}
+.story-img {
+  overflow: hidden;
+  aspect-ratio: 5 / 6;
+}
+.story-img svg { width: 100%; height: 100%; }
+.story-copy {
+  padding: clamp(40px, 6vw, 96px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  border-left: 1px solid var(--line);
+}
+.story-split:nth-child(odd) .story-copy { border-left: none; border-right: 1px solid var(--line); }
+
+@media (max-width: 768px) {
+  .story-split { grid-template-columns: 1fr; }
+  .story-copy, .story-split:nth-child(odd) .story-copy { border: none; border-top: 1px solid var(--line); padding: 32px 24px; }
+  .story-full-img { aspect-ratio: 4/3; }
+}
+
+/* ─── FOOTER ─── */
+footer { background: var(--brand-dark); color: rgba(242,244,240,0.8); }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 64px 48px 48px; border-bottom: 1px solid rgba(242,244,240,0.08); }
+.footer-brand-name { font-family: var(--heading); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.08em; color: #F2F4F0; text-transform: lowercase; display: block; margin-bottom: 10px; }
+.footer-tagline { font-size: 0.78rem; line-height: 1.7; color: rgba(242,244,240,0.5); font-weight: 300; max-width: 220px; margin-bottom: 20px; }
+.footer-socials { display: flex; gap: 16px; }
+.footer-social { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,244,240,0.5); transition: color 0.2s; }
+.footer-social:hover { color: #F2F4F0; }
+.footer-col h4 { font-family: var(--heading); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(242,244,240,0.6); margin-bottom: 16px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-col ul li a { font-size: 0.78rem; color: rgba(242,244,240,0.45); font-weight: 300; transition: color 0.2s; }
+.footer-col ul li a:hover { color: #F2F4F0; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; gap: 20px; flex-wrap: wrap; }
+.footer-copy { font-size: 0.65rem; color: rgba(242,244,240,0.3); letter-spacing: 0.08em; }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 0.65rem; color: rgba(242,244,240,0.3); letter-spacing: 0.06em; transition: color 0.2s; }
+.footer-legal a:hover { color: rgba(242,244,240,0.7); }
+
+/* ─── MARQUEE STRIP ─── */
+.marquee-strip { overflow: hidden; white-space: nowrap; border-top: 1px solid rgba(242,244,240,0.15); border-bottom: 1px solid var(--line); background: #F7F6F2; padding: 12px 0; }
+.marquee-track { display: inline-flex; animation: tickerScroll 44s linear infinite reverse; }
+.marquee-item { font-size: 0.68rem; font-weight: 400; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(26,28,27,0.45); padding: 0 44px; display: inline-flex; align-items: center; gap: 18px; }
+.marquee-item span { color: var(--brand); font-size: 0.4rem; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.visually-hidden { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 960px) {
+  .product-page { grid-template-columns: 1fr; }
+  .product-panel { position: static; max-height: none; border-left: none; border-top: 1px solid var(--line); }
+  .breadcrumb { padding: 12px 24px; }
+  .panel-inner { padding: 32px 24px 40px; }
+  .editorial-strip { grid-template-columns: 1fr; }
+  .editorial-copy, .editorial-copy.right-img { border-left: none; border-right: none; border-top: 1px solid var(--line); }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+  .related-section { padding: 48px 24px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 24px 40px; }
+  .footer-bottom { padding: 16px 24px; }
+  #nav { display: flex; justify-content: space-between; padding: 0 20px; height: 56px; grid-template-columns: unset; }
+  .nav-center, .nav-search, .nav-account { display: none; }
+  .hamburger { display: flex; }
+  .ticker-bar { margin-top: 56px; }
+}
+@media (max-width: 600px) {
+  .related-grid { grid-template-columns: 1fr 1fr; gap: 1px; }
+  .footer-top { grid-template-columns: 1fr; }
+  .editorial-img { aspect-ratio: 16/9; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-bar" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Free shipping AUS orders over A$150<span class="ticker-dot"></span></span>
+    <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
+    <span class="ticker-item">OEKO-TEX Certified · Organic Cotton<span class="ticker-dot"></span></span>
+    <span class="ticker-item">30-Day Returns<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Free shipping AUS orders over A$150<span class="ticker-dot"></span></span>
+    <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
+    <span class="ticker-item">OEKO-TEX Certified · Organic Cotton<span class="ticker-dot"></span></span>
+    <span class="ticker-item">30-Day Returns<span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<header id="nav" role="banner">
+  <div class="nav-logo">
+    <a href="index.html" class="nav-logo" aria-label="enduro home"><img src="data:image/png;base64,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" alt="enduro" style="height:22px;width:auto;display:block;"></a>
+  </div>
+  <ul class="nav-center" role="list">
+    <li><a href="index.html#running">Running</a></li>
+    <li><a href="index.html#gym">Gym</a></li>
+    <li><a href="index.html#materials">Materials</a></li>
+    <li><a href="index.html#why">About</a></li>
+    <li><a href="index.html#journal">Journal</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="nav-search" aria-label="Search">Search</a>
+    <a href="#" class="nav-account" aria-label="Account">Account</a>
+    <button class="nav-cart-btn" aria-label="Cart">Cart <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:rgba(255,255,255,0.15);border-radius:50%;font-size:0.6rem;font-weight:700;margin-left:6px">0</span></button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div id="mobile-menu" role="dialog" aria-modal="true">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="index.html#materials">Materials</a>
+    <a href="index.html#why">About</a>
+    <a href="index.html#journal">Journal</a>
+  </nav>
+</div>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="breadcrumb-sep">·</span>
+  <a href="shop.html">Shop</a>
+  <span class="breadcrumb-sep">·</span>
+  <span class="breadcrumb-current">Long Run Tee</span>
+</nav>
+
+<!-- ═══ PRODUCT PAGE ═══ -->
+<div class="product-page">
+
+  <!-- HERO IMAGE -->
+  <div class="product-hero-img">
+    <svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%">
+      <rect width="600" height="800" fill="#F5F3EE"/>
+      <rect x="160" y="80" width="280" height="580" rx="6" fill="none" stroke="rgba(44,44,42,0.1)" stroke-width="1"/>
+      <line x1="300" y1="80" x2="300" y2="660" stroke="rgba(44,44,42,0.06)" stroke-width="1"/>
+      <line x1="160" y1="300" x2="440" y2="300" stroke="rgba(44,44,42,0.04)" stroke-width="1"/>
+      <text x="50%" y="92%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" font-weight="500" fill="rgba(44,44,42,0.2)" letter-spacing="4">ORGANIC COTTON</text>
+    </svg>
+  </div>
+
+  <!-- PURCHASE PANEL -->
+  <div class="product-panel">
+    <div class="panel-inner">
+
+      <p class="panel-category">Organic Cotton · Unisex</p>
+      <h1 class="panel-name">Long Run <span class="name-em">Tee</span></h1>
+      <p class="panel-tagline">A performance tee built from premium organic cotton. Breathable, lightweight, and naturally soft — designed for long efforts in warm conditions. Minimal construction, no excess.</p>
+      <div class="panel-price">A$99</div>
+
+      <!-- Colour -->
+      <div class="selector-label">Colour <span id="selected-colour">Natural White</span></div>
+      <div class="colour-options">
+        <button class="colour-option active" onclick="selectColour(this, 'Natural White')">
+          <span class="colour-swatch" style="background:#F5F3EE;"></span> Natural White
+        </button>
+        <button class="colour-option" onclick="selectColour(this, 'Washed Black')">
+          <span class="colour-swatch" style="background:#2C2C2A;border-color:rgba(255,255,255,0.2)"></span> Washed Black
+        </button>
+      </div>
+
+      <!-- Size -->
+      <div class="selector-label">Size <span id="selected-size">—</span></div>
+      <div class="size-row" id="size-row">
+        <button class="size-btn" onclick="selectSize(this)">S</button>
+        <button class="size-btn" onclick="selectSize(this)">M</button>
+        <button class="size-btn" onclick="selectSize(this)">L</button>
+        <button class="size-btn" onclick="selectSize(this)">XL</button>
+      </div>
+      <a href="#sizing" class="size-guide-link">Size Guide</a>
+
+      <!-- ATC -->
+      <button class="atc-btn" onclick="addToCart()">Add to Cart</button>
+      <p class="atc-note">Free AUS shipping over A$150 · 30-day returns</p>
+
+      <!-- Feature pills -->
+      <div class="feature-pills">
+        <span class="feature-pill">Natural Fibre</span>
+        <span class="feature-pill">OEKO-TEX</span>
+        <span class="feature-pill">Breathable</span>
+        <span class="feature-pill">Unisex Fit</span>
+        <span class="feature-pill">Running & Gym</span>
+      </div>
+
+      <!-- Conditions widget -->
+      <div class="conditions-widget">
+        <div class="conditions-heading">
+          <span class="conditions-title">Conditions</span>
+          <div class="unit-toggle">
+            <button class="unit-btn active" id="btn-c" onclick="setUnit('c')">°C</button>
+            <button class="unit-btn" id="btn-f" onclick="setUnit('f')">°F</button>
+          </div>
+        </div>
+        <div class="temp-section">
+          <div class="temp-bar-track">
+            <div class="temp-bar-fill" id="temp-fill"></div>
+          </div>
+          <div class="temp-ticks" id="temp-ticks"></div>
+        </div>
+        <div class="conditions-row" id="conditions-row"></div>
+      </div>
+
+      <!-- Features list -->
+      <div class="panel-features">
+        <p class="panel-features-label">Features</p>
+        <ul class="panel-features-list">
+          <li>100% OEKO-TEX certified organic cotton</li>
+          <li>Naturally breathable and moisture-wicking</li>
+          <li>Pre-washed softness from day one</li>
+          <li>Relaxed performance cut — room to move</li>
+          <li>Flatlock seaming, no friction</li>
+        </ul>
+      </div>
+
+      <!-- Trust bar -->
+      <div class="trust-bar">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div>
+            <div class="trust-text-title">Free AUS Shipping</div>
+            <div class="trust-text-body">On orders over A$150. Express available at checkout.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.7"/></svg>
+          </div>
+          <div>
+            <div class="trust-text-title">30-Day Returns</div>
+            <div class="trust-text-body">Unworn items in original packaging. No questions asked.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="trust-text-title">Certified Natural</div>
+            <div class="trust-text-body">OEKO-TEX Standard 100. Tested, traceable, trustworthy.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EXPAND PANELS ═══ -->
+<div class="expand-panels">
+
+  <!-- Usage -->
+  <div class="expand-panel" onclick="togglePanel(this)">
+    <div class="expand-panel-header">
+      <span class="expand-panel-num">01</span>
+      <span class="expand-panel-title">Usage</span>
+      <span class="expand-panel-icon">+</span>
+    </div>
+    <div class="expand-panel-body">
+      <div class="expand-panel-content">
+        <div class="expand-panel-inner">
+          <div class="expand-text">
+            <p>The Long Run Tee is built for warm-weather running and gym training. Wear it on morning road runs, interval sessions, or as a training layer throughout the day.</p>
+            <p>The relaxed performance cut moves with you — not against you. Pre-washed cotton means it's soft from the first wear, and only gets better with time and distance.</p>
+            <ul>
+              <li>Road running, track, and trail</li>
+              <li>Gym training and studio work</li>
+              <li>Warm weather and mild conditions</li>
+              <li>Post-run commute and everyday wear</li>
+            </ul>
+          </div>
+          <div class="expand-visual expand-visual-light">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <rect width="400" height="300" fill="#ECEAE4"/>
+              <g stroke="rgba(44,44,42,0.07)" stroke-width="0.7" fill="none">
+                <line x1="0" y1="75" x2="400" y2="75"/><line x1="0" y1="150" x2="400" y2="150"/><line x1="0" y1="225" x2="400" y2="225"/>
+                <line x1="100" y1="0" x2="100" y2="300"/><line x1="200" y1="0" x2="200" y2="300"/><line x1="300" y1="0" x2="300" y2="300"/>
+              </g>
+              <text x="50%" y="48%" text-anchor="middle" dominant-baseline="middle" font-family="'Cormorant Garamond',Georgia,serif" font-style="italic" font-size="22" fill="rgba(44,44,42,0.15)" letter-spacing="1">run. train. repeat.</text>
+              <text x="50%" y="65%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7" font-weight="500" fill="rgba(44,44,42,0.2)" letter-spacing="4">RUNNING & GYM</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Size & Fit -->
+  <div class="expand-panel" onclick="togglePanel(this)">
+    <div class="expand-panel-header">
+      <span class="expand-panel-num">02</span>
+      <span class="expand-panel-title">Size & Fit</span>
+      <span class="expand-panel-icon">+</span>
+    </div>
+    <div class="expand-panel-body">
+      <div class="expand-panel-content">
+        <div class="expand-panel-inner">
+          <div class="expand-text">
+            <p>Relaxed performance fit. True to size — go with your usual size. Model is 183cm and wears a size M.</p>
+            <table class="expand-size-table">
+              <thead>
+                <tr><th>Size</th><th>Chest (cm)</th><th>Length (cm)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>S</td><td>88–94</td><td>68</td></tr>
+                <tr><td>M</td><td>94–100</td><td>71</td></tr>
+                <tr><td>L</td><td>100–106</td><td>74</td></tr>
+                <tr><td>XL</td><td>106–112</td><td>77</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="expand-visual expand-visual-dark">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <rect width="400" height="300" fill="#1F3D35"/>
+              <rect x="120" y="40" width="160" height="220" rx="3" fill="none" stroke="rgba(168,192,174,0.15)" stroke-width="1"/>
+              <line x1="200" y1="40" x2="200" y2="260" stroke="rgba(168,192,174,0.08)" stroke-width="1"/>
+              <line x1="120" y1="150" x2="280" y2="150" stroke="rgba(168,192,174,0.08)" stroke-width="1"/>
+              <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7" font-weight="500" fill="rgba(168,192,174,0.3)" letter-spacing="4">RELAXED FIT</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Composition & Care -->
+  <div class="expand-panel" onclick="togglePanel(this)">
+    <div class="expand-panel-header">
+      <span class="expand-panel-num">03</span>
+      <span class="expand-panel-title">Composition & Care</span>
+      <span class="expand-panel-icon">+</span>
+    </div>
+    <div class="expand-panel-body">
+      <div class="expand-panel-content">
+        <div class="expand-panel-inner">
+          <div class="expand-text">
+            <p><strong>100% Organic Cotton</strong><br>OEKO-TEX Standard 100 Certified</p>
+            <div class="expand-care-row">
+              <div class="expand-care-item">
+                <div class="expand-care-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><text x="12" y="16" text-anchor="middle" font-size="7" fill="currentColor" stroke="none" font-family="sans-serif">30°</text></svg>
+                </div>
+                <span>Cold wash 30°</span>
+              </div>
+              <div class="expand-care-item">
+                <div class="expand-care-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7V5M17 7V5"/></svg>
+                </div>
+                <span>Tumble dry low</span>
+              </div>
+              <div class="expand-care-item">
+                <div class="expand-care-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="19" x2="19" y2="5"/><line x1="5" y1="5" x2="19" y2="19"/></svg>
+                </div>
+                <span>No bleach</span>
+              </div>
+              <div class="expand-care-item">
+                <div class="expand-care-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 20h6l2-8 2 8h6"/><line x1="12" y1="4" x2="12" y2="12"/></svg>
+                </div>
+                <span>Iron low heat</span>
+              </div>
+            </div>
+          </div>
+          <div class="expand-visual expand-visual-light">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <rect width="400" height="300" fill="#F5F3EE"/>
+              <g stroke="rgba(44,44,42,0.07)" stroke-width="0.7" fill="none">
+                <line x1="0" y1="60" x2="400" y2="60"/><line x1="0" y1="120" x2="400" y2="120"/><line x1="0" y1="180" x2="400" y2="180"/><line x1="0" y1="240" x2="400" y2="240"/>
+                <line x1="80" y1="0" x2="80" y2="300"/><line x1="160" y1="0" x2="160" y2="300"/><line x1="240" y1="0" x2="240" y2="300"/><line x1="320" y1="0" x2="320" y2="300"/>
+              </g>
+              <text x="50%" y="48%" text-anchor="middle" dominant-baseline="middle" font-family="'Cormorant Garamond',Georgia,serif" font-style="italic" font-size="20" fill="rgba(44,44,42,0.15)" letter-spacing="1">grown without compromise</text>
+              <text x="50%" y="65%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7" font-weight="500" fill="rgba(44,44,42,0.2)" letter-spacing="4">OEKO-TEX CERTIFIED</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sustainability -->
+  <div class="expand-panel" onclick="togglePanel(this)">
+    <div class="expand-panel-header">
+      <span class="expand-panel-num">04</span>
+      <span class="expand-panel-title">Sustainability</span>
+      <span class="expand-panel-icon">+</span>
+    </div>
+    <div class="expand-panel-body">
+      <div class="expand-panel-content">
+        <div class="expand-panel-inner">
+          <div class="expand-text">
+            <p>Grown without pesticides or synthetic fertilisers. OEKO-TEX certified — tested for harmful substances at every stage of production. Nothing harmful. Nothing hidden.</p>
+            <ul>
+              <li>No microplastics shed in the wash</li>
+              <li>Biodegrades at end of life</li>
+              <li>Zero petroleum in the fabric</li>
+              <li>OEKO-TEX Standard 100 certified</li>
+            </ul>
+          </div>
+          <div class="expand-visual expand-visual-dark">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <rect width="400" height="300" fill="#162B25"/>
+              <circle cx="200" cy="140" r="90" fill="none" stroke="rgba(168,192,174,0.1)" stroke-width="1" stroke-dasharray="8 10"/>
+              <circle cx="200" cy="140" r="50" fill="rgba(31,61,53,0.5)"/>
+              <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7" font-weight="500" fill="rgba(168,192,174,0.3)" letter-spacing="4">ZERO SYNTHETICS</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="expand-panel" onclick="togglePanel(this)">
+    <div class="expand-panel-header">
+      <span class="expand-panel-num">05</span>
+      <span class="expand-panel-title">Reviews</span>
+      <span class="expand-panel-icon">+</span>
+    </div>
+    <div class="expand-panel-body">
+      <div class="expand-panel-content">
+        <div class="expand-panel-inner expand-panel-reviews">
+          <div class="expand-review-summary">
+            <div class="review-score">4.8</div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-count">Based on 24 reviews</div>
+          </div>
+          <div class="expand-reviews-list">
+            <div class="expand-review">
+              <div class="expand-review-header">
+                <span class="expand-review-name">James T.</span>
+                <span class="expand-review-stars">★★★★★</span>
+              </div>
+              <p class="expand-review-body">"Softer than I expected from cotton. Wore it for a 20km long run and it held up perfectly — no chafing, no clinging. Will be ordering the merino version too."</p>
+            </div>
+            <div class="expand-review">
+              <div class="expand-review-header">
+                <span class="expand-review-name">Sarah M.</span>
+                <span class="expand-review-stars">★★★★★</span>
+              </div>
+              <p class="expand-review-body">"Finally a running tee that doesn't feel like plastic. The fit is relaxed but not sloppy. Goes straight from run to coffee without looking out of place."</p>
+            </div>
+            <div class="expand-review">
+              <div class="expand-review-header">
+                <span class="expand-review-name">Chris W.</span>
+                <span class="expand-review-stars">★★★★☆</span>
+              </div>
+              <p class="expand-review-body">"Great quality and love the ethos. Runs slightly long in the body which I actually prefer. Washed black colour is a really nice tone — not harsh."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- ═══ MARQUEE STRIP ═══ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Natural Performance <span>◆</span></span>
+    <span class="marquee-item">Zero Microplastics <span>◆</span></span>
+    <span class="marquee-item">Ethically Sourced <span>◆</span></span>
+    <span class="marquee-item">Fully Biodegradable <span>◆</span></span>
+    <span class="marquee-item">Australian Brand <span>◆</span></span>
+    <span class="marquee-item">OEKO-TEX Certified <span>◆</span></span>
+    <span class="marquee-item">Organic Cotton <span>◆</span></span>
+    <span class="marquee-item">Natural Performance <span>◆</span></span>
+    <span class="marquee-item">Zero Microplastics <span>◆</span></span>
+    <span class="marquee-item">Ethically Sourced <span>◆</span></span>
+    <span class="marquee-item">Fully Biodegradable <span>◆</span></span>
+    <span class="marquee-item">Australian Brand <span>◆</span></span>
+    <span class="marquee-item">OEKO-TEX Certified <span>◆</span></span>
+    <span class="marquee-item">Organic Cotton <span>◆</span></span>
+  </div>
+</div>
+
+<!-- ═══ YOU MAY ALSO LIKE ═══ -->
+<section class="related-section">
+  <div class="related-header">
+    <div>
+      <p class="related-kicker">Complete the Kit</p>
+      <h2 class="related-title">You May Also <em>Like</em></h2>
+    </div>
+    <a href="shop.html" style="font-size:0.75rem;color:var(--brand);font-weight:500;letter-spacing:0.06em;border-bottom:1px solid var(--brand);padding-bottom:2px">View All</a>
+  </div>
+  <div class="related-grid">
+
+    <a href="product-wool-long-run-tee.html" class="related-card">
+      <div class="related-img">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#1F3D35"/>
+          <g stroke="rgba(168,192,174,0.1)" stroke-width="0.8" fill="none">
+            <line x1="75" y1="0" x2="75" y2="400"/><line x1="150" y1="0" x2="150" y2="400"/><line x1="225" y1="0" x2="225" y2="400"/>
+          </g>
+          <circle cx="150" cy="165" r="90" fill="rgba(46,90,79,0.4)"/>
+          <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" font-weight="500" fill="rgba(168,192,174,0.3)" letter-spacing="3">MERINO · RUNNING</text>
+        </svg>
+        <span style="position:absolute;top:12px;left:12px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand-light);color:white">Pre-order</span>
+      </div>
+      <div class="related-info">
+        <p class="related-material">Merino Wool · Running</p>
+        <p class="related-name">Long Run Tee — Merino</p>
+        <p class="related-price">A$149</p>
+      </div>
+    </a>
+
+    <a href="product-merino-short-mens.html" class="related-card">
+      <div class="related-img">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#2C2C2A"/>
+          <path d="M0 300 Q150 220 300 300 L300 400 L0 400Z" fill="rgba(255,255,255,0.04)"/>
+          <rect x="50" y="40" width="200" height="280" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+          <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" font-weight="500" fill="rgba(255,255,255,0.2)" letter-spacing="3">MERINO · MEN</text>
+        </svg>
+        <span style="position:absolute;top:12px;left:12px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand-light);color:white">Pre-order</span>
+      </div>
+      <div class="related-info">
+        <p class="related-material">Merino Wool · Running · Men</p>
+        <p class="related-name">Long Run Short 5" — Men's</p>
+        <p class="related-price">A$149</p>
+      </div>
+    </a>
+
+    <a href="product-merino-short-womens.html" class="related-card">
+      <div class="related-img">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#2C2C2A"/>
+          <circle cx="150" cy="165" r="120" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="6 8"/>
+          <circle cx="150" cy="165" r="65" fill="rgba(255,255,255,0.05)"/>
+          <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" font-weight="500" fill="rgba(255,255,255,0.2)" letter-spacing="3">MERINO · WOMEN</text>
+        </svg>
+        <span style="position:absolute;top:12px;left:12px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand-light);color:white">Pre-order</span>
+      </div>
+      <div class="related-info">
+        <p class="related-material">Merino Wool · Running · Women</p>
+        <p class="related-name">Long Run Short 3" — Women's</p>
+        <p class="related-price">A$129</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer role="contentinfo">
+  <div class="footer-top">
+    <div>
+      <span class="footer-brand-name">enduro</span>
+      <p class="footer-tagline">Natural fibre running and gym wear. Built for the long run.</p>
+      <div class="footer-socials">
+        <a href="https://instagram.com/enduro.au" class="footer-social">Instagram</a>
+        <a href="#" class="footer-social">Strava</a>
+        <a href="#" class="footer-social">TikTok</a>
+      </div>
+    </div>
+    <nav class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">Running Collection</a></li>
+        <li><a href="shop.html">Gym Collection</a></li>
+        <li><a href="shop.html">Men's</a></li>
+        <li><a href="shop.html">Women's</a></li>
+      </ul>
+    </nav>
+    <nav class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#">About enduro</a></li>
+        <li><a href="#">Our Materials</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">The Journal</a></li>
+      </ul>
+    </nav>
+    <nav class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">Sizing Guide</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 enduro Active Pty Ltd · ABN XX XXX XXX XXX · All rights reserved</p>
+    <nav class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Cookie Policy</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+/* ─── NAV SCROLL ─── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+/* ─── MOBILE MENU ─── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}));
+
+/* ─── SCROLL REVEAL ─── */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ─── COLOUR SELECT ─── */
+function selectColour(btn, name) {
+  document.querySelectorAll('.colour-option').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('selected-colour').textContent = name;
+}
+
+/* ─── SIZE SELECT ─── */
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('selected-size').textContent = btn.textContent;
+}
+
+/* ─── ADD TO CART ─── */
+function addToCart() {
+  const size = document.querySelector('.size-btn.active');
+  const colour = document.getElementById('selected-colour').textContent;
+  if (!size) { showToast('Please select a size'); return; }
+  showToast(`Long Run Tee — ${colour} (${size.textContent}) added to cart ✓`);
+}
+
+/* ─── TOAST ─── */
+function showToast(msg) {
+  const existing = document.getElementById('toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.id = 'toast';
+  t.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--brand-light);color:#fff;font-family:var(--sans);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;padding:12px 24px;z-index:600;opacity:0;transition:opacity 0.3s;border:1px solid rgba(255,255,255,0.12);white-space:nowrap';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => {
+    t.style.opacity = '1';
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2800);
+  });
+}
+
+/* ─── EXPAND PANELS ─── */
+function togglePanel(panel) {
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.expand-panel').forEach(p => p.classList.remove('open'));
+  if (!isOpen) panel.classList.add('open');
+}
+
+/* ─── CONDITIONS WIDGET ─── */
+const SCALE_MIN_C = 0, SCALE_MAX_C = 30;
+const SCALE_TICKS_C = [0, 10, 20, 30];
+const TEMP_MIN = 12, TEMP_MAX = 28;
+const CONDITIONS = [
+  { name: 'Hot',  fill: 100 },
+  { name: 'Mild', fill: 70  },
+  { name: 'Rain', fill: 30  },
+  { name: 'Cold', fill: 15  },
+];
+let unit = 'c';
+
+function cToF(c) { return Math.round(c * 9/5 + 32); }
+
+function renderConditions() {
+  const isFahr = unit === 'f';
+  const sMin = isFahr ? cToF(SCALE_MIN_C) : SCALE_MIN_C;
+  const sMax = isFahr ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
+  const pMin = isFahr ? cToF(TEMP_MIN) : TEMP_MIN;
+  const pMax = isFahr ? cToF(TEMP_MAX) : TEMP_MAX;
+
+  const fill = document.getElementById('temp-fill');
+  fill.style.left  = ((pMin - sMin) / (sMax - sMin) * 100) + '%';
+  fill.style.width = ((pMax - pMin) / (sMax - sMin) * 100) + '%';
+
+  document.getElementById('temp-ticks').innerHTML = SCALE_TICKS_C.map(c => {
+    const val = isFahr ? cToF(c) : c;
+    return `<div class="temp-tick"><div class="temp-tick-line"></div><span class="temp-tick-label">${val}${isFahr?'°F':'°C'}</span></div>`;
+  }).join('');
+
+  document.getElementById('conditions-row').innerHTML = CONDITIONS.map(cond => {
+    const fc = cond.fill >= 90 ? '' : cond.fill >= 50 ? 'partial' : 'low';
+    return `<div class="condition-item ${cond.fill >= 50 ? 'active' : ''}">
+      <div class="condition-bar"><div class="condition-bar-fill ${fc}" style="width:${cond.fill}%"></div></div>
+      <span class="condition-name">${cond.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function setUnit(u) {
+  unit = u;
+  document.getElementById('btn-c').classList.toggle('active', u === 'c');
+  document.getElementById('btn-f').classList.toggle('active', u === 'f');
+  renderConditions();
+}
+
+renderConditions();
+</script>
+</body>
+</html>
