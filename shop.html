@@ -2407,14 +2407,6 @@ const pcardObserver = new IntersectionObserver((entries) => {
 const productGrid = document.querySelector('.product-grid');
 if (productGrid) pcardObserver.observe(productGrid);
 
-/* ─── URL FILTER ON LOAD ─── */
-const urlFilter = new URLSearchParams(window.location.search).get('filter');
-if (urlFilter) {
-  const matchTab = document.querySelector(`.ftab[data-filter="${urlFilter}"]`);
-  if (matchTab) matchTab.click();
-}
-
-
 const filterTabs = document.querySelectorAll('.ftab');
 const allCards   = document.querySelectorAll('.pcard');
 
@@ -2432,6 +2424,13 @@ filterTabs.forEach(tab => {
     });
   });
 });
+
+/* ─── URL FILTER ON LOAD ─── */
+const urlFilter = new URLSearchParams(window.location.search).get('filter');
+if (urlFilter) {
+  const matchTab = document.querySelector(`.ftab[data-filter="${urlFilter}"]`);
+  if (matchTab) matchTab.click();
+}
 
 /* ─── PRODUCT DRAWER ─── */
 const drawer    = document.getElementById('product-drawer');
