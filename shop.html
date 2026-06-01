@@ -975,6 +975,22 @@ input, textarea { font-family: inherit; }
   transition: width 0.4s var(--ease);
 }
 .pcard:hover .pcard-line { width: 100%; }
+.pcard-gender {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  background: rgba(26,28,27,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 4px 10px;
+  pointer-events: none;
+}
 
 /* ─── WHY ENDURO ─── */
 #why {
@@ -1415,24 +1431,49 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
+  padding: 16px 24px;
   border-bottom: 1px solid rgba(26,28,27,0.1);
   position: sticky;
   top: 0;
   background: #FFFFFF;
   z-index: 2;
+  gap: 12px;
+}
+.drawer-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 .drawer-close {
-  font-size: 1.3rem;
-  color: rgba(26,28,27,0.5);
+  font-size: 1rem;
+  color: rgba(26,28,27,0.35);
   background: none;
   border: none;
   cursor: pointer;
   padding: 4px;
   line-height: 1;
   transition: color 0.2s;
+  flex-shrink: 0;
+  align-self: flex-start;
 }
-.drawer-close:hover { color: var(--white); }
+.drawer-close:hover { color: var(--black); }
+.drawer-header-atc {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.drawer-header-atc:hover { background: var(--brand-light); }
 .drawer-img {
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -1520,12 +1561,16 @@ footer {
 }
 .drawer-detail-row span:first-child { color: rgba(26,28,27,0.45); font-weight: 400; }
 .drawer-detail-row span:last-child { color: #1A1C1B; font-weight: 400; }
-.drawer-atc {
-  margin-top: 24px;
+.size-atc-row {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.drawer-atc .btn { flex: 1; justify-content: center; }
+.size-atc-row .size-grid {
+  flex: 1;
+  margin-bottom: 0;
+}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeUp {
@@ -1612,7 +1657,143 @@ footer {
   .drawer-atc { flex-direction: column; }
 }
 
-.visually-hidden{
+/* ─── CONDITIONS WIDGET ─── */
+.conditions-widget {
+  border-top: 1px solid rgba(26,28,27,0.08);
+  padding-top: 20px;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+.conditions-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.conditions-title {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(26,28,27,0.45);
+}
+.unit-toggle {
+  display: flex;
+  border: 1px solid rgba(26,28,27,0.12);
+}
+.unit-btn {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  background: transparent;
+  border: none;
+  color: rgba(26,28,27,0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.unit-btn.active {
+  background: var(--brand);
+  color: #fff;
+}
+.temp-section {
+  margin-bottom: 20px;
+}
+.temp-bar-track {
+  height: 5px;
+  background: rgba(26,28,27,0.07);
+  position: relative;
+  overflow: visible;
+}
+.temp-bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(to right, var(--brand), var(--brand-light), #4A8C7A);
+  transition: left 0.4s var(--ease), width 0.4s var(--ease);
+}
+.temp-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+  background: var(--brand);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(31,61,53,0.3);
+}
+.temp-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.temp-tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.temp-tick-line {
+  width: 1px;
+  height: 4px;
+  background: rgba(26,28,27,0.15);
+}
+.temp-tick-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(26,28,27,0.4);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.conditions-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.condition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.condition-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(26,28,27,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.condition-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--brand);
+  transition: width 0.5s var(--ease);
+}
+.condition-bar-fill.partial {
+  background: linear-gradient(to right, var(--brand), rgba(31,61,53,0.4));
+}
+.condition-bar-fill.low {
+  background: linear-gradient(to right, var(--brand), rgba(31,61,53,0.2));
+}
+.condition-name {
+  font-family: var(--heading);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(26,28,27,0.4);
+}
+.condition-item.active .condition-name {
+  color: var(--brand);
+}
+
+
   position:absolute;width:1px;height:1px;
   padding:0;margin:-1px;overflow:hidden;
   clip:rect(0,0,0,0);white-space:nowrap;border:0;
@@ -1712,18 +1893,34 @@ footer {
     <div class="drawer-price" id="drawer-price"></div>
 
     <div class="drawer-section-title">Select Size</div>
-    <div class="size-grid" id="drawer-sizes"></div>
+    <div class="size-atc-row">
+      <div class="size-grid" id="drawer-sizes"></div>
+      <button class="drawer-header-atc" onclick="addToCart()">Add to Cart</button>
+    </div>
     <a href="#" style="font-size:0.7rem;color:var(--stone);text-decoration:underline;display:block;margin-top:6px">Size Guide</a>
+
+    <!-- Conditions Widget -->
+    <div class="conditions-widget" id="drawer-conditions">
+      <div class="conditions-heading">
+        <span class="conditions-title">Conditions</span>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="drawer-btn-c" onclick="setConditionsUnit('c')">°C</button>
+          <button class="unit-btn" id="drawer-btn-f" onclick="setConditionsUnit('f')">°F</button>
+        </div>
+      </div>
+      <div class="temp-section">
+        <div class="temp-bar-track">
+          <div class="temp-bar-fill" id="drawer-temp-fill"></div>
+        </div>
+        <div class="temp-ticks" id="drawer-temp-ticks"></div>
+      </div>
+      <div class="conditions-row" id="drawer-conditions-row"></div>
+    </div>
 
     <div class="drawer-section-title" style="margin-top:20px">Details</div>
     <div id="drawer-details"></div>
 
     <div class="drawer-desc" id="drawer-desc"></div>
-
-    <div class="drawer-atc">
-      <button class="btn btn-outline" onclick="closeDrawer()">Keep Browsing</button>
-      <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-    </div>
 
     <p style="font-size:0.68rem;color:var(--stone);text-align:center;margin-top:14px;letter-spacing:0.1em">
       Free AUS shipping over A$150 · 30-day returns
@@ -1825,145 +2022,98 @@ footer {
 
   <div class="product-grid" role="list">
 
-    <!-- Drift Tee -->
-    <article class="pcard" data-product="drift-tee" data-category="running men" role="listitem">
+    <!-- Cotton Long Run Tee -->
+    <article class="pcard" data-product="cotton-long-run-tee" data-category="running gym men women" role="listitem">
       <div class="pcard-img">
         <div class="pcard-svg-slot" aria-hidden="true"></div>
         <span class="pcard-badge badge-new">New</span>
+        <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('drift-tee')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('drift-tee')">Shop Now</button>
+          <button class="pcard-quick-btn" onclick="openDrawer('cotton-long-run-tee')">Quick View</button>
+          <button class="pcard-quick-btn primary" onclick="openDrawer('cotton-long-run-tee')">Shop Now</button>
+        </div>
+      </div>
+      <div class="pcard-info">
+        <p class="pcard-material">Organic Cotton · Running & Gym</p>
+        <h3 class="pcard-name">Long Run Tee</h3>
+        <div class="pcard-footer">
+          <span class="pcard-price">A$99</span>
+          <div class="pcard-swatches" aria-label="Colour options">
+            <span class="swatch" style="background:#F5F3EE" title="Natural White"></span>
+            <span class="swatch" style="background:#2C2C2A" title="Washed Black"></span>
+          </div>
+        </div>
+      </div>
+      <div class="pcard-line" aria-hidden="true"></div>
+    </article>
+
+    <!-- Wool Long Run Tee -->
+    <article class="pcard" data-product="wool-long-run-tee" data-category="running men women" role="listitem">
+      <div class="pcard-img">
+        <div class="pcard-svg-slot" aria-hidden="true"></div>
+        <span class="pcard-badge badge-new">Pre-order</span>
+        <span class="pcard-gender">Unisex</span>
+        <div class="pcard-quick">
+          <button class="pcard-quick-btn" onclick="openDrawer('wool-long-run-tee')">Quick View</button>
+          <button class="pcard-quick-btn primary" onclick="openDrawer('wool-long-run-tee')">Shop Now</button>
         </div>
       </div>
       <div class="pcard-info">
         <p class="pcard-material">Merino Wool · Running</p>
-        <h3 class="pcard-name">Drift Tee</h3>
+        <h3 class="pcard-name">Long Run Tee — Merino</h3>
         <div class="pcard-footer">
           <span class="pcard-price">A$149</span>
           <div class="pcard-swatches" aria-label="Colour options">
-            <span class="swatch" style="background:#1F3D35" title="Forest"></span>
-            <span class="swatch" style="background:#2C2C28" title="Bark"></span>
-            <span class="swatch" style="background:#7A8580" title="Stone"></span>
+            <span class="swatch" style="background:#F5F3EE" title="Natural White"></span>
+            <span class="swatch" style="background:#2C2C2A" title="Washed Black"></span>
           </div>
         </div>
       </div>
       <div class="pcard-line" aria-hidden="true"></div>
     </article>
 
-    <!-- Endure Half Tight -->
-    <article class="pcard" data-product="endure-half-tight" data-category="gym running women" role="listitem">
+    <!-- Men's Merino 5" Short -->
+    <article class="pcard" data-product="merino-short-mens" data-category="running men" role="listitem">
       <div class="pcard-img">
         <div class="pcard-svg-slot" aria-hidden="true"></div>
-        <span class="pcard-badge badge-sell">Best Seller</span>
+        <span class="pcard-badge badge-new">Pre-order</span>
+        <span class="pcard-gender">Men's</span>
         <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('endure-half-tight')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('endure-half-tight')">Shop Now</button>
+          <button class="pcard-quick-btn" onclick="openDrawer('merino-short-mens')">Quick View</button>
+          <button class="pcard-quick-btn primary" onclick="openDrawer('merino-short-mens')">Shop Now</button>
         </div>
       </div>
       <div class="pcard-info">
-        <p class="pcard-material">Bamboo-Merino · Gym</p>
-        <h3 class="pcard-name">Endure Half Tight</h3>
+        <p class="pcard-material">Merino Wool · Running · Men</p>
+        <h3 class="pcard-name">Long Run Short 5" — Men's</h3>
         <div class="pcard-footer">
-          <span class="pcard-price">A$139</span>
-          <div class="pcard-swatches">
-            <span class="swatch" style="background:#0E1E1A" title="Deep Forest"></span>
-            <span class="swatch" style="background:#1A1A17" title="Midnight"></span>
+          <span class="pcard-price">A$149</span>
+          <div class="pcard-swatches" aria-label="Colour options">
+            <span class="swatch" style="background:#2C2C2A" title="Washed Black"></span>
           </div>
         </div>
       </div>
       <div class="pcard-line" aria-hidden="true"></div>
     </article>
 
-    <!-- Terra Run Short -->
-    <article class="pcard" data-product="terra-run-short" data-category="running men" role="listitem">
+    <!-- Women's Merino 3" Short -->
+    <article class="pcard" data-product="merino-short-womens" data-category="running women" role="listitem">
       <div class="pcard-img">
         <div class="pcard-svg-slot" aria-hidden="true"></div>
-        <span class="pcard-badge badge-new">New</span>
+        <span class="pcard-badge badge-new">Pre-order</span>
+        <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('terra-run-short')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('terra-run-short')">Shop Now</button>
+          <button class="pcard-quick-btn" onclick="openDrawer('merino-short-womens')">Quick View</button>
+          <button class="pcard-quick-btn primary" onclick="openDrawer('merino-short-womens')">Shop Now</button>
         </div>
       </div>
       <div class="pcard-info">
-        <p class="pcard-material">Hemp-Bamboo · Running</p>
-        <h3 class="pcard-name">Terra Run Short</h3>
+        <p class="pcard-material">Merino Wool · Running · Women</p>
+        <h3 class="pcard-name">Long Run Short 3" — Women's</h3>
         <div class="pcard-footer">
-          <span class="pcard-price">A$109</span>
-          <div class="pcard-swatches">
-            <span class="swatch" style="background:#1F3D35" title="Forest"></span>
-            <span class="swatch" style="background:#3B2E22" title="Clay"></span>
-          </div>
-        </div>
-      </div>
-      <div class="pcard-line" aria-hidden="true"></div>
-    </article>
-
-    <!-- Summit Long Sleeve -->
-    <article class="pcard" data-product="summit-long-sleeve" data-category="running men women" role="listitem">
-      <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
-        <span class="pcard-badge badge-sell">Best Seller</span>
-        <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('summit-long-sleeve')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('summit-long-sleeve')">Shop Now</button>
-        </div>
-      </div>
-      <div class="pcard-info">
-        <p class="pcard-material">100% Merino · Running</p>
-        <h3 class="pcard-name">Summit Long Sleeve</h3>
-        <div class="pcard-footer">
-          <span class="pcard-price">A$189</span>
-          <div class="pcard-swatches">
-            <span class="swatch" style="background:#1A3028" title="Midnight Green"></span>
-            <span class="swatch" style="background:#2C2C28" title="Bark"></span>
-            <span class="swatch" style="background:#E8E6E0" title="Bone"></span>
-          </div>
-        </div>
-      </div>
-      <div class="pcard-line" aria-hidden="true"></div>
-    </article>
-
-    <!-- Root Crop -->
-    <article class="pcard" data-product="root-crop" data-category="gym women" role="listitem">
-      <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
-        <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('root-crop')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('root-crop')">Shop Now</button>
-        </div>
-      </div>
-      <div class="pcard-info">
-        <p class="pcard-material">Organic Cotton · Gym</p>
-        <h3 class="pcard-name">Root Crop</h3>
-        <div class="pcard-footer">
-          <span class="pcard-price">A$99</span>
-          <div class="pcard-swatches">
-            <span class="swatch" style="background:#162B25" title="Forest"></span>
-            <span class="swatch" style="background:#E8E6E0" title="Bone"></span>
-          </div>
-        </div>
-      </div>
-      <div class="pcard-line" aria-hidden="true"></div>
-    </article>
-
-    <!-- Pace Sock -->
-    <article class="pcard" data-product="pace-sock" data-category="running gym men women" role="listitem">
-      <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
-        <span class="pcard-badge badge-new">New</span>
-        <div class="pcard-quick">
-          <button class="pcard-quick-btn" onclick="openDrawer('pace-sock')">Quick View</button>
-          <button class="pcard-quick-btn primary" onclick="openDrawer('pace-sock')">Shop Now</button>
-        </div>
-      </div>
-      <div class="pcard-info">
-        <p class="pcard-material">Merino-Hemp · Running</p>
-        <h3 class="pcard-name">Pace Sock</h3>
-        <div class="pcard-footer">
-          <span class="pcard-price">A$28</span>
-          <div class="pcard-swatches">
-            <span class="swatch" style="background:#1F3D35" title="Forest"></span>
-            <span class="swatch" style="background:#2C2C28" title="Bark"></span>
+          <span class="pcard-price">A$129</span>
+          <div class="pcard-swatches" aria-label="Colour options">
+            <span class="swatch" style="background:#2C2C2A" title="Washed Black"></span>
           </div>
         </div>
       </div>
@@ -2277,113 +2427,84 @@ const drawer    = document.getElementById('product-drawer');
 const backdrop  = document.getElementById('drawer-backdrop');
 
 const products = {
-  'drift-tee': {
-    name: 'Drift Tee',
-    material: 'Merino Wool',
-    category: 'Running · Men',
-    price: 'A$149',
-    desc: 'Engineered from 18.5-micron merino for all-season running. Naturally thermoregulating — warm when you need it, cool when you push. Anti-odour for multi-day adventures.',
+  'cotton-long-run-tee': {
+    name: 'Long Run Tee',
+    material: 'Organic Cotton',
+    category: 'Running & Gym',
+    desc: 'A performance tee built from premium organic cotton. Breathable, lightweight, and naturally soft — designed for long efforts in warm conditions. Minimal construction, no excess.',
     fit: 'True to size. Model is 183cm wearing size M.',
-    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
-    sizes: ['XS','S','M','L','XL'],
+    care: 'Machine wash cold. Tumble dry low.',
+    sizes: ['S','M','L','XL'],
     soldOut: [],
     details: [
-      ['Fibre','100% 18.5μ Merino Wool'],
-      ['Weight','160gsm'],
-      ['Origin','Ethically sourced, Australian Merino'],
+      ['Fibre','100% Organic Cotton'],
+      ['Colours','Natural White, Washed Black'],
+      ['Certificate','OEKO-TEX Certified'],
+      ['Sizes','S – XL'],
+    ]
+  },
+  'wool-long-run-tee': {
+    preorder: true,
+    name: 'Long Run Tee — Merino',
+    material: '100% Merino Wool',
+    category: 'Running',
+    price: 'A$149',
+    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour-resistant, and built to perform across long distances. The tee that goes everywhere.',
+    fit: 'True to size. Model is 183cm wearing size M.',
+    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
+    sizes: ['S','M','L','XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% Merino Wool'],
+      ['Colours','Natural White, Washed Black'],
+      ['Certificate','ZQ Merino Certified'],
+      ['Sizes','S – XL'],
+    ]
+  },
+  'merino-short-mens': {
+    preorder: true,
+    name: 'Long Run Short 5" — Men\'s',
+    material: '100% Merino Wool',
+    category: 'Running · Men',
+    price: 'A$149',
+    desc: 'A 5" running short in 100% merino wool. Features a zip side pocket and a zippered rear waistband pocket. Thermoregulating, anti-odour, and built for distance.',
+    fit: 'True to size. Model is 183cm wearing size M.',
+    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
+    sizes: ['S','M','L','XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% Merino Wool'],
+      ['Inseam','5"'],
+      ['Pockets','Zip side pocket, zippered rear waistband pocket'],
       ['Certificate','ZQ Merino Certified'],
     ]
   },
-  'endure-half-tight': {
-    name: 'Endure Half Tight',
-    material: 'Bamboo-Merino Blend',
-    category: 'Gym · Running · Women',
-    price: 'A$139',
-    desc: 'A 7/8 length tight combining bamboo\'s silky softness with merino\'s moisture management. Four-way stretch, flatlock seaming, and a secure waistband pocket.',
-    fit: 'Compressive fit. Size down for performance fit.',
-    care: 'Machine wash cold. Do not tumble dry.',
-    sizes: ['XS','S','M','L','XL'],
-    soldOut: ['XS'],
-    details: [
-      ['Fibre','62% Bamboo, 38% Merino'],
-      ['Weight','200gsm'],
-      ['Inseam','58cm (size M)'],
-      ['Feature','Hidden waistband pocket'],
-    ]
-  },
-  'terra-run-short': {
-    name: 'Terra Run Short',
-    material: 'Hemp-Bamboo Blend',
-    category: 'Running · Men',
-    price: 'A$109',
-    desc: 'Trail-tested 4" short in our proprietary Hemp-Bamboo shell. UV-protective, quick-drying, and exceptionally durable. Built-in liner with secure zip pocket.',
-    fit: 'Relaxed through the hip. True to size.',
-    care: 'Machine wash cold. Hang dry.',
-    sizes: ['XS','S','M','L','XL','2XL'],
-    soldOut: ['2XL'],
-    details: [
-      ['Fibre','55% Hemp, 45% Bamboo'],
-      ['Length','4" inseam'],
-      ['Feature','Built-in liner, zip pocket'],
-      ['UV Rating','UPF 40+'],
-    ]
-  },
-  'summit-long-sleeve': {
-    name: 'Summit Long Sleeve',
-    material: '100% Merino',
-    category: 'Running · Men · Women',
-    price: 'A$189',
-    desc: 'Our most technical piece. 200-weight merino in a performance cut for cold-weather running and layering. Thumbhole cuffs, reflective detail, underarm gussets.',
-    fit: 'Athletic fit. Sized for layering over a base.',
-    care: 'Hand wash or wool cycle. Lay flat to dry.',
-    sizes: ['XS','S','M','L','XL'],
+  'merino-short-womens': {
+    preorder: true,
+    name: 'Long Run Short 3" — Women\'s',
+    material: '100% Merino Wool',
+    category: 'Running · Women',
+    price: 'A$129',
+    desc: 'A 3" running short in 100% merino wool. Features a zippered rear waistband pocket for essentials on the run. Thermoregulating, anti-odour, and cut for a natural range of motion.',
+    fit: 'True to size. Model is 173cm wearing size S.',
+    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
+    sizes: ['S','M','L','XL'],
     soldOut: [],
     details: [
-      ['Fibre','100% 17.5μ Merino Wool'],
-      ['Weight','200gsm'],
-      ['Feature','Thumbholes, reflective logo'],
-      ['Certificate','GOTS Certified'],
-    ]
-  },
-  'root-crop': {
-    name: 'Root Crop',
-    material: 'Organic Cotton',
-    category: 'Gym · Women',
-    price: 'A$99',
-    desc: 'A cropped training top in GOTS-certified organic cotton. Relaxed fit for studio work, four-way stretch for movement. Minimal branding, maximum versatility.',
-    fit: 'Relaxed cropped fit. True to size.',
-    care: 'Machine wash cold. Tumble dry low.',
-    sizes: ['XS','S','M','L'],
-    soldOut: [],
-    details: [
-      ['Fibre','100% GOTS Organic Cotton'],
-      ['Weight','180gsm'],
-      ['Certificate','GOTS & OEKO-TEX'],
-      ['Feature','Four-way stretch'],
-    ]
-  },
-  'pace-sock': {
-    name: 'Pace Sock',
-    material: 'Merino-Hemp Blend',
-    category: 'Running · Gym',
-    price: 'A$28',
-    desc: 'A performance running sock in merino-hemp blend. Anatomically shaped left/right, targeted cushioning, seamless toe. Built to go the distance.',
-    fit: 'Standard sizing: S (35–38), M (39–42), L (43–46).',
-    care: 'Machine wash cold. Do not iron.',
-    sizes: ['S','M','L'],
-    soldOut: [],
-    details: [
-      ['Fibre','65% Merino, 35% Hemp'],
-      ['Height','Crew (16cm)'],
-      ['Feature','Left/right specific, seamless toe'],
-      ['Sold as','Single pair'],
+      ['Fibre','100% Merino Wool'],
+      ['Inseam','3"'],
+      ['Pockets','Zippered rear waistband pocket'],
+      ['Certificate','ZQ Merino Certified'],
     ]
   },
 };
 
+let currentDrawerProduct = null;
+
 function openDrawer(productKey) {
   const p = products[productKey];
   if (!p) return;
+  currentDrawerProduct = productKey;
 
   document.getElementById('drawer-title').textContent = p.name;
   document.getElementById('drawer-name').textContent = p.name;
@@ -2412,6 +2533,19 @@ function openDrawer(productKey) {
 
   // SVG visual
   document.getElementById('drawer-svg-container').innerHTML = getProductSVG(productKey, 'large');
+
+  // Pre-order vs Add to Cart
+  const atcBtn = document.querySelector('.size-atc-row .drawer-header-atc');
+  if (p.preorder) {
+    atcBtn.textContent = 'Pre-Order Now';
+    atcBtn.style.background = 'var(--brand-dark)';
+  } else {
+    atcBtn.textContent = 'Add to Cart';
+    atcBtn.style.background = '';
+  }
+
+  // Conditions widget
+  renderConditions(productKey);
 
   drawer.classList.add('open');
   backdrop.classList.add('open');
@@ -2444,88 +2578,55 @@ document.addEventListener('keydown', e => {
 /* ─── PRODUCT SVG GENERATOR ─── */
 function getProductSVG(key, size) {
   const svgs = {
-    'drift-tee': `
+    'cotton-long-run-tee': `
       <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#162B25"/>
-        <circle cx="150" cy="${size==='large'?110:175}" r="${size==='large'?80:100}"
-          fill="none" stroke="rgba(168,192,174,0.13)" stroke-width="1"/>
-        <circle cx="150" cy="${size==='large'?110:175}" r="${size==='large'?45:58}"
-          fill="rgba(46,90,79,0.22)"/>
-        <g stroke="rgba(168,192,174,0.07)" stroke-width="0.7" fill="none">
-          <line x1="0" y1="80" x2="300" y2="80"/>
-          <line x1="0" y1="160" x2="300" y2="160"/>
-          <line x1="0" y1="240" x2="300" y2="240"/>
+        <rect width="300" height="${size==='large'?240:400}" fill="#F5F3EE"/>
+        <rect x="80" y="${size==='large'?30:50}" width="140" height="${size==='large'?170:290}"
+          rx="4" fill="none" stroke="rgba(44,44,42,0.12)" stroke-width="0.8"/>
+        <line x1="150" y1="${size==='large'?30:50}" x2="150" y2="${size==='large'?200:340}"
+          stroke="rgba(44,44,42,0.07)" stroke-width="0.8"/>
+        <text x="50%" y="88%" text-anchor="middle"
+          font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
+          fill="rgba(44,44,42,0.25)" letter-spacing="3">COTTON · RUNNING</text>
+      </svg>`,
+    'wool-long-run-tee': `
+      <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="${size==='large'?240:400}" fill="#1F3D35"/>
+        <g stroke="rgba(168,192,174,0.1)" stroke-width="0.8" fill="none">
           <line x1="75" y1="0" x2="75" y2="${size==='large'?240:400}"/>
           <line x1="150" y1="0" x2="150" y2="${size==='large'?240:400}"/>
           <line x1="225" y1="0" x2="225" y2="${size==='large'?240:400}"/>
         </g>
+        <circle cx="150" cy="${size==='large'?105:165}" r="${size==='large'?65:90}"
+          fill="rgba(46,90,79,0.4)"/>
         <text x="50%" y="88%" text-anchor="middle"
           font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
           fill="rgba(168,192,174,0.3)" letter-spacing="3">MERINO · RUNNING</text>
       </svg>`,
-    'endure-half-tight': `
+    'merino-short-mens': `
       <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#0E1E1A"/>
-        <circle cx="150" cy="${size==='large'?105:165}" r="${size==='large'?95:120}"
-          fill="none" stroke="rgba(168,192,174,0.08)" stroke-width="0.8" stroke-dasharray="6 8"/>
-        <circle cx="150" cy="${size==='large'?105:165}" r="${size==='large'?55:70}"
-          fill="rgba(31,61,53,0.45)"/>
-        <line x1="0" y1="${size==='large'?190:310}" x2="300" y2="${size==='large'?190:310}"
-          stroke="rgba(168,192,174,0.1)" stroke-width="0.8"/>
-        <text x="50%" y="88%" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
-          fill="rgba(168,192,174,0.3)" letter-spacing="3">BAMBOO · GYM</text>
-      </svg>`,
-    'terra-run-short': `
-      <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#1F3D35"/>
+        <rect width="300" height="${size==='large'?240:400}" fill="#2C2C2A"/>
         <path d="M0 ${size==='large'?180:300} Q150 ${size==='large'?120:220} 300 ${size==='large'?180:300} L300 ${size==='large'?240:400} L0 ${size==='large'?240:400}Z"
-          fill="rgba(46,90,79,0.35)"/>
+          fill="rgba(255,255,255,0.04)"/>
         <rect x="50" y="40" width="200" height="${size==='large'?160:280}"
-          fill="none" stroke="rgba(168,192,174,0.1)" stroke-width="0.8"/>
+          fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
         <text x="50%" y="88%" text-anchor="middle"
           font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
-          fill="rgba(168,192,174,0.3)" letter-spacing="3">HEMP · RUNNING</text>
+          fill="rgba(255,255,255,0.2)" letter-spacing="3">MERINO · MEN</text>
       </svg>`,
-    'summit-long-sleeve': `
+    'merino-short-womens': `
       <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#1A3028"/>
-        <g stroke="rgba(168,192,174,0.09)" stroke-width="0.8" fill="none">
-          <line x1="0" y1="${size==='large'?80:133}" x2="300" y2="${size==='large'?80:133}"/>
-          <line x1="0" y1="${size==='large'?160:266}" x2="300" y2="${size==='large'?160:266}"/>
-          <line x1="100" y1="0" x2="100" y2="${size==='large'?240:400}"/>
-          <line x1="200" y1="0" x2="200" y2="${size==='large'?240:400}"/>
-        </g>
-        <circle cx="150" cy="${size==='large'?100:160}" r="${size==='large'?65:80}"
-          fill="rgba(46,90,79,0.28)"/>
+        <rect width="300" height="${size==='large'?240:400}" fill="#2C2C2A"/>
+        <circle cx="150" cy="${size==='large'?105:165}" r="${size==='large'?85:120}"
+          fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="6 8"/>
+        <circle cx="150" cy="${size==='large'?105:165}" r="${size==='large'?45:65}"
+          fill="rgba(255,255,255,0.05)"/>
         <text x="50%" y="88%" text-anchor="middle"
           font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
-          fill="rgba(168,192,174,0.3)" letter-spacing="3">MERINO · RUNNING</text>
-      </svg>`,
-    'root-crop': `
-      <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#162B25"/>
-        <path d="M0 0 L300 ${size==='large'?240:400}"
-          stroke="rgba(168,192,174,0.08)" stroke-width="50" fill="none"/>
-        <rect x="80" y="${size==='large'?40:80}" width="140" height="${size==='large'?140:200}"
-          rx="${size==='large'?70:80}" fill="none" stroke="rgba(168,192,174,0.12)" stroke-width="0.8"/>
-        <text x="50%" y="88%" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
-          fill="rgba(168,192,174,0.3)" letter-spacing="3">COTTON · GYM</text>
-      </svg>`,
-    'pace-sock': `
-      <svg viewBox="0 0 300 ${size==='large'?240:400}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="300" height="${size==='large'?240:400}" fill="#0E1E1A"/>
-        <path d="M150 ${size==='large'?30:50} L${size==='large'?240:260} ${size==='large'?110:190} L150 ${size==='large'?190:330} L${size==='large'?60:40} ${size==='large'?110:190}Z"
-          fill="none" stroke="rgba(168,192,174,0.12)" stroke-width="0.8"/>
-        <path d="M150 ${size==='large'?60:90} L${size==='large'?210:230} ${size==='large'?110:190} L150 ${size==='large'?160:280} L${size==='large'?90:70} ${size==='large'?110:190}Z"
-          fill="rgba(31,61,53,0.4)"/>
-        <text x="50%" y="88%" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="8" font-weight="500"
-          fill="rgba(168,192,174,0.3)" letter-spacing="3">MERINO · HEMP</text>
+          fill="rgba(255,255,255,0.2)" letter-spacing="3">MERINO · WOMEN</text>
       </svg>`,
   };
-  return svgs[key] || svgs['drift-tee'];
+  return svgs[key] || svgs['wool-long-run-tee'];
 }
 
 // Inject SVGs into product cards on load
@@ -2535,7 +2636,75 @@ document.querySelectorAll('.pcard[data-product]').forEach(card => {
   if (container) container.innerHTML = getProductSVG(key, 'card');
 });
 
-/* ─── SIZE GUIDE HINT ─── */
+/* ─── CONDITIONS WIDGET ─── */
+const SCALE_MIN_C = 0;
+const SCALE_MAX_C = 30;
+const SCALE_TICKS_C = [0, 10, 20, 30];
+let conditionsUnit = 'c';
+
+const productConditions = {
+  'cotton-long-run-tee': { tempMin: 12, tempMax: 28, conditions: [
+    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 70 },
+    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 15 },
+  ]},
+  'wool-long-run-tee': { tempMin: 5, tempMax: 30, conditions: [
+    { name: 'Hot',  fill: 50  }, { name: 'Mild', fill: 100 },
+    { name: 'Rain', fill: 40  }, { name: 'Cold', fill: 70  },
+  ]},
+  'merino-short-mens': { tempMin: 8, tempMax: 30, conditions: [
+    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 80 },
+    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 10 },
+  ]},
+  'merino-short-womens': { tempMin: 8, tempMax: 30, conditions: [
+    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 80 },
+    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 10 },
+  ]},
+};
+
+function cToF(c) { return Math.round(c * 9/5 + 32); }
+
+function renderConditions(productKey) {
+  const p = productConditions[productKey];
+  if (!p) return;
+  const isFahr = conditionsUnit === 'f';
+  const scaleMin = isFahr ? cToF(SCALE_MIN_C) : SCALE_MIN_C;
+  const scaleMax = isFahr ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
+  const pMin = isFahr ? cToF(p.tempMin) : p.tempMin;
+  const pMax = isFahr ? cToF(p.tempMax) : p.tempMax;
+
+  const leftPct  = ((pMin - scaleMin) / (scaleMax - scaleMin)) * 100;
+  const widthPct = ((pMax - pMin)     / (scaleMax - scaleMin)) * 100;
+
+  const fill = document.getElementById('drawer-temp-fill');
+  fill.style.left  = leftPct + '%';
+  fill.style.width = widthPct + '%';
+
+  const ticksEl = document.getElementById('drawer-temp-ticks');
+  ticksEl.innerHTML = SCALE_TICKS_C.map(c => {
+    const val = isFahr ? cToF(c) : c;
+    const unit = isFahr ? '°F' : '°C';
+    return `<div class="temp-tick"><div class="temp-tick-line"></div><span class="temp-tick-label">${val}${unit}</span></div>`;
+  }).join('');
+
+  const row = document.getElementById('drawer-conditions-row');
+  row.innerHTML = p.conditions.map(cond => {
+    const fillClass = cond.fill >= 90 ? '' : cond.fill >= 50 ? 'partial' : 'low';
+    const isActive = cond.fill >= 50;
+    return `<div class="condition-item ${isActive ? 'active' : ''}">
+      <div class="condition-bar"><div class="condition-bar-fill ${fillClass}" style="width:${cond.fill}%"></div></div>
+      <span class="condition-name">${cond.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function setConditionsUnit(u) {
+  conditionsUnit = u;
+  document.getElementById('drawer-btn-c').classList.toggle('active', u === 'c');
+  document.getElementById('drawer-btn-f').classList.toggle('active', u === 'f');
+  if (currentDrawerProduct) renderConditions(currentDrawerProduct);
+}
+
+
 function addToCart() {
   const activeSize = document.querySelector('#drawer-sizes .size-btn.active');
   const name = document.getElementById('drawer-name').textContent;
@@ -2543,8 +2712,11 @@ function addToCart() {
     alert('Please select a size.');
     return;
   }
-  // Shopify-ready: replace with Shopify Buy Button JS
-  showToast(`${name} (${activeSize.textContent}) added to cart`);
+  const p = products[currentDrawerProduct];
+  const msg = p && p.preorder
+    ? `${name} (${activeSize.textContent}) — Pre-order confirmed ✓`
+    : `${name} (${activeSize.textContent}) added to cart`;
+  showToast(msg);
   closeDrawer();
 }
 
@@ -2606,15 +2778,11 @@ const searchResults = document.getElementById('search-results');
 const searchClose   = document.getElementById('search-close');
 
 const searchData = [
-  { label: 'Drift Tee', sub: 'Merino Wool · Running · Men · A$149', href: '#' },
-  { label: 'Endure Half Tight', sub: 'Bamboo-Merino · Gym & Running · Women · A$139', href: '#' },
-  { label: 'Terra Run Short', sub: 'Hemp-Bamboo · Running · Men · A$109', href: '#' },
-  { label: 'Summit Long Sleeve', sub: 'Merino Wool · Running · A$159', href: '#' },
-  { label: 'Root Crop Top', sub: 'Organic Cotton · Gym · Women · A$99', href: '#' },
-  { label: 'Pace Sock', sub: 'Merino-Hemp · Running & Gym · A$29', href: '#' },
+  { label: 'Long Run Tee', sub: 'Organic Cotton · Running & Gym · A$99', href: '#' },
+  { label: 'Long Run Tee — Merino', sub: 'Merino Wool · Running · A$149', href: '#' },
+  { label: 'Long Run Short 5" — Men\'s', sub: 'Merino Wool · Running · Men · A$149', href: '#' },
+  { label: 'Long Run Short 3" — Women\'s', sub: 'Merino Wool · Running · Women · A$129', href: '#' },
   { label: 'Merino Wool', sub: 'Natural fibre · thermoregulating · anti-odour', href: 'index.html#materials' },
-  { label: 'Bamboo', sub: 'Natural fibre · silky soft · moisture wicking', href: 'index.html#materials' },
-  { label: 'Hemp', sub: 'Natural fibre · UV protective · durable', href: 'index.html#materials' },
   { label: 'Organic Cotton', sub: 'Natural fibre · breathable · pesticide-free', href: 'index.html#materials' },
   { label: 'Back to Homepage', sub: 'enduro — Athletic Performance, Naturally', href: 'index.html' },
 ];
