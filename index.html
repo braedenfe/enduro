@@ -1034,43 +1034,65 @@ input, textarea { font-family: inherit; }
   margin-top: 48px;
 }
 .why-pillar {
-  padding: 24px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line);
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  cursor: pointer;
   transition: background 0.2s;
-  cursor: default;
 }
 .why-pillar:first-child { border-top: 1px solid var(--line); }
 .why-pillar-icon {
-  width: 40px; height: 40px;
-  border: 1px solid rgba(26,28,27,0.14);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
+  font-family: var(--heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--brand);
+  width: 32px;
   flex-shrink: 0;
-  transition: background 0.3s, border-color 0.3s;
+  padding-top: 3px;
+  transition: color 0.3s;
 }
-.why-pillar:hover .why-pillar-icon {
-  background: var(--brand-light);
-  border-color: var(--brand-light);
-}
-.why-pillar-body {}
+.why-pillar.open .why-pillar-icon,
+.why-pillar:hover .why-pillar-icon { color: var(--brand-light); }
+.why-pillar-body { flex: 1; }
 .why-pillar-title {
   font-family: var(--sans);
   font-size: 0.88rem;
   font-weight: 600;
   color: #1A1C1B;
-  margin-bottom: 4px;
   letter-spacing: 0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: color 0.3s;
 }
+.why-pillar:hover .why-pillar-title,
+.why-pillar.open .why-pillar-title { color: var(--brand); }
+.why-pillar-arrow {
+  font-size: 0.7rem;
+  color: var(--stone);
+  transition: transform 0.35s var(--ease), color 0.3s;
+  flex-shrink: 0;
+}
+.why-pillar.open .why-pillar-arrow { transform: rotate(45deg); color: var(--brand); }
 .why-pillar-text {
   font-size: 0.8rem;
   line-height: 1.72;
   color: rgba(26,28,27,0.58);
   font-weight: 300;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s var(--ease), opacity 0.35s var(--ease), margin-top 0.3s var(--ease);
+  margin-top: 0;
+}
+.why-pillar.open .why-pillar-text {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 10px;
 }
 
 /* ─── FEATURED JOURNAL ─── */
@@ -1905,38 +1927,38 @@ footer {
 
       <div class="why-pillars" role="list">
         <div class="why-pillar" role="listitem">
-          <div class="why-pillar-icon" aria-hidden="true">🧬</div>
+          <div class="why-pillar-icon" aria-hidden="true">01</div>
           <div class="why-pillar-body">
-            <h3 class="why-pillar-title">No Endocrine Disruptors</h3>
-            <p class="why-pillar-text">Polyester and nylon fabrics contain chemical additives that can migrate through sweat-soaked skin. Natural fibres are chemically inert — nothing synthetic touching your body, ever.</p>
+            <h3 class="why-pillar-title">No Endocrine Disruptors <span class="why-pillar-arrow">+</span></h3>
+            <p class="why-pillar-text">Some synthetic textiles rely on chemical additives and finishes. Natural fibres are inherently simple, helping reduce exposure to unnecessary treatments while remaining comfortable against the skin.</p>
           </div>
         </div>
         <div class="why-pillar" role="listitem">
-          <div class="why-pillar-icon" aria-hidden="true">🫁</div>
+          <div class="why-pillar-icon" aria-hidden="true">02</div>
           <div class="why-pillar-body">
-            <h3 class="why-pillar-title">No Microplastics in Your Body</h3>
-            <p class="why-pillar-text">Studies now find microplastic particles in human blood, lungs, and organs. Every synthetic wash sheds thousands of them. enduro sheds zero — because there's nothing plastic to shed.</p>
+            <h3 class="why-pillar-title">No Microplastic Shedding <span class="why-pillar-arrow">+</span></h3>
+            <p class="why-pillar-text">Microplastic particles have been detected throughout the environment and within the human body. Synthetic garments release plastic fibres during wear and washing. Natural fibres contain no plastic, so there's nothing synthetic to shed.</p>
           </div>
         </div>
         <div class="why-pillar" role="listitem">
-          <div class="why-pillar-icon" aria-hidden="true">🌡️</div>
+          <div class="why-pillar-icon" aria-hidden="true">03</div>
           <div class="why-pillar-body">
-            <h3 class="why-pillar-title">Skin That Can Breathe</h3>
-            <p class="why-pillar-text">Synthetic fabrics trap heat and create a humid microclimate against your skin, promoting bacterial growth and irritation. Natural fibres regulate temperature and allow genuine breathability — your skin functions as it should.</p>
+            <h3 class="why-pillar-title">Skin That Can Breathe <span class="why-pillar-arrow">+</span></h3>
+            <p class="why-pillar-text">Natural fibres help regulate temperature and humidity around the skin, reducing the hot, clammy feeling often associated with synthetic fabrics. The result is comfort that feels natural in every condition.</p>
           </div>
         </div>
         <div class="why-pillar" role="listitem">
-          <div class="why-pillar-icon" aria-hidden="true">🦠</div>
+          <div class="why-pillar-icon" aria-hidden="true">04</div>
           <div class="why-pillar-body">
-            <h3 class="why-pillar-title">Naturally Antibacterial</h3>
-            <p class="why-pillar-text">Merino's lanolin and bamboo's bio-kun structure inhibit bacterial growth without synthetic antimicrobial treatments. No silver nanoparticles, no chemical finishes — just what nature built in.</p>
+            <h3 class="why-pillar-title">Naturally Odour Resistant <span class="why-pillar-arrow">+</span></h3>
+            <p class="why-pillar-text">Merino wool naturally resists odour by managing moisture and reducing the conditions that allow bacteria to thrive. Freshness without silver treatments or chemical finishes.</p>
           </div>
         </div>
         <div class="why-pillar" role="listitem">
-          <div class="why-pillar-icon" aria-hidden="true">💧</div>
+          <div class="why-pillar-icon" aria-hidden="true">05</div>
           <div class="why-pillar-body">
-            <h3 class="why-pillar-title">Moisture Without Chemicals</h3>
-            <p class="why-pillar-text">Synthetic moisture-wicking relies on chemical DWR treatments that degrade, flake, and absorb into skin. Natural fibres wick sweat through their structure alone — no coatings, no compromise.</p>
+            <h3 class="why-pillar-title">Moisture Management Without Chemical Coatings <span class="why-pillar-arrow">+</span></h3>
+            <p class="why-pillar-text">Many synthetic performance fabrics rely on surface treatments to enhance moisture management. Natural fibres help move moisture through their structure, delivering comfort without additional coatings.</p>
           </div>
         </div>
       </div>
@@ -2558,6 +2580,15 @@ if (emailForm) {
     }
   });
 }
+
+/* ─── WHY PILLARS REVEAL ─── */
+document.querySelectorAll('.why-pillar').forEach(pillar => {
+  pillar.addEventListener('click', () => {
+    const isOpen = pillar.classList.contains('open');
+    document.querySelectorAll('.why-pillar').forEach(p => p.classList.remove('open'));
+    if (!isOpen) pillar.classList.add('open');
+  });
+});
 
 /* ─── SMOOTH ANCHOR SCROLL ─── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
