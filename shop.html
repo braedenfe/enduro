@@ -857,7 +857,7 @@ input, textarea { font-family: inherit; }
 }
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
 }
 .pcard {
@@ -1137,7 +1137,7 @@ input, textarea { font-family: inherit; }
 }
 .mat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
   margin-top: 56px;
 }
@@ -1757,7 +1757,7 @@ footer {
 }
 .conditions-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 .condition-item {
@@ -2654,20 +2654,20 @@ let conditionsUnit = 'c';
 
 const productConditions = {
   'cotton-long-run-tee': { tempMin: 12, tempMax: 28, conditions: [
-    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 70 },
-    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 15 },
+  { name: 'Rain', fill: 30  },
+  { name: 'Wind', fill: 25  },
   ]},
   'wool-long-run-tee': { tempMin: 5, tempMax: 30, conditions: [
-    { name: 'Hot',  fill: 50  }, { name: 'Mild', fill: 100 },
-    { name: 'Rain', fill: 40  }, { name: 'Cold', fill: 70  },
+  { name: 'Rain', fill: 40  },
+  { name: 'Wind', fill: 80  },
   ]},
   'merino-short-mens': { tempMin: 8, tempMax: 30, conditions: [
-    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 80 },
-    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 10 },
+  { name: 'Rain', fill: 30  },
+  { name: 'Wind', fill: 50  },
   ]},
   'merino-short-womens': { tempMin: 8, tempMax: 30, conditions: [
-    { name: 'Hot',  fill: 100 }, { name: 'Mild', fill: 80 },
-    { name: 'Rain', fill: 30  }, { name: 'Cold', fill: 10 },
+  { name: 'Rain', fill: 30  },
+  { name: 'Wind', fill: 50  },
   ]},
 };
 
