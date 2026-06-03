@@ -1290,6 +1290,12 @@ input, textarea { font-family: inherit; }
   justify-content: space-between;
   gap: 48px;
   flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.email-text {
+  flex: 1 1 400px;
+  min-width: 0;
 }
 .email-text .section-title { font-size: clamp(2rem, 4vw, 3.4rem); color: white; }
 .email-text p {
@@ -1649,7 +1655,8 @@ footer {
   #feature-strip { grid-template-columns: 1fr; }
   .fs-visual { min-height: 280px; }
   
-  .email-capture-inner { flex-direction: column; align-items: flex-start; }
+  .email-capture-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .email-text { flex: unset; width: 100%; }
   .email-form { flex: unset; width: 100%; }
   footer { padding: 48px 24px 24px; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -2608,7 +2615,7 @@ if (emailForm) {
         })
       });
       if (res.ok || res.status === 202) {
-        showToast('Welcome to the Long Haul Club ✓');
+        showToast('Welcome to the Long Run Club ✓');
         input.value = '';
       } else {
         showToast('Something went wrong — please try again.');
