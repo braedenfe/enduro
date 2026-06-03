@@ -1378,6 +1378,22 @@ function addToCart() {
   const size = document.querySelector('.size-btn.active');
   const colour = document.getElementById('selected-colour').textContent;
   if (!size) { showToast('Please select a size'); return; }
+  // Klaviyo Started Checkout tracking
+  if (window.klaviyo) {
+    klaviyo.track("Started Checkout", {
+      "$value": 149,
+      "ItemNames": ["Long Run Tee — Merino Wool"],
+      "CheckoutURL": "https://www.enduroapparel.com.au/pages/product-wool-long-run-tee.html",
+      "Items": [{
+        "ProductID": "wool-long-run-tee",
+        "ProductName": "Long Run Tee — Merino Wool",
+        "Quantity": 1,
+        "ItemPrice": 149,
+        "RowTotal": 149,
+        "ProductURL": "https://www.enduroapparel.com.au/pages/product-wool-long-run-tee.html"
+      }]
+    });
+  }
   showToast(`Long Run Tee — Merino — ${colour} (${size.textContent}) pre-order confirmed ✓`);
 }
 
@@ -1448,6 +1464,31 @@ function setUnit(u) {
 }
 
 renderConditions();
+</script>
+
+<!-- Klaviyo Viewed Product tracking -->
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  var item = {
+    "ProductName": "Long Run Tee — Merino Wool",
+    "ProductID": "wool-long-run-tee",
+    "SKU": "EMS-TEE-WOOL",
+    "Categories": ["Running", "Natural Fibres", "Merino Wool"],
+    "URL": "https://www.enduroapparel.com.au/pages/product-wool-long-run-tee.html",
+    "Brand": "enduro",
+    "Price": 149
+  };
+  klaviyo.track("Viewed Product", item);
+  klaviyo.trackViewedItem({
+    "Title": item.ProductName,
+    "ItemId": item.ProductID,
+    "Categories": item.Categories,
+    "Url": item.URL,
+    "Metadata": {
+      "Brand": item.Brand,
+      "Price": item.Price
+    }
+  });
 </script>
 </body>
 </html>

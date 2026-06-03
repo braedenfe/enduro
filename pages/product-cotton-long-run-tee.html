@@ -1388,6 +1388,22 @@ function addToCart() {
   const size = document.querySelector('.size-btn.active');
   const colour = document.getElementById('selected-colour').textContent;
   if (!size) { showToast('Please select a size'); return; }
+  // Klaviyo Started Checkout tracking
+  if (window.klaviyo) {
+    klaviyo.track("Started Checkout", {
+      "$value": 99,
+      "ItemNames": ["Long Run Tee — Organic Cotton"],
+      "CheckoutURL": "https://www.enduroapparel.com.au/pages/product-cotton-long-run-tee.html",
+      "Items": [{
+        "ProductID": "cotton-long-run-tee",
+        "ProductName": "Long Run Tee — Organic Cotton",
+        "Quantity": 1,
+        "ItemPrice": 99,
+        "RowTotal": 99,
+        "ProductURL": "https://www.enduroapparel.com.au/pages/product-cotton-long-run-tee.html"
+      }]
+    });
+  }
   showToast(`Long Run Tee — ${colour} (${size.textContent}) added to cart ✓`);
 }
 
@@ -1458,6 +1474,31 @@ function setUnit(u) {
 }
 
 renderConditions();
+</script>
+
+<!-- Klaviyo Viewed Product tracking -->
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  var item = {
+    "ProductName": "Long Run Tee — Organic Cotton",
+    "ProductID": "cotton-long-run-tee",
+    "SKU": "EMS-TEE-COTTON",
+    "Categories": ["Running", "Natural Fibres", "Merino Wool"],
+    "URL": "https://www.enduroapparel.com.au/pages/product-cotton-long-run-tee.html",
+    "Brand": "enduro",
+    "Price": 99
+  };
+  klaviyo.track("Viewed Product", item);
+  klaviyo.trackViewedItem({
+    "Title": item.ProductName,
+    "ItemId": item.ProductID,
+    "Categories": item.Categories,
+    "Url": item.URL,
+    "Metadata": {
+      "Brand": item.Brand,
+      "Price": item.Price
+    }
+  });
 </script>
 </body>
 </html>

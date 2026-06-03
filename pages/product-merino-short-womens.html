@@ -1373,6 +1373,22 @@ function addToCart() {
   const size = document.querySelector('.size-btn.active');
   const colour = document.getElementById('selected-colour').textContent;
   if (!size) { showToast('Please select a size'); return; }
+  // Klaviyo Started Checkout tracking
+  if (window.klaviyo) {
+    klaviyo.track("Started Checkout", {
+      "$value": 129,
+      "ItemNames": ["Long Run Short 3\" — Women's"],
+      "CheckoutURL": "https://www.enduroapparel.com.au/pages/product-merino-short-womens.html",
+      "Items": [{
+        "ProductID": "merino-short-womens",
+        "ProductName": "Long Run Short 3\" — Women's",
+        "Quantity": 1,
+        "ItemPrice": 129,
+        "RowTotal": 129,
+        "ProductURL": "https://www.enduroapparel.com.au/pages/product-merino-short-womens.html"
+      }]
+    });
+  }
   showToast(`Long Run Short 3" — Women's — ${colour} (${size.textContent}) pre-order confirmed ✓`);
 }
 
@@ -1443,6 +1459,31 @@ function setUnit(u) {
 }
 
 renderConditions();
+</script>
+
+<!-- Klaviyo Viewed Product tracking -->
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  var item = {
+    "ProductName": "Long Run Short 3" — Women's",
+    "ProductID": "merino-short-womens",
+    "SKU": "EMS-SHORT-3-W",
+    "Categories": ["Running", "Natural Fibres", "Merino Wool"],
+    "URL": "https://www.enduroapparel.com.au/pages/product-merino-short-womens.html",
+    "Brand": "enduro",
+    "Price": 129
+  };
+  klaviyo.track("Viewed Product", item);
+  klaviyo.trackViewedItem({
+    "Title": item.ProductName,
+    "ItemId": item.ProductID,
+    "Categories": item.Categories,
+    "Url": item.URL,
+    "Metadata": {
+      "Brand": item.Brand,
+      "Price": item.Price
+    }
+  });
 </script>
 </body>
 </html>
