@@ -2629,13 +2629,10 @@ if (emailForm) {
         showToast('Welcome to the Long Run Club ✓');
         input.value = '';
       } else {
-        const errText = await res.text();
-        console.error('Klaviyo error:', res.status, errText);
-        showToast('Error ' + res.status + ': ' + errText.slice(0, 80));
+        showToast('Something went wrong — please try again.');
       }
     } catch (err) {
-      console.error('Fetch error:', err);
-      showToast('Fetch error: ' + err.message);
+      showToast('Something went wrong — please try again.');
     } finally {
       btn.disabled = false;
       btn.textContent = 'Subscribe →';
