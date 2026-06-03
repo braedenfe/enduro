@@ -1114,6 +1114,8 @@ input, textarea { font-family: inherit; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 560px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .fs-visual {
   position: relative;
@@ -2603,13 +2605,22 @@ if (emailForm) {
     try {
       const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
         method: 'POST',
-        headers: { 'content-type': 'application/json', 'revision': '2023-12-15' },
+        headers: { 'content-type': 'application/json', 'revision': '2024-02-15' },
         body: JSON.stringify({
           data: {
             type: 'subscription',
             attributes: {
-              list_id: 'TavxE9',
-              email_address: email
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: { email: email }
+                }
+              }
+            },
+            relationships: {
+              list: {
+                data: { type: 'list', id: 'TavxE9' }
+              }
             }
           }
         })
