@@ -632,13 +632,14 @@ input, textarea { font-family: inherit; }
 }
 /* On dark/hero backgrounds */
 .hero-actions .btn-outline {
-  color: #F2F4F0;
-  border-color: rgba(242,244,240,0.6);
-  background: rgba(242,244,240,0.08);
+  color: #1A1C1B;
+  border-color: #F2F4F0;
+  background: #F2F4F0;
 }
 .hero-actions .btn-outline:hover {
-  background: rgba(242,244,240,0.16);
-  border-color: rgba(242,244,240,0.9);
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-1px);
 }
 .btn-ghost {
   background: transparent;
@@ -2582,12 +2583,41 @@ function showToast(message) {
 /* ─── EMAIL FORM ─── */
 const emailForm = document.getElementById('email-form');
 if (emailForm) {
-  emailForm.addEventListener('submit', e => {
+  emailForm.addEventListener('submit', async e => {
     e.preventDefault();
     const input = emailForm.querySelector('input[type="email"]');
-    if (input.value) {
-      showToast('Welcome to the Long Haul Club ✓');
-      input.value = '';
+    const btn = emailForm.querySelector('button[type="submit"]');
+    const email = input.value.trim();
+    if (!email) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Subscribing…';
+
+    try {
+      const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'revision': '2023-12-15' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              list_id: 'TavxE9',
+              email_address: email
+            }
+          }
+        })
+      });
+      if (res.ok || res.status === 202) {
+        showToast('Welcome to the Long Haul Club ✓');
+        input.value = '';
+      } else {
+        showToast('Something went wrong — please try again.');
+      }
+    } catch (err) {
+      showToast('Something went wrong — please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Subscribe →';
     }
   });
 }
