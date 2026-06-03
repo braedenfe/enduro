@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Klaviyo onsite tracking -->
-<script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/VMZvez/klaviyo.js?company_id=VMZvez"></script>
-<script type="text/javascript">
-!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-R0BFVCRR6E"></script>
 <script>
@@ -638,14 +632,13 @@ input, textarea { font-family: inherit; }
 }
 /* On dark/hero backgrounds */
 .hero-actions .btn-outline {
-  color: #1A1C1B;
-  border-color: #F2F4F0;
-  background: #F2F4F0;
+  background: transparent;
+  color: rgba(242,244,240,0.9);
+  border-color: rgba(242,244,240,0.3);
 }
 .hero-actions .btn-outline:hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  transform: translateY(-1px);
+  background: transparent;
+  border-color: rgba(242,244,240,0.7);
 }
 .btn-ghost {
   background: transparent;
@@ -1017,13 +1010,10 @@ input, textarea { font-family: inherit; }
 }
 .why-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.why-left {
+  max-width: 860px;
 }
 .why-visual {
   position: relative;
@@ -1043,7 +1033,7 @@ input, textarea { font-family: inherit; }
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-top: 0;
+  margin-top: 48px;
 }
 .why-pillar {
   padding: 22px 0;
@@ -1119,7 +1109,6 @@ input, textarea { font-family: inherit; }
 #feature-strip {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
   min-height: 560px;
 }
 .fs-visual {
@@ -1137,7 +1126,6 @@ input, textarea { font-family: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   border-left: 1px solid rgba(26,28,27,0.08);
 }
 .fs-body .section-body { margin-bottom: 40px; }
@@ -1147,8 +1135,8 @@ input, textarea { font-family: inherit; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--line);
-  grid-column: 1 / -1;
-  border-top: 1px solid rgba(26,28,27,0.1);
+  margin-top: 48px;
+  border-top: 1px solid rgba(242,244,240,0.15);
 }
 .fs-stat {
   background: #FFFFFF;
@@ -1181,7 +1169,7 @@ input, textarea { font-family: inherit; }
 }
 .mat-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2px;
   margin-top: 56px;
 }
@@ -1294,14 +1282,10 @@ input, textarea { font-family: inherit; }
 }
 .email-capture-inner {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
-  max-width: 600px;
-}
-.email-text {
-  flex: unset;
-  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
 }
 .email-text .section-title { font-size: clamp(2rem, 4vw, 3.4rem); color: white; }
 .email-text p {
@@ -1651,9 +1635,7 @@ footer {
   .cat-grid { grid-template-columns: 1fr; }
   .cat-panel { height: clamp(240px, 55vw, 380px); }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
-  .why-grid { grid-template-columns: 1fr; gap: 0; }
-  .why-left { position: static; }
-  .why-pillars { margin-top: 48px; }
+  .why-grid { grid-template-columns: 1fr; gap: 48px; }
 
   .journal-grid { grid-template-columns: 1fr; }
   .journal-card-img, .journal-card.small .journal-card-img { height: 240px; }
@@ -1661,7 +1643,8 @@ footer {
   #feature-strip { grid-template-columns: 1fr; }
   .fs-visual { min-height: 280px; }
   
-  .email-form { width: 100%; }
+  .email-capture-inner { flex-direction: column; align-items: flex-start; }
+  .email-form { flex: unset; width: 100%; }
   footer { padding: 48px 24px 24px; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
   .products-header { flex-direction: column; align-items: flex-start; }
@@ -1764,10 +1747,6 @@ footer {
   .bridge-label-row { padding: 12px 20px; }
 }
 
-@media (min-width: 961px) {
-  .fs-body { align-items: center; text-align: center; }
-  .fs-body .btn { align-self: center; }
-}
 </style>
 </head>
 <body>
@@ -1938,8 +1917,7 @@ footer {
 <!-- ═══ WHY ENDURO ═══ -->
 <section id="why" class="section-wrap" aria-labelledby="why-heading">
   <div class="why-grid">
-    <!-- Left: heading + body + CTA -->
-    <div class="why-left reveal reveal-delay-2">
+    <div class="reveal reveal-delay-2">
       <div class="section-header" style="margin-bottom:0">
         <p class="section-kicker">The enduro Difference</p>
         <h2 class="section-title" id="why-heading">
@@ -1949,13 +1927,7 @@ footer {
           Polyester is petroleum-based plastic. It traps heat, sheds microplastics, and carries chemical additives that absorb through your skin during exercise. Here's what you're moving away from — and toward.
         </p>
       </div>
-      <a href="#materials" class="btn btn-ghost" style="margin-top:32px;display:inline-flex">
-        Explore Our Materials
-      </a>
-    </div>
 
-    <!-- Right: pillars -->
-    <div class="reveal reveal-delay-3">
       <div class="why-pillars" role="list">
         <div class="why-pillar" role="listitem">
           <div class="why-pillar-icon" aria-hidden="true">01</div>
@@ -1993,6 +1965,10 @@ footer {
           </div>
         </div>
       </div>
+
+      <a href="#materials" class="btn btn-ghost" style="margin-top:32px;display:inline-flex">
+        Explore Our Materials
+      </a>
     </div>
   </div>
 </section>
@@ -2031,22 +2007,22 @@ footer {
       Peak performance was never engineered in a lab. It was refined over millennia by nature itself.<br><br>
       Every enduro piece is built from natural fibres selected for performance, comfort, and longevity. No petroleum-based synthetics. No unnecessary compromises. Built for the long run.
     </p>
-    <a href="#why" class="btn btn-primary reveal reveal-delay-3" style="margin-top:8px;color:#fff">
+    <a href="#why" class="btn btn-primary reveal reveal-delay-3" style="align-self:flex-start;margin-top:8px;color:#fff">
       Our Philosophy
     </a>
-  </div>
-  <div class="fs-stats reveal reveal-delay-4">
-    <div class="fs-stat">
-      <div class="fs-stat-num">100%</div>
-      <div class="fs-stat-label">Natural Fibres</div>
-    </div>
-    <div class="fs-stat">
-      <div class="fs-stat-num">0</div>
-      <div class="fs-stat-label">Synthetics Used</div>
-    </div>
-    <div class="fs-stat">
-      <div class="fs-stat-num">5</div>
-      <div class="fs-stat-label">Performance Fibres</div>
+    <div class="fs-stats reveal reveal-delay-4">
+      <div class="fs-stat">
+        <div class="fs-stat-num">100%</div>
+        <div class="fs-stat-label">Natural Fibres</div>
+      </div>
+      <div class="fs-stat">
+        <div class="fs-stat-num">0</div>
+        <div class="fs-stat-label">Synthetics Used</div>
+      </div>
+      <div class="fs-stat">
+        <div class="fs-stat-num">5</div>
+        <div class="fs-stat-label">Performance Fibres</div>
+      </div>
     </div>
   </div>
 </section>
@@ -2125,12 +2101,12 @@ footer {
       <h2 class="section-title" id="email-heading" style="color:white">
         JOIN US FOR<br><span style="font-family:var(--display);font-style:italic;font-weight:300;text-transform:none;color:rgba(242,244,240,0.7);font-size:0.9em">the long run.</span>
       </h2>
-      <p>Early access to new drops, training dispatches from the field, and 10% off your first order.</p>
+      <p>Early access to new drops, training dispatches from the field, and 15% off your first order.</p>
       <div class="email-perks">
         <span class="email-perk">Early access</span>
         <span class="email-perk">Drop alerts</span>
         <span class="email-perk">Training stories</span>
-        <span class="email-perk">10% first order</span>
+        <span class="email-perk">15% first order</span>
       </div>
     </div>
     <div class="reveal reveal-delay-2">
@@ -2598,50 +2574,12 @@ function showToast(message) {
 /* ─── EMAIL FORM ─── */
 const emailForm = document.getElementById('email-form');
 if (emailForm) {
-  emailForm.addEventListener('submit', async e => {
+  emailForm.addEventListener('submit', e => {
     e.preventDefault();
     const input = emailForm.querySelector('input[type="email"]');
-    const btn = emailForm.querySelector('button[type="submit"]');
-    const email = input.value.trim();
-    if (!email) return;
-
-    btn.disabled = true;
-    btn.textContent = 'Subscribing…';
-
-    try {
-      const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'revision': '2024-02-15' },
-        body: JSON.stringify({
-          data: {
-            type: 'subscription',
-            attributes: {
-              profile: {
-                data: {
-                  type: 'profile',
-                  attributes: { email: email }
-                }
-              }
-            },
-            relationships: {
-              list: {
-                data: { type: 'list', id: 'TavxE9' }
-              }
-            }
-          }
-        })
-      });
-      if (res.ok || res.status === 202) {
-        showToast('Welcome to the Long Run Club ✓');
-        input.value = '';
-      } else {
-        showToast('Something went wrong — please try again.');
-      }
-    } catch (err) {
-      showToast('Something went wrong — please try again.');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Subscribe →';
+    if (input.value) {
+      showToast('Welcome to the Long Haul Club ✓');
+      input.value = '';
     }
   });
 }
