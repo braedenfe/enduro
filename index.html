@@ -1119,6 +1119,7 @@ input, textarea { font-family: inherit; }
 #feature-strip {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
   min-height: 560px;
 }
 .fs-visual {
@@ -1138,7 +1139,6 @@ input, textarea { font-family: inherit; }
   justify-content: center;
   align-items: flex-start;
   border-left: 1px solid rgba(26,28,27,0.08);
-  overflow: hidden;
 }
 .fs-body .section-body { margin-bottom: 40px; }
 .fs-body .section-header { margin-bottom: 12px; }
@@ -1147,10 +1147,7 @@ input, textarea { font-family: inherit; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--line);
-  margin-top: 48px;
-  margin-left: calc(-1 * clamp(40px, 7vw, 88px));
-  margin-right: calc(-1 * clamp(40px, 7vw, 88px));
-  margin-bottom: calc(-1 * clamp(40px, 7vw, 88px));
+  grid-column: 1 / -1;
   border-top: 1px solid rgba(26,28,27,0.1);
 }
 .fs-stat {
@@ -2033,19 +2030,19 @@ footer {
     <a href="#why" class="btn btn-primary reveal reveal-delay-3" style="align-self:flex-start;margin-top:8px;color:#fff">
       Our Philosophy
     </a>
-    <div class="fs-stats reveal reveal-delay-4">
-      <div class="fs-stat">
-        <div class="fs-stat-num">100%</div>
-        <div class="fs-stat-label">Natural Fibres</div>
-      </div>
-      <div class="fs-stat">
-        <div class="fs-stat-num">0</div>
-        <div class="fs-stat-label">Synthetics Used</div>
-      </div>
-      <div class="fs-stat">
-        <div class="fs-stat-num">5</div>
-        <div class="fs-stat-label">Performance Fibres</div>
-      </div>
+  </div>
+  <div class="fs-stats reveal reveal-delay-4">
+    <div class="fs-stat">
+      <div class="fs-stat-num">100%</div>
+      <div class="fs-stat-label">Natural Fibres</div>
+    </div>
+    <div class="fs-stat">
+      <div class="fs-stat-num">0</div>
+      <div class="fs-stat-label">Synthetics Used</div>
+    </div>
+    <div class="fs-stat">
+      <div class="fs-stat-num">5</div>
+      <div class="fs-stat-label">Performance Fibres</div>
     </div>
   </div>
 </section>
