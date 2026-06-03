@@ -1136,7 +1136,9 @@ input, textarea { font-family: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   border-left: 1px solid rgba(26,28,27,0.08);
+  overflow: hidden;
 }
 .fs-body .section-body { margin-bottom: 40px; }
 .fs-body .section-header { margin-bottom: 12px; }
@@ -1146,6 +1148,9 @@ input, textarea { font-family: inherit; }
   gap: 1px;
   background: var(--line);
   margin-top: 48px;
+  margin-left: calc(-1 * clamp(40px, 7vw, 88px));
+  margin-right: calc(-1 * clamp(40px, 7vw, 88px));
+  margin-bottom: calc(-1 * clamp(40px, 7vw, 88px));
   border-top: 1px solid rgba(26,28,27,0.1);
 }
 .fs-stat {
