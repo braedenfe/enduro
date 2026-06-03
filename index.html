@@ -1008,10 +1008,14 @@ input, textarea { font-family: inherit; }
 }
 .why-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  align-items: center;
-  max-width: 860px;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  max-width: 1200px;
+}
+.why-left {
+  position: sticky;
+  top: 120px;
 }
 .why-visual {
   position: relative;
@@ -1031,7 +1035,7 @@ input, textarea { font-family: inherit; }
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-top: 48px;
+  margin-top: 0;
 }
 .why-pillar {
   padding: 22px 0;
@@ -1633,7 +1637,9 @@ footer {
   .cat-grid { grid-template-columns: 1fr; }
   .cat-panel { height: clamp(240px, 55vw, 380px); }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
-  .why-grid { grid-template-columns: 1fr; gap: 48px; }
+  .why-grid { grid-template-columns: 1fr; gap: 0; }
+  .why-left { position: static; }
+  .why-pillars { margin-top: 48px; }
 
   .journal-grid { grid-template-columns: 1fr; }
   .journal-card-img, .journal-card.small .journal-card-img { height: 240px; }
@@ -1915,7 +1921,8 @@ footer {
 <!-- ═══ WHY ENDURO ═══ -->
 <section id="why" class="section-wrap" aria-labelledby="why-heading">
   <div class="why-grid">
-    <div class="reveal reveal-delay-2">
+    <!-- Left: heading + body + CTA -->
+    <div class="why-left reveal reveal-delay-2">
       <div class="section-header" style="margin-bottom:0">
         <p class="section-kicker">The enduro Difference</p>
         <h2 class="section-title" id="why-heading">
@@ -1925,7 +1932,13 @@ footer {
           Polyester is petroleum-based plastic. It traps heat, sheds microplastics, and carries chemical additives that absorb through your skin during exercise. Here's what you're moving away from — and toward.
         </p>
       </div>
+      <a href="#materials" class="btn btn-ghost" style="margin-top:32px;display:inline-flex">
+        Explore Our Materials
+      </a>
+    </div>
 
+    <!-- Right: pillars -->
+    <div class="reveal reveal-delay-3">
       <div class="why-pillars" role="list">
         <div class="why-pillar" role="listitem">
           <div class="why-pillar-icon" aria-hidden="true">01</div>
@@ -1963,10 +1976,6 @@ footer {
           </div>
         </div>
       </div>
-
-      <a href="#materials" class="btn btn-ghost" style="margin-top:32px;display:inline-flex">
-        Explore Our Materials
-      </a>
     </div>
   </div>
 </section>
