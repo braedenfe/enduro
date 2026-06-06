@@ -2066,7 +2066,7 @@ footer {
     <!-- Wool Long Run Tee -->
     <article class="pcard" data-product="wool-long-run-tee" data-category="running men women" role="listitem">
       <div class="pcard-img">
-        <img class="pcard-photo" src="assets/images/tee-white-front-model.png" alt="Long Run Tee — Merino">
+        <div class="pcard-svg-slot" aria-hidden="true"></div>
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -2115,7 +2115,7 @@ footer {
     <!-- Women's Merino 3" Short -->
     <article class="pcard" data-product="merino-short-womens" data-category="running women" role="listitem">
       <div class="pcard-img">
-        <img class="pcard-photo" src="assets/images/shorts-womens-front-model.png" alt="Women's Performance Short 3&quot;">
+        <img class="pcard-photo" src="assets/images/shorts-womens-front-close.png" alt="Women's Performance Short 3&quot;">
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
@@ -2553,16 +2553,22 @@ function openDrawer(productKey) {
     </div>
   `).join('');
 
-  // Product image
+  // Product image (wool tee uses SVG placeholder until photo available)
   const drawerImgMap = {
     'cotton-long-run-tee':  'assets/images/tee-white-front-model.png',
-    'wool-long-run-tee':    'assets/images/tee-white-front-model.png',
     'merino-short-mens':    'assets/images/shorts-mens-front-model.png',
-    'merino-short-womens':  'assets/images/shorts-womens-front-model.png',
+    'merino-short-womens':  'assets/images/shorts-womens-front-close.png',
   };
   const drawerPhoto = document.getElementById('drawer-photo');
-  drawerPhoto.src = drawerImgMap[productKey] || '';
-  drawerPhoto.alt = p.name;
+  if (drawerImgMap[productKey]) {
+    drawerPhoto.src = drawerImgMap[productKey];
+    drawerPhoto.alt = p.name;
+    drawerPhoto.style.display = '';
+    document.getElementById('drawer-img-container').innerHTML = '';
+    document.getElementById('drawer-img-container').appendChild(drawerPhoto);
+  } else {
+    document.getElementById('drawer-img-container').innerHTML = getProductSVG(productKey, 'large');
+  }
 
   // Pre-order vs Add to Cart
   const atcBtn = document.querySelector('.size-atc-row .drawer-header-atc');
@@ -2659,7 +2665,12 @@ function getProductSVG(key, size) {
   return svgs[key] || svgs['wool-long-run-tee'];
 }
 
-// (product card images now use real photos)
+// Inject SVG placeholder for wool tee card (no photo yet)
+document.querySelectorAll('.pcard[data-product="wool-long-run-tee"]').forEach(card => {
+  const container = card.querySelector('.pcard-svg-slot');
+  if (container) container.innerHTML = getProductSVG('wool-long-run-tee', 'card');
+});
+// (other product card images use real photos)
 
 /* ─── CONDITIONS WIDGET ─── */
 const SCALE_MIN_C = 0;
