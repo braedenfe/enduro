@@ -881,6 +881,13 @@ input, textarea { font-family: inherit; }
   display: block;
 }
 .pcard:hover .pcard-img svg { transform: scale(1.04); }
+.pcard-img img.pcard-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease);
+}
+.pcard:hover .pcard-img img.pcard-photo { transform: scale(1.04); }
 .pcard-badge {
   position: absolute;
   top: 12px; left: 12px;
@@ -1479,11 +1486,16 @@ footer {
 }
 .drawer-header-atc:hover { background: var(--brand-light); }
 .drawer-img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
   position: relative;
+  background: #F5F3EE;
 }
-.drawer-img svg { width: 100%; height: 100%; }
+.drawer-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .drawer-body {
   padding: 28px 24px;
 }
@@ -1890,7 +1902,7 @@ footer {
     <span id="drawer-title" style="font-family:var(--sans);font-size:0.78rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim)"></span>
     <button class="drawer-close" id="drawer-close" aria-label="Close">✕</button>
   </div>
-  <div class="drawer-img" id="drawer-svg-container"></div>
+  <div class="drawer-img" id="drawer-img-container"><img id="drawer-photo" src="" alt=""></div>
   <div class="drawer-body">
     <div class="drawer-material" id="drawer-material"></div>
     <h2 class="drawer-name" id="drawer-name"></h2>
@@ -2029,7 +2041,7 @@ footer {
     <!-- Cotton Long Run Tee -->
     <article class="pcard" data-product="cotton-long-run-tee" data-category="running gym men women" role="listitem">
       <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
+        <img class="pcard-photo" src="assets/images/tee-white-front-model.png" alt="Long Run Tee">
         <span class="pcard-badge badge-new">New</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -2054,7 +2066,7 @@ footer {
     <!-- Wool Long Run Tee -->
     <article class="pcard" data-product="wool-long-run-tee" data-category="running men women" role="listitem">
       <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
+        <img class="pcard-photo" src="assets/images/tee-white-front-model.png" alt="Long Run Tee — Merino">
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -2079,7 +2091,7 @@ footer {
     <!-- Men's Merino 5" Short -->
     <article class="pcard" data-product="merino-short-mens" data-category="running men" role="listitem">
       <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
+        <img class="pcard-photo" src="assets/images/shorts-mens-front-model.png" alt="Men's Performance Short 5&quot;">
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Men's</span>
         <div class="pcard-quick">
@@ -2103,7 +2115,7 @@ footer {
     <!-- Women's Merino 3" Short -->
     <article class="pcard" data-product="merino-short-womens" data-category="running women" role="listitem">
       <div class="pcard-img">
-        <div class="pcard-svg-slot" aria-hidden="true"></div>
+        <img class="pcard-photo" src="assets/images/shorts-womens-front-model.png" alt="Women's Performance Short 3&quot;">
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
@@ -2541,8 +2553,16 @@ function openDrawer(productKey) {
     </div>
   `).join('');
 
-  // SVG visual
-  document.getElementById('drawer-svg-container').innerHTML = getProductSVG(productKey, 'large');
+  // Product image
+  const drawerImgMap = {
+    'cotton-long-run-tee':  'assets/images/tee-white-front-model.png',
+    'wool-long-run-tee':    'assets/images/tee-white-front-model.png',
+    'merino-short-mens':    'assets/images/shorts-mens-front-model.png',
+    'merino-short-womens':  'assets/images/shorts-womens-front-model.png',
+  };
+  const drawerPhoto = document.getElementById('drawer-photo');
+  drawerPhoto.src = drawerImgMap[productKey] || '';
+  drawerPhoto.alt = p.name;
 
   // Pre-order vs Add to Cart
   const atcBtn = document.querySelector('.size-atc-row .drawer-header-atc');
@@ -2639,12 +2659,7 @@ function getProductSVG(key, size) {
   return svgs[key] || svgs['wool-long-run-tee'];
 }
 
-// Inject SVGs into product cards on load
-document.querySelectorAll('.pcard[data-product]').forEach(card => {
-  const key = card.dataset.product;
-  const container = card.querySelector('.pcard-svg-slot');
-  if (container) container.innerHTML = getProductSVG(key, 'card');
-});
+// (product card images now use real photos)
 
 /* ─── CONDITIONS WIDGET ─── */
 const SCALE_MIN_C = 0;
