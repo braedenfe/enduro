@@ -2045,7 +2045,7 @@ footer {
   <div class="product-grid" role="list">
 
     <!-- Cotton Long Run Tee -->
-    <article class="pcard" data-product="cotton-long-run-tee" data-category="running gym men women" role="listitem">
+    <article class="pcard" data-product="cotton-long-run-tee" data-category="running gym men women" data-order-default="1" data-order-women="2" role="listitem">
       <div class="pcard-img">
         <img class="pcard-photo" src="assets/images/tee-white-front-model.png" alt="Long Run Tee">
         <span class="pcard-badge badge-new">New</span>
@@ -2070,7 +2070,7 @@ footer {
     </article>
 
     <!-- Wool Long Run Tee -->
-    <article class="pcard" data-product="wool-long-run-tee" data-category="running men women" role="listitem">
+    <article class="pcard" data-product="wool-long-run-tee" data-category="running men women" data-order-default="2" data-order-women="3" role="listitem">
       <div class="pcard-img">
         <div class="pcard-svg-slot" aria-hidden="true"></div>
         <span class="pcard-badge badge-new">Pre-order</span>
@@ -2095,7 +2095,7 @@ footer {
     </article>
 
     <!-- Men's Merino 5" Short -->
-    <article class="pcard" data-product="merino-short-mens" data-category="running men" role="listitem">
+    <article class="pcard" data-product="merino-short-mens" data-category="running men" data-order-default="3" data-order-women="4" role="listitem">
       <div class="pcard-img">
         <img class="pcard-photo" src="assets/images/shorts-mens-front-model.png" alt="Men's Performance Short 5&quot;">
         <span class="pcard-badge badge-new">Pre-order</span>
@@ -2119,7 +2119,7 @@ footer {
     </article>
 
     <!-- Women's Merino 3" Short -->
-    <article class="pcard" data-product="merino-short-womens" data-category="running women" role="listitem">
+    <article class="pcard" data-product="merino-short-womens" data-category="running women" data-order-default="4" data-order-women="1" role="listitem">
       <div class="pcard-img">
         <img class="pcard-photo" src="assets/images/shorts-womens-front-close.png" alt="Women's Performance Short 3&quot;">
         <span class="pcard-badge badge-new">Pre-order</span>
@@ -2440,17 +2440,15 @@ filterTabs.forEach(tab => {
       card.style.display = (filter === 'all' || card.dataset.category?.includes(filter)) ? '' : 'none';
     });
 
-    // Reorder cards
-    const womenOrder = ['merino-short-womens', 'cotton-long-run-tee', 'wool-long-run-tee'];
-    const defaultOrder = ['cotton-long-run-tee', 'wool-long-run-tee', 'merino-short-mens', 'merino-short-womens'];
-    const order = filter === 'women' ? womenOrder : defaultOrder;
-    order.forEach(key => {
-      const card = grid.querySelector('[data-product="' + key + '"]');
-      if (card) grid.appendChild(card);
+    // Sort cards by data-order attribute for this filter
+    const orderAttr = filter === 'women' ? 'orderWomen' : 'orderDefault';
+    const sorted = Array.from(allCards).sort((a, b) => {
+      return parseInt(a.dataset[orderAttr] || 99) - parseInt(b.dataset[orderAttr] || 99);
     });
+    sorted.forEach(card => grid.appendChild(card));
 
     // Swap cotton tee image
-    const teeImg = grid ? grid.querySelector('[data-product="cotton-long-run-tee"] .pcard-photo') : null;
+    const teeImg = grid.querySelector('[data-product="cotton-long-run-tee"] .pcard-photo');
     if (teeImg) {
       teeImg.src = filter === 'women'
         ? 'assets/images/tee-white-front-model-womens.jpg'
