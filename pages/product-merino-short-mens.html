@@ -120,6 +120,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   min-height: 100vh;
   align-items: start;
 }
+.product-gallery-col {
+  display: flex;
+  flex-direction: column;
+  line-height: 0;
+  font-size: 0;
+}
 
 /* ─── GALLERY ─── */
 .product-hero-img {
@@ -150,8 +156,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .gallery-strip {
   display: flex;
-  background: #ECEAE6;
-  margin-top: 0;
+  background: #F5F3EE;
+  margin-top: -1px;
+  gap: 1px;
 }
 .gallery-thumb {
   flex: 1;
@@ -941,6 +948,7 @@ footer { background: var(--brand-dark); color: rgba(242,244,240,0.8); }
 <div class="product-page">
 
   <!-- HERO IMAGE -->
+  <div class="product-gallery-col">
   <div class="product-hero-img" id="product-gallery">
     <img id="gallery-main-img" src="../assets/images/shorts-mens-front-model.png" alt="Front" style="width:100%;height:100%;object-fit:cover;display:block;">
   </div>
@@ -950,6 +958,7 @@ footer { background: var(--brand-dark); color: rgba(242,244,240,0.8); }
     <button class="gallery-thumb" onclick="setGalleryImg('../assets/images/shorts-mens-detail.png', this)" aria-label="Detail"><img src="../assets/images/shorts-mens-detail.png" alt="Detail"></button>
     <button class="gallery-thumb" onclick="setGalleryImg('../assets/images/shorts-mens-front-flat.png', this)" aria-label="Flat"><img src="../assets/images/shorts-mens-front-flat.png" alt="Flat"></button>
   </div>
+  </div><!-- /product-gallery-col -->
   <script>
     function setGalleryImg(src, btn) {
       document.getElementById('gallery-main-img').src = src;
