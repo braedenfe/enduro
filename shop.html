@@ -2433,7 +2433,7 @@ filterTabs.forEach(tab => {
     filterTabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     const filter = tab.dataset.filter;
-    const grid = document.querySelector('.products-grid');
+    const grid = document.querySelector('.product-grid');
 
     // Show/hide cards
     allCards.forEach(card => {
@@ -2450,7 +2450,7 @@ filterTabs.forEach(tab => {
     });
 
     // Swap cotton tee image
-    const teeImg = grid.querySelector('[data-product="cotton-long-run-tee"] .pcard-photo');
+    const teeImg = grid ? grid.querySelector('[data-product="cotton-long-run-tee"] .pcard-photo') : null;
     if (teeImg) {
       teeImg.src = filter === 'women'
         ? 'assets/images/tee-white-front-model-womens.jpg'
