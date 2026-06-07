@@ -2433,6 +2433,8 @@ filterTabs.forEach(tab => {
     filterTabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     const filter = tab.dataset.filter;
+    const grid = document.querySelector('.products-grid');
+
     allCards.forEach(card => {
       if (filter === 'all' || card.dataset.category?.includes(filter)) {
         card.style.display = '';
@@ -2440,6 +2442,30 @@ filterTabs.forEach(tab => {
         card.style.display = 'none';
       }
     });
+
+    // Women filter: put shorts first, swap cotton tee to female model
+    if (filter === 'women') {
+      const shortsCard = document.querySelector('.pcard[data-product="merino-short-womens"]');
+      if (shortsCard) grid.prepend(shortsCard);
+      // Swap cotton tee card image to female front model
+      const teeCard = document.querySelector('.pcard[data-product="cotton-long-run-tee"]');
+      if (teeCard) {
+        const img = teeCard.querySelector('.pcard-photo');
+        if (img) img.src = 'assets/images/tee-white-front-model-womens.jpg';
+      }
+    } else {
+      // Restore original card order and male model on tee
+      const order = ['cotton-long-run-tee','wool-long-run-tee','merino-short-mens','merino-short-womens'];
+      order.reverse().forEach(key => {
+        const card = document.querySelector(`.pcard[data-product="${key}"]`);
+        if (card) grid.prepend(card);
+      });
+      const teeCard = document.querySelector('.pcard[data-product="cotton-long-run-tee"]');
+      if (teeCard) {
+        const img = teeCard.querySelector('.pcard-photo');
+        if (img) img.src = 'assets/images/tee-white-front-model.png';
+      }
+    }
   });
 });
 
