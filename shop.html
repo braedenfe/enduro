@@ -2435,36 +2435,26 @@ filterTabs.forEach(tab => {
     const filter = tab.dataset.filter;
     const grid = document.querySelector('.products-grid');
 
+    // Show/hide cards
     allCards.forEach(card => {
-      if (filter === 'all' || card.dataset.category?.includes(filter)) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
+      card.style.display = (filter === 'all' || card.dataset.category?.includes(filter)) ? '' : 'none';
     });
 
-    // Women filter: put shorts first, swap cotton tee to female model
-    if (filter === 'women') {
-      const shortsCard = document.querySelector('.pcard[data-product="merino-short-womens"]');
-      if (shortsCard) grid.prepend(shortsCard);
-      // Swap cotton tee card image to female front model
-      const teeCard = document.querySelector('.pcard[data-product="cotton-long-run-tee"]');
-      if (teeCard) {
-        const img = teeCard.querySelector('.pcard-photo');
-        if (img) img.src = 'assets/images/tee-white-front-model-womens.jpg';
-      }
-    } else {
-      // Restore original card order and male model on tee
-      const order = ['cotton-long-run-tee','wool-long-run-tee','merino-short-mens','merino-short-womens'];
-      order.reverse().forEach(key => {
-        const card = document.querySelector(`.pcard[data-product="${key}"]`);
-        if (card) grid.prepend(card);
-      });
-      const teeCard = document.querySelector('.pcard[data-product="cotton-long-run-tee"]');
-      if (teeCard) {
-        const img = teeCard.querySelector('.pcard-photo');
-        if (img) img.src = 'assets/images/tee-white-front-model.png';
-      }
+    // Reorder cards
+    const womenOrder = ['merino-short-womens', 'cotton-long-run-tee', 'wool-long-run-tee'];
+    const defaultOrder = ['cotton-long-run-tee', 'wool-long-run-tee', 'merino-short-mens', 'merino-short-womens'];
+    const order = filter === 'women' ? womenOrder : defaultOrder;
+    order.forEach(key => {
+      const card = grid.querySelector('[data-product="' + key + '"]');
+      if (card) grid.appendChild(card);
+    });
+
+    // Swap cotton tee image
+    const teeImg = grid.querySelector('[data-product="cotton-long-run-tee"] .pcard-photo');
+    if (teeImg) {
+      teeImg.src = filter === 'women'
+        ? 'assets/images/tee-white-front-model-womens.jpg'
+        : 'assets/images/tee-white-front-model.png';
     }
   });
 });
