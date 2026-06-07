@@ -1487,7 +1487,7 @@ footer {
 .drawer-header-atc:hover { background: var(--brand-light); }
 .drawer-img {
   width: 100%;
-  height: 52vh;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   position: relative;
   display: block;
@@ -1498,7 +1498,7 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
   margin: 0;
   padding: 0;
 }
@@ -2561,8 +2561,8 @@ function openDrawer(productKey) {
 
   // Product image (wool tee uses SVG placeholder until photo available)
   const drawerImgMap = {
-    'cotton-long-run-tee':  'assets/images/tee-white-front-model.png',
-    'merino-short-mens':    'assets/images/shorts-mens-front-model.png',
+    'cotton-long-run-tee':  'assets/images/tee-white-front-flat.png',
+    'merino-short-mens':    'assets/images/shorts-mens-front-flat.png',
     'merino-short-womens':  'assets/images/shorts-womens-front-close.png',
   };
   const drawerPhoto = document.getElementById('drawer-photo');
