@@ -903,28 +903,49 @@ footer * { box-sizing: border-box; }
 }
 
 
-.gallery-thumb-strip {
-  display: flex;
-  gap: 4px;
-  border-bottom: 1px solid rgba(26,28,27,0.08);
-  background: #FAFAF8;
-  padding: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.gallery-thumb-strip::-webkit-scrollbar { display: none; }
-.gallery-thumb-strip button {
-  flex-shrink: 0;
-  width: 68px; height: 68px;
-  padding: 2px;
-  border: 1.5px solid transparent;
-  background: #fff;
-  cursor: pointer;
+
+
+
+/* ++ Gallery ++ */
+.gallery-wrap { display: flex; flex-direction: column; }
+.gallery-main {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  transition: border-color 0.2s;
+  background: #F5F3EE;
 }
-.gallery-thumb-strip button.active { border-color: var(--brand, #1F3D35); }
-.gallery-thumb-strip button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-main img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.gallery-strip {
+  display: flex;
+  gap: 2px;
+  background: #F0EDE8;
+}
+.gallery-strip button {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: none;
+  background: #ECE8DF;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.gallery-strip button.active { opacity: 1; }
+.gallery-strip button.active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--brand, #1F3D35);
+  pointer-events: none;
+}
+.gallery-strip button img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 </style>
 </head>
@@ -990,10 +1011,17 @@ footer * { box-sizing: border-box; }
 <div class="product-page">
 
   <!-- HERO IMAGE -->
-  <div class="product-hero-img" id="product-gallery">
-    <img id="gallery-main-img" src="../assets/images/shorts-womens-front-model.png" alt="Women's Performance Short 3" - Front" style="width:100%;height:100%;object-fit:cover;display:block;">
+  <div class="gallery-wrap">
+    <div class="gallery-main">
+      <img id="gallery-main-img" src="../assets/images/shorts-womens-front-close.png" alt="">
+    </div>
+    <div class="gallery-strip">
+      <button class="active"><img src="../assets/images/shorts-womens-front-close.png" alt=""></button>
+      <button><img src="../assets/images/shorts-womens-back-close.png" alt=""></button>
+      <button><img src="../assets/images/shorts-womens-front-model.png" alt=""></button>
+      <button><img src="../assets/images/shorts-womens-back-model.jpg" alt=""></button>
+    </div>
   </div>
-  <script>function setGalleryImg(src){document.getElementById('gallery-main-img').src=src;}</script>
 
   <!-- PURCHASE PANEL -->
   <div class="product-panel">
@@ -1559,6 +1587,31 @@ document.querySelectorAll('.facc-head').forEach(function(btn) {
     if (!isOpen) group.classList.add('open');
   });
 });
+
+/* ++ Gallery swipe + thumbs ++ */
+(function() {
+  var imgs = [];
+  var cur = 0;
+  var mainImg = document.getElementById('gallery-main-img');
+  var thumbBtns = Array.from(document.querySelectorAll('.gallery-strip button'));
+  if (!mainImg || !thumbBtns.length) return;
+  thumbBtns.forEach(function(btn) { imgs.push(btn.querySelector('img').src); });
+  function goTo(i) {
+    cur = (i + imgs.length) % imgs.length;
+    mainImg.src = imgs[cur];
+    thumbBtns.forEach(function(b, j) { b.classList.toggle('active', j === cur); });
+  }
+  thumbBtns.forEach(function(btn, i) { btn.addEventListener('click', function() { goTo(i); }); });
+  var startX = 0;
+  var galleryMain = document.querySelector('.gallery-main');
+  if (galleryMain) {
+    galleryMain.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+    galleryMain.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(cur + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  }
+})();
 </script>
 </body>
 </html>
