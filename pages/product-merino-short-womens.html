@@ -332,7 +332,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   gap: 6px;
   flex-wrap: wrap;
   padding: 20px 0;
-  border-top: 1px solid var(--line);
+  border-top: none;
   border-bottom: 1px solid var(--line);
   margin-bottom: 24px;
 }
@@ -563,6 +563,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .related-card { background: #fff; border: 1px solid rgba(26,28,27,0.07); overflow: hidden; text-decoration: none; color: inherit; display: block; transition: transform 0.3s var(--ease); }
 .related-card:hover { transform: translateY(-2px); }
 .related-img { aspect-ratio: 3/4; overflow: hidden; position: relative; }
+.related-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .related-img svg { width: 100%; height: 100%; transition: transform 0.8s var(--ease); }
 .related-card:hover .related-img svg { transform: scale(1.04); }
 .related-info { padding: 16px; }
@@ -786,7 +787,7 @@ footer { background: var(--brand-dark); color: rgba(242,244,240,0.8); }
 /* ─── RESPONSIVE ─── */
 @media (max-width: 960px) {
   .product-page { grid-template-columns: 1fr; }
-  .product-panel { position: static; max-height: none; border-left: none; border-top: 1px solid var(--line); }
+  .product-panel { position: static; max-height: none; border-left: none; border-top: none; }
   .breadcrumb { padding: 12px 24px; }
   .panel-inner { padding: 32px 24px 40px; }
   .editorial-strip { grid-template-columns: 1fr; }
@@ -928,7 +929,7 @@ footer * { box-sizing: border-box; }
   justify-content: center;
   gap: 6px;
   padding: 10px 0 12px;
-  background: #FFFFFF;
+  background: #FAFAF8;
 }
 .gallery-dot {
   width: 5px; height: 5px;
@@ -1362,18 +1363,43 @@ footer * { box-sizing: border-box; }
   </div>
   <div class="related-grid">
 
-    <a href="product-wool-long-run-tee.html" class="related-card">
-      <div class="related-img">
-        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <rect width="300" height="400" fill="#1F3D35"/>
-          <g stroke="rgba(168,192,174,0.1)" stroke-width="0.8" fill="none">
-            <line x1="75" y1="0" x2="75" y2="400"/><line x1="150" y1="0" x2="150" y2="400"/><line x1="225" y1="0" x2="225" y2="400"/>
-          </g>
-          <circle cx="150" cy="165" r="90" fill="rgba(46,90,79,0.4)"/>
-          <text x="50%" y="88%" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" font-weight="500" fill="rgba(168,192,174,0.3)" letter-spacing="3">MERINO · RUNNING</text>
-        </svg>
-        <span style="position:absolute;top:12px;left:12px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand-light);color:white">Pre-order</span>
+    <a href="product-cotton-long-run-tee.html" class="related-card">
+      <div class="related-img" style="position:relative;overflow:hidden;">
+        <img src="../assets/images/shorts-womens-front-model.png" alt="Long Run Tee" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:10px;left:10px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand);color:white">New</span>
       </div>
+      <div class="related-info">
+        <p class="related-material">Organic Cotton · Running & Gym</p>
+        <p class="related-name">Long Run Tee</p>
+        <p class="related-price">A$99</p>
+      </div>
+    </a>
+
+    <a href="product-merino-short-mens.html" class="related-card">
+      <div class="related-img" style="position:relative;overflow:hidden;">
+        <img src="../assets/images/shorts-mens-front-model.png" alt="Long Run Short 5" — Men's" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:10px;left:10px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand);color:white">Pre-order</span>
+      </div>
+      <div class="related-info">
+        <p class="related-material">Merino Wool · Running · Men</p>
+        <p class="related-name">Long Run Short 5" — Men's</p>
+        <p class="related-price">A$149</p>
+      </div>
+    </a>
+
+    <a href="product-wool-long-run-tee.html" class="related-card">
+      <div class="related-img" style="position:relative;overflow:hidden;">
+<div style="width:100%;height:100%;background:#1F3D35;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:3rem;font-weight:300;color:rgba(242,244,240,0.2);">ø</span></div>
+        <span style="position:absolute;top:10px;left:10px;font-family:var(--sans);font-size:0.58rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:5px 10px;background:var(--brand);color:white">Pre-order</span>
+      </div>
+      <div class="related-info">
+        <p class="related-material">Merino Wool · Running</p>
+        <p class="related-name">Long Run Tee — Merino</p>
+        <p class="related-price">A$149</p>
+      </div>
+    </a>
+
+  </div>
       <div class="related-info">
         <p class="related-material">Merino Wool · Running</p>
         <p class="related-name">Long Run Tee — Merino</p>
