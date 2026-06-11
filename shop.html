@@ -289,14 +289,15 @@ input, textarea { font-family: inherit; }
   font-family: var(--sans);
   font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  color: white;
-  background: var(--brand);
-  border: 1px solid var(--brand);
-  padding: 8px 18px;
-  transition: background 0.25s;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink, #15201C);
+  background: transparent;
+  border: none;
+  padding: 0;
+  transition: opacity 0.2s;
 }
-.nav-cart-btn:hover { background: var(--brand-light); }
+.nav-cart-btn:hover { opacity: 0.65; }
 .nav-cart-btn .cart-count {
   display: inline-flex;
   align-items: center;
@@ -1479,7 +1480,8 @@ footer {
 }
 .drawer-header-atc:hover { background: var(--brand-light); }
 .drawer-img {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
+  max-height: 42vw;
   overflow: hidden;
   position: relative;
   background: #ECE8DF;
@@ -2764,9 +2766,9 @@ function openDrawer(productKey) {
 
   // Real images
   const drawerImages = {
-    'cotton-long-run-tee':   ['assets/images/tee-white-front-model.png','assets/images/tee-white-back-model.png','assets/images/tee-white-front-flat.png','assets/images/tee-white-back-flat.png'],
+    'cotton-long-run-tee':   ['assets/images/tee-white-front-flat.png','assets/images/tee-white-back-flat.png','assets/images/tee-white-front-model.png','assets/images/tee-white-back-model.png'],
     'wool-long-run-tee':     [],
-    'merino-short-mens':     ['assets/images/shorts-mens-front-model.png','assets/images/shorts-mens-back-model.png','assets/images/shorts-mens-detail.png','assets/images/shorts-mens-front-flat.png'],
+    'merino-short-mens':     ['assets/images/shorts-mens-front-flat.png','assets/images/shorts-mens-front-model.png','assets/images/shorts-mens-back-model.png','assets/images/shorts-mens-detail.png'],
     'merino-short-womens':   ['assets/images/shorts-womens-front-close.png','assets/images/shorts-womens-back-close.png','assets/images/shorts-womens-front-model.png','assets/images/shorts-womens-back-model.jpg'],
   };
   const imgs = drawerImages[productKey] || [];

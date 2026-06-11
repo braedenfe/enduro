@@ -669,6 +669,22 @@ input, textarea { font-family: inherit; }
   color: rgba(242,244,240,0.9);
   border-color: rgba(242,244,240,0.3);
 }
+
+.btn-hero-text {
+  background: transparent;
+  border: none;
+  color: #F2F4F0;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 0;
+  text-decoration: none;
+  opacity: 0.88;
+  transition: opacity 0.25s;
+}
+.btn-hero-text:hover { opacity: 1; }
+
 .hero-actions .btn-outline:hover {
   background: transparent;
   border-color: rgba(242,244,240,0.7);
@@ -1984,8 +2000,7 @@ footer * { box-sizing: border-box; }
 <!-- ═══ MOBILE MENU ═══ -->
 <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <nav>
-    <a href="#running">Running</a>
-    <a href="#gym">Gym</a>
+    <a href="shop.html">Shop</a>
     <a href="#materials">Materials</a>
     <a href="#why">About</a>
     <a href="#journal">Journal</a>
@@ -2008,8 +2023,6 @@ footer * { box-sizing: border-box; }
 
   <ul class="nav-center" role="list">
     <li><a href="shop.html">Shop</a></li>
-    <li><a href="#running">Running</a></li>
-    <li><a href="#gym">Gym</a></li>
     <li><a href="#materials">Materials</a></li>
     <li><a href="#why">About</a></li>
     <li><a href="#journal">Journal</a></li>
@@ -2045,8 +2058,8 @@ footer * { box-sizing: border-box; }
       No synthetics. No shortcuts. Designed for distance.
     </p>
     <div class="hero-actions">
-      <a href="shop.html?filter=running" class="btn btn-outline">Shop Running</a>
-      <a href="shop.html?filter=gym" class="btn btn-outline">Shop Gym</a>
+      <a href="shop.html?filter=running" class="btn btn-hero-text">Shop Running →</a>
+      <a href="shop.html?filter=gym" class="btn btn-hero-text">Shop Gym →</a>
     </div>
 
   </div>
@@ -2062,13 +2075,11 @@ footer * { box-sizing: border-box; }
 <div class="ticker-bar" aria-hidden="true">
   <div class="ticker-track">
     <span class="ticker-item">Free shipping AUS orders over A$150<span class="ticker-dot"></span></span>
-    <span class="ticker-item">New Arrivals — Summit Long Sleeve<span class="ticker-dot"></span></span>
-    <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
+        <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
     <span class="ticker-item">Merino · Bamboo · Hemp · Organic Cotton · Tencel<span class="ticker-dot"></span></span>
     <span class="ticker-item">30-Day Returns · Free Aus Shipping Over A$150<span class="ticker-dot"></span></span>
     <span class="ticker-item">Free shipping AUS orders over A$150<span class="ticker-dot"></span></span>
-    <span class="ticker-item">New Arrivals — Summit Long Sleeve<span class="ticker-dot"></span></span>
-    <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
+        <span class="ticker-item">100% Natural Fibres · Zero Synthetics<span class="ticker-dot"></span></span>
     <span class="ticker-item">Merino · Bamboo · Hemp · Organic Cotton · Tencel<span class="ticker-dot"></span></span>
     <span class="ticker-item">30-Day Returns · Free Aus Shipping Over A$150<span class="ticker-dot"></span></span>
   </div>
@@ -2432,109 +2443,55 @@ const drawer    = document.getElementById('product-drawer');
 const backdrop  = document.getElementById('drawer-backdrop');
 
 const products = {
-  'drift-tee': {
-    name: 'Drift Tee',
-    material: 'Merino Wool',
-    category: 'Running · Men',
-    price: 'A$149',
-    desc: 'Engineered from 18.5-micron merino for all-season running. Naturally thermoregulating — warm when you need it, cool when you push. Anti-odour for multi-day adventures.',
-    fit: 'True to size. Model is 183cm wearing size M.',
-    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
-    sizes: ['XS','S','M','L','XL'],
-    soldOut: [],
-    details: [
-      ['Fibre','100% 18.5μ Merino Wool'],
-      ['Weight','160gsm'],
-      ['Origin','Ethically sourced, Australian Merino'],
-      ['Certificate','ZQ Merino Certified'],
-    ]
-  },
-  'endure-half-tight': {
-    name: 'Endure Half Tight',
-    material: 'Bamboo-Merino Blend',
-    category: 'Gym · Running · Women',
-    price: 'A$139',
-    desc: 'A 7/8 length tight combining bamboo\'s silky softness with merino\'s moisture management. Four-way stretch, flatlock seaming, and a secure waistband pocket.',
-    fit: 'Compressive fit. Size down for performance fit.',
-    care: 'Machine wash cold. Do not tumble dry.',
-    sizes: ['XS','S','M','L','XL'],
-    soldOut: ['XS'],
-    details: [
-      ['Fibre','62% Bamboo, 38% Merino'],
-      ['Weight','200gsm'],
-      ['Inseam','58cm (size M)'],
-      ['Feature','Hidden waistband pocket'],
-    ]
-  },
-  'terra-run-short': {
-    name: 'Terra Run Short',
-    material: 'Hemp-Bamboo Blend',
-    category: 'Running · Men',
-    price: 'A$109',
-    desc: 'Trail-tested 4" short in our proprietary Hemp-Bamboo shell. UV-protective, quick-drying, and exceptionally durable. Built-in liner with secure zip pocket.',
-    fit: 'Relaxed through the hip. True to size.',
-    care: 'Machine wash cold. Hang dry.',
-    sizes: ['XS','S','M','L','XL','2XL'],
-    soldOut: ['2XL'],
-    details: [
-      ['Fibre','55% Hemp, 45% Bamboo'],
-      ['Length','4" inseam'],
-      ['Feature','Built-in liner, zip pocket'],
-      ['UV Rating','UPF 40+'],
-    ]
-  },
-  'summit-long-sleeve': {
-    name: 'Summit Long Sleeve',
-    material: '100% Merino',
-    category: 'Running · Men · Women',
-    price: 'A$189',
-    desc: 'Our most technical piece. 200-weight merino in a performance cut for cold-weather running and layering. Thumbhole cuffs, reflective detail, underarm gussets.',
-    fit: 'Athletic fit. Sized for layering over a base.',
-    care: 'Hand wash or wool cycle. Lay flat to dry.',
-    sizes: ['XS','S','M','L','XL'],
-    soldOut: [],
-    details: [
-      ['Fibre','100% 17.5μ Merino Wool'],
-      ['Weight','200gsm'],
-      ['Feature','Thumbholes, reflective logo'],
-      ['Certificate','GOTS Certified'],
-    ]
-  },
-  'root-crop': {
-    name: 'Root Crop',
+  'cotton-long-run-tee': {
+    name: 'Long Run Tee',
     material: 'Organic Cotton',
-    category: 'Gym · Women',
+    category: 'Running & Gym',
     price: 'A$99',
-    desc: 'A cropped training top in GOTS-certified organic cotton. Relaxed fit for studio work, four-way stretch for movement. Minimal branding, maximum versatility.',
-    fit: 'Relaxed cropped fit. True to size.',
+    desc: 'Organic ring-spun combed cotton and modal. Panel washed for a lived-in feel from day one. Relaxed fit, dropped shoulders, minimal branding.',
+    fit: 'Relaxed fit. True to size.',
     care: 'Machine wash cold. Tumble dry low.',
-    sizes: ['XS','S','M','L'],
+    sizes: ['S','M','L','XL'],
     soldOut: [],
-    details: [
-      ['Fibre','100% GOTS Organic Cotton'],
-      ['Weight','180gsm'],
-      ['Certificate','GOTS & OEKO-TEX'],
-      ['Feature','Four-way stretch'],
-    ]
+    details: [['Fibre','60% Organic Cotton, 40% Modal'],['Weight','155gsm'],['Certification','OEKO-TEX Standard 100'],['Print','Hand screen printed, Sydney']]
   },
-  'pace-sock': {
-    name: 'Pace Sock',
-    material: 'Merino-Hemp Blend',
-    category: 'Running · Gym',
-    price: 'A$28',
-    desc: 'A performance running sock in merino-hemp blend. Anatomically shaped left/right, targeted cushioning, seamless toe. Built to go the distance.',
-    fit: 'Standard sizing: S (35–38), M (39–42), L (43–46).',
-    care: 'Machine wash cold. Do not iron.',
-    sizes: ['S','M','L'],
+  'merino-short-mens': {
+    name: 'Long Run Short 5"',
+    material: 'Knitted Merino',
+    category: 'Running',
+    price: 'A$149',
+    desc: 'Ultra-fine knitted merino with a 5" inseam. Zip side pocket and zippered rear waistband pocket. Naturally temperature regulating and odour resistant.',
+    fit: 'Performance fit. True to size.',
+    care: 'Machine wash wool cycle. Lay flat to dry.',
+    sizes: ['S','M','L','XL'],
     soldOut: [],
-    details: [
-      ['Fibre','65% Merino, 35% Hemp'],
-      ['Height','Crew (16cm)'],
-      ['Feature','Left/right specific, seamless toe'],
-      ['Sold as','Single pair'],
-    ]
+    details: [['Fibre','17–18.5µ Mulesing-free Merino'],['Inseam','5"'],['Pockets','Zip side + rear waistband']]
   },
-};
+  'merino-short-womens': {
+    name: 'Long Run Short 3"',
+    material: 'Knitted Merino',
+    category: 'Running',
+    price: 'A$129',
+    desc: 'Ultra-fine knitted merino with a 3" inseam. Zippered rear waistband pocket. Naturally temperature regulating and odour resistant.',
+    fit: 'Performance fit. True to size.',
+    care: 'Machine wash wool cycle. Lay flat to dry.',
+    sizes: ['XS','S','M','L','XL'],
+    soldOut: [],
+    details: [['Fibre','17–18.5µ Mulesing-free Merino'],['Inseam','3"'],['Pocket','Rear waistband zip']]
+  },
+  'wool-long-run-tee': {
+    name: 'Long Run Tee — Merino',
+    material: 'Supima Cotton & Merino',
+    category: 'Running & Gym',
+    price: 'A$149',
+    desc: 'A premium blend of Supima cotton and extra-fine merino. Self-fabric collar, machine washable. Coming Q3 2026.',
+    fit: 'Relaxed fit. True to size.',
+    care: 'Machine wash wool cycle. Lay flat to dry.',
+    sizes: ['S','M','L','XL'],
+    soldOut: [],
+    details: [['Fibre','80% Supima Cotton, 20% Extra Fine Merino'],['Weight','200gsm'],['Collar','Self-fabric (not ribbed)']]
+  }
+};;
 
 function openDrawer(productKey) {
   const p = products[productKey];
@@ -2770,19 +2727,13 @@ const searchResults = document.getElementById('search-results');
 const searchClose   = document.getElementById('search-close');
 
 const searchData = [
-  { label: 'Drift Tee', sub: 'Merino Wool · Running · Men · A$149', href: '#running' },
-  { label: 'Endure Half Tight', sub: 'Bamboo-Merino · Gym & Running · Women · A$139', href: '#gym' },
-  { label: 'Terra Run Short', sub: 'Hemp-Bamboo · Running · Men · A$109', href: '#running' },
-  { label: 'Summit Long Sleeve', sub: 'Merino Wool · Running · A$159', href: '#running' },
-  { label: 'Root Crop Top', sub: 'Organic Cotton · Gym · Women · A$99', href: '#gym' },
-  { label: 'Pace Sock', sub: 'Merino-Hemp · Running & Gym · A$29', href: '#running' },
+  { label: 'Long Run Tee', sub: 'Organic Cotton · Running & Gym · A$99', href: 'pages/product-cotton-long-run-tee.html' },
+  { label: 'Long Run Short 5"', sub: 'Knitted Merino · Running · Men · A$149', href: 'pages/product-merino-short-mens.html' },
+  { label: 'Long Run Short 3"', sub: 'Knitted Merino · Running · Women · A$129', href: 'pages/product-merino-short-womens.html' },
+  { label: 'Long Run Tee — Merino', sub: 'Supima Cotton & Merino · Running & Gym · A$149', href: 'pages/product-wool-long-run-tee.html' },
   { label: 'Merino Wool', sub: 'Natural fibre · thermoregulating · anti-odour', href: '#materials' },
-  { label: 'Bamboo', sub: 'Natural fibre · silky soft · moisture wicking', href: '#materials' },
-  { label: 'Hemp', sub: 'Natural fibre · UV protective · durable', href: '#materials' },
   { label: 'Organic Cotton', sub: 'Natural fibre · breathable · pesticide-free', href: '#materials' },
   { label: 'Shop All Products', sub: 'Browse the full enduro collection', href: 'shop.html' },
-  { label: 'About enduro', sub: 'Why natural fibres?', href: '#why' },
-  { label: 'Journal', sub: 'Stories, tips and trail notes', href: '#journal' },
 ];
 
 function runSearch(query) {
