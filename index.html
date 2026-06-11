@@ -1779,6 +1779,89 @@ footer {
   .bridge-label-row { padding: 12px 20px; }
 }
 
+
+/* ─── FOOTER: accordion rebuild ─── */
+footer { background: #0E1E1A; color: #F2F4F0; padding: 0; }
+footer * { box-sizing: border-box; }
+.footer-wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,4vw,56px);
+}
+/* accordion sections */
+.footer-sections { border-top: 1px solid rgba(242,244,240,0.1); }
+.facc-group { border-bottom: 1px solid rgba(242,244,240,0.08); }
+.facc-head {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 19px 0; background: none; border: none; cursor: pointer;
+  font-family: var(--sans, 'DM Sans', sans-serif);
+  font-size: 0.66rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(242,244,240,0.5); text-align: left;
+}
+.facc-toggle {
+  font-size: 1.3rem; font-weight: 200; line-height: 1;
+  color: rgba(242,244,240,0.4);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); flex-shrink: 0;
+}
+.facc-group.open .facc-toggle { transform: rotate(45deg); color: rgba(242,244,240,0.7); }
+.facc-body {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.facc-group.open .facc-body { grid-template-rows: 1fr; }
+.facc-inner { overflow: hidden; }
+.facc-inner a {
+  display: block; padding: 9px 0;
+  font-size: 1.05rem; font-weight: 300;
+  color: rgba(242,244,240,0.7); letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+.facc-inner a:hover { color: #F2F4F0; }
+.facc-group.open .facc-inner { padding-bottom: 18px; }
+/* brand strip */
+.footer-brand-strip {
+  padding: clamp(40px,6vw,56px) 0 clamp(28px,4vw,40px);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 18px; text-align: center;
+  border-top: 1px solid rgba(242,244,240,0.08);
+  margin-top: 4px;
+}
+.footer-statement {
+  font-size: 0.88rem; font-weight: 300;
+  color: rgba(242,244,240,0.4); letter-spacing: 0.02em;
+}
+.footer-strip-links { display: flex; gap: 24px; }
+.footer-strip-links a {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(242,244,240,0.55); border-bottom: 1px solid rgba(242,244,240,0.18);
+  padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+}
+.footer-strip-links a:hover { color: #F2F4F0; border-color: rgba(242,244,240,0.5); }
+.footer-copy-new {
+  font-size: 0.65rem; color: rgba(242,244,240,0.25); letter-spacing: 0.08em;
+}
+@media (min-width: 768px) {
+  .footer-sections {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 0 64px; border-top: none;
+    padding: clamp(56px,8vw,96px) 0 clamp(40px,5vw,64px);
+  }
+  .facc-group { border-bottom: none; }
+  .facc-head {
+    pointer-events: none; cursor: default;
+    padding: 0 0 14px; margin-bottom: 4px;
+    border-bottom: 1px solid rgba(242,244,240,0.1);
+  }
+  .facc-toggle { display: none; }
+  .facc-body { grid-template-rows: 1fr !important; }
+  .facc-inner { padding-bottom: 0 !important; }
+  .facc-inner a { font-size: 0.9rem; padding: 7px 0; }
+  .footer-brand-strip {
+    flex-direction: row; justify-content: space-between; align-items: center;
+    text-align: left; padding-top: 28px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2158,63 +2241,46 @@ footer {
 
 <!-- ═══ FOOTER ═══ -->
 <footer role="contentinfo">
-  <div class="footer-top">
-    <div>
-      <span class="footer-brand-name">enduro</span>
-      <p class="footer-tagline">Natural fibre running and gym wear. Built for the long run.</p>
-      <div class="footer-socials" aria-label="Social media">
-        <a href="https://instagram.com/enduro.au" class="footer-social" aria-label="Instagram">Instagram</a>
-        <a href="#" class="footer-social" aria-label="Strava">Strava</a>
-        <a href="#" class="footer-social" aria-label="TikTok">TikTok</a>
+  <div class="footer-wrap">
+    <div class="footer-sections">
+
+      <div class="facc-group">
+        <button class="facc-head">Shop <span class="facc-toggle">+</span></button>
+        <div class="facc-body"><div class="facc-inner">
+          <a href="shop.html?filter=running">Running</a>
+          <a href="shop.html?filter=gym">Training</a>
+          <a href="shop.html">New Arrivals</a>
+        </div></div>
       </div>
+
+      <div class="facc-group">
+        <button class="facc-head">About <span class="facc-toggle">+</span></button>
+        <div class="facc-body"><div class="facc-inner">
+          <a href="#manifesto">Our Story</a>
+          <a href="#materials">Materials</a>
+          <a href="#">Journal</a>
+        </div></div>
+      </div>
+
+      <div class="facc-group">
+        <button class="facc-head">Support <span class="facc-toggle">+</span></button>
+        <div class="facc-body"><div class="facc-inner">
+          <a href="#">Sizing</a>
+          <a href="#">Shipping &amp; Returns</a>
+          <a href="#">Contact</a>
+        </div></div>
+      </div>
+
     </div>
 
-    <nav class="footer-col" aria-label="Shop links">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#">Running Collection</a></li>
-        <li><a href="#">Gym Collection</a></li>
-        <li><a href="#">Men's</a></li>
-        <li><a href="#">Women's</a></li>
-        <li><a href="#">New Arrivals</a></li>
-        <li><a href="#">Sale</a></li>
-      </ul>
-    </nav>
-
-    <nav class="footer-col" aria-label="Information links">
-      <h4>Info</h4>
-      <ul>
-        <li><a href="#">About enduro</a></li>
-        <li><a href="#">Our Materials</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">The Journal</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
-      </ul>
-    </nav>
-
-    <nav class="footer-col" aria-label="Customer service links">
-      <h4>Help</h4>
-      <ul>
-        <li><a href="#">Sizing Guide</a></li>
-        <li><a href="#">Shipping — AUS & Intl</a></li>
-        <li><a href="#">Returns & Exchanges</a></li>
-        <li><a href="#">Care Instructions</a></li>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Contact Us</a></li>
-      </ul>
-    </nav>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-copy">
-      © 2026 enduro Active Pty Ltd · ABN XX XXX XXX XXX · All rights reserved
-    </p>
-    <nav class="footer-legal" aria-label="Legal links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Use</a>
-      <a href="#">Cookie Policy</a>
-    </nav>
+    <div class="footer-brand-strip">
+      <p class="footer-statement">Natural performance apparel for the long run.</p>
+      <div class="footer-strip-links">
+        <a href="https://instagram.com/enduro.au">Instagram</a>
+        <a href="#email-capture">Newsletter</a>
+      </div>
+      <p class="footer-copy-new">© 2026 enduro</p>
+    </div>
   </div>
 </footer>
 
@@ -2702,6 +2768,16 @@ searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) c
 searchInput.addEventListener('input', () => runSearch(searchInput.value));
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch(); });
 
+
+/* ─── FOOTER ACCORDION ─── */
+document.querySelectorAll('.facc-head').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var group = btn.closest('.facc-group');
+    var isOpen = group.classList.contains('open');
+    document.querySelectorAll('.facc-group').forEach(function(g) { g.classList.remove('open'); });
+    if (!isOpen) group.classList.add('open');
+  });
+});
 </script>
 </body>
 </html>
