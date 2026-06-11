@@ -789,7 +789,7 @@ footer { background: var(--brand-dark); color: rgba(242,244,240,0.8); }
   .product-page { grid-template-columns: 1fr; }
   .product-panel { position: static; max-height: none; border-left: none; border-top: none; }
   .breadcrumb { padding: 12px 24px; }
-  .panel-inner { padding: 32px 24px 40px; }
+  .panel-inner { padding: 12px 24px 40px; }
   .editorial-strip { grid-template-columns: 1fr; }
   .editorial-copy, .editorial-copy.right-img { border-left: none; border-right: none; border-top: 1px solid var(--line); }
   .related-grid { grid-template-columns: repeat(2, 1fr); }
@@ -950,6 +950,31 @@ footer * { box-sizing: border-box; }
   .product-panel { min-height: 0 !important; }
 }
 
+
+/* ++ Breadcrumb overlay on gallery ++ */
+.breadcrumb {
+  background: transparent !important;
+  border-bottom: none !important;
+  position: relative;
+  z-index: 5;
+  /* white text */
+  color: rgba(255,255,255,0.75) !important;
+}
+.breadcrumb a { color: rgba(255,255,255,0.65) !important; transition: color 0.2s; }
+.breadcrumb a:hover { color: #fff !important; }
+.breadcrumb-sep { color: rgba(255,255,255,0.3) !important; opacity: 1 !important; }
+.breadcrumb-current { color: rgba(255,255,255,0.55) !important; }
+
+/* Pull gallery-wrap up behind the breadcrumb on mobile */
+@media (max-width: 960px) {
+  .breadcrumb {
+    margin-bottom: -40px;  /* overlap into image */
+  }
+  .gallery-wrap {
+    position: relative;
+    z-index: 1;
+  }
+
 </style>
 </head>
 <body>
@@ -1045,7 +1070,7 @@ footer * { box-sizing: border-box; }
       <div class="panel-price">A$99</div>
 
       <!-- Colour -->
-      <div class="selector-label">Colour <span id="selected-colour">Natural White</span></div>
+      <div class="selector-label">Colour</div>
       <div class="colour-options">
         <button class="colour-option active" onclick="selectColour(this, 'Natural White')">
           <span class="colour-swatch" style="background:#F5F3EE;"></span> Natural White
@@ -1072,11 +1097,9 @@ footer * { box-sizing: border-box; }
       <!-- Feature pills -->
       <div class="feature-pills">
         <span class="feature-pill">Natural Fibre</span>
-        <span class="feature-pill">OEKO-TEX Standard 100 Certified Organic</span>
         <span class="feature-pill">Breathable</span>
-        <span class="feature-pill">Unisex Fit</span>
-        <span class="feature-pill">Running & Gym</span>
-        <span class="feature-pill">Hand Screen Printed in Sydney, Australia</span>
+        <span class="feature-pill">Running &amp; Gym</span>
+        <span class="feature-pill">Made in Sydney</span>
       </div>
 
       <!-- Conditions widget -->
