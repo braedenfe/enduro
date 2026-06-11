@@ -1878,13 +1878,12 @@ footer {
 }
 
 
-/* ─── FOOTER: accordion rebuild ─── */
-footer { background: #0E1E1A; color: #F2F4F0; padding: 0; }
+footer { background: #0E1E1A; color: #F2F4F0; padding: 0; border-top: 1.5px solid rgba(247,245,240,0.18); }
 footer * { box-sizing: border-box; }
 .footer-wrap {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 clamp(20px,4vw,56px);
+  padding: clamp(36px,5vw,48px) clamp(20px,4vw,56px) 0;
 }
 /* accordion sections */
 .footer-sections { border-top: 1px solid rgba(242,244,240,0.1); }
@@ -2536,15 +2535,18 @@ filterTabs.forEach(tab => {
       card.style.display = show ? '' : 'none';
     });
 
-    // Women: put womens short first, swap tee to female model
+    // Women: put womens short first, swap cotton tee to female model
+    const teePrimary = document.querySelector('[data-product="cotton-long-run-tee"] .pcard-main');
     if (filter === 'women') {
       const womensShort = document.querySelector('[data-product="merino-short-womens"]');
       if (womensShort) grid.prepend(womensShort);
+      if (teePrimary) teePrimary.src = 'assets/images/shorts-womens-front-model.png';
     } else {
       // Restore original DOM order by data-product
       const order = ['cotton-long-run-tee','wool-long-run-tee','merino-short-mens','merino-short-womens'];
       order.map(k => document.querySelector(`[data-product="${k}"]`))
            .filter(Boolean).forEach(el => grid.appendChild(el));
+      if (teePrimary) teePrimary.src = 'assets/images/tee-white-front-model.png';
     }
   });
 });
