@@ -1479,11 +1479,41 @@ footer {
 }
 .drawer-header-atc:hover { background: var(--brand-light); }
 .drawer-img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   position: relative;
+  background: #ECE8DF;
 }
-.drawer-img svg { width: 100%; height: 100%; }
+.drawer-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.drawer-img .drawer-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: #1F3D35;
+}
+.drawer-ph-mark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic; font-weight: 300;
+  font-size: 5rem;
+  color: rgba(242,244,240,0.22);
+}
+.drawer-thumbs {
+  display: flex; gap: 6px; padding: 8px 0 0;
+  overflow-x: auto; scrollbar-width: none;
+}
+.drawer-thumbs::-webkit-scrollbar { display: none; }
+.drawer-thumb {
+  width: 52px; height: 52px; flex-shrink: 0;
+  cursor: pointer; overflow: hidden;
+  border: 1.5px solid transparent;
+  background: #ECE8DF;
+  transition: border-color 0.2s;
+}
+.drawer-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.drawer-thumb.active { border-color: var(--brand, #1F3D35); }
 .drawer-body {
   padding: 28px 24px;
 }
@@ -2001,6 +2031,83 @@ footer * { box-sizing: border-box; }
   opacity: 0.85;
 }
 
+
+/* ─── EMAIL SECTION (clean rebuild) ─── */
+#email-capture {
+  background: var(--brand, #1F3D35);
+  padding: clamp(64px,10vw,120px) clamp(20px,4vw,56px);
+}
+.ec-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(40px,6vw,80px);
+  align-items: center;
+}
+.ec-copy h2 {
+  font-family: var(--sans,'DM Sans',sans-serif);
+  font-weight: 500;
+  font-size: clamp(1.9rem,4.2vw,3.2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: #F2F4F0;
+}
+.ec-copy h2 em {
+  font-family: var(--display,'Cormorant Garamond',Georgia,serif);
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(242,244,240,0.65);
+  font-size: 1.04em;
+}
+.ec-copy p {
+  margin-top: 16px;
+  color: rgba(242,244,240,0.6);
+  font-weight: 300;
+  max-width: 40ch;
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+.ec-form { display: flex; flex-direction: column; gap: 0; }
+.ec-field-row {
+  display: flex;
+  border-bottom: 1px solid rgba(242,244,240,0.25);
+  transition: border-color 0.3s;
+}
+.ec-field-row:focus-within { border-color: rgba(242,244,240,0.6); }
+.ec-field-row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #F2F4F0;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 16px 0;
+  outline: none;
+  font-family: var(--sans,'DM Sans',sans-serif);
+}
+.ec-field-row input::placeholder { color: rgba(242,244,240,0.32); }
+.ec-field-row button {
+  font-family: var(--sans,'DM Sans',sans-serif);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0 0 0 20px;
+  color: #F2F4F0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.ec-field-row button:hover { opacity: 0.7; }
+.ec-fine { margin-top: 12px; font-size: 0.68rem; color: rgba(242,244,240,0.28); letter-spacing: 0.04em; }
+.ec-msg  { min-height: 1.2em; margin-top: 12px; font-size: 0.82rem; color: rgba(242,244,240,0.75); }
+@media (max-width: 720px) {
+  .ec-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
 </style>
 </head>
 <body>
@@ -2229,8 +2336,8 @@ footer * { box-sizing: border-box; }
     <!-- Women's Merino 3" Short -->
     <article class="pcard" data-product="merino-short-womens" data-category="running women" role="listitem">
       <div class="pcard-img" data-main="assets/images/shorts-womens-front-model.png">
-        <img class="pcard-main" src="assets/images/shorts-womens-front-model.png" alt="Long Run Short 3&quot; — front" loading="lazy">
-        <img class="pcard-alt" src="assets/images/shorts-womens-back-model.jpg" alt="" loading="lazy" aria-hidden="true">
+        <img class="pcard-main" src="assets/images/shorts-womens-front-close.png" alt="Long Run Short 3&quot; — front" loading="lazy">
+        <img class="pcard-alt" src="assets/images/shorts-womens-back-close.png" alt="" loading="lazy" aria-hidden="true">
         <span class="pcard-badge badge-new">Pre-order</span>
         <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
@@ -2379,31 +2486,21 @@ footer * { box-sizing: border-box; }
   </div>
 </section>
 
-<!-- ═══ EMAIL CAPTURE ═══ -->
-<section id="email-capture" class="section-wrap" aria-labelledby="email-heading">
-  <div class="email-capture-inner">
-    <div class="email-text reveal">
-      <h2 class="section-title" id="email-heading" style="color:white">
-        JOIN US FOR<br><span style="font-family:var(--display);font-style:italic;font-weight:300;text-transform:none;color:rgba(242,244,240,0.7);font-size:0.9em">the long run.</span>
-      </h2>
-      <p>Early access to new drops, training dispatches from the field, and 10% off your first order.</p>
-      <div class="email-perks">
-        <span class="email-perk">Early access</span>
-        <span class="email-perk">Drop alerts</span>
-        <span class="email-perk">Training stories</span>
-        <span class="email-perk">10% first order</span>
-      </div>
+<section id="email-capture" aria-labelledby="ec-heading">
+  <div class="ec-inner">
+    <div class="ec-copy reveal">
+      <h2 id="ec-heading">Join us for<br><em>the long run.</em></h2>
+      <p>Early access to new releases, training dispatches from the field, and 10% off your first order.</p>
     </div>
-    <div class="reveal reveal-delay-2">
-      <form class="email-form" id="email-form" novalidate aria-label="Newsletter signup">
-        <label for="email-input" class="visually-hidden">Your email address</label>
-        <input type="email" id="email-input" name="email"
-          placeholder="Your email address" required autocomplete="email">
-        <button type="submit" style="padding:13px 28px;background:var(--brand-deep);color:white;border:none;font-family:var(--sans);font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;min-width:130px;">Subscribe →</button>
+    <div class="reveal">
+      <form class="ec-form" id="shop-email-form" novalidate aria-label="Newsletter signup">
+        <div class="ec-field-row">
+          <input type="email" name="email" placeholder="Your email address" required autocomplete="email" inputmode="email" aria-label="Your email address">
+          <button type="submit">Subscribe →</button>
+        </div>
+        <p class="ec-msg" id="shop-email-msg" role="status" aria-live="polite"></p>
+        <p class="ec-fine">No spam. Unsubscribe any time.</p>
       </form>
-      <p style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:10px;letter-spacing:0.06em">
-        No spam. Unsubscribe any time. Privacy Policy.
-      </p>
     </div>
   </div>
 </section>
@@ -2540,7 +2637,7 @@ filterTabs.forEach(tab => {
     if (filter === 'women') {
       const womensShort = document.querySelector('[data-product="merino-short-womens"]');
       if (womensShort) grid.prepend(womensShort);
-      if (teePrimary) teePrimary.src = 'assets/images/shorts-womens-front-model.png';
+      if (teePrimary) teePrimary.src = 'assets/images/shorts-womens-front-close.png';
     } else {
       // Restore original DOM order by data-product
       const order = ['cotton-long-run-tee','wool-long-run-tee','merino-short-mens','merino-short-womens'];
@@ -2667,8 +2764,33 @@ function openDrawer(productKey) {
     </div>
   `).join('');
 
-  // SVG visual
-  document.getElementById('drawer-svg-container').innerHTML = getProductSVG(productKey, 'large');
+  // Real images
+  const drawerImages = {
+    'cotton-long-run-tee':   ['assets/images/tee-white-front-model.png','assets/images/tee-white-back-model.png','assets/images/tee-white-front-flat.png','assets/images/tee-white-back-flat.png'],
+    'wool-long-run-tee':     [],
+    'merino-short-mens':     ['assets/images/shorts-mens-front-model.png','assets/images/shorts-mens-back-model.png','assets/images/shorts-mens-detail.png','assets/images/shorts-mens-front-flat.png'],
+    'merino-short-womens':   ['assets/images/shorts-womens-front-close.png','assets/images/shorts-womens-back-close.png','assets/images/shorts-womens-front-model.png','assets/images/shorts-womens-back-model.jpg'],
+  };
+  const imgs = drawerImages[productKey] || [];
+  const container = document.getElementById('drawer-svg-container');
+  if (imgs.length) {
+    container.innerHTML = `<img id="drawer-main-img" src="${imgs[0]}" alt="${p.name}">`;
+    // thumbnails
+    let thumbsEl = document.getElementById('drawer-thumbs');
+    if (!thumbsEl) {
+      thumbsEl = document.createElement('div');
+      thumbsEl.id = 'drawer-thumbs';
+      thumbsEl.className = 'drawer-thumbs';
+      container.parentNode.insertBefore(thumbsEl, container.nextSibling);
+    }
+    thumbsEl.innerHTML = imgs.map((src, i) =>
+      `<div class="drawer-thumb${i===0?' active':''}" onclick="setDrawerImg(this,'${src}')"><img src="${src}" loading="lazy" alt=""></div>`
+    ).join('');
+  } else {
+    container.innerHTML = '<div class="drawer-ph"><span class="drawer-ph-mark">ø</span></div>';
+    const old = document.getElementById('drawer-thumbs');
+    if (old) old.innerHTML = '';
+  }
 
   // Pre-order vs Add to Cart
   const atcBtn = document.querySelector('.size-atc-row .drawer-header-atc');
@@ -2712,6 +2834,12 @@ document.addEventListener('keydown', e => {
 });
 
 /* ─── PRODUCT SVG GENERATOR ─── */
+function setDrawerImg(thumb, src) {
+  document.getElementById('drawer-main-img').src = src;
+  document.querySelectorAll('.drawer-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+
 function getProductSVG(key, size) {
   const svgs = {
     'cotton-long-run-tee': `
@@ -2967,6 +3095,36 @@ document.querySelectorAll('.facc-head').forEach(function(btn) {
     if (!isOpen) group.classList.add('open');
   });
 });
+
+/* --- EMAIL FORM (Klaviyo) --- */
+(function() {
+  var form = document.getElementById('shop-email-form');
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var input = form.querySelector('input[type="email"]');
+    var msg   = document.getElementById('shop-email-msg');
+    var email = input.value.trim();
+    var re    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !re.test(email)) { msg.textContent = 'Please enter a valid email address.'; return; }
+    var btn = form.querySelector('button');
+    btn.disabled = true;
+    msg.textContent = '';
+    try {
+      var res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+        body: JSON.stringify({ data: { type: 'subscription', attributes: { profile: { data: { type: 'profile', attributes: { email: email } } } }, relationships: { list: { data: { type: 'list', id: 'TavxE9' } } } } })
+      });
+      if (res.ok || res.status === 202) {
+        msg.textContent = 'Welcome to the long run. Check your inbox.';
+        input.value = '';
+        if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'newsletter' });
+      } else { msg.textContent = 'Something went wrong. Please try again.'; }
+    } catch(err) { msg.textContent = 'Something went wrong. Please try again.'; }
+    finally { btn.disabled = false; }
+  });
+})();
 </script>
 </body>
 </html>
