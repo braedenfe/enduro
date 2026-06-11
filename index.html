@@ -315,7 +315,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <body>
 
 <header id="nav">
-  <a href="index.html" aria-label="enduro home" class="nav-logo"><img src="assets/images/logo-tagline.png" alt="endurø — for the long run." style="height:34px;width:auto;display:block;filter:brightness(0) invert(0.96);"></a>
+  <a href="index.html" aria-label="enduro home" class="nav-logo"><img src="assets/images/logo-tagline.png" alt="endurø — for the long run." style="height:25px;width:auto;display:block;filter:brightness(0) invert(0.96);"></a>
   <ul class="nav-links">
     <li><a href="shop.html">Shop</a></li>
     <li><a href="#origin">Materials</a></li>
@@ -328,7 +328,8 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <section id="hero">
   <div class="hero-media" id="hero-media">
     <!-- PLACEHOLDER VIDEO: swap src for brand footage. Poster falls back to existing hero image. -->
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/images/hero.jpeg">
+    <video autoplay muted loop playsinline preload="auto" poster="assets/images/hero.jpeg">
+      <source src="https://videos.pexels.com/video-files/3125907/3125907-hd_1920_1080_25fps.mp4" type="video/mp4">
       <source src="https://videos.pexels.com/video-files/3125907/3125907-uhd_2560_1440_25fps.mp4" type="video/mp4">
     </video>
   </div>
@@ -362,8 +363,9 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <section id="chapter" aria-label="Our fibres">
   <div class="chapter-sticky">
     <!-- PLACEHOLDER VIDEO: swap src for brand footage. -->
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/images/merino-sheep.png">
-      <source src="https://www.pexels.com/download/video/5677451/" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="https://images.pexels.com/videos/3209300/free-video-3209300.jpg?auto=compress&cs=tinysrgb&w=1280">
+      <source src="https://videos.pexels.com/video-files/3209300/3209300-hd_1920_1080_25fps.mp4" type="video/mp4">
+      <source src="https://videos.pexels.com/video-files/3209300/3209300-uhd_2560_1440_25fps.mp4" type="video/mp4">
     </video>
     <div class="chapter-shade"></div>
   </div>
@@ -505,6 +507,15 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   function navState(){ nav.classList.toggle('solid', window.scrollY > 40); }
   window.addEventListener('scroll', navState, {passive:true});
   navState();
+
+  /* iOS Low Power Mode blocks autoplay; retry on first interaction */
+  function kickVideos(){
+    document.querySelectorAll('video').forEach(function(v){
+      if(v.paused){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+    });
+  }
+  window.addEventListener('touchstart', kickVideos, {once:true, passive:true});
+  window.addEventListener('scroll', kickVideos, {once:true, passive:true});
 
   /* Klaviyo subscribe */
   var joinForm = document.getElementById('join-form');
