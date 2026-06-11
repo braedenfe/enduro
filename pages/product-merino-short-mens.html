@@ -80,8 +80,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .nav-right { display: flex; align-items: center; gap: 18px; justify-self: end; }
 .nav-search, .nav-account { font-size: 0.78rem; color: rgba(26,28,27,0.55); font-weight: 400; transition: color 0.2s; padding: 6px 2px; }
 .nav-search:hover, .nav-account:hover { color: #1A1C1B; }
-.nav-cart-btn { font-family: var(--sans); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; color: white; background: var(--brand); border: 1px solid var(--brand); padding: 8px 18px; transition: background 0.25s; }
-.nav-cart-btn:hover { background: var(--brand-light); }
+.nav-cart-btn { font-family: var(--sans); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink, #15201C); background: transparent; border: none; padding: 0; transition: opacity 0.2s; }
+.nav-cart-btn:hover { opacity: 0.65; }
 .hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; cursor: pointer; z-index: 310; }
 .hamburger span { display: block; width: 22px; height: 2px; background: #1A1C1B; transition: transform 0.35s var(--ease), opacity 0.25s; border-radius: 1px; }
 #mobile-menu { display: none; position: fixed; inset: 0; z-index: 290; background: var(--brand-dark); flex-direction: column; justify-content: center; padding: 0 40px; gap: 4px; }
@@ -902,6 +902,30 @@ footer * { box-sizing: border-box; }
   opacity: 0.85;
 }
 
+
+.gallery-thumb-strip {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(26,28,27,0.08);
+  background: #FAFAF8;
+  padding: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gallery-thumb-strip::-webkit-scrollbar { display: none; }
+.gallery-thumb-strip button {
+  flex-shrink: 0;
+  width: 68px; height: 68px;
+  padding: 2px;
+  border: 1.5px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.gallery-thumb-strip button.active { border-color: var(--brand, #1F3D35); }
+.gallery-thumb-strip button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
 </style>
 </head>
 <body>
@@ -968,12 +992,6 @@ footer * { box-sizing: border-box; }
   <!-- HERO IMAGE -->
   <div class="product-hero-img" id="product-gallery">
     <img id="gallery-main-img" src="../assets/images/shorts-mens-front-model.png" alt="Men's Performance Short 5" - Front" style="width:100%;height:100%;object-fit:cover;display:block;">
-    <div class="gallery-thumbnails" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;">
-      <button onclick="setGalleryImg('../assets/images/shorts-mens-front-model.png')" style="width:44px;height:44px;padding:2px;border:1px solid rgba(0,0,0,0.15);background:#fff;cursor:pointer;border-radius:2px;overflow:hidden;"><img src="../assets/images/shorts-mens-front-model.png" style="width:100%;height:100%;object-fit:cover;"></button>
-      <button onclick="setGalleryImg('../assets/images/shorts-mens-back-model.png')" style="width:44px;height:44px;padding:2px;border:1px solid rgba(0,0,0,0.15);background:#fff;cursor:pointer;border-radius:2px;overflow:hidden;"><img src="../assets/images/shorts-mens-back-model.png" style="width:100%;height:100%;object-fit:cover;"></button>
-      <button onclick="setGalleryImg('../assets/images/shorts-mens-detail.png')" style="width:44px;height:44px;padding:2px;border:1px solid rgba(0,0,0,0.15);background:#fff;cursor:pointer;border-radius:2px;overflow:hidden;"><img src="../assets/images/shorts-mens-detail.png" style="width:100%;height:100%;object-fit:cover;"></button>
-      <button onclick="setGalleryImg('../assets/images/shorts-mens-front-flat.png')" style="width:44px;height:44px;padding:2px;border:1px solid rgba(0,0,0,0.15);background:#fff;cursor:pointer;border-radius:2px;overflow:hidden;"><img src="../assets/images/shorts-mens-front-flat.png" style="width:100%;height:100%;object-fit:cover;"></button>
-    </div>
   </div>
   <script>function setGalleryImg(src){document.getElementById('gallery-main-img').src=src;}</script>
 
@@ -1411,7 +1429,7 @@ footer * { box-sizing: border-box; }
         <a href="https://instagram.com/enduro.au">Instagram</a>
         <a href="../index.html#email-capture">Newsletter</a>
       </div>
-      <p class="footer-copy-new">© 2026 enduro</p>
+      <p class="footer-copy-new">© 2026 enduro Active Pty Ltd · ABN 69 912 167 244</p>
     </div>
   </div>
 </footer>
