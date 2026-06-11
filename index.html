@@ -344,14 +344,15 @@ input, textarea { font-family: inherit; }
   font-family: var(--sans);
   font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  color: white;
-  background: var(--brand);
-  border: 1px solid var(--brand);
-  padding: 8px 18px;
-  transition: background 0.25s;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink, #15201C);
+  background: transparent;
+  border: none;
+  padding: 0;
+  transition: opacity 0.2s;
 }
-.nav-cart-btn:hover { background: var(--brand-light); }
+.nav-cart-btn:hover { background: transparent; opacity: 0.6; }
 .nav-cart-btn .cart-count {
   display: inline-flex;
   align-items: center;
