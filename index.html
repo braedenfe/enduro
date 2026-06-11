@@ -3,8 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0BFVCRR6E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-R0BFVCRR6E");
+</script>
 <title>enduro — Natural Fibre Performance Apparel</title>
 <meta name="description" content="Premium natural fibre activewear. Merino, organic cotton, zero synthetics. For the long run.">
+<meta property="og:title" content="enduro — Athletic Performance, Naturally">
+<meta property="og:image" content="og-image.png">
+<meta property="og:description" content="Premium natural fibre running and gym wear. Built for the long run.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
@@ -224,10 +235,12 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;text-align:center;
 }
 .tagline-text{
-  font-family:var(--serif);font-weight:500;font-style:italic;
-  font-size:clamp(3rem,11vw,10rem);
-  line-height:1;letter-spacing:-0.02em;color:var(--bone);
   will-change:transform,opacity;
+  display:flex;justify-content:center;
+}
+.tagline-text img{
+  width:clamp(280px,72vw,860px);height:auto;
+  filter:brightness(0) invert(0.96);
 }
 .tagline-sub{margin-top:30px;font-family:var(--cond);font-size:0.84rem;letter-spacing:0.32em;text-transform:uppercase;color:rgba(245,242,236,0.55)}
 
@@ -266,13 +279,30 @@ a{color:inherit;text-decoration:none}
   background:var(--forest);color:var(--bone);border:none;padding:0 30px;cursor:pointer;transition:background .3s;
 }
 .join-form button:hover{background:#173028}
+.join-form button:disabled{opacity:0.6;cursor:default}
+.join-msg{margin-top:18px;font-size:0.88rem;font-weight:300;color:var(--forest);min-height:1.2em}
+.join-msg.err{color:#8C3B2E}
 
 /* ───────── FOOTER ───────── */
-footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--line)}
-.foot-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
-.foot-inner p,.foot-inner a{font-family:var(--cond);font-size:0.76rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(245,242,236,0.45)}
-.foot-inner a:hover{color:var(--bone)}
-.foot-links{display:flex;gap:28px}
+footer{background:var(--ink);padding:80px 32px 40px;border-top:1px solid var(--line)}
+.foot-top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px}
+.foot-logo img{height:18px;width:auto;filter:brightness(0) invert(0.96)}
+.foot-tagline{margin-top:18px;font-weight:300;font-size:0.92rem;color:rgba(245,242,236,0.55);line-height:1.7;max-width:30ch}
+.foot-col h4{font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.26em;text-transform:uppercase;color:rgba(245,242,236,0.4);margin-bottom:20px}
+.foot-col ul{list-style:none}
+.foot-col li{margin-bottom:12px}
+.foot-col a{font-size:0.92rem;font-weight:300;color:rgba(245,242,236,0.75);transition:color .3s}
+.foot-col a:hover{color:var(--white)}
+.foot-bottom{max-width:1280px;margin:0 auto;border-top:1px solid var(--line);padding-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot-bottom p,.foot-bottom a{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(245,242,236,0.4)}
+.foot-bottom a:hover{color:var(--bone)}
+.foot-legal{display:flex;gap:24px}
+@media(max-width:860px){
+  .foot-top{grid-template-columns:1fr;gap:40px;text-align:center;justify-items:center}
+  .foot-tagline{margin-left:auto;margin-right:auto}
+  .foot-bottom{flex-direction:column;text-align:center}
+  .foot-legal{justify-content:center;flex-wrap:wrap}
+}
 
 /* ───────── REVEAL ───────── */
 .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -290,7 +320,7 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
 <body>
 
 <header id="nav">
-  <a href="index.html" aria-label="enduro home" style="font-family:var(--serif);font-weight:600;font-size:1.4rem;letter-spacing:0.02em;color:var(--bone)">endur&oslash;</a>
+  <a href="index.html" aria-label="enduro home" class="nav-logo"><img src="data:image/png;base64,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" alt="enduro" style="height:16px;width:auto;display:block;filter:brightness(0) invert(0.96);"></a>
   <ul class="nav-links">
     <li><a href="shop.html">Shop</a></li>
     <li><a href="#origin">Materials</a></li>
@@ -337,7 +367,7 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
 <section id="chapter" aria-label="Our fibres">
   <div class="chapter-sticky">
     <!-- PLACEHOLDER VIDEO: swap src for brand footage. -->
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/images/merinosheep.png">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/images/merino-sheep.png">
       <source src="https://www.pexels.com/download/video/5677451/" type="video/mp4">
     </video>
     <div class="chapter-shade"></div>
@@ -375,28 +405,28 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
   </div>
   <div class="rail-track">
     <a class="rcard reveal" href="pages/product-cotton-long-run-tee.html">
-      <div class="rcard-img"><img src="assets/images/teewhitefrontmodel.png" alt="Long Run Tee in Bone" loading="lazy"></div>
+      <div class="rcard-img"><img src="assets/images/tee-white-front-model.png" alt="Long Run Tee in Bone" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Long Run Tee</div><span class="rcard-fibre">Organic cotton</span></div>
         <span class="rcard-price">A$99</span>
       </div>
     </a>
     <a class="rcard reveal" href="pages/product-merino-short-mens.html">
-      <div class="rcard-img"><img src="assets/images/shortsmensfrontmodel.png" alt="Men's Merino Short 5 inch" loading="lazy"></div>
+      <div class="rcard-img"><img src="assets/images/shorts-mens-front-model.png" alt="Men's Merino Short 5 inch" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Short 5&Prime;</div><span class="rcard-fibre">Knitted merino</span></div>
         <span class="rcard-price">A$129</span>
       </div>
     </a>
     <a class="rcard reveal" href="pages/product-merino-short-womens.html">
-      <div class="rcard-img"><img src="assets/images/shortswomensfrontmodel.png" alt="Women's Merino Short 3 inch" loading="lazy"></div>
+      <div class="rcard-img"><img src="assets/images/shorts-womens-front-model.png" alt="Women's Merino Short 3 inch" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Short 3&Prime;</div><span class="rcard-fibre">Knitted merino</span></div>
         <span class="rcard-price">A$129</span>
       </div>
     </a>
     <a class="rcard reveal" href="pages/product-wool-long-run-tee.html">
-      <div class="rcard-img"><img src="assets/images/teeblackfrontmodel.png" alt="Long Run Tee Merino" loading="lazy"></div>
+      <div class="rcard-img"><img src="assets/images/tee-black-front-model.png" alt="Long Run Tee Merino" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Long Run Tee &middot; Merino</div><span class="rcard-fibre">Supima &amp; merino</span></div>
         <span class="rcard-price">A$149</span>
@@ -417,14 +447,16 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
 
 <!-- GIANT TYPE INTERSTITIAL -->
 <section id="tagline">
-  <div class="tagline-text" id="tagline-text">For the long run.</div>
-  <div class="tagline-sub">endur&oslash; &middot; est. Paddington, Sydney</div>
+  <div class="tagline-text" id="tagline-text">
+    <img src="assets/images/logo-tagline.png" alt="endur&oslash; — for the long run." loading="lazy">
+  </div>
+  <div class="tagline-sub">Est. Paddington, Sydney</div>
 </section>
 
 <!-- EDITORIAL SPLIT -->
 <section id="origin">
   <div class="origin-grid">
-    <div class="origin-img reveal"><img src="assets/images/merinosheep.png" alt="Merino sheep on Australian high country" loading="lazy"></div>
+    <div class="origin-img reveal"><img src="assets/images/merino-sheep.png" alt="Merino sheep on Australian high country" loading="lazy"></div>
     <div class="origin-copy reveal">
       <span class="t-label">From the source</span>
       <h2 class="origin-h">Fibre with a <span class="em">postcode.</span></h2>
@@ -438,20 +470,52 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
 <section id="join">
   <h2 class="join-h reveal">Join the <span class="em">long run.</span></h2>
   <p class="join-p reveal">First access to new releases, plus 10% off your first order.</p>
-  <form class="join-form reveal" onsubmit="event.preventDefault()">
-    <input type="email" placeholder="Email address" aria-label="Email address" required>
-    <button type="submit">Join</button>
+  <form class="join-form reveal" id="join-form" novalidate>
+    <input type="email" id="join-email" placeholder="Email address" aria-label="Email address" autocomplete="email" required>
+    <button type="submit" id="join-btn">Join</button>
   </form>
+  <p class="join-msg" id="join-msg" role="status" aria-live="polite"></p>
 </section>
 
-<footer>
-  <div class="foot-inner">
-    <p>&copy; 2026 endur&oslash; &middot; Australia</p>
-    <div class="foot-links">
-      <a href="shop.html">Shop</a>
-      <a href="https://www.instagram.com/enduro.au" target="_blank" rel="noopener">Instagram</a>
-      <a href="#">Contact</a>
+<footer role="contentinfo">
+  <div class="foot-top">
+    <div>
+      <a href="index.html" class="foot-logo" aria-label="enduro home"><img src="data:image/png;base64,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" alt="enduro"></a>
+      <p class="foot-tagline">Natural fibre running and gym wear. Built for the long run.</p>
     </div>
+    <nav class="foot-col" aria-label="Shop links">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="pages/product-cotton-long-run-tee.html">Long Run Tee</a></li>
+        <li><a href="pages/product-merino-short-mens.html">Merino Short 5&Prime;</a></li>
+        <li><a href="pages/product-merino-short-womens.html">Merino Short 3&Prime;</a></li>
+      </ul>
+    </nav>
+    <nav class="foot-col" aria-label="Company links">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#statement">Philosophy</a></li>
+        <li><a href="#origin">Materials</a></li>
+        <li><a href="mailto:hello@enduroapparel.com.au">Contact</a></li>
+      </ul>
+    </nav>
+    <nav class="foot-col" aria-label="Social links">
+      <h4>Follow</h4>
+      <ul>
+        <li><a href="https://instagram.com/enduro.au" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="#">Strava</a></li>
+        <li><a href="#">TikTok</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="foot-bottom">
+    <p>&copy; 2026 endur&oslash; Active Pty Ltd &middot; ABN 69 912 167 244 &middot; All rights reserved</p>
+    <nav class="foot-legal" aria-label="Legal links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Shipping &amp; Returns</a>
+    </nav>
   </div>
 </footer>
 
@@ -464,6 +528,48 @@ footer{background:var(--ink);padding:60px 32px 44px;border-top:1px solid var(--l
   function navState(){ nav.classList.toggle('solid', window.scrollY > 40); }
   window.addEventListener('scroll', navState, {passive:true});
   navState();
+
+  /* Klaviyo subscribe */
+  var joinForm = document.getElementById('join-form');
+  if(joinForm){
+    joinForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var email = document.getElementById('join-email').value.trim();
+      var btn = document.getElementById('join-btn');
+      var msg = document.getElementById('join-msg');
+      if(!email || email.indexOf('@') < 0){
+        msg.textContent = 'Please enter a valid email address.';
+        msg.classList.add('err');
+        return;
+      }
+      btn.disabled = true; btn.textContent = 'Joining'; msg.textContent = ''; msg.classList.remove('err');
+      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              profile: { data: { type: 'profile', attributes: { email: email } } }
+            },
+            relationships: { list: { data: { type: 'list', id: 'TavxE9' } } }
+          }
+        })
+      }).then(function(res){
+        if(res.ok || res.status === 202){
+          msg.textContent = 'Welcome to the long run. Check your inbox.';
+          joinForm.reset();
+          btn.textContent = 'Joined';
+        } else {
+          throw new Error('subscribe failed');
+        }
+      }).catch(function(){
+        msg.textContent = 'Something went wrong. Please try again.';
+        msg.classList.add('err');
+        btn.disabled = false; btn.textContent = 'Join';
+      });
+    });
+  }
 
   /* Reveal on scroll */
   var io = new IntersectionObserver(function(entries){
