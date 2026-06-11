@@ -1876,6 +1876,57 @@ footer * { box-sizing: border-box; }
   opacity: 0.85;
 }
 
+
+/* --- EMAIL SECTION (clean) --- */
+#email-capture {
+  background: var(--brand, #1F3D35);
+  padding: clamp(64px,10vw,120px) clamp(20px,4vw,56px);
+}
+.ec-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(40px,6vw,80px); align-items: center;
+}
+.ec-copy h2 {
+  font-family: var(--sans,'DM Sans',sans-serif);
+  font-weight: 500; font-size: clamp(1.9rem,4.2vw,3.2rem);
+  letter-spacing: -0.03em; line-height: 1.08; color: #F2F4F0;
+}
+.ec-copy h2 em {
+  font-family: var(--display,'Cormorant Garamond',Georgia,serif);
+  font-style: italic; font-weight: 400;
+  color: rgba(242,244,240,0.65); font-size: 1.04em;
+}
+.ec-copy p {
+  margin-top: 16px; color: rgba(242,244,240,0.6);
+  font-weight: 300; max-width: 40ch; line-height: 1.75; font-size: 0.95rem;
+}
+.ec-form { display: flex; flex-direction: column; gap: 0; }
+.ec-field-row {
+  display: flex; border-bottom: 1px solid rgba(242,244,240,0.25);
+  transition: border-color 0.3s;
+}
+.ec-field-row:focus-within { border-color: rgba(242,244,240,0.6); }
+.ec-field-row input {
+  flex: 1; background: transparent; border: none; color: #F2F4F0;
+  font-size: 1rem; font-weight: 300; padding: 16px 0; outline: none;
+  font-family: var(--sans,'DM Sans',sans-serif);
+}
+.ec-field-row input::placeholder { color: rgba(242,244,240,0.32); }
+.ec-field-row button {
+  font-family: var(--sans,'DM Sans',sans-serif);
+  font-size: 0.76rem; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 0 0 0 20px;
+  color: #F2F4F0; background: none; border: none; cursor: pointer;
+  white-space: nowrap; transition: opacity 0.2s;
+}
+.ec-field-row button:hover { opacity: 0.7; }
+.ec-fine { margin-top: 12px; font-size: 0.68rem; color: rgba(242,244,240,0.28); letter-spacing: 0.04em; }
+.ec-msg  { min-height: 1.2em; margin-top: 12px; font-size: 0.82rem; color: rgba(242,244,240,0.75); }
+@media (max-width: 720px) {
+  .ec-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
 </style>
 </head>
 <body>
@@ -2224,31 +2275,21 @@ footer * { box-sizing: border-box; }
   </div>
 </section>
 
-<!-- ═══ EMAIL CAPTURE ═══ -->
-<section id="email-capture" class="section-wrap" aria-labelledby="email-heading">
-  <div class="email-capture-inner">
-    <div class="email-text reveal">
-      <h2 class="section-title" id="email-heading" style="color:white">
-        JOIN US FOR<br><span style="font-family:var(--display);font-style:italic;font-weight:300;text-transform:none;color:rgba(242,244,240,0.7);font-size:0.9em">the long run.</span>
-      </h2>
-      <p>Early access to new drops, training dispatches from the field, and 10% off your first order.</p>
-      <div class="email-perks">
-        <span class="email-perk">Early access</span>
-        <span class="email-perk">Drop alerts</span>
-        <span class="email-perk">Training stories</span>
-        <span class="email-perk">10% first order</span>
-      </div>
+<section id="email-capture" aria-labelledby="ec-heading">
+  <div class="ec-inner">
+    <div class="ec-copy reveal">
+      <h2 id="ec-heading">Join us for<br><em>the long run.</em></h2>
+      <p>Early access to new releases, training dispatches from the field, and 10% off your first order.</p>
     </div>
-    <div class="reveal reveal-delay-2">
-      <form class="email-form" id="email-form" novalidate aria-label="Newsletter signup">
-        <label for="email-input" class="visually-hidden">Your email address</label>
-        <input type="email" id="email-input" name="email"
-          placeholder="Your email address" required autocomplete="email">
-        <button type="submit" style="padding:13px 28px;background:var(--brand-deep);color:white;border:none;font-family:var(--sans);font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;min-width:130px;">Subscribe →</button>
+    <div class="reveal">
+      <form class="ec-form" id="email-form" novalidate aria-label="Newsletter signup">
+        <div class="ec-field-row">
+          <input type="email" name="email" placeholder="Your email address" required autocomplete="email" inputmode="email" aria-label="Your email address">
+          <button type="submit">Subscribe →</button>
+        </div>
+        <p class="ec-msg" id="email-msg" role="status" aria-live="polite"></p>
+        <p class="ec-fine">No spam. Unsubscribe any time.</p>
       </form>
-      <p style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:10px;letter-spacing:0.06em">
-        No spam. Unsubscribe any time. Privacy Policy.
-      </p>
     </div>
   </div>
 </section>
@@ -2294,8 +2335,6 @@ footer * { box-sizing: border-box; }
         <a href="https://instagram.com/enduro.au">Instagram</a>
         <a href="#email-capture">Newsletter</a>
       </div>
-      <p class="footer-copy-new">© 2026 enduro</p>
-    </div>
       <p class="footer-copy-new">© 2026 enduro</p>
     </div>
   </div>
@@ -2795,6 +2834,36 @@ document.querySelectorAll('.facc-head').forEach(function(btn) {
     if (!isOpen) group.classList.add('open');
   });
 });
+
+/* --- EMAIL FORM (Klaviyo) --- */
+(function() {
+  var form = document.getElementById('email-form');
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var input = form.querySelector('input[type="email"]');
+    var msg   = document.getElementById('email-msg');
+    var email = input.value.trim();
+    var re    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !re.test(email)) { if(msg) msg.textContent = 'Please enter a valid email address.'; return; }
+    var btn = form.querySelector('button');
+    btn.disabled = true;
+    if(msg) msg.textContent = '';
+    try {
+      var res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+        body: JSON.stringify({ data: { type: 'subscription', attributes: { profile: { data: { type: 'profile', attributes: { email: email } } } }, relationships: { list: { data: { type: 'list', id: 'TavxE9' } } } } })
+      });
+      if (res.ok || res.status === 202) {
+        if(msg) msg.textContent = 'Welcome to the long run. Check your inbox.';
+        input.value = '';
+        if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'newsletter' });
+      } else { if(msg) msg.textContent = 'Something went wrong. Please try again.'; }
+    } catch(err) { if(msg) msg.textContent = 'Something went wrong. Please try again.'; }
+    finally { btn.disabled = false; }
+  });
+})();
 </script>
 </body>
 </html>
