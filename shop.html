@@ -299,9 +299,10 @@ input, textarea { font-family: inherit; }
 }
 .nav-cart-btn:hover { opacity: 0.65; }
 .nav-cart-btn .cart-count {
-  margin-left: 4px;
-  font-size: 0.78rem;
-  font-weight: 400;
+  margin-left: 2px;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
 }
 
 /* Hamburger */
@@ -1477,7 +1478,7 @@ footer {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   position: relative;
-  background: #F7F6F3;
+  background: #FFFFFF;
 }
 .drawer-img img {
   width: 100%; height: 100%;
@@ -2756,7 +2757,7 @@ function openDrawer(productKey) {
   if (!dotsEl) {
     dotsEl = document.createElement('div');
     dotsEl.id = 'drawer-dots';
-    dotsEl.style.cssText = 'display:flex;justify-content:center;gap:6px;padding:10px 0;background:#F7F6F3;';
+    dotsEl.style.cssText = 'display:flex;justify-content:center;gap:6px;padding:8px 0;background:#fff;';
     container.parentNode.insertBefore(dotsEl, container.nextSibling);
   }
   if (imgs.length) {
