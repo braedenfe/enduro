@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0BFVCRR6E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-R0BFVCRR6E");
+</script>
+<title>Contact — enduro</title>
+<meta name="description" content="Get in touch with enduro. Questions about orders, sizing, or the collection.">
+<meta property="og:title" content="Contact — enduro">
+<meta property="og:image" content="og-image.png">
+<meta property="og:description" content="Get in touch with enduro. Questions about orders, sizing, or the collection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#1F3D35; --ink:#0E1512; --bone:#F5F2EC; --white:#FFFFFF;
+  --mist:rgba(245,242,236,0.72); --line:rgba(245,242,236,0.18); --line-dark:rgba(14,21,18,0.12);
+  --serif:'Cormorant Garamond',Georgia,serif; --cond:'Barlow Condensed',sans-serif; --sans:'DM Sans',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bone);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;color:inherit}
+.t-label{font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.26em;text-transform:uppercase}
+
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;background:rgba(14,21,18,0.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-logo img{height:25px;width:auto;display:block;filter:brightness(0) invert(0.96)}
+.nav-links{display:flex;gap:34px;list-style:none;align-items:center}
+.nav-links a{font-family:var(--cond);font-size:0.82rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.nav-links a:hover{color:var(--white)}
+@media(max-width:600px){.nav-links{gap:22px}}
+
+main{max-width:1180px;margin:0 auto;padding:calc(61px + clamp(56px,9vh,110px)) 32px clamp(72px,10vh,130px);
+  display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,90px);align-items:start}
+@media(max-width:860px){main{grid-template-columns:1fr;gap:48px;padding-left:24px;padding-right:24px}}
+
+.intro .t-label{color:var(--forest);display:block;margin-bottom:16px}
+.intro h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.02;letter-spacing:-0.015em}
+.intro h1 .em{font-style:italic;color:var(--forest)}
+.intro p{margin-top:20px;font-weight:300;line-height:1.8;color:rgba(14,21,18,0.7);max-width:42ch}
+
+.form-card{background:var(--white);border-radius:4px;padding:clamp(26px,4vw,44px)}
+.f-label{font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin:22px 0 8px}
+.f-label:first-of-type{margin-top:0}
+.f-input,.f-textarea{
+  width:100%;border:1px solid var(--line-dark);border-radius:4px;background:var(--bone);
+  padding:14px 16px;font-family:var(--sans);font-size:0.95rem;font-weight:300;color:var(--ink);outline:none;
+  transition:border-color .3s;
+}
+.f-input:focus,.f-textarea:focus{border-color:var(--forest)}
+.f-textarea{min-height:150px;resize:vertical}
+.topic-row{display:flex;gap:8px;flex-wrap:wrap}
+.topic{font-family:var(--cond);font-size:0.8rem;letter-spacing:0.16em;text-transform:uppercase;
+  padding:9px 20px;border-radius:99px;border:1px solid var(--line-dark);background:transparent;color:rgba(14,21,18,0.6);transition:all .25s}
+.topic:hover{border-color:var(--ink);color:var(--ink)}
+.topic.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
+.f-send{width:100%;margin-top:28px;padding:17px;border:none;border-radius:99px;background:var(--forest);color:var(--bone);
+  font-family:var(--cond);font-size:0.88rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;transition:background .3s}
+.f-send:hover{background:#173028}
+.f-send:disabled{opacity:0.65;cursor:default}
+.f-note.err{color:#8C3B2E}
+.f-note a{border-bottom:1px solid var(--line-dark)}
+.f-note{margin-top:14px;text-align:center;font-size:0.82rem;font-weight:300;color:rgba(14,21,18,0.5)}
+.f-note a{border-bottom:1px solid var(--line-dark)}
+
+footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top:1px solid var(--line)}
+.foot-inner{max-width:1280px;margin:0 auto;text-align:center}
+.foot-logo img{height:64px;width:auto;filter:brightness(0) invert(0.96);margin:0 auto}
+.foot-nav{display:flex;justify-content:center;gap:40px;margin-top:36px;flex-wrap:wrap}
+.foot-nav a{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.26em;text-transform:uppercase;color:rgba(245,242,236,0.8);transition:color .3s}
+.foot-nav a:hover{color:var(--white)}
+.foot-social{display:flex;justify-content:center;gap:28px;margin-top:22px;flex-wrap:wrap}
+.foot-social a{font-size:0.88rem;font-weight:300;color:rgba(245,242,236,0.5);transition:color .3s}
+.foot-social a:hover{color:var(--bone)}
+.foot-bottom{border-top:1px solid var(--line);margin-top:44px;padding-top:26px;display:flex;justify-content:center;align-items:center;gap:10px 28px;flex-wrap:wrap}
+.foot-bottom p,.foot-bottom a{font-family:var(--cond);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,242,236,0.38)}
+.foot-bottom a:hover{color:var(--bone)}
+.foot-legal{display:flex;gap:22px}
+@media(max-width:600px){.foot-nav{gap:28px}.foot-bottom{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header id="nav">
+  <a href="index.html" class="nav-logo" aria-label="enduro home"><img src="assets/images/logo-tagline.png" alt="endur&oslash; &mdash; for the long run."></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+</header>
+
+<main>
+  <div class="intro">
+    <span class="t-label">Contact</span>
+    <h1>Get in <span class="em">touch.</span></h1>
+    <p>Questions about an order, sizing, the fabrics, or anything else. We read everything and reply within two business days.</p>
+    </div>
+
+  <div class="form-card">
+    <form id="contact-form" novalidate>
+      <label class="f-label" for="cf-name">Name</label>
+      <input class="f-input" type="text" id="cf-name" autocomplete="name" required>
+
+      <label class="f-label" for="cf-email">Email</label>
+      <input class="f-input" type="email" id="cf-email" autocomplete="email" required>
+
+      <span class="f-label">Topic</span>
+      <div class="topic-row" id="topic-row">
+        <button type="button" class="topic active" data-topic="General">General</button>
+        <button type="button" class="topic" data-topic="Order">Order</button>
+        <button type="button" class="topic" data-topic="Sizing">Sizing</button>
+        <button type="button" class="topic" data-topic="Returns">Returns</button>
+        <button type="button" class="topic" data-topic="Wholesale / Press">Wholesale / Press</button>
+      </div>
+
+      <div id="order-field" style="display:none">
+        <label class="f-label" for="cf-order">Order number</label>
+        <input class="f-input" type="text" id="cf-order" placeholder="e.g. END-1024" autocomplete="off">
+      </div>
+
+      <label class="f-label" for="cf-msg">Message</label>
+      <textarea class="f-textarea" id="cf-msg" required></textarea>
+
+      <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;height:0;width:0;border:0;padding:0" aria-hidden="true">
+      <button type="submit" class="f-send">Send message</button>
+      <p class="f-note" id="cf-note" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</main>
+
+<footer role="contentinfo">
+  <div class="foot-inner">
+    <a href="index.html" class="foot-logo" aria-label="enduro home"><img src="assets/images/logo-tagline.png" alt="endur&oslash; &mdash; for the long run."></a>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="shop.html">Shop</a>
+      <a href="index.html#statement">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="foot-social" aria-label="Social media">
+      <a href="https://instagram.com/enduro.au" target="_blank" rel="noopener">Instagram</a>
+      <a href="#">Strava</a>
+      <a href="#">TikTok</a>
+    </div>
+    <div class="foot-bottom">
+      <p>&copy; 2026 endur&oslash; Active Pty Ltd &middot; ABN 69 912 167 244</p>
+      <nav class="foot-legal" aria-label="Legal links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Shipping &amp; Returns</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+let topic = 'General';
+document.querySelectorAll('.topic').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.topic').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    topic = btn.dataset.topic;
+    document.getElementById('order-field').style.display = (topic === 'Order' || topic === 'Returns') ? '' : 'none';
+  });
+});
+
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const msg = document.getElementById('cf-msg').value.trim();
+  const honey = document.getElementById('cf-website').value;
+  const btn = document.querySelector('.f-send');
+  const note = document.getElementById('cf-note');
+  if (honey) return; // bot trap
+  if (!name || !email || email.indexOf('@') < 0 || !msg) {
+    note.textContent = 'Please fill in your name, a valid email, and a message.';
+    note.classList.add('err');
+    return;
+  }
+  btn.disabled = true; btn.textContent = 'Sending'; note.textContent = ''; note.classList.remove('err');
+  fetch('https://formsubmit.co/ajax/info@enduroapparel.com.au', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      order_number: (topic === 'Order' || topic === 'Returns') ? (document.getElementById('cf-order').value.trim() || 'Not provided') : undefined,
+      message: msg,
+      _subject: '[' + topic + '] Website enquiry from ' + name,
+      _template: 'table',
+      _captcha: 'false'
+    })
+  }).then(function(res){ return res.json(); }).then(function(data){
+    if (data.success === 'true' || data.success === true) {
+      btn.textContent = 'Sent';
+      note.textContent = 'Thanks ' + name + '. We\u2019ll get back to you within two business days.';
+      document.getElementById('contact-form').reset();
+    } else { throw new Error('send failed'); }
+  }).catch(function(){
+    note.innerHTML = 'Something went wrong. Email us directly at <a href="mailto:info@enduroapparel.com.au">info@enduroapparel.com.au</a>';
+    note.classList.add('err');
+    btn.disabled = false; btn.textContent = 'Send message';
+  });
+});
+</script>
+</body>
+</html>
