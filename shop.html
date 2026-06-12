@@ -593,6 +593,32 @@ document.querySelectorAll('.pcard').forEach((card, i) => {
 /* ─── FILTERS ─── */
 const pills = document.querySelectorAll('.fpill');
 const cards = document.querySelectorAll('.pcard');
+
+/* Women-first imagery: female model shots when Women is selected,
+   and the close-up for the women's short so it doesn't read as a tee */
+const WOMEN_IMGS = {
+  'cotton-long-run-tee':  { main: 'assets/images/shorts-womens-front-model.png', alt: 'assets/images/shorts-womens-back-model.jpg' },
+  'merino-short-womens':  { main: 'assets/images/shorts-womens-front-close.png', alt: 'assets/images/shorts-womens-back-close.png' },
+};
+const DEFAULT_IMGS = {};
+cards.forEach(card => {
+  const key = card.dataset.product;
+  const main = card.querySelector('.pcard-img img.main');
+  const alt  = card.querySelector('.pcard-img img.alt');
+  if (key && main && alt) DEFAULT_IMGS[key] = { main: main.getAttribute('src'), alt: alt.getAttribute('src') };
+});
+function applyCardImages(filter) {
+  cards.forEach(card => {
+    const key = card.dataset.product;
+    const set = (filter === 'women' && WOMEN_IMGS[key]) ? WOMEN_IMGS[key] : DEFAULT_IMGS[key];
+    if (!set) return;
+    const main = card.querySelector('.pcard-img img.main');
+    const alt  = card.querySelector('.pcard-img img.alt');
+    if (main.getAttribute('src') !== set.main) main.src = set.main;
+    if (alt.getAttribute('src') !== set.alt) alt.src = set.alt;
+  });
+}
+
 pills.forEach(pill => {
   pill.addEventListener('click', () => {
     pills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-selected','false'); });
@@ -606,6 +632,7 @@ pills.forEach(pill => {
       const isShort = (card.dataset.product || '').includes('short');
       card.style.order = (f !== 'all' && isShort) ? '-1' : '';
     });
+    applyCardImages(f);
   });
 });
 const urlFilter = new URLSearchParams(window.location.search).get('filter');
