@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R0BFVCRR6E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-R0BFVCRR6E");
+</script>
+<title>FAQ — enduro</title>
+<meta name="description" content="Answers to common questions about enduro orders, pre-orders, shipping, returns, sizing, fabrics and care.">
+<meta property="og:title" content="FAQ — enduro">
+<meta property="og:image" content="og-image.png">
+<meta property="og:description" content="Common questions about orders, shipping, returns, sizing, fabrics and care.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#1F3D35; --ink:#0E1512; --bone:#F5F2EC; --white:#FFFFFF;
+  --mist:rgba(245,242,236,0.72); --line:rgba(245,242,236,0.18); --line-dark:rgba(14,21,18,0.12);
+  --serif:'Cormorant Garamond',Georgia,serif; --cond:'Barlow Condensed',sans-serif; --sans:'DM Sans',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bone);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;color:inherit}
+.t-label{font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.26em;text-transform:uppercase}
+
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;background:rgba(14,21,18,0.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-logo img{height:25px;width:auto;display:block;filter:brightness(0) invert(0.96)}
+.nav-links{display:flex;gap:34px;list-style:none;align-items:center}
+.nav-links a{font-family:var(--cond);font-size:0.82rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.nav-links a:hover{color:var(--white)}
+@media(max-width:600px){.nav-links{gap:22px}}
+
+main.doc{max-width:820px;margin:0 auto;padding:calc(61px + clamp(56px,9vh,110px)) 32px clamp(72px,10vh,130px)}
+@media(max-width:860px){main.doc{padding-left:24px;padding-right:24px}}
+.doc-head{margin-bottom:clamp(34px,5vh,56px);padding-bottom:34px;border-bottom:1px solid var(--line-dark)}
+.doc-head .t-label{color:var(--forest);display:block;margin-bottom:16px}
+.doc-head h1{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,6vw,4rem);line-height:1.02;letter-spacing:-0.015em}
+.doc-head h1 .em{font-style:italic;color:var(--forest)}
+.doc-head .lead{margin-top:20px;font-weight:300;line-height:1.85;color:rgba(14,21,18,0.72);max-width:60ch}
+
+.faq-cat{margin-bottom:clamp(30px,5vh,48px)}
+.cat-label{font-family:var(--cond);font-size:0.82rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--forest);margin-bottom:8px;display:block}
+.faq-item{border-bottom:1px solid var(--line-dark)}
+summary.faq-q{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:22px;
+  padding:22px 0;font-family:var(--serif);font-weight:500;font-size:clamp(1.18rem,2.6vw,1.5rem);line-height:1.25;color:var(--ink);
+  -webkit-tap-highlight-color:transparent}
+summary.faq-q::-webkit-details-marker{display:none}
+summary.faq-q:hover{color:var(--forest)}
+.faq-q .sign{flex:none;width:18px;text-align:center;font-family:var(--sans);font-weight:300;color:var(--forest);transform:translateY(-1px);transition:transform .3s}
+.faq-q .sign::before{content:'+';font-size:1.25rem;line-height:1}
+.faq-item[open] .faq-q .sign::before{content:'\2212'}
+.faq-a{padding:0 0 26px;max-width:68ch}
+.faq-a p{font-weight:300;line-height:1.8;color:rgba(14,21,18,0.78);margin-bottom:12px}
+.faq-a p:last-child{margin-bottom:0}
+.faq-a ul{margin:4px 0 12px;padding-left:0;list-style:none}
+.faq-a li{position:relative;padding-left:22px;font-weight:300;line-height:1.7;color:rgba(14,21,18,0.78);margin-bottom:8px}
+.faq-a li::before{content:'';position:absolute;left:3px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--forest)}
+.faq-a a{color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.32);transition:border-color .25s}
+.faq-a a:hover{border-color:var(--forest)}
+.faq-a strong{font-weight:500;color:var(--ink)}
+
+.faq-foot{margin-top:clamp(34px,6vh,60px);background:var(--white);border-radius:4px;padding:clamp(28px,4vw,42px);text-align:center}
+.faq-foot h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.05;letter-spacing:-0.01em}
+.faq-foot p{margin-top:12px;font-weight:300;line-height:1.7;color:rgba(14,21,18,0.7)}
+.faq-foot a.cta{display:inline-block;margin-top:24px;padding:15px 40px;border-radius:99px;background:var(--forest);color:var(--bone);
+  font-family:var(--cond);font-size:0.86rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;transition:background .3s}
+.faq-foot a.cta:hover{background:#173028}
+
+footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top:1px solid var(--line)}
+.foot-inner{max-width:1280px;margin:0 auto;text-align:center}
+.foot-logo img{height:64px;width:auto;filter:brightness(0) invert(0.96);margin:0 auto}
+.foot-nav{display:flex;justify-content:center;gap:40px;margin-top:36px;flex-wrap:wrap}
+.foot-nav a{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.26em;text-transform:uppercase;color:rgba(245,242,236,0.8);transition:color .3s}
+.foot-nav a:hover{color:var(--white)}
+.foot-social{display:flex;justify-content:center;gap:28px;margin-top:22px;flex-wrap:wrap}
+.foot-social a{font-size:0.88rem;font-weight:300;color:rgba(245,242,236,0.5);transition:color .3s}
+.foot-social a:hover{color:var(--bone)}
+.foot-bottom{border-top:1px solid var(--line);margin-top:44px;padding-top:26px;display:flex;justify-content:center;align-items:center;gap:10px 28px;flex-wrap:wrap}
+.foot-bottom p,.foot-bottom a{font-family:var(--cond);font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,242,236,0.38)}
+.foot-bottom a:hover{color:var(--bone)}
+.foot-legal{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+@media(max-width:600px){.foot-nav{gap:28px}.foot-bottom{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header id="nav">
+  <a href="index.html" class="nav-logo" aria-label="enduro home"><img src="assets/images/logo-tagline.png" alt="endur&oslash; &mdash; for the long run."></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+</header>
+
+<main class="doc">
+  <div class="doc-head">
+    <span class="t-label">Help</span>
+    <h1>Frequently asked <span class="em">questions.</span></h1>
+    <p class="lead">Everything you might want to know before, during and after your order. Can't find it here? Reach us any time on the <a href="contact.html" style="color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.32)">contact page</a>.</p>
+  </div>
+
+  <!-- ORDERS & PRE-ORDERS -->
+  <div class="faq-cat">
+    <span class="cat-label">Orders &amp; Pre-orders</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>What does pre-order mean?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>A pre-order lets you reserve a piece before it lands in stock. Payment is taken when you order, which secures your size, and we dispatch it on or around the estimated date shown on the product page.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>When will my pre-order ship?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Each pre-order item shows an estimated dispatch window on its product page. Those dates are estimates, and we'll email you if anything shifts. As soon as your order is on its way, you'll get a confirmation with tracking.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Can I change or cancel my order?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>If you need to change or cancel, email us at <a href="mailto:info@enduroapparel.com.au">info@enduroapparel.com.au</a> as soon as possible. We can usually help before an order is dispatched. Pre-orders can be cancelled for a full refund any time before they ship.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How do I track my order?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>You'll receive a dispatch email with a tracking number once your order leaves us. If your tracking hasn't moved for a few days, get in touch and we'll chase it up.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- SHIPPING -->
+  <div class="faq-cat">
+    <span class="cat-label">Shipping</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Where do you ship?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>We currently ship Australia-wide. International shipping is on the way — if you're overseas, email us and we'll let you know what we can arrange in the meantime.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How much is shipping?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Standard shipping is free on Australian orders over A$150. For orders under that, shipping is calculated at checkout based on your location, with express available where offered. Full details are on our <a href="shipping-returns.html">Shipping &amp; Returns</a> page.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How long will delivery take?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>In-stock orders are dispatched within 1&ndash;2 business days. After that, delivery is generally 2&ndash;5 business days to metro areas and 5&ndash;10 to regional and remote areas. These are carrier estimates and can run longer during peak periods.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- RETURNS & EXCHANGES -->
+  <div class="faq-cat">
+    <span class="cat-label">Returns &amp; Exchanges</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>What is your returns policy?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>You can return an item within 30 days of delivery for a refund or exchange, as long as it's unworn, unwashed, with tags attached and in its original packaging. See our <a href="shipping-returns.html">Shipping &amp; Returns</a> page for the full details.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How do I return or exchange something?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Email us at <a href="mailto:info@enduroapparel.com.au">info@enduroapparel.com.au</a> with your order number and whether you'd like a refund or exchange, and we'll send return instructions. Please get in touch before sending anything back.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>When will I get my refund?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Once we've received and inspected your return, refunds are processed to your original payment method within 5&ndash;7 business days. Your bank may take a little longer to display it.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>My item is faulty — what now?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>We're sorry to hear that. Email us with your order number and a photo, and we'll make it right with a repair, replacement or refund, and cover return postage. Your rights under the Australian Consumer Law always apply. Note that slight natural variation in colour and texture is a feature of natural fibres, not a fault.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- SIZING & FIT -->
+  <div class="faq-cat">
+    <span class="cat-label">Sizing &amp; Fit</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How do enduro pieces fit?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Our pieces are designed true to size, so we'd suggest your usual size. Each product page has a "Size &amp; Fit" section with a size guide and the model's measurements for reference.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>I'm between sizes — what should I do?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>If you like a closer fit, size down; for a more relaxed feel, size up. Still unsure? Email us your measurements and what you're after, and we'll point you to the right size.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- MATERIALS & CARE -->
+  <div class="faq-cat">
+    <span class="cat-label">Materials &amp; Care</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>What are your garments made from?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Natural fibres only — merino wool and organic cotton across the launch collection, with no polyester, nylon or elastane. Every product page lists its full composition.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Is the wool mulesing-free?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Yes. Our merino is sourced mulesing-free from certified growers under the ZQ standard, which covers animal welfare, land management and fibre integrity.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>How do I care for merino?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Merino is low-maintenance and naturally odour-resisting, so it needs washing less often — airing it out between sessions is often enough. When you do wash it:</p>
+        <ul>
+          <li>Machine wash cold on a wool or gentle cycle, inside out, with similar colours</li>
+          <li>Use a wool-friendly detergent — no bleach or fabric softener</li>
+          <li>Lay flat to dry, away from direct heat; don't tumble dry</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Will merino shrink or feel itchy?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Washing cold and laying flat to dry keeps the shape and prevents shrinkage. Our merino is a fine micron knit chosen for next-to-skin softness, so it's designed to feel smooth rather than scratchy.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- PAYMENTS & GENERAL -->
+  <div class="faq-cat">
+    <span class="cat-label">Payments &amp; General</span>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>What payment methods do you accept?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>We accept major credit and debit cards (Visa, Mastercard, American Express) and any additional options shown at checkout. All prices are in Australian dollars and include GST.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Is my payment secure?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>Yes. Payments are handled by our secure third-party payment provider, and we never store your full card details. You can read more in our <a href="privacy.html">Privacy Policy</a>.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-q"><span>Do you offer wholesale or work with press?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a">
+        <p>We'd love to hear from you. Reach out via our <a href="contact.html">contact page</a> and select the Wholesale / Press topic, or email <a href="mailto:info@enduroapparel.com.au">info@enduroapparel.com.au</a>.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="faq-foot">
+    <h2>Still have a question?</h2>
+    <p>We read everything and reply within two business days.</p>
+    <a class="cta" href="contact.html">Get in touch</a>
+  </div>
+</main>
+
+<footer role="contentinfo">
+  <div class="foot-inner">
+    <a href="index.html" class="foot-logo" aria-label="enduro home"><img src="assets/images/logo-tagline.png" alt="endur&oslash; &mdash; for the long run."></a>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="shop.html">Shop</a>
+      <a href="index.html#statement">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="foot-social" aria-label="Social media">
+      <a href="https://instagram.com/enduro.au" target="_blank" rel="noopener">Instagram</a>
+      <a href="#">Strava</a>
+      <a href="#">TikTok</a>
+    </div>
+    <div class="foot-bottom">
+      <p>&copy; 2026 endur&oslash; Active Pty Ltd &middot; ABN 69 912 167 244</p>
+      <nav class="foot-legal" aria-label="Legal links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="shipping-returns.html">Shipping &amp; Returns</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
