@@ -84,7 +84,7 @@
     cost { subtotalAmount { amount currencyCode } }
     lines(first:50){ edges { node { id quantity
       merchandise { ... on ProductVariant {
-        id title price { amount currencyCode }
+        id title availableForSale price { amount currencyCode }
         product { title featuredImage { url altText } } } } } } }`;
 
   const createCart = (line) => gql(
@@ -162,9 +162,10 @@
     }
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
+      const isPreorder = !v.availableForSale;
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
+        <div><div class="t">${v.product.title}${isPreorder ? ' <span style="font-size:.7rem;background:#1F3D35;color:#F5F2EC;padding:2px 6px;border-radius:3px;letter-spacing:.08em">PRE-ORDER</span>' : ''}</div><div class="s">${v.title}</div>
         <div class="p">${money(v.price.amount, v.price.currencyCode)}</div>
         <button class="ec-rm" data-id="${node.id}">Remove</button></div></div>`;
     }).join('');
@@ -197,7 +198,57 @@
     navList.appendChild(li);
   }
 
-  /* ---------- override addToCart() ---------- */
+  /* ---------- availability-aware button state ---------- */
+  function updateButtonState(available) {
+    const btn = document.querySelector('.atc');
+    const note = document.querySelector('.atc-note');
+    if (!btn) return;
+    if (available === null) return; // unknown — leave as-is
+    if (available) {
+      btn.textContent = 'Add to Cart';
+      btn.classList.remove('preorder');
+      if (note) note.dataset.orig = note.dataset.orig || note.textContent;
+    } else {
+      btn.textContent = 'Pre-order';
+      btn.classList.add('preorder');
+      if (note) {
+        note.dataset.orig = note.dataset.orig || note.textContent;
+        note.textContent = 'Pre-order \u2014 ships once production is complete \u00b7 ' + (note.dataset.orig || '');
+      }
+    }
+  }
+
+  // hook into the page's selectSize so button updates when size is picked
+  const _origSelectSize = window.selectSize;
+  window.selectSize = async function (btn) {
+    if (typeof _origSelectSize === 'function') _origSelectSize(btn);
+    const size = btn.textContent.trim();
+    const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
+    if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) return;
+    try {
+      const list = await resolveVariants(key);
+      const colorEl = document.getElementById('sel-colour');
+      const colorName = colorEl ? colorEl.textContent.trim() : null;
+      const v = list && pickVariant(list, size, colorName);
+      updateButtonState(v ? v.available : null);
+    } catch (e) {}
+  };
+
+  // also update when colour changes
+  const _origSelectColour = window.selectColour;
+  window.selectColour = async function (btn, name) {
+    if (typeof _origSelectColour === 'function') _origSelectColour(btn, name);
+    const sizeEl = document.querySelector('.size-btn.active');
+    if (!sizeEl) return;
+    const size = sizeEl.textContent.trim();
+    const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
+    if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) return;
+    try {
+      const list = await resolveVariants(key);
+      const v = list && pickVariant(list, size, name);
+      updateButtonState(v ? v.available : null);
+    } catch (e) {}
+  };
   const _origAddToCart = window.addToCart; // page's existing pre-order handler
   window.addToCart = async function () {
     const sizeEl = document.querySelector('.size-btn.active');
@@ -212,7 +263,8 @@
     }
 
     const btn = document.querySelector('.atc'); const label = btn && btn.textContent;
-    if (btn) { btn.disabled = true; btn.textContent = 'Adding\u2026'; }
+    const isPreorder = btn && btn.classList.contains('preorder');
+    if (btn) { btn.disabled = true; btn.textContent = isPreorder ? 'Pre-ordering\u2026' : 'Adding\u2026'; }
     try {
       const list = await resolveVariants(key);
       const colorEl = document.getElementById('sel-colour');
