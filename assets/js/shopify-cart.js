@@ -84,13 +84,28 @@
   const removeLine = (cartId, lineId) => gql(
     `mutation($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
     { cartId, lineIds:[lineId] }).then(d => d.cartLinesRemove.cart);
+  const updateLine = (cartId, lineId, quantity) => gql(
+    `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
+    { cartId, lines:[{ id: lineId, quantity }] }).then(d => d.cartLinesUpdate.cart);
 
   async function addToCartFlow(variantId) {
-    const line = { merchandiseId: variantId, quantity: 1 };
-    const id = localStorage.getItem(CART_KEY);
+    const cartId = localStorage.getItem(CART_KEY);
     let cart;
-    if (id) { try { cart = await addLine(id, line); } catch (e) { cart = null; } }
-    if (!cart) { cart = await createCart(line); }
+    if (cartId) {
+      try {
+        // check if variant already in cart — if so, increment quantity
+        const existing = await getCart(cartId);
+        if (existing) {
+          const existingLine = existing.lines.edges.find(({ node }) => node.merchandise.id === variantId);
+          if (existingLine) {
+            cart = await updateLine(cartId, existingLine.node.id, existingLine.node.quantity + 1);
+          } else {
+            cart = await addLine(cartId, { merchandiseId: variantId, quantity: 1 });
+          }
+        }
+      } catch (e) { cart = null; }
+    }
+    if (!cart) { cart = await createCart({ merchandiseId: variantId, quantity: 1 }); }
     localStorage.setItem(CART_KEY, cart.id);
     return cart;
   }
@@ -117,6 +132,9 @@
     .ec-line .t{font-size:.92rem;color:#0E1512}
     .ec-line .s{font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
     .ec-line .p{font-size:.88rem;margin-top:6px}
+    .ec-qty{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
+    .ec-qty button{width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
+    .ec-qty span{font-size:.88rem;min-width:16px;text-align:center}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1)}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:14px}
@@ -153,13 +171,22 @@
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
-        <div class="p">${money(v.price.amount, v.price.currencyCode)}</div>
-        <button class="ec-rm" data-id="${node.id}">Remove</button></div></div>`;
+        <div class="p">${money(v.price.amount * node.quantity, v.price.currencyCode)}</div>
+        <div class="ec-qty">
+          <button data-line="${node.id}" data-qty="${node.quantity - 1}">&#8722;</button>
+          <span>${node.quantity}</span>
+          <button data-line="${node.id}" data-qty="${node.quantity + 1}">+</button>
+        </div></div></div>`;
     }).join('');
     document.getElementById('ec-sub').textContent = money(cart.cost.subtotalAmount.amount, cart.cost.subtotalAmount.currencyCode);
     foot.style.display = 'block';
-    lines.querySelectorAll('.ec-rm').forEach(b => b.addEventListener('click', async () => {
-      try { render(await removeLine(localStorage.getItem(CART_KEY), b.dataset.id)); } catch (e) {}
+    lines.querySelectorAll('.ec-qty button').forEach(b => b.addEventListener('click', async () => {
+      const lineId = b.dataset.line, qty = parseInt(b.dataset.qty);
+      const cid = localStorage.getItem(CART_KEY);
+      try {
+        if (qty < 1) { render(await removeLine(cid, lineId)); }
+        else { render(await updateLine(cid, lineId, qty)); }
+      } catch (e) {}
     }));
   }
 
