@@ -98,8 +98,13 @@
     `mutation($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
     { cartId, lineIds:[lineId] }).then(d => d.cartLinesRemove.cart);
 
+  /* ---------- Klaviyo helper ---------- */
+  function klTrack(event, props) {
+    window.klaviyo = window.klaviyo || [];
+    window.klaviyo.push(['track', event, props]);
+  }
+
   async function addToCartFlow(variantId) {
-    const line = { merchandiseId: variantId, quantity: 1 };
     const id = localStorage.getItem(CART_KEY);
     let cart;
     if (id) { try { cart = await addLine(id, line); } catch (e) { cart = null; } }
@@ -169,7 +174,20 @@
       try { render(await removeLine(localStorage.getItem(CART_KEY), b.dataset.id)); } catch (e) {}
     }));
   }
-  document.getElementById('ec-co').addEventListener('click', () => { if (current) window.location.href = current.checkoutUrl; });
+  document.getElementById('ec-co').addEventListener('click', () => {
+    if (!current) return;
+    // fire Started Checkout to Klaviyo
+    const items = current.lines.edges.map(({ node }) => {
+      const v = node.merchandise;
+      return { ProductName: v.product.title, ProductID: v.id, Quantity: node.quantity, ItemPrice: parseFloat(v.price.amount) };
+    });
+    klTrack('Started Checkout', {
+      $value: parseFloat(current.cost.subtotalAmount.amount),
+      ItemNames: items.map(i => i.ProductName),
+      Items: items
+    });
+    window.location.href = current.checkoutUrl;
+  });
 
   const navList = document.querySelector('.nav-links');
   if (navList) {
@@ -203,7 +221,7 @@
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       render(cart); openDrawer();
-      if (window.klaviyo) klaviyo.push(['track', 'Added to Cart', { ProductID: key, Size: size, $value: (typeof PAGE !== 'undefined' && PAGE.priceNum) || undefined }]);
+      klTrack('Added to Cart', { ProductID: key, ProductName: (typeof PAGE !== 'undefined' && PAGE.klName) || key, Size: size, $value: (typeof PAGE !== 'undefined' && PAGE.priceNum) || undefined });
     } catch (e) {
       if (window.showToast) showToast('Something went wrong. Please try again.');
     } finally {
