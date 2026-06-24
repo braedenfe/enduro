@@ -185,7 +185,7 @@
     const sizeEl = document.querySelector('.size-btn.active');
     if (!sizeEl) { if (window.showToast) showToast('Please select a size'); return; }
     const size = sizeEl.textContent.trim();
-    const key = (window.PAGE && PAGE.key) || '';
+    const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
 
     // products without a configured ID fall back to the original pre-order flow
     if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) {
@@ -203,7 +203,7 @@
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       render(cart); openDrawer();
-      if (window.klaviyo) klaviyo.push(['track', 'Added to Cart', { ProductID: key, Size: size, $value: (window.PAGE && PAGE.priceNum) || undefined }]);
+      if (window.klaviyo) klaviyo.push(['track', 'Added to Cart', { ProductID: key, Size: size, $value: (typeof PAGE !== 'undefined' && PAGE.priceNum) || undefined }]);
     } catch (e) {
       if (window.showToast) showToast('Something went wrong. Please try again.');
     } finally {
