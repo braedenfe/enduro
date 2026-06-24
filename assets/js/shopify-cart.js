@@ -1,25 +1,14 @@
 /* ============================================================
    Enduro — Shopify Storefront Cart
    Drop-in cart for the static site. No build step, no dependencies.
-
-   You only need to give it the PRODUCT ID for each product (the number
-   in the admin URL: admin.shopify.com/store/.../products/THISNUMBER).
-   The cart looks up each size's variant automatically via the
-   Storefront API — no variant IDs to hunt down.
-
-   Include before </body> on every product page + shop.html.
-   Stays dormant until at least one real product ID is filled in, so
-   it's safe to deploy early — existing pre-order behaviour is untouched.
    ============================================================ */
 (function () {
   'use strict';
 
-  /* ====================== CONFIG ====================== */
   const SHOP_DOMAIN      = 'xerhmr-re.myshopify.com';
-  const STOREFRONT_TOKEN = '637eb21c2c085b6e9a1ab3cfad9b6464';  // public Storefront API token
+  const STOREFRONT_TOKEN = '637eb21c2c085b6e9a1ab3cfad9b6464';
   const API_VERSION      = '2026-04';
 
-  // Map each page's PAGE.key -> Shopify PRODUCT ID (the number in the admin URL).
   const PRODUCTS = {
     'merino-short-mens':   '15871280546161',
     'merino-short-womens': '15871281135985',
@@ -27,11 +16,10 @@
     'cotton-long-run-tee': '15871282184561',
     'wool-long-run-tee':   '15871256396145'
   };
-  /* ==================================================== */
 
   const CREDS_READY  = !SHOP_DOMAIN.includes('YOUR-STORE') && !STOREFRONT_TOKEN.includes('YOUR_');
   const HAS_PRODUCTS = Object.values(PRODUCTS).some(v => /^\d+$/.test(v));
-  if (!CREDS_READY || !HAS_PRODUCTS) return; // dormant until creds AND >=1 real product ID
+  if (!CREDS_READY || !HAS_PRODUCTS) return;
 
   const ENDPOINT = 'https://' + SHOP_DOMAIN + '/api/' + API_VERSION + '/graphql.json';
   const CART_KEY = 'enduro_cart_id';
@@ -49,8 +37,8 @@
     return json.data;
   }
 
-  /* ---------- resolve size -> variant id (cached) ---------- */
-  const variantCache = {}; // key -> [ { id, available, size, color } ]
+  /* ---------- resolve size -> variant (cached) ---------- */
+  const variantCache = {};
   async function resolveVariants(key) {
     if (variantCache[key]) return variantCache[key];
     const id = PRODUCTS[key];
@@ -68,7 +56,6 @@
     return list;
   }
 
-  // match on size, and on colour only when the page exposes a colour choice
   function pickVariant(list, size, colorName) {
     const s = (size || '').toLowerCase();
     const c = (colorName || '').toLowerCase();
@@ -89,36 +76,29 @@
 
   const createCart = (line) => gql(
     `mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{${CART}} userErrors{message}}}`,
-    { lines:[line] }).then(d => {
-      const cart = d.cartCreate && d.cartCreate.cart;
-      if (!cart) throw new Error((d.cartCreate && d.cartCreate.userErrors && d.cartCreate.userErrors[0] && d.cartCreate.userErrors[0].message) || 'Cart creation failed');
-      return cart;
-    });
+    { lines:[line] }).then(d => d.cartCreate.cart);
   const addLine = (cartId, line) => gql(
     `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
-    { cartId, lines:[line] }).then(d => {
-      const cart = d.cartLinesAdd && d.cartLinesAdd.cart;
-      if (!cart) throw new Error((d.cartLinesAdd && d.cartLinesAdd.userErrors && d.cartLinesAdd.userErrors[0] && d.cartLinesAdd.userErrors[0].message) || 'Failed to add item');
-      return cart;
-    });
+    { cartId, lines:[line] }).then(d => d.cartLinesAdd.cart);
   const getCart = (id) => gql(`query($id:ID!){cart(id:$id){${CART}}}`, { id }).then(d => d.cart);
   const removeLine = (cartId, lineId) => gql(
     `mutation($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
     { cartId, lineIds:[lineId] }).then(d => d.cartLinesRemove.cart);
 
-  /* ---------- Klaviyo helper ---------- */
-  function klTrack(event, props) {
-    window.klaviyo = window.klaviyo || [];
-    window.klaviyo.push(['track', event, props]);
-  }
-
   async function addToCartFlow(variantId) {
+    const line = { merchandiseId: variantId, quantity: 1 };
     const id = localStorage.getItem(CART_KEY);
     let cart;
     if (id) { try { cart = await addLine(id, line); } catch (e) { cart = null; } }
     if (!cart) { cart = await createCart(line); }
     localStorage.setItem(CART_KEY, cart.id);
     return cart;
+  }
+
+  /* ---------- Klaviyo helper ---------- */
+  function klTrack(event, props) {
+    window.klaviyo = window.klaviyo || [];
+    window.klaviyo.push(['track', event, props]);
   }
 
   /* ---------- UI: drawer + nav link ---------- */
@@ -158,14 +138,6 @@
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelector('.ec-x').addEventListener('click', closeDrawer);
 
-  function isVariantPreorder(variantGid) {
-    for (const key of Object.keys(variantCache)) {
-      const found = variantCache[key] && variantCache[key].find(v => v.id === variantGid);
-      if (found) return !found.available;
-    }
-    return false;
-  }
-
   let current = null;
   function render(cart) {
     current = cart;
@@ -178,10 +150,9 @@
     }
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
-      const isPreorder = isVariantPreorder(v.id);
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}${isPreorder ? ' <span style="font-size:.7rem;background:#1F3D35;color:#F5F2EC;padding:2px 6px;border-radius:3px;letter-spacing:.08em">PRE-ORDER</span>' : ''}</div><div class="s">${v.title}</div>
+        <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
         <div class="p">${money(v.price.amount, v.price.currencyCode)}</div>
         <button class="ec-rm" data-id="${node.id}">Remove</button></div></div>`;
     }).join('');
@@ -191,9 +162,9 @@
       try { render(await removeLine(localStorage.getItem(CART_KEY), b.dataset.id)); } catch (e) {}
     }));
   }
+
   document.getElementById('ec-co').addEventListener('click', () => {
     if (!current) return;
-    // fire Started Checkout to Klaviyo
     const items = current.lines.edges.map(({ node }) => {
       const v = node.merchandise;
       return { ProductName: v.product.title, ProductID: v.id, Quantity: node.quantity, ItemPrice: parseFloat(v.price.amount) };
@@ -214,73 +185,21 @@
     navList.appendChild(li);
   }
 
-  /* ---------- availability-aware button state ---------- */
-  function updateButtonState(available) {
-    const btn = document.querySelector('.atc');
-    const note = document.querySelector('.atc-note');
-    if (!btn) return;
-    if (available === null) return; // unknown — leave as-is
-    if (available) {
-      btn.textContent = 'Add to Cart';
-      btn.classList.remove('preorder');
-      if (note) note.dataset.orig = note.dataset.orig || note.textContent;
-    } else {
-      btn.textContent = 'Pre-order';
-      btn.classList.add('preorder');
-      if (note) {
-        note.dataset.orig = note.dataset.orig || note.textContent;
-        note.textContent = 'Pre-order \u2014 ships once production is complete \u00b7 ' + (note.dataset.orig || '');
-      }
-    }
-  }
-
-  // hook into the page's selectSize so button updates when size is picked
-  const _origSelectSize = window.selectSize;
-  window.selectSize = async function (btn) {
-    if (typeof _origSelectSize === 'function') _origSelectSize(btn);
-    const size = btn.textContent.trim();
-    const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
-    if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) return;
-    try {
-      const list = await resolveVariants(key);
-      const colorEl = document.getElementById('sel-colour');
-      const colorName = colorEl ? colorEl.textContent.trim() : null;
-      const v = list && pickVariant(list, size, colorName);
-      updateButtonState(v ? v.available : null);
-    } catch (e) {}
-  };
-
-  // also update when colour changes
-  const _origSelectColour = window.selectColour;
-  window.selectColour = async function (btn, name) {
-    if (typeof _origSelectColour === 'function') _origSelectColour(btn, name);
-    const sizeEl = document.querySelector('.size-btn.active');
-    if (!sizeEl) return;
-    const size = sizeEl.textContent.trim();
-    const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
-    if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) return;
-    try {
-      const list = await resolveVariants(key);
-      const v = list && pickVariant(list, size, name);
-      updateButtonState(v ? v.available : null);
-    } catch (e) {}
-  };
-  const _origAddToCart = window.addToCart; // page's existing pre-order handler
+  /* ---------- override addToCart() ---------- */
+  const _origAddToCart = window.addToCart;
   window.addToCart = async function () {
     const sizeEl = document.querySelector('.size-btn.active');
     if (!sizeEl) { if (window.showToast) showToast('Please select a size'); return; }
     const size = sizeEl.textContent.trim();
     const key = (typeof PAGE !== 'undefined' && PAGE.key) || '';
 
-    // products without a configured ID fall back to the original pre-order flow
     if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) {
       if (typeof _origAddToCart === 'function') return _origAddToCart();
       if (window.showToast) showToast('That size isn\u2019t available yet'); return;
     }
 
     const btn = document.querySelector('.atc'); const label = btn && btn.textContent;
-    const isPreorder = btn && btn.classList.contains('preorder');
-    if (btn) { btn.disabled = true; btn.textContent = isPreorder ? 'Pre-ordering\u2026' : 'Adding\u2026'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'Adding\u2026'; }
     try {
       const list = await resolveVariants(key);
       const colorEl = document.getElementById('sel-colour');
