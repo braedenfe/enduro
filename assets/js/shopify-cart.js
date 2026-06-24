@@ -84,15 +84,23 @@
     cost { subtotalAmount { amount currencyCode } }
     lines(first:50){ edges { node { id quantity
       merchandise { ... on ProductVariant {
-        id title availableForSale price { amount currencyCode }
+        id title price { amount currencyCode }
         product { title featuredImage { url altText } } } } } } }`;
 
   const createCart = (line) => gql(
     `mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{${CART}} userErrors{message}}}`,
-    { lines:[line] }).then(d => d.cartCreate.cart);
+    { lines:[line] }).then(d => {
+      if (d.cartCreate.userErrors && d.cartCreate.userErrors.length) throw new Error(d.cartCreate.userErrors[0].message);
+      if (!d.cartCreate.cart) throw new Error('Cart creation failed');
+      return d.cartCreate.cart;
+    });
   const addLine = (cartId, line) => gql(
     `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
-    { cartId, lines:[line] }).then(d => d.cartLinesAdd.cart);
+    { cartId, lines:[line] }).then(d => {
+      if (d.cartLinesAdd.userErrors && d.cartLinesAdd.userErrors.length) throw new Error(d.cartLinesAdd.userErrors[0].message);
+      if (!d.cartLinesAdd.cart) throw new Error('Failed to add item');
+      return d.cartLinesAdd.cart;
+    });
   const getCart = (id) => gql(`query($id:ID!){cart(id:$id){${CART}}}`, { id }).then(d => d.cart);
   const removeLine = (cartId, lineId) => gql(
     `mutation($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
@@ -150,6 +158,14 @@
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelector('.ec-x').addEventListener('click', closeDrawer);
 
+  function isVariantPreorder(variantGid) {
+    for (const key of Object.keys(variantCache)) {
+      const found = variantCache[key] && variantCache[key].find(v => v.id === variantGid);
+      if (found) return !found.available;
+    }
+    return false;
+  }
+
   let current = null;
   function render(cart) {
     current = cart;
@@ -162,7 +178,7 @@
     }
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
-      const isPreorder = !v.availableForSale;
+      const isPreorder = isVariantPreorder(v.id);
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}${isPreorder ? ' <span style="font-size:.7rem;background:#1F3D35;color:#F5F2EC;padding:2px 6px;border-radius:3px;letter-spacing:.08em">PRE-ORDER</span>' : ''}</div><div class="s">${v.title}</div>
