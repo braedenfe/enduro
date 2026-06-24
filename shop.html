@@ -369,6 +369,27 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       </div>
     </a>
 
+    <!-- Men's Cotton Short 5" -->
+    <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-gender="men" role="listitem">
+      <div class="pcard-img">
+        <img class="main" src="assets/images/shorts-mens-front-model.png" alt="Men's Cotton Long Run Short 5 inch, front" loading="lazy">
+        <img class="alt" src="assets/images/shorts-mens-back-model.png" alt="Men's Cotton Long Run Short 5 inch, back" loading="lazy">
+        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-gender">Men's</span>
+        <div class="pcard-quick">
+          <button class="pq-btn" onclick="event.preventDefault();openDrawer('cotton-short-mens')">Quick view</button>
+          <span class="pq-btn primary">Shop now</span>
+        </div>
+      </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">Long Run Short 5&Prime; &middot; Cotton</h2>
+          <span class="pcard-fibre">Organic cotton &middot; Running</span>
+        </div>
+        <span class="pcard-price">A$119</span>
+      </div>
+    </a>
+
     <!-- Women's Merino Short 3" -->
     <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-gender="women" role="listitem">
       <div class="pcard-img">
@@ -405,7 +426,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Long Run Tee &middot; Merino</h2>
-          <span class="pcard-fibre">Supima &amp; merino &middot; Running</span>
+          <span class="pcard-fibre">100% merino &middot; Running</span>
         </div>
         <span class="pcard-price soon">Coming soon</span>
       </div>
@@ -504,33 +525,33 @@ const products = {
     preorder: true,
     page: 'pages/product-cotton-long-run-tee.html',
     photo: 'assets/images/tee-white-front-flat.png',
-    desc: 'A performance tee built from premium organic cotton. Breathable, lightweight, and naturally soft. Designed for long efforts in warm conditions with minimal construction and no excess.',
+    desc: 'An understated, staple running tee in 100% organic cotton. An oversized, boxy cut with a breezy, lightweight hand — incredibly soft and breathable, it moves easily between runs and everyday wear.',
     fit: 'True to size. Model is 183cm wearing size M.',
-    care: 'Machine wash cold. Tumble dry low.',
+    care: 'Machine wash cold. Line dry in shade.',
     sizes: ['S','M','L','XL'],
     soldOut: [],
     details: [
-      ['Fibre','Organic Cotton & Modal'],
-      ['Weight','155gsm single jersey'],
+      ['Fibre','100% Organic Cotton'],
+      ['Weight','90gsm single jersey'],
       ['Colours','Natural White, Washed Black'],
-      ['Certificate','OEKO-TEX Standard 100'],
+      ['Certificate','GOTS, OCS & OEKO-TEX'],
     ]
   },
   'wool-long-run-tee': {
     name: 'Long Run Tee \u2014 Merino',
-    material: 'Supima Cotton & Merino',
+    material: '100% Merino Wool',
     category: 'Running',
     price: 'Coming soon',
     soon: true,
     photo: 'assets/images/tee-black-front-flat.png',
-    desc: 'Our flagship tee blending Supima cotton with extra fine merino. Thermoregulating across conditions, naturally odour resistant, and machine washable. In final development now.',
+    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. In final development now.',
     fit: 'True to size. Sizing confirmed at release.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S','M','L','XL'],
     soldOut: ['S','M','L','XL'],
     details: [
-      ['Fibre','80% Supima Cotton / 20% Extra Fine Merino'],
-      ['Weight','200gsm'],
+      ['Fibre','100% Merino Wool, 17.5\u00b5'],
+      ['Weight','175gsm'],
       ['Collar','Self fabric'],
       ['Status','In development \u00b7 register for first access'],
     ]
@@ -543,16 +564,36 @@ const products = {
     preorder: true,
     page: 'pages/product-merino-short-mens.html',
     photo: 'assets/images/shorts-mens-front-flat.png',
-    desc: 'A 5 inch running short in knitted merino. Features a zip side pocket and a zippered rear waistband pocket. Thermoregulating, anti odour, and built for distance.',
+    desc: 'A 5 inch running short in knitted merino. Features dual zip side pockets and a zippered rear security pocket. Thermoregulating, anti odour, and built for distance.',
     fit: 'True to size. Model is 183cm wearing size M.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S','M','L','XL'],
     soldOut: [],
     details: [
-      ['Fibre','17\u201318.5\u00b5 knitted merino, mulesing free'],
+      ['Fibre','17.5\u201319.5\u00b5 knitted merino, Woolmark, mulesing free'],
       ['Inseam','5\u2033'],
-      ['Pockets','Zip side pocket, zippered rear waistband pocket'],
+      ['Pockets','Dual zip side pockets, zippered rear pocket'],
       ['Sizes','S \u2013 XL'],
+    ]
+  },
+  'cotton-short-mens': {
+    name: 'Long Run Short 5\u2033 \u00b7 Cotton \u2014 Men\u2019s',
+    material: '100% Organic Cotton',
+    category: 'Running \u00b7 Men',
+    price: 'A$119',
+    preorder: true,
+    page: 'pages/product-cotton-short-mens.html',
+    photo: 'assets/images/shorts-mens-front-flat.png',
+    desc: 'A 5 inch everyday short in 100% organic cotton. Lightweight and breathable, with dual zip side pockets and a zippered rear security pocket. Built for training, travel, and warm-weather miles.',
+    fit: 'True to size. Model is 183cm wearing size M.',
+    care: 'Machine wash cold. Line dry in shade.',
+    sizes: ['S','M','L','XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% organic cotton interlock, GOTS & OCS'],
+      ['Weight','170\u2013190gsm'],
+      ['Inseam','5\u2033'],
+      ['Pockets','Dual zip side pockets, zippered rear pocket'],
     ]
   },
   'merino-short-womens': {
@@ -569,7 +610,7 @@ const products = {
     sizes: ['XS','S','M','L','XL'],
     soldOut: [],
     details: [
-      ['Fibre','17\u201318.5\u00b5 knitted merino, mulesing free'],
+      ['Fibre','17.5\u00b5 knitted merino, Woolmark, mulesing free'],
       ['Inseam','3\u2033'],
       ['Pockets','Zippered rear waistband pocket'],
       ['Sizes','XS \u2013 XL'],
