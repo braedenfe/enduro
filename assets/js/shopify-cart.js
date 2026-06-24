@@ -90,16 +90,16 @@
   const createCart = (line) => gql(
     `mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{${CART}} userErrors{message}}}`,
     { lines:[line] }).then(d => {
-      if (d.cartCreate.userErrors && d.cartCreate.userErrors.length) throw new Error(d.cartCreate.userErrors[0].message);
-      if (!d.cartCreate.cart) throw new Error('Cart creation failed');
-      return d.cartCreate.cart;
+      const cart = d.cartCreate && d.cartCreate.cart;
+      if (!cart) throw new Error((d.cartCreate && d.cartCreate.userErrors && d.cartCreate.userErrors[0] && d.cartCreate.userErrors[0].message) || 'Cart creation failed');
+      return cart;
     });
   const addLine = (cartId, line) => gql(
     `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
     { cartId, lines:[line] }).then(d => {
-      if (d.cartLinesAdd.userErrors && d.cartLinesAdd.userErrors.length) throw new Error(d.cartLinesAdd.userErrors[0].message);
-      if (!d.cartLinesAdd.cart) throw new Error('Failed to add item');
-      return d.cartLinesAdd.cart;
+      const cart = d.cartLinesAdd && d.cartLinesAdd.cart;
+      if (!cart) throw new Error((d.cartLinesAdd && d.cartLinesAdd.userErrors && d.cartLinesAdd.userErrors[0] && d.cartLinesAdd.userErrors[0].message) || 'Failed to add item');
+      return cart;
     });
   const getCart = (id) => gql(`query($id:ID!){cart(id:$id){${CART}}}`, { id }).then(d => d.cart);
   const removeLine = (cartId, lineId) => gql(
