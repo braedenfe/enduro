@@ -316,12 +316,13 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   .reveal,.panel-card{opacity:1;transform:none}
   .statement-text .w{opacity:1}
 /* TICKER */
-.ticker-wrap{background:var(--forest);overflow:hidden;padding:13px 0;border-top:1px solid rgba(245,242,236,0.08)}
-.ticker-track{display:flex;gap:0;white-space:nowrap;animation:ticker 28s linear infinite}
-.ticker-track:hover{animation-play-state:paused}
-.ticker-track span{font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;color:var(--bone);padding:0 28px}
-.ticker-dot{color:var(--forest);padding:0 !important;font-size:0.7rem;opacity:0.6;letter-spacing:0 !important}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-wrap{background:var(--forest);overflow:hidden;padding:11px 0;border-top:1px solid rgba(245,242,236,0.1);border-bottom:1px solid rgba(245,242,236,0.1)}
+.ticker-inner{display:flex;width:max-content;animation:ticker 32s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-set{display:flex;align-items:center;white-space:nowrap;flex-shrink:0}
+.ticker-set span{font-family:var(--cond);font-size:0.75rem;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;color:var(--bone);padding:0 32px}
+.ticker-set img{width:16px;height:16px;object-fit:contain;opacity:0.7;flex-shrink:0}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
@@ -364,19 +365,19 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 
 <!-- TICKER -->
 <div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-track">
-    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
-    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
-    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
-    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
-    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
-    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
-    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
-    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
-    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
-    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
-    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
-    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
+  <div class="ticker-inner">
+    <div class="ticker-set">
+      <span>Pre-orders open now</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Free AUS returns</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Worldwide shipping</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Natural fibres only</span><img src="assets/images/ticker-motif.png" alt="">
+    </div>
+    <div class="ticker-set">
+      <span>Pre-orders open now</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Free AUS returns</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Worldwide shipping</span><img src="assets/images/ticker-motif.png" alt="">
+      <span>Natural fibres only</span><img src="assets/images/ticker-motif.png" alt="">
+    </div>
   </div>
 </div>
 
