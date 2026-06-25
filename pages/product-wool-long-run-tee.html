@@ -14,10 +14,10 @@
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
 <title>Long Run Tee — Merino — enduro</title>
-<meta name="description" content="The Long Run Tee in 100% merino wool. 175gsm, 17.5 micron, self fabric collar. Coming soon.">
+<meta name="description" content="The Long Run Tee in 100% merino wool. 175gsm, 17.5 micron, self fabric collar. Pre-order now.">
 <meta property="og:title" content="Long Run Tee — Merino — enduro">
 <meta property="og:image" content="../og-image.png">
-<meta property="og:description" content="The Long Run Tee in 100% merino wool. 175gsm, 17.5 micron, self fabric collar. Coming soon.">
+<meta property="og:description" content="The Long Run Tee in 100% merino wool. 175gsm, 17.5 micron, self fabric collar. Pre-order now.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
@@ -67,22 +67,33 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .g-badge{position:absolute;top:14px;left:14px;z-index:2;font-family:var(--cond);font-size:0.7rem;font-weight:500;
   letter-spacing:0.2em;text-transform:uppercase;background:var(--forest);color:var(--bone);padding:6px 14px;border-radius:99px}
 .g-badge.soon{background:var(--ink)}
-.g-thumbs{display:flex;gap:4px;margin-top:4px}
-@media(max-width:920px){.g-thumbs{padding:0}}
-.g-thumb{flex:1;aspect-ratio:1/1;overflow:hidden;border:none;padding:0;background:#EAE6DE;opacity:0.55;transition:opacity .3s;border-radius:2px}
-.g-thumb img{width:100%;height:100%;object-fit:cover}
-.g-thumb.active,.g-thumb:hover{opacity:1}
+/* Gallery nav arrows */
+.g-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;border:1px solid rgba(245,242,236,0.55);
+  background:rgba(245,242,236,0.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:0 2px 16px rgba(14,21,18,0.14);transition:background .3s,transform .3s,opacity .3s}
+.g-nav svg{width:17px;height:17px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.g-nav.prev{left:16px}
+.g-nav.next{right:16px}
+.g-nav:hover{background:var(--bone)}
+.g-nav.prev:hover{transform:translateY(-50%) translateX(-2px)}
+.g-nav.next:hover{transform:translateY(-50%) translateX(2px)}
+.g-nav:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
+.g-counter{position:absolute;bottom:16px;right:16px;z-index:3;font-family:var(--cond);font-size:0.74rem;
+  font-weight:500;letter-spacing:0.18em;color:var(--bone);background:rgba(14,21,18,0.5);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:5px 13px;border-radius:99px}
+@media(max-width:920px){.g-nav{width:42px;height:42px}.g-nav.prev{left:12px}.g-nav.next{right:12px}}
 
 /* PANEL */
 .panel{padding-top:6px}
 @media(max-width:920px){.panel{padding:26px 20px 0}}
 .p-cat{color:var(--forest)}
-.p-name{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,4.5vw,3.4rem);line-height:1.02;letter-spacing:-0.01em;margin-top:10px}
+.p-name{font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,4.2vw,3.2rem);line-height:1.02;letter-spacing:-0.01em;margin-top:8px}
 .p-name .em{font-style:italic;color:var(--forest)}
-.p-price{font-size:1.15rem;font-weight:300;margin-top:12px}
+.p-price{font-size:1.15rem;font-weight:300;margin-top:8px}
 .p-price.soon{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5)}
-.p-tagline{margin-top:16px;font-weight:300;line-height:1.75;color:rgba(14,21,18,0.7);font-size:0.95rem}
-.sel-label{display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 10px;
+.p-tagline{margin-top:14px;font-weight:300;line-height:1.62;color:rgba(14,21,18,0.7);font-size:0.92rem}
+.sel-label{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 9px;
   font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(14,21,18,0.5)}
 .sel-label span{color:var(--ink);letter-spacing:0.06em;text-transform:none;font-family:var(--sans);font-size:0.82rem;font-weight:400}
 .colour-row,.size-row{display:flex;gap:8px;flex-wrap:wrap}
@@ -91,32 +102,32 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .colour-option:hover{border-color:var(--ink);color:var(--ink)}
 .colour-option.active{border-color:var(--forest);color:var(--ink);background:rgba(31,61,53,0.06)}
 .colour-swatch{width:15px;height:15px;border-radius:50%;border:1px solid rgba(14,21,18,0.15)}
-.size-btn{min-width:52px;padding:12px 0;border-radius:99px;border:1px solid var(--line-dark);background:transparent;
+.size-btn{min-width:52px;padding:10px 0;border-radius:99px;border:1px solid var(--line-dark);background:transparent;
   font-family:var(--cond);font-size:0.86rem;letter-spacing:0.1em;color:var(--ink);transition:all .25s}
 .size-btn:hover{border-color:var(--forest);color:var(--forest)}
 .size-btn.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
 .size-btn.sold-out{opacity:0.35;text-decoration:line-through;cursor:default}
-.size-guide{display:inline-block;margin-top:12px;font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
+.size-guide{display:inline-block;margin-top:10px;font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
   color:rgba(14,21,18,0.5);border-bottom:1px solid var(--line-dark);padding-bottom:2px;background:none;border-top:none;border-left:none;border-right:none;transition:color .3s}
 .size-guide:hover{color:var(--ink)}
-.atc{width:100%;margin-top:24px;padding:17px;border:none;border-radius:99px;background:var(--forest);color:var(--bone);
+.atc{width:100%;margin-top:18px;padding:16px;border:none;border-radius:99px;background:var(--forest);color:var(--bone);
   font-family:var(--cond);font-size:0.88rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;transition:background .3s}
 .atc:hover{background:#173028}
-.atc-note{margin-top:12px;text-align:center;font-family:var(--cond);font-size:0.74rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.45)}
+.atc-note{margin-top:10px;text-align:center;font-family:var(--cond);font-size:0.74rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.45)}
 
 /* CONDITIONS */
-.cw{margin-top:32px;padding:20px;border:1px solid var(--line-dark);border-radius:4px;background:var(--white)}
+.cw{margin-top:18px;padding:16px;border:1px solid var(--line-dark);border-radius:4px;background:var(--white)}
 .cw-head{display:flex;justify-content:space-between;align-items:center}
 .cw-title{font-family:var(--cond);font-size:0.74rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(14,21,18,0.5)}
 .unit-toggle{display:flex;gap:4px}
 .unit-btn{font-family:var(--cond);font-size:0.72rem;letter-spacing:0.08em;padding:4px 10px;border-radius:99px;
   border:1px solid var(--line-dark);background:transparent;color:rgba(14,21,18,0.5);transition:all .25s}
 .unit-btn.active{background:var(--forest);color:var(--bone);border-color:var(--forest)}
-.temp-bar{position:relative;height:6px;border-radius:3px;background:rgba(14,21,18,0.08);margin-top:16px}
+.temp-bar{position:relative;height:6px;border-radius:3px;background:rgba(14,21,18,0.08);margin-top:13px}
 .temp-fill{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--forest);transition:all .4s ease}
 .temp-ticks{display:flex;justify-content:space-between;margin-top:8px}
 .temp-tick-label{font-family:var(--cond);font-size:0.7rem;letter-spacing:0.08em;color:rgba(14,21,18,0.4)}
-.cond-row{display:flex;gap:18px;margin-top:18px}
+.cond-row{display:flex;gap:18px;margin-top:14px}
 .cond-item{flex:1}
 .cond-bar{height:4px;border-radius:2px;background:rgba(14,21,18,0.08);overflow:hidden}
 .cond-fill{height:100%;border-radius:2px;background:var(--forest)}
@@ -125,7 +136,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .cond-name{font-family:var(--cond);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:6px}
 
 /* FEATURES */
-.features{margin-top:30px}
+.features{margin-top:52px}
 .features ul{list-style:none;margin-top:12px}
 .features li{padding:10px 0;border-bottom:1px solid var(--line-dark);font-size:0.9rem;font-weight:300;color:rgba(14,21,18,0.75)}
 
@@ -215,31 +226,33 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <div class="gallery">
     <div class="g-main" id="g-main">
       <img id="g-img" src="../assets/images/tee-black-front-model.png" alt="Long Run Tee — Merino">
-      <span class="g-badge soon">Coming soon</span>
+      <span class="g-badge">Pre-order</span>
+      <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
+        <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
+      </button>
+      <button class="g-nav next" onclick="setImage(gIndex+1)" aria-label="Next image">
+        <svg viewBox="0 0 24 24"><polyline points="9.5 5 16 12 9.5 19"/></svg>
+      </button>
+      <span class="g-counter" id="g-counter">01 / 04</span>
     </div>
-    <div class="g-thumbs" id="g-thumbs"></div>
   </div>
 
   <!-- PANEL -->
   <div class="panel">
     <p class="p-cat t-label">100% Merino wool &middot; Running &middot; Unisex</p>
     <h1 class="p-name">Long Run Tee <span class="em">Merino.</span></h1>
-    <div class="p-price soon">Coming soon</div>
-    <p class="p-tagline">Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. In final development now — register below for first access.</p>
+    <div class="p-price">A$140</div>
+    <p class="p-tagline">Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar.</p>
 
-    
+    <div class="sel-label">Colour <span>Black</span></div>
+    <div class="colour-row"><button class="colour-option active" style="cursor:default"><span class="colour-swatch" style="background:#2C2C2A"></span>Black</button></div>
 
     <div class="sel-label">Size <span id="sel-size">&mdash;</span></div>
-    <div class="size-row" id="size-row"><button class="size-btn sold-out">S</button><button class="size-btn sold-out">M</button><button class="size-btn sold-out">L</button><button class="size-btn sold-out">XL</button></div>
-    <p style="margin-top:12px;font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.45)">Sizing confirmed at release</p>
+    <div class="size-row" id="size-row"><button class="size-btn" onclick="selectSize(this)">S</button><button class="size-btn" onclick="selectSize(this)">M</button><button class="size-btn" onclick="selectSize(this)">L</button><button class="size-btn" onclick="selectSize(this)">XL</button></div>
+    <button class="size-guide" onclick="document.querySelectorAll('.acc')[1].querySelector('.acc-head').click();document.getElementById('sizing').scrollIntoView({behavior:'smooth'})">Size guide</button>
 
-    <div class="notify">
-      <form class="notify-form" id="notify-form" novalidate>
-        <input type="email" id="notify-email" placeholder="Email address" aria-label="Email address" autocomplete="email" required>
-        <button type="submit" id="notify-btn">Notify me</button>
-      </form>
-      <p class="notify-msg" id="notify-msg" role="status" aria-live="polite"></p>
-    </div>
+    <button class="atc" onclick="addToCart()">Pre-order now</button>
+    <p class="atc-note">Free AUS shipping over A$200 &middot; 30 day free returns</p>
 
     <!-- Conditions -->
     <div class="cw">
@@ -331,12 +344,11 @@ window.klaviyo = window.klaviyo || [];
 /* ─── GALLERY ─── */
 let gIndex = 0;
 const gImg = document.getElementById('g-img');
-const gThumbs = document.getElementById('g-thumbs');
+const gCounter = document.getElementById('g-counter');
 
-function renderThumbs() {
-  gThumbs.innerHTML = PAGE.images.map(function(im, i){
-    return '<button class="g-thumb' + (i === gIndex ? ' active' : '') + '" onclick="setImage(' + i + ')" aria-label="' + im.label + '"><img src="' + im.src + '" alt="' + im.label + '" loading="lazy"></button>';
-  }).join('');
+function updateCounter() {
+  const pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+  gCounter.textContent = pad(gIndex + 1) + ' / ' + pad(PAGE.images.length);
 }
 function applyFit(src) {
   // Flat lays and detail shots show uncropped; model shots fill the frame
@@ -351,9 +363,9 @@ function setImage(i) {
     applyFit(PAGE.images[gIndex].src);
     gImg.style.opacity = 1;
   }, 180);
-  gThumbs.querySelectorAll('.g-thumb').forEach(function(t, j){ t.classList.toggle('active', j === gIndex); });
+  updateCounter();
 }
-renderThumbs();
+updateCounter();
 applyFit(PAGE.images[0].src);
 
 /* Touch swipe */
@@ -381,7 +393,7 @@ function selectColour(btn, name) {
   gIndex = 0;
   gImg.src = PAGE.images[0].src;
   applyFit(PAGE.images[0].src);
-  renderThumbs();
+  updateCounter();
 }
 
 /* ─── SIZE ─── */
