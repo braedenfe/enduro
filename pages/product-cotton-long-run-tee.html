@@ -67,11 +67,22 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .g-badge{position:absolute;top:14px;left:14px;z-index:2;font-family:var(--cond);font-size:0.7rem;font-weight:500;
   letter-spacing:0.2em;text-transform:uppercase;background:var(--forest);color:var(--bone);padding:6px 14px;border-radius:99px}
 .g-badge.soon{background:var(--ink)}
-.g-thumbs{display:flex;gap:4px;margin-top:4px}
-@media(max-width:920px){.g-thumbs{padding:0}}
-.g-thumb{flex:1;aspect-ratio:1/1;overflow:hidden;border:none;padding:0;background:#EAE6DE;opacity:0.55;transition:opacity .3s;border-radius:2px}
-.g-thumb img{width:100%;height:100%;object-fit:cover}
-.g-thumb.active,.g-thumb:hover{opacity:1}
+/* Gallery nav arrows */
+.g-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;border:1px solid rgba(245,242,236,0.55);
+  background:rgba(245,242,236,0.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:0 2px 16px rgba(14,21,18,0.14);transition:background .3s,transform .3s,opacity .3s}
+.g-nav svg{width:17px;height:17px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.g-nav.prev{left:16px}
+.g-nav.next{right:16px}
+.g-nav:hover{background:var(--bone)}
+.g-nav.prev:hover{transform:translateY(-50%) translateX(-2px)}
+.g-nav.next:hover{transform:translateY(-50%) translateX(2px)}
+.g-nav:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
+.g-counter{position:absolute;bottom:16px;right:16px;z-index:3;font-family:var(--cond);font-size:0.74rem;
+  font-weight:500;letter-spacing:0.18em;color:var(--bone);background:rgba(14,21,18,0.5);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:5px 13px;border-radius:99px}
+@media(max-width:920px){.g-nav{width:42px;height:42px}.g-nav.prev{left:12px}.g-nav.next{right:12px}}
 
 /* PANEL */
 .panel{padding-top:6px}
@@ -216,8 +227,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <div class="g-main" id="g-main">
       <img id="g-img" src="../assets/images/tee-white-front-model.png" alt="Long Run Tee">
       <span class="g-badge">Pre-order</span>
+      <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
+        <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
+      </button>
+      <button class="g-nav next" onclick="setImage(gIndex+1)" aria-label="Next image">
+        <svg viewBox="0 0 24 24"><polyline points="9.5 5 16 12 9.5 19"/></svg>
+      </button>
+      <span class="g-counter" id="g-counter">01 / 04</span>
     </div>
-    <div class="g-thumbs" id="g-thumbs"></div>
   </div>
 
   <!-- PANEL -->
@@ -238,7 +255,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <button class="size-guide" onclick="document.querySelectorAll('.acc')[1].querySelector('.acc-head').click();document.getElementById('sizing').scrollIntoView({behavior:'smooth'})">Size guide</button>
 
     <button class="atc" onclick="addToCart()">Pre-order now</button>
-    <p class="atc-note">Free AUS returns &middot; Worldwide shipping available &middot; 30 day free returns</p>
+    <p class="atc-note">Free AUS return shipping <p class="atc-note">Free AUS shipping over A$200 &middot; 30 day returns</p>middot; Worldwide shipping available <p class="atc-note">Free AUS shipping over A$200 &middot; 30 day returns</p>middot; 30 day free returns</p>
 
     <!-- Conditions -->
     <div class="cw">
@@ -332,12 +349,11 @@ window.klaviyo = window.klaviyo || [];
 /* ─── GALLERY ─── */
 let gIndex = 0;
 const gImg = document.getElementById('g-img');
-const gThumbs = document.getElementById('g-thumbs');
+const gCounter = document.getElementById('g-counter');
 
-function renderThumbs() {
-  gThumbs.innerHTML = PAGE.images.map(function(im, i){
-    return '<button class="g-thumb' + (i === gIndex ? ' active' : '') + '" onclick="setImage(' + i + ')" aria-label="' + im.label + '"><img src="' + im.src + '" alt="' + im.label + '" loading="lazy"></button>';
-  }).join('');
+function updateCounter() {
+  const pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+  gCounter.textContent = pad(gIndex + 1) + ' / ' + pad(PAGE.images.length);
 }
 function applyFit(src) {
   // Flat lays and detail shots show uncropped; model shots fill the frame
@@ -352,9 +368,9 @@ function setImage(i) {
     applyFit(PAGE.images[gIndex].src);
     gImg.style.opacity = 1;
   }, 180);
-  gThumbs.querySelectorAll('.g-thumb').forEach(function(t, j){ t.classList.toggle('active', j === gIndex); });
+  updateCounter();
 }
-renderThumbs();
+updateCounter();
 applyFit(PAGE.images[0].src);
 
 /* Touch swipe */
@@ -382,7 +398,7 @@ function selectColour(btn, name) {
   gIndex = 0;
   gImg.src = PAGE.images[0].src;
   applyFit(PAGE.images[0].src);
-  renderThumbs();
+  updateCounter();
 }
 
 /* ─── SIZE ─── */
