@@ -315,21 +315,16 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   .hero-kicker,.hero-sub,.hero-actions{opacity:1}
   .reveal,.panel-card{opacity:1;transform:none}
   .statement-text .w{opacity:1}
-}
-.announce{background:var(--forest);color:var(--bone);text-align:center;padding:9px 16px;font-family:var(--cond);font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.announce span{opacity:0.5}
-</style>
-<!-- Klaviyo onsite tracking -->
+/* TICKER */
+.ticker-wrap{background:var(--forest);overflow:hidden;padding:13px 0;border-top:1px solid rgba(245,242,236,0.08)}
+.ticker-track{display:flex;gap:0;white-space:nowrap;animation:ticker 28s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-track span{font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;color:var(--bone);padding:0 28px}
+.ticker-dot{color:var(--forest);padding:0 !important;font-size:0.7rem;opacity:0.6;letter-spacing:0 !important}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
 </head><body>
-
-<div class="announce">
-  Pre-orders open now
-  <span>·</span>
-  Free AUS returns
-  <span>·</span>
-  Worldwide shipping available
-</div>
 
 <header id="nav">
   <a href="index.html" aria-label="enduro home" class="nav-logo"><img src="assets/images/logo-tagline.png" alt="endurø — for the long run." style="height:25px;width:auto;display:block;filter:brightness(0) invert(0.96);"></a>
@@ -365,6 +360,24 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   </div>
   <div class="hero-scroll">Scroll</div>
 </section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
+    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
+    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
+    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
+    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
+    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
+    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
+    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
+    <span>Pre-orders open now</span><span class="ticker-dot">Ø</span>
+    <span>Free AUS returns</span><span class="ticker-dot">Ø</span>
+    <span>Worldwide shipping</span><span class="ticker-dot">Ø</span>
+    <span>Natural fibres only</span><span class="ticker-dot">Ø</span>
+  </div>
+</div>
 
 <!-- INTRO STATEMENT -->
 <section id="statement">
