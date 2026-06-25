@@ -412,16 +412,16 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       </div>
     </a>
 
-    <!-- Merino Tee — coming soon -->
-    <div class="pcard" data-product="wool-long-run-tee" data-gender="men women" role="listitem">
+    <!-- Merino Tee -->
+    <a class="pcard" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/tee-black-front-model.png" alt="Long Run Tee Merino, coming soon" loading="lazy">
+        <img class="main" src="assets/images/tee-black-front-model.png" alt="Long Run Tee Merino, front" loading="lazy">
         <img class="alt" src="assets/images/tee-black-back-model.png" alt="Long Run Tee Merino, back" loading="lazy">
-        <span class="pcard-badge soon">Coming soon</span>
+        <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="openDrawer('wool-long-run-tee')">Quick view</button>
-          <button class="pq-btn primary" onclick="notifyMe()">Notify me</button>
+          <button class="pq-btn" onclick="event.preventDefault();openDrawer('wool-long-run-tee')">Quick view</button>
+          <span class="pq-btn primary">Shop now</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -429,9 +429,9 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
           <h2 class="pcard-name">Long Run Tee &middot; Merino</h2>
           <span class="pcard-fibre">100% merino &middot; Running</span>
         </div>
-        <span class="pcard-price soon">Coming soon</span>
+        <span class="pcard-price">A$140</span>
       </div>
-    </div>
+    </a>
 
   </div>
 </div>
@@ -542,19 +542,19 @@ const products = {
     name: 'Long Run Tee \u2014 Merino',
     material: '100% Merino Wool',
     category: 'Running',
-    price: 'Coming soon',
-    soon: true,
+    price: 'A$140',
+    soon: false,
     photo: 'assets/images/tee-black-front-flat.png',
-    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. In final development now.',
-    fit: 'True to size. Sizing confirmed at release.',
+    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar.',
+    fit: 'Relaxed performance fit. True to size.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S','M','L','XL'],
-    soldOut: ['S','M','L','XL'],
+    soldOut: [],
     details: [
       ['Fibre','100% Merino Wool, 17.5\u00b5'],
       ['Weight','175gsm'],
       ['Collar','Self fabric'],
-      ['Status','In development \u00b7 register for first access'],
+      ['Price','A$140'],
     ]
   },
   'merino-short-mens': {
