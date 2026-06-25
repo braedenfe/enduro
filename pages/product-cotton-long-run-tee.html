@@ -59,6 +59,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .gallery{position:sticky;top:84px}
 @media(max-width:920px){.gallery{position:static}}
 .g-main{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:#EAE6DE;touch-action:pan-y}
+@media(min-width:921px){.g-main{max-height:calc(100vh - 120px)}}
 @media(max-width:920px){.g-main{border-radius:0}}
 .g-main img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
 .g-main.contain{background:#F4F4F2}
@@ -237,7 +238,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <button class="size-guide" onclick="document.querySelectorAll('.acc')[1].querySelector('.acc-head').click();document.getElementById('sizing').scrollIntoView({behavior:'smooth'})">Size guide</button>
 
     <button class="atc" onclick="addToCart()">Pre-order now</button>
-    <p class="atc-note">Free AUS shipping over A$200 &middot; 30 day returns</p>
+    <p class="atc-note">Free AUS returns &middot; Worldwide shipping available &middot; 30 day free returns</p>
 
     <!-- Conditions -->
     <div class="cw">
