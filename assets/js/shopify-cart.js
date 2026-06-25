@@ -131,10 +131,10 @@
     .ec-line img{width:64px;height:80px;object-fit:cover;border-radius:3px;background:#EAE6DE}
     .ec-line .t{font-size:.92rem;color:#0E1512}
     .ec-line .s{font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
-    .ec-line .p{font-size:.88rem;margin-top:6px}
+    .ec-line .p{font-size:.88rem;margin-top:6px;color:#0E1512}
     .ec-qty{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
     .ec-qty button{width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
-    .ec-qty span{font-size:.88rem;min-width:16px;text-align:center}
+    .ec-qty span{font-size:.88rem;min-width:16px;text-align:center;color:#0E1512;font-weight:500}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1)}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:14px}
