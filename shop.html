@@ -238,7 +238,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 }
 .size-grid{display:flex;gap:8px;flex-wrap:wrap}
 .size-btn{
-  min-width:48px;padding:11px 0;border-radius:99px;border:1px solid var(--line);
+  min-width:48px;padding:11px 16px;border-radius:99px;border:1px solid var(--line);
   background:transparent;color:var(--bone);font-family:var(--cond);font-size:0.85rem;letter-spacing:0.1em;
   transition:all .25s;
 }
@@ -433,6 +433,27 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       </div>
     </a>
 
+    <!-- Organic Tote -->
+    <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-gender="men women" role="listitem">
+      <div class="pcard-img">
+        <img class="main" src="assets/images/tote-natural.jpg" alt="Organic Tote in natural cotton" loading="lazy">
+        <img class="alt" src="assets/images/tote-natural.jpg" alt="Organic Tote" loading="lazy">
+        <span class="pcard-badge">Gift over A$150</span>
+        <span class="pcard-gender">Unisex</span>
+        <div class="pcard-quick">
+          <button class="pq-btn" onclick="event.preventDefault();openDrawer('organic-tote')">Quick view</button>
+          <span class="pq-btn primary">Shop now</span>
+        </div>
+      </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">Organic Tote</h2>
+          <span class="pcard-fibre">Organic cotton &middot; Everyday</span>
+        </div>
+        <span class="pcard-price">A$20</span>
+      </div>
+    </a>
+
   </div>
 </div>
 
@@ -518,6 +539,26 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ─── PRODUCT DATA ─── */
 const products = {
+  'organic-tote': {
+    name: 'Organic Tote',
+    material: 'Organic Cotton',
+    category: 'Everyday',
+    price: 'A$20',
+    preorder: false,
+    page: 'pages/product-organic-tote.html',
+    photo: 'assets/images/tote-natural.jpg',
+    desc: 'A natural cotton carry-all for training gear, groceries, work essentials or a weekend away. Crafted from 100% GOTS certified organic cotton with clean, understated branding.',
+    fit: 'One size. 380 \u00d7 508 mm (15 \u00d7 20\u2033).',
+    care: 'Cold machine wash. Line dry in shade.',
+    sizes: ['One Size'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% GOTS Organic Cotton'],
+      ['Weight','approx. 136gsm canvas'],
+      ['Dimensions','380 \u00d7 508 mm'],
+      ['Certificate','GOTS & OEKO-TEX'],
+    ]
+  },
   'cotton-long-run-tee': {
     name: 'Long Run Tee',
     material: 'Organic Cotton',
@@ -709,6 +750,8 @@ function openDrawer(key) {
   document.getElementById('drawer-sizes').innerHTML = p.sizes.map(s =>
     '<button class="size-btn' + (p.soldOut.includes(s) ? ' sold-out' : '') + '" onclick="selectSize(this)">' + s + '</button>'
   ).join('');
+  const _sb = document.querySelectorAll('#drawer-sizes .size-btn');
+  if (_sb.length === 1) _sb[0].classList.add('active');
 
   document.getElementById('drawer-details').innerHTML = p.details.map(d =>
     '<div class="drawer-detail-row"><span>' + d[0] + '</span><span>' + d[1] + '</span></div>'
@@ -753,8 +796,10 @@ const productConditions = {
 };
 function cToF(c){ return Math.round(c * 9/5 + 32); }
 function renderConditions(key) {
+  const widget = document.getElementById('drawer-conditions');
   const p = productConditions[key];
-  if (!p) return;
+  if (!p) { if (widget) widget.style.display = 'none'; return; }
+  if (widget) widget.style.display = '';
   const isF = conditionsUnit === 'f';
   const sMin = isF ? cToF(SCALE_MIN_C) : SCALE_MIN_C;
   const sMax = isF ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
@@ -784,7 +829,7 @@ function addToCart() {
   const active = document.querySelector('#drawer-sizes .size-btn.active');
   if (!active) { showToast('Please select a size.'); return; }
   const p = products[currentDrawerProduct];
-  showToast(p.name + ' (' + active.textContent + ') \u2014 Pre-order confirmed \u2713');
+  showToast(p.name + ' (' + active.textContent + ') \u2014 ' + (p.preorder ? 'Pre-order confirmed' : 'Added to cart') + ' \u2713');
   closeDrawer();
 }
 function showToast(msg) {
