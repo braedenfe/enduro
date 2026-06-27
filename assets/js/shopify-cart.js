@@ -14,7 +14,8 @@
     'merino-short-womens': '15871281135985',
     'cotton-short-mens':   '15871285887345',
     'cotton-long-run-tee': '15871282184561',
-    'wool-long-run-tee':   '15871256396145'
+    'wool-long-run-tee':   '15871256396145',
+    'organic-tote':        '15876958191985'
   };
 
   const CREDS_READY  = !SHOP_DOMAIN.includes('YOUR-STORE') && !STOREFRONT_TOKEN.includes('YOUR_');
@@ -231,7 +232,7 @@
       const list = await resolveVariants(key);
       const colorEl = document.getElementById('sel-colour');
       const colorName = colorEl ? colorEl.textContent.trim() : null;
-      const v = list && pickVariant(list, size, colorName);
+      const v = (list && list.length === 1) ? list[0] : (list && pickVariant(list, size, colorName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       render(cart); openDrawer();
