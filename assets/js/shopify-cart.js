@@ -236,7 +236,32 @@
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       render(cart); openDrawer();
-      klTrack('Added to Cart', { ProductID: key, ProductName: (typeof PAGE !== 'undefined' && PAGE.klName) || key, Size: size, $value: (typeof PAGE !== 'undefined' && PAGE.priceNum) || undefined });
+      const pageUrl = window.location.href.split('?')[0];
+      const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
+      const m = justAdded && justAdded.merchandise;
+      const addedImg = m && m.product.featuredImage ? m.product.featuredImage.url : undefined;
+      klTrack('Added to Cart', {
+        $value: parseFloat(cart.cost.subtotalAmount.amount),
+        AddedItemProductName: m ? m.product.title : ((typeof PAGE !== 'undefined' && PAGE.klName) || key),
+        AddedItemProductID: key,
+        AddedItemSize: size,
+        AddedItemImageURL: addedImg,
+        AddedItemURL: pageUrl,
+        CheckoutURL: cart.checkoutUrl,
+        ItemNames: cart.lines.edges.map(({ node }) => node.merchandise.product.title),
+        Items: cart.lines.edges.map(({ node }) => {
+          const mm = node.merchandise;
+          return {
+            ProductID: mm.product.title,
+            ProductName: mm.product.title,
+            Quantity: node.quantity,
+            ItemPrice: parseFloat(mm.price.amount),
+            RowTotal: parseFloat(mm.price.amount) * node.quantity,
+            ProductURL: pageUrl,
+            ImageURL: mm.product.featuredImage ? mm.product.featuredImage.url : undefined
+          };
+        })
+      });
     } catch (e) {
       if (window.showToast) showToast('Something went wrong. Please try again.');
     } finally {
