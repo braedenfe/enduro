@@ -13,6 +13,7 @@
     'merino-short-mens':   '15871280546161',
     'merino-short-womens': '15871281135985',
     'cotton-short-mens':   '15871285887345',
+    'cotton-short-womens': '15876964417905',
     'cotton-long-run-tee': '15871282184561',
     'wool-long-run-tee':   '15871256396145',
     'organic-tote':        '15876958191985'
