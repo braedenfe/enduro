@@ -752,7 +752,7 @@ pills.forEach(pill => {
     const f = pill.dataset.filter;
     cards.forEach(card => {
       const g = card.dataset.gender || '';
-      card.style.display = (f === 'all' || g.includes(f)) ? '' : 'none';
+      card.style.display = (f === 'all' || g.split(' ').includes(f)) ? '' : 'none';
       // Shorts first when a gender is selected
       const isShort = (card.dataset.product || '').includes('short');
       card.style.order = (f !== 'all' && isShort) ? '-1' : '';
