@@ -28,6 +28,34 @@
   const money = (a, c) => new Intl.NumberFormat(undefined, { style:'currency', currency:c }).format(a);
   const gid = (id) => 'gid://shopify/Product/' + id;
 
+  /* ---------- Free gift promotion (modular) ----------
+     To change the offer, edit THRESHOLD or productKey only. */
+  const GIFT = {
+    enabled:    true,
+    threshold:  100,             // qualifying AUD subtotal (excludes shipping & the gift line)
+    productKey: 'organic-tote',  // key in PRODUCTS map
+    label:      'Enduro Tote'
+  };
+  const GIFT_ATTR = '_enduro_gift';
+  const giftProductGid = () =>
+    (GIFT.enabled && PRODUCTS[GIFT.productKey]) ? gid(PRODUCTS[GIFT.productKey]) : null;
+  // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
+  const isGiftLine = (node) =>
+    !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
+  // amount the customer actually pays for non-gift items (the gift is complimentary)
+  const qualifyingSubtotal = (cart) =>
+    cart.lines.edges.reduce((sum, { node }) =>
+      isGiftLine(node) ? sum : sum + parseFloat(node.merchandise.price.amount) * node.quantity, 0);
+
+  let giftVariantId = null;
+  async function resolveGiftVariant() {
+    if (giftVariantId) return giftVariantId;
+    const list = await resolveVariants(GIFT.productKey);
+    if (!list || !list.length) return null;
+    giftVariantId = (list.find(v => v.available) || list[0]).id;
+    return giftVariantId;
+  }
+
   async function gql(query, variables) {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
@@ -71,10 +99,10 @@
   /* ---------- Cart API ---------- */
   const CART = `id checkoutUrl totalQuantity
     cost { subtotalAmount { amount currencyCode } }
-    lines(first:50){ edges { node { id quantity
+    lines(first:50){ edges { node { id quantity attributes { key value }
       merchandise { ... on ProductVariant {
         id title price { amount currencyCode }
-        product { title featuredImage { url altText } } } } } } }`;
+        product { id title featuredImage { url altText } } } } } } }`;
 
   const createCart = (line) => gql(
     `mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{${CART}} userErrors{message}}}`,
@@ -141,12 +169,23 @@
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1)}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:14px}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
-    .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}`;
+    .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
+    .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
+    .ec-gift-msg{display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.4;color:#0E1512;margin-bottom:11px}
+    .ec-gift-msg .amt{font-weight:600}
+    .ec-gift-check{flex:0 0 auto;width:15px;height:15px;color:#071e04;opacity:0;transform:scale(.6);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+    .ec-gift.qualified .ec-gift-check{opacity:1;transform:scale(1)}
+    .ec-gift-track{height:4px;border-radius:99px;background:rgba(7,30,4,.12);overflow:hidden}
+    .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}`;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
   const overlay = document.createElement('div'); overlay.id = 'ec-overlay';
   const drawer = document.createElement('aside'); drawer.id = 'ec-drawer';
   drawer.innerHTML = `<div class="ec-head"><h3>Cart</h3><button class="ec-x" aria-label="Close">&times;</button></div>
+    <div class="ec-gift" id="ec-gift" style="display:none">
+      <div class="ec-gift-msg" id="ec-gift-msg"></div>
+      <div class="ec-gift-track"><div class="ec-gift-fill" id="ec-gift-fill"></div></div>
+    </div>
     <div class="ec-lines" id="ec-lines"></div>
     <div class="ec-foot" id="ec-foot" style="display:none">
       <div class="ec-sub"><span>Subtotal</span><span id="ec-sub"></span></div>
@@ -159,6 +198,57 @@
   drawer.querySelector('.ec-x').addEventListener('click', closeDrawer);
 
   let current = null;
+  /* ---------- gift reconciliation (auto add / remove, once per order) ---------- */
+  async function reconcileGift(cart) {
+    if (!GIFT.enabled || !cart || !giftProductGid()) return cart;
+    const cartId = localStorage.getItem(CART_KEY);
+    if (!cartId) return cart;
+    try {
+      const sub = qualifyingSubtotal(cart);
+      const giftLine = cart.lines.edges.find(({ node }) => isGiftLine(node));
+      if (sub >= GIFT.threshold) {
+        if (!giftLine) {
+          const vid = await resolveGiftVariant();
+          if (vid) return await addLine(cartId, { merchandiseId: vid, quantity: 1, attributes: [{ key: GIFT_ATTR, value: '1' }] });
+        } else if (giftLine.node.quantity !== 1) {
+          return await updateLine(cartId, giftLine.node.id, 1); // enforce single gift
+        }
+      } else if (giftLine) {
+        return await removeLine(cartId, giftLine.node.id);
+      }
+    } catch (e) { /* gift add/remove failed (e.g. tote not on Headless) — fail soft */ }
+    return cart;
+  }
+
+  /* reconcile gift state, then paint */
+  async function refresh(cart) {
+    const updated = await reconcileGift(cart);
+    render(updated);
+    return updated;
+  }
+
+  function updateGiftBar(cart) {
+    const box = document.getElementById('ec-gift');
+    if (!box) return;
+    if (!GIFT.enabled || !giftProductGid()) { box.style.display = 'none'; return; }
+    const cur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
+    const sub = qualifyingSubtotal(cart);
+    const qualified = sub >= GIFT.threshold;
+    const pct = Math.max(0, Math.min(100, (sub / GIFT.threshold) * 100));
+    box.style.display = 'block';
+    box.classList.toggle('qualified', qualified);
+    const fill = document.getElementById('ec-gift-fill');
+    if (fill) fill.style.width = pct + '%';
+    const check = '<svg class="ec-gift-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    const msg = document.getElementById('ec-gift-msg');
+    if (qualified) {
+      msg.innerHTML = check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + '.</span>';
+    } else {
+      msg.innerHTML = check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) +
+        '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
+    }
+  }
+
   function render(cart) {
     current = cart;
     const link = document.getElementById('ec-link');
@@ -166,10 +256,18 @@
     const lines = document.getElementById('ec-lines');
     const foot = document.getElementById('ec-foot');
     if (!cart || cart.totalQuantity === 0) {
-      lines.innerHTML = '<div class="ec-empty">Your cart is empty.</div>'; foot.style.display = 'none'; return;
+      lines.innerHTML = '<div class="ec-empty">Your cart is empty.</div>'; foot.style.display = 'none';
+      const gEmpty = document.getElementById('ec-gift'); if (gEmpty) gEmpty.style.display = 'none';
+      return;
     }
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
+      if (isGiftLine(node)) {
+        return `<div class="ec-line">
+        ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
+        <div><div class="t">${v.product.title}</div><div class="s">Gift</div>
+        <div class="p">Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+      }
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
@@ -180,14 +278,15 @@
           <button data-line="${node.id}" data-qty="${node.quantity + 1}">+</button>
         </div></div></div>`;
     }).join('');
-    document.getElementById('ec-sub').textContent = money(cart.cost.subtotalAmount.amount, cart.cost.subtotalAmount.currencyCode);
+    document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD');
     foot.style.display = 'block';
+    updateGiftBar(cart);
     lines.querySelectorAll('.ec-qty button').forEach(b => b.addEventListener('click', async () => {
       const lineId = b.dataset.line, qty = parseInt(b.dataset.qty);
       const cid = localStorage.getItem(CART_KEY);
       try {
-        if (qty < 1) { render(await removeLine(cid, lineId)); }
-        else { render(await updateLine(cid, lineId, qty)); }
+        if (qty < 1) { await refresh(await removeLine(cid, lineId)); }
+        else { await refresh(await updateLine(cid, lineId, qty)); }
       } catch (e) {}
     }));
   }
@@ -236,7 +335,7 @@
       const v = (list && list.length === 1) ? list[0] : (list && pickVariant(list, size, colorName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
-      render(cart); openDrawer();
+      await refresh(cart); openDrawer();
       const pageUrl = window.location.href.split('?')[0];
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
@@ -274,7 +373,7 @@
   (async function () {
     const id = localStorage.getItem(CART_KEY);
     if (!id) return;
-    try { const cart = await getCart(id); if (cart) render(cart); else localStorage.removeItem(CART_KEY); }
+    try { const cart = await getCart(id); if (cart) refresh(cart); else localStorage.removeItem(CART_KEY); }
     catch (e) { localStorage.removeItem(CART_KEY); }
   })();
 })();
