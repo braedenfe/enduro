@@ -139,6 +139,12 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .features{margin-top:52px}
 .features ul{list-style:none;margin-top:12px}
 .features li{padding:10px 0;border-bottom:1px solid var(--line-dark);font-size:0.9rem;font-weight:300;color:rgba(14,21,18,0.75)}
+.feat-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.feat-pill{position:relative;font-family:var(--cond),'Barlow Condensed',sans-serif;font-size:0.82rem;letter-spacing:0.05em;font-weight:500;color:var(--ink);background:rgba(14,21,18,0.05);border:none;border-radius:999px;padding:9px 17px;cursor:pointer;transition:background .25s ease,color .25s ease;-webkit-tap-highlight-color:transparent}
+.feat-pill:hover,.feat-pill.active{background:var(--forest);color:#F5F2EC}
+.feat-pop{position:absolute;left:50%;bottom:calc(100% + 11px);transform:translateX(calc(-50% + var(--shift,0px))) translateY(5px);width:max-content;max-width:240px;background:var(--ink);color:#F5F2EC;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;line-height:1.5;letter-spacing:0;padding:11px 14px;border-radius:12px;box-shadow:0 12px 32px rgba(14,21,18,0.24);opacity:0;visibility:hidden;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.7,.2,1);z-index:40;pointer-events:none;text-align:left;white-space:normal}
+.feat-pill:hover .feat-pop,.feat-pill.active .feat-pop{opacity:1;visibility:visible;transform:translateX(calc(-50% + var(--shift,0px))) translateY(0)}
+.feat-pop::after{content:"";position:absolute;top:100%;left:calc(50% - var(--shift,0px));transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink)}
 
 /* ACCORDIONS */
 .accordions{margin-top:34px;border-top:1px solid var(--line-dark)}
@@ -274,7 +280,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <!-- Features -->
     <div class="features">
       <span class="t-label" style="color:rgba(14,21,18,0.5);font-size:0.74rem">Features</span>
-      <ul><li>100% organic cotton — single jersey, 90 GSM</li><li>Hand screen printed in Sydney, Australia</li><li>Oversized, boxy cut for unrestricted movement</li><li>Lightweight, breezy, incredibly soft</li><li>Breathable for warm-weather running</li><li>GOTS &amp; OCS certified organic cotton</li></ul>
+      <div class="feat-pills"><button class="feat-pill" type="button">Organic Cotton<span class="feat-pop">100% organic cotton single jersey, GOTS &amp; OCS certified.</span></button><button class="feat-pill" type="button">Lightweight<span class="feat-pop">A breezy 90 GSM single jersey, barely-there on warm days.</span></button><button class="feat-pill" type="button">Breathable<span class="feat-pop">Open natural-fibre knit that breathes for warm-weather running.</span></button><button class="feat-pill" type="button">Boxy cut<span class="feat-pop">Oversized, boxy cut for easy, unrestricted movement.</span></button><button class="feat-pill" type="button">Made in Sydney<span class="feat-pop">Hand screen printed in Sydney, Australia.</span></button><button class="feat-pill" type="button">Incredibly soft<span class="feat-pop">Soft, breezy handfeel that improves with every wash.</span></button></div>
     </div>
 
     <!-- Accordions -->
@@ -509,5 +515,22 @@ if (notifyForm) {
 }
 </script>
 <script src="../assets/js/shopify-cart.js"></script>
+<script>
+(function(){
+  var pills=document.querySelectorAll('.feat-pill'); if(!pills.length) return;
+  var touch=window.matchMedia('(hover: none)').matches;
+  function closeAll(ex){pills.forEach(function(p){if(p!==ex){p.classList.remove('active');}});}
+  function place(p){var pop=p.querySelector('.feat-pop'); if(!pop) return; pop.style.setProperty('--shift','0px');
+    var r=pop.getBoundingClientRect(),pad=12,sh=0;
+    if(r.left<pad) sh=pad-r.left; else if(r.right>window.innerWidth-pad) sh=(window.innerWidth-pad)-r.right;
+    pop.style.setProperty('--shift',sh+'px');}
+  pills.forEach(function(p){
+    if(touch){p.addEventListener('click',function(e){e.preventDefault();var on=p.classList.contains('active');closeAll(p);if(!on){p.classList.add('active');place(p);}else{p.classList.remove('active');}});}
+    else{p.addEventListener('mouseenter',function(){place(p);});p.addEventListener('focus',function(){closeAll(p);p.classList.add('active');place(p);});p.addEventListener('blur',function(){p.classList.remove('active');});}
+  });
+  if(touch){document.addEventListener('click',function(e){if(!e.target.closest('.feat-pill'))closeAll(null);});}
+  window.addEventListener('resize',function(){closeAll(null);});
+})();
+</script>
 </body>
 </html>
