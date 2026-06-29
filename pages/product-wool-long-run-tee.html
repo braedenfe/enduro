@@ -259,7 +259,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <!-- GALLERY -->
   <div class="gallery">
     <div class="g-main" id="g-main">
-      <img id="g-img" src="../assets/images/tee-black-front-model.png" alt="Merino Long Run Tee">
+      <img id="g-img" src="../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg" alt="Merino Long Run Tee">
       <span class="g-badge">Pre-order</span>
       <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
         <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
@@ -278,8 +278,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <div class="p-price">A$140</div>
     <p class="p-tagline">Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar.</p><p class="p-gift">Spend A$100 or more and receive a complimentary Enduro <a href="product-organic-tote.html">Organic Tote bag</a> with your order.</p>
 
-    <div class="sel-label">Colour <span>Black</span></div>
-    <div class="colour-row"><button class="colour-option active" style="cursor:default"><span class="colour-swatch" style="background:#2C2C2A"></span>Black</button></div>
+    <div class="sel-label">Colour <span id="sel-colour">Natural White</span></div>
+    <div class="colour-row">
+      <button class="colour-option active" onclick="selectColour(this, 'Natural White')"><span class="colour-swatch" style="background:#F5F3EE"></span>Natural White</button>
+      <button class="colour-option" onclick="selectColour(this, 'Black')"><span class="colour-swatch" style="background:#2C2C2A"></span>Black</button>
+    </div>
 
     <div class="sel-label">Size <span id="sel-size">&mdash;</span></div>
     <div class="size-row" id="size-row"><button class="size-btn" onclick="selectSize(this)">S</button><button class="size-btn" onclick="selectSize(this)">M</button><button class="size-btn" onclick="selectSize(this)">L</button><button class="size-btn" onclick="selectSize(this)">XL</button></div>
@@ -323,7 +326,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <section id="related" aria-label="You may also like">
   <h2>Complete the <span class="em">kit.</span></h2>
   <div class="rel-grid">
-    <a class="rel-card" href="product-cotton-long-run-tee.html"><div class="rel-img"><img src="../assets/images/tee-white-front-model.png" alt="Essential Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Essential Tee</div><span class="rel-fibre">Organic cotton</span></div><span class="rel-price">A$100</span></div></a><a class="rel-card" href="product-merino-short-mens.html"><div class="rel-img"><img src="../assets/images/shorts-mens-front-model.png" alt="Merino Long Run Short 5″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Merino Long Run Short 5″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a><a class="rel-card" href="product-merino-short-womens.html"><div class="rel-img"><img src="../assets/images/shorts-womens-front-model.png" alt="Merino Long Run Short 3″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Merino Long Run Short 3″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a>
+    <a class="rel-card" href="product-cotton-long-run-tee.html"><div class="rel-img"><img src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Essential Tee</div><span class="rel-fibre">Organic cotton</span></div><span class="rel-price">A$100</span></div></a><a class="rel-card" href="product-merino-short-mens.html"><div class="rel-img"><img src="../assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg" alt="Merino Long Run Short 5″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Merino Long Run Short 5″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a><a class="rel-card" href="product-merino-short-womens.html"><div class="rel-img"><img src="../assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg" alt="Merino Long Run Short 3″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Merino Long Run Short 3″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a>
   </div>
 </section>
 
@@ -354,7 +357,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <script>
 'use strict';
-const PAGE = {"key": "wool-long-run-tee", "klName": "Merino Long Run Tee", "klCategories": ["Tees", "Running"], "priceNum": 140, "views": [], "colours": {}, "images": [{"src": "../assets/images/tee-black-front-model.png", "label": "Front"}, {"src": "../assets/images/tee-black-back-model.png", "label": "Back"}, {"src": "../assets/images/tee-black-front-flat.png", "label": "Front flat"}, {"src": "../assets/images/tee-black-back-flat.png", "label": "Back flat"}], "tempMin": 5, "tempMax": 30, "conditions": [{"name": "Rain", "fill": 40}, {"name": "Wind", "fill": 80}]};
+const PAGE = {"key": "wool-long-run-tee", "klName": "Merino Long Run Tee", "klCategories": ["Tees", "Running"], "priceNum": 140, "views": [{"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}, {"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}, {"src": "../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}], "tempMin": 5, "tempMax": 30, "conditions": [{"name": "Rain", "fill": 40}, {"name": "Wind", "fill": 80}]};
 window.klaviyo = window.klaviyo || [];
 
 /* ─── KLAVIYO: Viewed Product ─── */
@@ -422,7 +425,7 @@ function selectColour(btn, name) {
   document.getElementById('sel-colour').textContent = name;
   const prefix = PAGE.colours[name];
   PAGE.images = PAGE.views.map(function(v){
-    return { src: '../assets/images/' + prefix + '-' + v.file + '.png', label: name + ' - ' + v.label };
+    return { src: '../assets/images/products/' + PAGE.key + '/' + PAGE.key + '-' + prefix + '-' + v.file + '.jpg', label: name + ' - ' + v.label };
   });
   gIndex = 0;
   gImg.src = PAGE.images[0].src;
