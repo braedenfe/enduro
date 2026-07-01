@@ -89,8 +89,14 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   color:rgba(14,21,18,0.62);margin-top:22px;max-width:600px;
 }
 .head-note{
-  font-family:var(--cond);font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;
+  font-family:var(--cond);font-size:0.7rem;letter-spacing:0.13em;text-transform:uppercase;
   color:rgba(14,21,18,0.45);padding-bottom:10px;max-width:250px;line-height:1.7;
+}
+@media(max-width:620px){
+  #collection-head{padding-top:calc(56px + clamp(24px,4vh,44px));padding-bottom:18px}
+  .head-row{flex-direction:column;align-items:flex-start;gap:0}
+  .head-intro{margin-top:14px}
+  .head-note{max-width:none;margin-top:20px;padding-bottom:0;font-size:0.66rem;letter-spacing:0.05em;line-height:1.5}
 }
 
 /* ───────── FILTER PILLS (sticky) ───────── */
@@ -329,7 +335,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <h1>Built for the <span class="em">long run.</span></h1>
       <p class="head-intro">Merino wool and premium natural fibres, designed for running, training and recovery.</p>
     </div>
-    <p class="head-note">Complimentary Australian shipping on orders over A$150 &middot; 30 day returns</p>
+    <p class="head-note">Complimentary Australian shipping over A$150 &middot; 30 day returns</p>
   </div>
 </section>
 
