@@ -112,7 +112,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .fic-cotton{-webkit-mask-image:url(assets/images/icons/cotton-boll.png);mask-image:url(assets/images/icons/cotton-boll.png)}
 .fgroup{display:flex;gap:10px;align-items:center}
 .fdiv{width:1px;height:20px;background:var(--line-dark);flex:none}
-@media(max-width:620px){.fdiv{display:none}.fpill{padding:8px 18px;letter-spacing:0.14em}}
+@media(max-width:620px){.filters-inner{flex-wrap:nowrap;overflow-x:auto;gap:7px;padding:12px 16px;scrollbar-width:none}.filters-inner::-webkit-scrollbar{display:none}.fgroup{gap:7px}.fdiv{height:18px;margin:0 3px}.fpill{padding:8px 14px;letter-spacing:0.06em;font-size:0.74rem;white-space:nowrap;flex:none}.fic{width:14px;height:14px}}
 .fpill:hover{border-color:var(--ink);color:var(--ink)}
 .fpill.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
 
@@ -326,14 +326,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <!-- FILTERS -->
 <div id="filters">
   <div class="filters-inner" aria-label="Filter products">
-    <button class="fpill active" data-reset="1" aria-pressed="true">All</button>
+    <button class="fpill active" data-axis="gender" data-val="all" aria-pressed="true">Unisex</button>
     <div class="fgroup" role="group" aria-label="Gender">
       <button class="fpill" data-axis="gender" data-val="men" aria-pressed="false">Men</button>
       <button class="fpill" data-axis="gender" data-val="women" aria-pressed="false">Women</button>
     </div>
     <span class="fdiv" aria-hidden="true"></span>
     <div class="fgroup" role="group" aria-label="Fibre">
-      <button class="fpill" data-axis="fibre" data-val="wool" aria-pressed="false"><span class="fic fic-wool" aria-hidden="true"></span>Wool</button>
+      <button class="fpill" data-axis="fibre" data-val="wool" aria-pressed="false"><span class="fic fic-wool" aria-hidden="true"></span>Merino</button>
       <button class="fpill" data-axis="fibre" data-val="cotton" aria-pressed="false"><span class="fic fic-cotton" aria-hidden="true"></span>Cotton</button>
     </div>
   </div>
@@ -367,7 +367,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <!-- Men's Merino Short 5" -->
     <a class="pcard" href="pages/product-merino-short-mens.html" data-product="merino-short-mens" data-fibre="wool" data-gender="men" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="Men's Merino Long Run Short 5 inch, front" loading="lazy">
+        <img class="main" src="assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg" alt="Men's Merino Long Run Short 5 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="Men's Merino Long Run Short 5 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Men's</span>
@@ -409,7 +409,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <!-- Women's Merino Short 3" -->
     <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-fibre="wool" data-gender="women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg" alt="Women's Merino Long Run Short 3 inch, front" loading="lazy">
+        <img class="main" src="assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg" alt="Women's Merino Long Run Short 3 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg" alt="Women's Merino Long Run Short 3 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Women's</span>
@@ -740,7 +740,7 @@ const fstate = { gender: 'all', fibre: 'all' };
 const WOMEN_IMGS = {
   'cotton-long-run-tee':  { main: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model-womens.jpg' },
   'wool-long-run-tee':    { main: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model-womens.jpg', alt: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-black-back-model-womens.jpg' },
-  'merino-short-womens':  { main: 'assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg', alt: 'assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg' },
+  'merino-short-womens':  { main: 'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg', alt: 'assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg' },
 };
 const DEFAULT_IMGS = {};
 cards.forEach(card => {
