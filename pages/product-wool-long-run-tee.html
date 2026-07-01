@@ -63,7 +63,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 @media(min-width:921px){.g-main{max-height:calc(100vh - 120px)}}
 @media(max-width:920px){.g-main{border-radius:0;aspect-ratio:auto;height:54vh;width:100%}}
 .g-main img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
-.g-main.contain{background:#F4F4F2}
+.g-main.contain{background:#fff}
 .g-main.contain img{object-fit:contain}
 .g-badge{position:absolute;top:14px;left:14px;z-index:2;font-family:var(--cond);font-size:0.7rem;font-weight:500;
   letter-spacing:0.2em;text-transform:uppercase;background:var(--forest);color:var(--bone);padding:6px 14px;border-radius:99px}
@@ -394,7 +394,7 @@ function updateCounter() {
 }
 function applyFit(src) {
   // Flat lays and detail shots show uncropped; model shots fill the frame
-  document.getElementById('g-main').classList.toggle('contain', /-(flat|detail)\./.test(src) || /-flat\b|-detail\b|flat\.png|detail\.png/.test(src) || src.indexOf('-flat') > -1 || src.indexOf('-detail') > -1);
+  document.getElementById('g-main').classList.toggle('contain', src.indexOf('-flat') > -1);
 }
 function setImage(i) {
   gIndex = (i + PAGE.images.length) % PAGE.images.length;
