@@ -217,7 +217,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Essential Tee",
-  "image": "https://www.enduroapparel.com.au/assets/images/tee-white-front-model.png",
+  "image": "https://www.enduroapparel.com.au/assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg",
   "description": "The Essential Tee: a lightweight 100% organic cotton running and gym tee. Breathable, boxy and incredibly soft, hand screen printed in Sydney. A$100.",
   "brand": {
     "@type": "Brand",
@@ -259,7 +259,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <!-- GALLERY -->
   <div class="gallery">
     <div class="g-main" id="g-main">
-      <img id="g-img" src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee">
+      <img id="g-img" src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee">
       <span class="g-badge">Pre-order</span>
       <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
         <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
@@ -282,6 +282,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <div class="colour-row">
       <button class="colour-option active" onclick="selectColour(this, 'Natural White')"><span class="colour-swatch" style="background:#F5F3EE"></span>Natural White</button>
       <button class="colour-option" onclick="selectColour(this, 'Black')"><span class="colour-swatch" style="background:#2C2C2A"></span>Black</button>
+    </div>
+    <div class="sel-label" style="margin-top:18px">Fit <span id="sel-gender">Men's</span></div>
+    <div class="colour-row" id="gender-row">
+      <button class="colour-option active" data-g="men" onclick="selectGender(this, 'men')">Men's</button>
+      <button class="colour-option" data-g="women" onclick="selectGender(this, 'women')">Women's</button>
     </div>
 
     <div class="sel-label">Size <span id="sel-size">&mdash;</span></div>
@@ -359,7 +364,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <script>
 'use strict';
-const PAGE = {"key": "cotton-long-run-tee", "klName": "Essential Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}, {"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
+const PAGE = {"key": "cotton-long-run-tee", "klName": "Essential Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}, {"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
 window.klaviyo = window.klaviyo || [];
 
 /* ─── KLAVIYO: Viewed Product ─── */
@@ -420,20 +425,48 @@ applyFit(PAGE.images[0].src);
   }, {passive:true});
 })();
 
-/* ─── COLOUR ─── */
-function selectColour(btn, name) {
-  document.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  document.getElementById('sel-colour').textContent = name;
-  const prefix = PAGE.colours[name];
-  PAGE.images = PAGE.views.map(function(v){
-    return { src: '../assets/images/products/' + PAGE.key + '/' + PAGE.key + '-' + prefix + '-' + v.file + '.jpg', label: name + ' - ' + v.label };
+/* ─── COLOUR + FIT (gender) ─── */
+PAGE.currentColour = Object.keys(PAGE.colours)[0];
+PAGE.gender = 'men';
+function buildImages(){
+  const prefix = PAGE.colours[PAGE.currentColour];
+  const womens = PAGE.gender === 'women';
+  return PAGE.views.map(function(v){
+    const isModel = v.file.indexOf('model') > -1;
+    const suffix = (isModel && womens) ? '-womens' : '';
+    return { src: '../assets/images/products/' + PAGE.key + '/' + PAGE.key + '-' + prefix + '-' + v.file + suffix + '.jpg', label: PAGE.currentColour + ' - ' + v.label };
   });
+}
+function rebuildGallery(){
+  PAGE.images = buildImages();
   gIndex = 0;
   gImg.src = PAGE.images[0].src;
   applyFit(PAGE.images[0].src);
   updateCounter();
 }
+function selectColour(btn, name) {
+  btn.parentNode.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('sel-colour').textContent = name;
+  PAGE.currentColour = name;
+  rebuildGallery();
+}
+function selectGender(btn, g) {
+  btn.parentNode.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  PAGE.gender = g;
+  document.getElementById('sel-gender').textContent = (g === 'women') ? "Women's" : "Men's";
+  rebuildGallery();
+}
+/* deep-link: ?gender=women opens the women's view */
+(function(){
+  if (new URLSearchParams(location.search).get('gender') === 'women') {
+    PAGE.gender = 'women';
+    document.getElementById('sel-gender').textContent = "Women's";
+    document.querySelectorAll('#gender-row .colour-option').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-g') === 'women'); });
+    rebuildGallery();
+  }
+})();
 
 /* ─── SIZE ─── */
 function selectSize(btn) {
