@@ -98,14 +98,21 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 }
 .filters-inner{
   max-width:1380px;margin:0 auto;
-  display:flex;gap:10px;padding:14px 32px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;row-gap:10px;padding:14px 32px;
 }
 .fpill{
   font-family:var(--cond);font-size:0.82rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
   padding:9px 26px;border-radius:99px;border:1px solid var(--line-dark);
   background:transparent;color:rgba(14,21,18,0.6);
   transition:all .3s ease;
+  display:inline-flex;align-items:center;gap:7px;
 }
+.fic{width:15px;height:15px;flex:none;background:currentColor;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
+.fic-wool{-webkit-mask-image:url(assets/images/icons/wool-sheep.png);mask-image:url(assets/images/icons/wool-sheep.png)}
+.fic-cotton{-webkit-mask-image:url(assets/images/icons/cotton-boll.png);mask-image:url(assets/images/icons/cotton-boll.png)}
+.fgroup{display:flex;gap:10px;align-items:center}
+.fdiv{width:1px;height:20px;background:var(--line-dark);flex:none}
+@media(max-width:620px){.fdiv{display:none}.fpill{padding:8px 18px;letter-spacing:0.14em}}
 .fpill:hover{border-color:var(--ink);color:var(--ink)}
 .fpill.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
 
@@ -318,10 +325,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <!-- FILTERS -->
 <div id="filters">
-  <div class="filters-inner" role="tablist" aria-label="Filter products">
-    <button class="fpill active" data-filter="all" role="tab" aria-selected="true">All</button>
-    <button class="fpill" data-filter="men" role="tab" aria-selected="false">Men</button>
-    <button class="fpill" data-filter="women" role="tab" aria-selected="false">Women</button>
+  <div class="filters-inner" aria-label="Filter products">
+    <button class="fpill active" data-reset="1" aria-pressed="true">All</button>
+    <div class="fgroup" role="group" aria-label="Gender">
+      <button class="fpill" data-axis="gender" data-val="men" aria-pressed="false">Men</button>
+      <button class="fpill" data-axis="gender" data-val="women" aria-pressed="false">Women</button>
+    </div>
+    <span class="fdiv" aria-hidden="true"></span>
+    <div class="fgroup" role="group" aria-label="Fibre">
+      <button class="fpill" data-axis="fibre" data-val="wool" aria-pressed="false"><span class="fic fic-wool" aria-hidden="true"></span>Wool</button>
+      <button class="fpill" data-axis="fibre" data-val="cotton" aria-pressed="false"><span class="fic fic-cotton" aria-hidden="true"></span>Cotton</button>
+    </div>
   </div>
 </div>
 
@@ -330,10 +344,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <div class="product-grid" role="list">
 
     <!-- Cotton Essential Tee -->
-    <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/tee-white-front-model.png" alt="Essential Tee in Bone, front" loading="lazy">
-        <img class="alt" src="assets/images/tee-white-back-model.png" alt="Essential Tee in Bone, back" loading="lazy">
+        <img class="main" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee in Bone, front" loading="lazy">
+        <img class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg" alt="Essential Tee in Bone, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -351,10 +365,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Men's Merino Short 5" -->
-    <a class="pcard" href="pages/product-merino-short-mens.html" data-product="merino-short-mens" data-gender="men" role="listitem">
+    <a class="pcard" href="pages/product-merino-short-mens.html" data-product="merino-short-mens" data-fibre="wool" data-gender="men" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/shorts-mens-front-model.png" alt="Men's Merino Long Run Short 5 inch, front" loading="lazy">
-        <img class="alt" src="assets/images/shorts-mens-back-model.png" alt="Men's Merino Long Run Short 5 inch, back" loading="lazy">
+        <img class="main" src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="Men's Merino Long Run Short 5 inch, front" loading="lazy">
+        <img class="alt" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="Men's Merino Long Run Short 5 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Men's</span>
         <div class="pcard-quick">
@@ -372,10 +386,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Men's Cotton Short 5" -->
-    <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-gender="men" role="listitem">
+    <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-fibre="cotton" data-gender="men" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/shorts-mens-front-model.png" alt="Men's Essential Short 5 inch, front" loading="lazy">
-        <img class="alt" src="assets/images/shorts-mens-back-model.png" alt="Men's Essential Short 5 inch, back" loading="lazy">
+        <img class="main" src="assets/images/products/cotton-short-mens/cotton-short-mens-front-model.jpg" alt="Men's Essential Short 5 inch, front" loading="lazy">
+        <img class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-back-model.jpg" alt="Men's Essential Short 5 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Men's</span>
         <div class="pcard-quick">
@@ -393,10 +407,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Women's Merino Short 3" -->
-    <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-fibre="wool" data-gender="women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/shorts-womens-front-model.png" alt="Women's Merino Long Run Short 3 inch, front" loading="lazy">
-        <img class="alt" src="assets/images/shorts-womens-back-model.jpg" alt="Women's Merino Long Run Short 3 inch, back" loading="lazy">
+        <img class="main" src="assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg" alt="Women's Merino Long Run Short 3 inch, front" loading="lazy">
+        <img class="alt" src="assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg" alt="Women's Merino Long Run Short 3 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
@@ -414,10 +428,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Women's Cotton Short 3" -->
-    <a class="pcard" href="pages/product-cotton-short-womens.html" data-product="cotton-short-womens" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-cotton-short-womens.html" data-product="cotton-short-womens" data-fibre="cotton" data-gender="women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/shorts-womens-front-model.png" alt="Women's Essential Short 3 inch, front" loading="lazy">
-        <img class="alt" src="assets/images/shorts-womens-back-model.jpg" alt="Women's Essential Short 3 inch, back" loading="lazy">
+        <img class="main" src="assets/images/products/cotton-short-womens/cotton-short-womens-front-model.jpg" alt="Women's Essential Short 3 inch, front" loading="lazy">
+        <img class="alt" src="assets/images/products/cotton-short-womens/cotton-short-womens-back-model.jpg" alt="Women's Essential Short 3 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Women's</span>
         <div class="pcard-quick">
@@ -435,10 +449,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Merino Tee -->
-    <a class="pcard" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/tee-black-front-model.png" alt="Merino Long Run Tee, front" loading="lazy">
-        <img class="alt" src="assets/images/tee-black-back-model.png" alt="Merino Long Run Tee, back" loading="lazy">
+        <img class="main" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model.jpg" alt="Merino Long Run Tee, front" loading="lazy">
+        <img class="alt" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-black-back-model.jpg" alt="Merino Long Run Tee, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -456,10 +470,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Organic Tote -->
-    <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img class="main" src="assets/images/tote-natural.jpg" alt="Organic Tote in natural cotton" loading="lazy">
-        <img class="alt" src="assets/images/tote-natural.jpg" alt="Organic Tote" loading="lazy">
+        <img class="main" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote in natural cotton" loading="lazy">
+        <img class="alt" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote" loading="lazy">
         <span class="pcard-badge">Gift over A$150</span>
         <span class="pcard-gender">Unisex</span>
         <div class="pcard-quick">
@@ -568,7 +582,7 @@ const products = {
     price: 'A$20',
     preorder: false,
     page: 'pages/product-organic-tote.html',
-    photo: 'assets/images/tote-natural.jpg',
+    photo: 'assets/images/products/organic-tote/organic-tote-front.jpg',
     desc: 'A natural cotton carry-all for training gear, groceries, work essentials or a weekend away. Crafted from 100% GOTS certified organic cotton with clean, understated branding.',
     fit: 'One size. 380 \u00d7 508 mm (15 \u00d7 20\u2033).',
     care: 'Cold machine wash. Line dry in shade.',
@@ -588,7 +602,7 @@ const products = {
     price: 'A$100',
     preorder: true,
     page: 'pages/product-cotton-long-run-tee.html',
-    photo: 'assets/images/tee-white-front-flat.png',
+    photo: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg',
     desc: 'An understated, staple running tee in 100% organic cotton. An oversized, boxy cut with a breezy, lightweight hand — incredibly soft and breathable, it moves easily between runs and everyday wear.',
     fit: 'True to size. Model is 183cm wearing size M.',
     care: 'Machine wash cold. Line dry in shade.',
@@ -607,7 +621,7 @@ const products = {
     category: 'Running',
     price: 'A$140',
     soon: false,
-    photo: 'assets/images/tee-black-front-flat.png',
+    photo: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg',
     desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar.',
     fit: 'Relaxed performance fit. True to size.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
@@ -627,7 +641,7 @@ const products = {
     price: 'A$150',
     preorder: true,
     page: 'pages/product-merino-short-mens.html',
-    photo: 'assets/images/shorts-mens-front-flat.png',
+    photo: 'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg',
     desc: 'A 5 inch running short in knitted merino. Features dual zip side pockets and a zippered rear security pocket. Thermoregulating, anti odour, and built for distance.',
     fit: 'True to size. Model is 183cm wearing size M.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
@@ -647,7 +661,7 @@ const products = {
     price: 'A$100',
     preorder: true,
     page: 'pages/product-cotton-short-mens.html',
-    photo: 'assets/images/shorts-mens-front-flat.png',
+    photo: 'assets/images/products/cotton-short-mens/cotton-short-mens-front-flat.jpg',
     desc: 'A 5 inch everyday short in 100% organic cotton. Lightweight and breathable, with dual zip side pockets and a zippered rear security pocket. Built for training, travel, and warm-weather miles.',
     fit: 'True to size. Model is 183cm wearing size M.',
     care: 'Machine wash cold. Line dry in shade.',
@@ -667,7 +681,7 @@ const products = {
     price: 'A$150',
     preorder: true,
     page: 'pages/product-merino-short-womens.html',
-    photo: 'assets/images/shorts-womens-front-close.png',
+    photo: 'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg',
     desc: 'A 3 inch running short in knitted merino. Features a zippered rear waistband pocket for essentials on the run. Thermoregulating, anti odour, and cut for a natural range of motion.',
     fit: 'True to size. Model is 173cm wearing size S.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
@@ -687,7 +701,7 @@ const products = {
     price: 'A$100',
     preorder: true,
     page: 'pages/product-cotton-short-womens.html',
-    photo: 'assets/images/shorts-womens-front-close.png',
+    photo: 'assets/images/products/cotton-short-womens/cotton-short-womens-front-flat.jpg',
     desc: 'A 3 inch everyday short in 100% organic cotton. Lightweight and breathable, cut for a natural range of motion, with a zippered rear waistband pocket. Built for training, travel, and warm-weather miles.',
     fit: 'True to size. Model is 173cm wearing size S.',
     care: 'Machine wash cold. Line dry in shade.',
@@ -716,15 +730,17 @@ document.querySelectorAll('.pcard').forEach((card, i) => {
   cardObserver.observe(card);
 });
 
-/* ─── FILTERS ─── */
-const pills = document.querySelectorAll('.fpill');
+/* ─── FILTERS (gender + fibre, independent axes) ─── */
+const fpills = document.querySelectorAll('.fpill');
 const cards = document.querySelectorAll('.pcard');
+const fstate = { gender: 'all', fibre: 'all' };
 
 /* Women-first imagery: female model shots when Women is selected,
    and the close-up for the women's short so it doesn't read as a tee */
 const WOMEN_IMGS = {
-  'cotton-long-run-tee':  { main: 'assets/images/shorts-womens-front-model.png', alt: 'assets/images/shorts-womens-back-model.jpg' },
-  'merino-short-womens':  { main: 'assets/images/shorts-womens-front-close.png', alt: 'assets/images/shorts-womens-back-close.png' },
+  'cotton-long-run-tee':  { main: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model-womens.jpg' },
+  'wool-long-run-tee':    { main: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model-womens.jpg', alt: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-black-back-model-womens.jpg' },
+  'merino-short-womens':  { main: 'assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg', alt: 'assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg' },
 };
 const DEFAULT_IMGS = {};
 cards.forEach(card => {
@@ -733,10 +749,10 @@ cards.forEach(card => {
   const alt  = card.querySelector('.pcard-img img.alt');
   if (key && main && alt) DEFAULT_IMGS[key] = { main: main.getAttribute('src'), alt: alt.getAttribute('src') };
 });
-function applyCardImages(filter) {
+function applyCardImages() {
   cards.forEach(card => {
     const key = card.dataset.product;
-    const set = (filter === 'women' && WOMEN_IMGS[key]) ? WOMEN_IMGS[key] : DEFAULT_IMGS[key];
+    const set = (fstate.gender === 'women' && WOMEN_IMGS[key]) ? WOMEN_IMGS[key] : DEFAULT_IMGS[key];
     if (!set) return;
     const main = card.querySelector('.pcard-img img.main');
     const alt  = card.querySelector('.pcard-img img.alt');
@@ -744,28 +760,38 @@ function applyCardImages(filter) {
     if (alt.getAttribute('src') !== set.alt) alt.src = set.alt;
   });
 }
-
-pills.forEach(pill => {
-  pill.addEventListener('click', () => {
-    pills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-selected','false'); });
-    pill.classList.add('active');
-    pill.setAttribute('aria-selected','true');
-    const f = pill.dataset.filter;
-    cards.forEach(card => {
-      const g = card.dataset.gender || '';
-      card.style.display = (f === 'all' || g.split(' ').includes(f)) ? '' : 'none';
-      // Shorts first when a gender is selected
-      const isShort = (card.dataset.product || '').includes('short');
-      card.style.order = (f !== 'all' && isShort) ? '-1' : '';
-    });
-    applyCardImages(f);
+function applyFilters() {
+  cards.forEach(card => {
+    const g = card.dataset.gender || '';
+    const fib = card.dataset.fibre || '';
+    const okG = fstate.gender === 'all' || g.split(' ').includes(fstate.gender);
+    const okF = fstate.fibre === 'all' || fib === fstate.fibre;
+    card.style.display = (okG && okF) ? '' : 'none';
+    // Shorts first when a gender is selected
+    const isShort = (card.dataset.product || '').includes('short');
+    card.style.order = (fstate.gender !== 'all' && isShort) ? '-1' : '';
+  });
+  applyCardImages();
+  fpills.forEach(p => {
+    const on = p.dataset.reset
+      ? (fstate.gender === 'all' && fstate.fibre === 'all')
+      : (fstate[p.dataset.axis] === p.dataset.val);
+    p.classList.toggle('active', on);
+    p.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+fpills.forEach(p => {
+  p.addEventListener('click', () => {
+    if (p.dataset.reset) { fstate.gender = 'all'; fstate.fibre = 'all'; }
+    else { const ax = p.dataset.axis, v = p.dataset.val; fstate[ax] = (fstate[ax] === v) ? 'all' : v; }
+    applyFilters();
   });
 });
-const urlFilter = new URLSearchParams(window.location.search).get('filter');
-if (urlFilter) {
-  const match = document.querySelector('.fpill[data-filter="' + urlFilter + '"]');
-  if (match) match.click();
-}
+const _fp = new URLSearchParams(window.location.search);
+const _uf = _fp.get('filter'), _ufib = _fp.get('fibre');
+if (_uf === 'men' || _uf === 'women') fstate.gender = _uf;
+if (_ufib === 'wool' || _ufib === 'cotton') fstate.fibre = _ufib;
+applyFilters();
 
 /* ─── DRAWER ─── */
 const drawer   = document.getElementById('product-drawer');
