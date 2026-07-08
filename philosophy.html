@@ -99,6 +99,81 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .closer{margin-top:clamp(52px,8vh,96px);padding-top:clamp(40px,6vh,62px);border-top:1px solid var(--line-dark);text-align:center}
 .closer p{max-width:none;margin-left:auto;margin-right:auto;color:rgba(14,21,18,0.78)}
 .closer .sign{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--forest);font-size:clamp(1.9rem,4.4vw,2.7rem);margin-top:26px;letter-spacing:-0.012em}
+
+/* ── philosophy v2 ── */
+.band .band-q{color:var(--bone)}
+/* scrub manifesto */
+.scrub{background:var(--forest);color:var(--bone)}
+.scrub-wrap{height:220vh}
+.scrub-sticky{position:sticky;top:0;height:100vh;height:100lvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center}
+.scrub .t-label{color:rgba(245,242,236,0.5);display:block;margin-bottom:30px}
+.doc-body .scrub-t{font-family:var(--serif);font-weight:600;font-size:clamp(2.2rem,6.4vw,4rem);line-height:1.22;letter-spacing:-0.012em;max-width:20ch;margin:0 auto;color:var(--bone)}
+.scrub-t .w{color:var(--bone);opacity:0.26;transition:opacity .35s ease}
+.scrub-t .w.lit{opacity:1}
+.scrub-t .em{font-style:italic}
+.scrub-t .em.lit{color:rgba(245,242,236,0.82)}
+/* staggered line band */
+.band .band-h{font-family:var(--serif);font-weight:500;font-size:clamp(2.3rem,7vw,4.2rem);line-height:1.08;letter-spacing:-0.015em;color:var(--bone);margin:0 auto 28px}
+.band .band-lines span{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.band.in .band-lines span{opacity:1;transform:none}
+.band.in .band-lines span:nth-child(1){transition-delay:.05s}
+.band.in .band-lines span:nth-child(2){transition-delay:.2s}
+.band.in .band-lines span:nth-child(3){transition-delay:.35s}
+.band.in .band-lines span:nth-child(4){transition-delay:.5s}
+.band .band-h,.band .band-s{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.band.in .band-h{opacity:1;transform:none}
+.band.in .band-s{opacity:1;transform:none;transition-delay:.65s}
+/* forest finale */
+.finale{background:var(--forest);color:var(--bone);padding:clamp(90px,15vh,170px) 32px clamp(80px,13vh,150px);text-align:center}
+.finale .fin-lines{max-width:52ch;margin:0 auto}
+.finale .fin-lines p{font-weight:300;line-height:1.75;color:rgba(245,242,236,0.72);margin:0 0 16px;font-size:clamp(1rem,2.2vw,1.15rem);opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.finale.in .fin-lines p{opacity:1;transform:none}
+.finale.in .fin-lines p:nth-child(1){transition-delay:.05s}
+.finale.in .fin-lines p:nth-child(2){transition-delay:.25s}
+.finale.in .fin-lines p:nth-child(3){transition-delay:.45s}
+.finale .fin-sign{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(2.8rem,9vw,5.4rem);letter-spacing:-0.02em;line-height:1.05;color:var(--bone);margin:clamp(40px,7vh,70px) auto 0;opacity:0;transform:scale(0.92);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:.7s}
+.finale.in .fin-sign{opacity:1;transform:scale(1)}
+.finale .fin-cta{display:inline-block;margin-top:clamp(36px,6vh,56px);font-family:var(--cond);font-size:0.84rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;padding:16px 40px;border-radius:99px;background:var(--bone);color:var(--forest);transition:transform .3s, box-shadow .3s;opacity:0;transition:opacity .7s ease .95s, transform .3s}
+.finale.in .fin-cta{opacity:1}
+@media(hover:hover){.finale .fin-cta:hover{transform:translateY(-2px);box-shadow:0 14px 34px -14px rgba(0,0,0,0.45)}}
+@media(prefers-reduced-motion:reduce){
+  .scrub-wrap{height:auto}.scrub-sticky{position:static;height:auto;padding:clamp(72px,12vh,140px) 28px}
+  .scrub-t .w{opacity:1}
+  .band .band-lines span,.band .band-h,.band .band-s,.finale .fin-lines p,.finale .fin-sign,.finale .fin-cta{opacity:1;transform:none;transition:none}
+}
+
+.bleed{width:100vw;margin-left:calc(50% - 50vw)}
+.band{background:var(--forest);color:var(--bone);padding:clamp(72px,12vh,140px) 32px;text-align:center}
+.band .band-q{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,4.6vw,3rem);line-height:1.22;letter-spacing:-0.012em;max-width:24ch;margin:0 auto}
+.band .band-q .em{font-style:italic;color:rgba(245,242,236,0.66)}
+.band .band-s{margin:22px auto 0;font-weight:300;line-height:1.7;color:rgba(245,242,236,0.66);max-width:46ch}
+.band .band-lines{max-width:30ch;margin:0 auto}
+.band .band-lines span{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,3.4vw,1.9rem);line-height:1.5;letter-spacing:-0.01em;color:rgba(245,242,236,0.9)}
+.band .band-lines .dim{color:rgba(245,242,236,0.45)}
+.band .t-label{color:rgba(245,242,236,0.55);display:block;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+.card{background:#FBFAF6;border:1px solid var(--line-dark);border-radius:20px;padding:26px 22px;transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s, border-color .35s}
+@media(hover:hover){.card:hover{transform:translateY(-4px);border-color:rgba(31,61,53,0.35);box-shadow:0 18px 40px -22px rgba(14,21,18,0.28)}}
+.card.wide{grid-column:1 / -1}
+.card h3{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--forest);margin:0 0 10px}
+.card p{font-size:0.9rem;font-weight:300;line-height:1.65;color:rgba(14,21,18,0.66);margin:0;max-width:none}
+@media(max-width:640px){.cards{grid-template-columns:1fr;gap:10px}.card{padding:22px 20px;border-radius:18px}}
+.rows{margin-top:6px}
+.row{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:30px 0;border-top:1px solid var(--line-dark)}
+.row:last-child{border-bottom:1px solid var(--line-dark)}
+.row .no{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.5rem;color:rgba(31,61,53,0.55);line-height:1.2}
+.row h3{margin:2px 0 10px;font-family:var(--cond);font-size:0.82rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink)}
+.row p{margin-bottom:10px}
+.row p:last-child{margin-bottom:0}
+@media(max-width:640px){.row{grid-template-columns:44px 1fr;gap:14px;padding:26px 0}}
+details.sources{margin-top:22px;border-top:1px solid var(--line-dark)}
+details.sources summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:20px 2px;font-family:var(--cond);font-size:0.84rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);-webkit-tap-highlight-color:transparent}
+details.sources summary::-webkit-details-marker{display:none}
+details.sources summary::after{content:'+';font-family:var(--sans);font-weight:300;font-size:1.2rem;color:rgba(14,21,18,0.5);transition:transform .3s}
+details.sources[open] summary::after{transform:rotate(45deg)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -123,132 +198,130 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <section class="group">
       <p>For centuries, Merino wool helped people adapt to changing climates, regulating temperature, managing moisture and remaining comfortable across days of movement. Cotton clothed generations of athletes, workers and adventurers alike, prized for its breathability, durability and comfort whether training, travelling or living everyday life.</p>
       <div class="stack"><span>Neither was designed in a laboratory.</span><span>Both were refined by nature over thousands of years.</span></div>
-      <div class="stack"><span>Then came synthetics.</span><span>Polyester and nylon changed the apparel industry.</span></div>
-      <div class="stack"><span>They were lighter.</span><span>Cheaper to produce.</span><span>Easier to manufacture at scale.</span></div>
-      <p>And because they could be made consistently and at a lower cost than premium natural fibres, they quickly became the standard for modern sportswear.</p>
-      <p>Today, the vast majority of performance apparel is made from petroleum-based plastics.</p>
-      <div class="stack"><span>Not necessarily because they’re the best materials.</span><span>But because they’re among the most economical to manufacture.</span></div>
-      <p>Premium natural fibres like Merino wool and long-staple cotton are significantly more expensive to source and produce. They require greater investment, more considered manufacturing and often result in lower margins.</p>
-      <p>For us, that’s a trade-off worth making. Because we believe the materials closest to your skin should be chosen for how they perform, not simply for how cheaply they can be made.</p>
-      <p class="pull">Somewhere along the way, performance became synonymous with plastic. We believe it’s time to rethink that.</p>
+      <p>Then came synthetics. Polyester and nylon changed the apparel industry: lighter, cheaper to produce, easier to manufacture at scale. Because they could be made consistently and at a lower cost than premium natural fibres, they quickly became the standard for modern sportswear.</p>
+      <p>Today, the vast majority of performance apparel is made from petroleum-based plastics. Not necessarily because they&rsquo;re the best materials, but because they&rsquo;re among the most economical to manufacture.</p>
+      <p>Premium natural fibres like Merino wool and long-staple cotton cost more to source and produce. For us, that&rsquo;s a trade-off worth making. The materials closest to your skin should be chosen for how they perform, not simply for how cheaply they can be made.</p>
     </section>
+
+    <div class="bleed scrub"><div class="scrub-wrap"><div class="scrub-sticky">
+      <span class="t-label">The problem</span>
+      <p class="scrub-t" id="scrub-t">Somewhere along the way, performance became synonymous with plastic. <span class="em">We believe it&rsquo;s time to rethink that.</span></p>
+    </div></div></div>
 
     <section class="group">
       <span class="group-label">Natural fibres</span>
       <h2>Purposefully <span class="em">chosen.</span></h2>
-      <div class="stack"><span>Natural fibres aren’t new.</span><span>They’re the original performance fabrics.</span></div>
+      <div class="stack"><span>Natural fibres aren&rsquo;t new.</span><span>They&rsquo;re the original performance fabrics.</span></div>
       <p>Every material has strengths. No single fibre is perfect for every activity, which is why we build each garment around its intended use rather than following industry convention.</p>
-      <div class="stack"><span>For us, natural fibres aren’t a trend.</span><span>They’re the foundation.</span></div>
+      <div class="stack"><span>For us, natural fibres aren&rsquo;t a trend.</span><span>They&rsquo;re the foundation.</span></div>
     </section>
 
     <section class="group">
       <span class="group-label">Merino Wool</span>
       <h2>Built for <span class="em">movement.</span></h2>
-      <p>Merino is one of nature’s most remarkable performance fibres. Whether you’re running before sunrise, boarding an overnight flight or living from a backpack for two weeks, Merino adapts.</p>
-      <div class="feat"><h3>Naturally odour resistant</h3>
-        <p>Unlike many synthetic fabrics, Merino naturally helps resist odour, allowing garments to stay fresher between washes.</p>
-        <div class="stack"><span>Wear it.</span><span>Air it out.</span><span>Wear it again.</span></div></div>
-      <div class="feat"><h3>Travel lighter</h3>
-        <p>When your clothing stays fresh for longer, you simply need less of it. Instead of packing one shirt for every day, a few quality Merino pieces can comfortably take you through an entire trip.</p>
-        <div class="stack"><span>Less luggage.</span><span>Less washing.</span><span>More freedom.</span></div></div>
-      <div class="feat"><h3>Temperature regulation</h3>
-        <p>Merino helps regulate your body’s temperature across changing environments. It provides insulation when conditions cool and remains breathable as temperatures rise, making it one of the most versatile fibres you can wear.</p></div>
-      <div class="feat"><h3>Breathable and moisture managing</h3>
-        <p>Merino naturally absorbs and releases moisture vapour, helping maintain comfort during movement without relying on chemical treatments.</p></div>
-      <div class="feat"><h3>Designed for life beyond the workout</h3>
-        <p>A Merino garment shouldn’t only be useful while you’re training.</p>
-        <div class="stack"><span>It should be the shirt you wear on the flight.</span><span>On the hike.</span><span>At dinner.</span><span>Through a week overseas.</span></div>
-        <p>The fewer compromises your clothing makes, the more life it becomes part of.</p></div>
+      <p>Merino is one of nature&rsquo;s most remarkable performance fibres. Whether you&rsquo;re running before sunrise, boarding an overnight flight or living from a backpack for two weeks, Merino adapts.</p>
+      <div class="cards">
+        <div class="card reveal"><h3>Naturally odour resistant</h3>
+          <p>Merino naturally helps resist odour, so garments stay fresher between washes. Wear it, air it out, wear it again.</p></div>
+        <div class="card reveal"><h3>Travel lighter</h3>
+          <p>When clothing stays fresh for longer, you simply need less of it. A few quality Merino pieces can carry you through an entire trip.</p></div>
+        <div class="card reveal"><h3>Temperature regulation</h3>
+          <p>Insulating when conditions cool, breathable as temperatures rise. One of the most versatile fibres you can wear.</p></div>
+        <div class="card reveal"><h3>Moisture managing</h3>
+          <p>Merino naturally absorbs and releases moisture vapour, maintaining comfort during movement without chemical treatments.</p></div>
+        <div class="card wide reveal"><h3>Designed for life beyond the workout</h3>
+          <p>A Merino garment shouldn&rsquo;t only be useful while you&rsquo;re training. It should be the shirt you wear on the flight, on the hike, at dinner, through a week overseas. The fewer compromises your clothing makes, the more life it becomes part of.</p></div>
+      </div>
     </section>
 
     <section class="group">
       <span class="group-label">Premium Cotton</span>
       <h2>Comfort is <span class="em">performance too.</span></h2>
-      <p>Not every day demands race-day apparel.</p>
-      <div class="stack"><span>Strength training.</span><span>Recovery.</span><span>Travel.</span><span>Working remotely.</span><span>Weekend coffee.</span></div>
-      <p>Life spends far more time outside a race than inside one. That’s why we use premium long-staple cotton for garments designed around everyday movement.</p>
-      <div class="feat"><h3>A legacy of performance</h3>
-        <p>Before polyester became the standard, generations of athletes trained, competed and recovered in cotton. Its breathability, comfort and durability made it the fabric of choice for movement long before synthetic sportswear existed.</p></div>
-      <div class="feat"><h3>Naturally breathable</h3>
-        <p>Premium cotton allows air to circulate freely, providing comfort throughout the day without the plastic feel common in many synthetic garments.</p></div>
-      <div class="feat"><h3>Exceptionally soft</h3>
-        <p>We use premium long-staple cotton because longer fibres produce stronger, smoother yarns. The result is fabric that feels better against your skin, resists pilling and becomes even more comfortable over time.</p></div>
-      <div class="feat"><h3>Built to be worn</h3>
-        <p>The best T-shirt isn’t the one reserved for special occasions. It’s the one you instinctively reach for every morning.</p>
-        <div class="stack"><span>From training to travel.</span><span>From work to weekends.</span></div>
-        <p>That’s the standard we design for.</p></div>
+      <p>Not every day demands race-day apparel. Strength training, recovery, travel, working remotely, weekend coffee. Life spends far more time outside a race than inside one. That&rsquo;s why we use premium long-staple cotton for garments designed around everyday movement.</p>
+      <div class="cards">
+        <div class="card reveal"><h3>A legacy of performance</h3>
+          <p>Before polyester became the standard, generations of athletes trained, competed and recovered in cotton.</p></div>
+        <div class="card reveal"><h3>Naturally breathable</h3>
+          <p>Premium cotton lets air circulate freely, providing all-day comfort without the plastic feel common in synthetics.</p></div>
+        <div class="card reveal"><h3>Exceptionally soft</h3>
+          <p>Long-staple cotton produces stronger, smoother yarns that feel better against skin, resist pilling and soften over time.</p></div>
+        <div class="card reveal"><h3>Built to be worn</h3>
+          <p>The best T-shirt is the one you instinctively reach for every morning. From training to travel, work to weekends.</p></div>
+      </div>
     </section>
 
     <section class="group">
       <span class="group-label">The case for natural</span>
       <h2>Why we choose <span class="em">natural fibres.</span></h2>
       <p>Most modern performance apparel is made from polyester or nylon. These materials are lightweight and durable, but they also come with compromises.</p>
-      <div class="feat"><h3>Odour</h3>
-        <p>Polyester fibres are naturally hydrophobic, meaning sweat and body oils remain closer to the fabric’s surface. Over time, this can encourage the build-up of odour-causing bacteria, which is why many synthetic garments develop persistent smells after repeated use.</p>
-        <p>Merino wool naturally helps resist odour, allowing garments to stay fresher between washes.</p></div>
-      <div class="feat"><h3>Comfort beyond the workout</h3>
-        <p>Many synthetic garments are designed to perform during exercise but are less comfortable for extended wear. We believe the best apparel should transition effortlessly from a morning run to a long flight, a day exploring a new city or an afternoon at a café.</p>
-        <p>Natural fibres are designed for movement and for life.</p></div>
-      <div class="feat"><h3>Washing less</h3>
-        <p>Because Merino stays fresh for longer, it often requires less frequent washing than synthetic apparel.</p>
-        <div class="stack"><span>That means less time doing laundry.</span><span>Less water and energy.</span><span>More time wearing your clothes instead of washing them.</span></div></div>
-      <div class="feat"><h3>Microplastics</h3>
-        <p>Synthetic garments shed tiny plastic fibres throughout their lifetime, particularly during wear and washing. These microplastics have been detected in rivers, oceans, wildlife and human tissues.</p>
-        <p>A growing body of research is investigating how people are exposed to microplastics, including through the food we eat, the water we drink and the air we breathe.</p>
-        <p>Researchers are also exploring whether wearing synthetic textiles, particularly during exercise when heat, friction and increased respiration are involved, may contribute to exposure through inhalation, absorption through your skin and other potential pathways.</p>
-        <p>While the science is still evolving, we believe it’s another reason to question our reliance on petroleum-based performance fabrics and to look again at the natural fibres that have served us for generations.</p>
-        <p>Natural fibres such as Merino wool and premium cotton are biodegradable, offering a different approach to performance apparel.</p></div>
+      <div class="rows">
+        <div class="row reveal"><span class="no">01</span><div>
+          <h3>Odour</h3>
+          <p>Polyester fibres are naturally hydrophobic, meaning sweat and body oils remain closer to the fabric&rsquo;s surface. Over time, this can encourage the build-up of odour-causing bacteria, which is why many synthetic garments develop persistent smells after repeated use. Merino wool naturally helps resist odour, allowing garments to stay fresher between washes.</p>
+        </div></div>
+        <div class="row reveal"><span class="no">02</span><div>
+          <h3>Comfort beyond the workout</h3>
+          <p>Many synthetic garments are designed to perform during exercise but are less comfortable for extended wear. We believe the best apparel should transition effortlessly from a morning run to a long flight, a day exploring a new city or an afternoon at a caf&eacute;. Natural fibres are designed for movement and for life.</p>
+        </div></div>
+        <div class="row reveal"><span class="no">03</span><div>
+          <h3>Washing less</h3>
+          <p>Because Merino stays fresh for longer, it often requires less frequent washing than synthetic apparel. That means less time doing laundry, less water and energy, and more time wearing your clothes instead of washing them.</p>
+        </div></div>
+        <div class="row reveal"><span class="no">04</span><div>
+          <h3>Microplastics</h3>
+          <p>Synthetic garments shed tiny plastic fibres throughout their lifetime, particularly during wear and washing. These microplastics have been detected in rivers, oceans, wildlife and human tissues. Researchers are also exploring whether wearing synthetic textiles, particularly during exercise when heat, friction and increased respiration are involved, may contribute to exposure through inhalation, absorption through your skin and other potential pathways.</p>
+          <p>While the science is still evolving, we believe it&rsquo;s another reason to question our reliance on petroleum-based performance fabrics. Natural fibres such as Merino wool and premium cotton are biodegradable, offering a different approach to performance apparel.</p>
+        </div></div>
+      </div>
     </section>
 
-    <section class="group">
-      <span class="group-label">Our standard</span>
-      <h2>We choose materials for people, <span class="em">not production lines.</span></h2>
-      <p>The easiest fabric to manufacture isn’t always the best fabric to wear.</p>
-      <div class="stack"><span>We don’t choose materials because they’re the cheapest.</span><span>We choose them because they perform.</span><span>Because they last.</span><span>Because they feel better against your skin.</span><span>Because they travel better.</span><span>Because they encourage buying fewer, better garments.</span></div>
-      <p>The materials closest to your skin should be chosen for how they serve you, not simply for how cheaply they can be made.</p>
-    </section>
-
-    <section class="group">
-      <span class="group-label">Consume better</span>
-      <h2>Buy less. <span class="em">Wear more.</span></h2>
-      <div class="stack"><span>We don’t believe performance should mean owning more clothes.</span><span>We believe it should mean owning better ones.</span></div>
-      <p>Garments that earn their place in your wardrobe.</p>
-      <div class="stack"><span>Pieces you can train in.</span><span>Travel in.</span><span>Recover in.</span><span>Live in.</span></div>
-      <p>The fewer compromises your clothing makes, the more often you’ll choose to wear it.</p>
-      <div class="stack"><span>That’s better for your wardrobe.</span><span>Better for your travel.</span><span>A more thoughtful way to consume.</span></div>
+    <section class="bleed band reveal">
+      <span class="t-label">Consume better</span>
+      <h2 class="band-h">Buy less. <span style="font-style:italic;color:rgba(245,242,236,0.7)">Wear more.</span></h2>
+      <div class="band-lines">
+        <span class="dim">We don&rsquo;t choose materials because they&rsquo;re the cheapest.</span>
+        <span>We choose them because they perform.</span>
+        <span class="dim">Because they last. Because they feel better against your skin.</span>
+        <span>Pieces you can train in. Travel in. Recover in. Live in.</span>
+      </div>
+      <p class="band-s">The fewer compromises your clothing makes, the more often you&rsquo;ll choose to wear it. Better for your wardrobe, better for your travel, a more thoughtful way to consume.</p>
     </section>
 
     <section class="group">
       <span class="group-label">Transparency</span>
       <h2>Our <span class="em">sources.</span></h2>
-      <p>At Enduro, we believe transparency matters.</p>
-      <p>Our philosophy is informed by peer-reviewed scientific literature, textile engineering research and publications from internationally recognised organisations. We don’t claim to have all the answers, and where the science continues to evolve, we’ll continue to learn alongside it.</p>
-      <p>Below are some of the primary sources that have shaped our thinking.</p>
-      <div class="src-wrap">
-        <div class="src-row"><span class="topic">Merino odour resistance</span><span class="srcs">The Woolmark Company, CSIRO, Textile Research Journal, Journal of the Textile Institute</span></div>
-        <div class="src-row"><span class="topic">Temperature regulation</span><span class="srcs">The Woolmark Company Performance Research, North Carolina State University Textile Research</span></div>
-        <div class="src-row"><span class="topic">Moisture management</span><span class="srcs">Australian Wool Innovation (AWI), The Woolmark Company</span></div>
-        <div class="src-row"><span class="topic">Reduced washing frequency</span><span class="srcs">Australian Wool Innovation (AWI), AgResearch New Zealand, Consumption Research Norway (SIFO)</span></div>
-        <div class="src-row"><span class="topic">Merino fibre performance</span><span class="srcs">The Woolmark Company, Textile Research Journal</span></div>
-        <div class="src-row"><span class="topic">Cotton fibre properties</span><span class="srcs">Cotton Incorporated, Textile Research Journal, peer-reviewed textile engineering literature</span></div>
-        <div class="src-row"><span class="topic">Microplastic release from synthetic textiles</span><span class="srcs">Environmental Science &amp; Technology, International Union for Conservation of Nature (IUCN), European Environment Agency</span></div>
-        <div class="src-row"><span class="topic">Human exposure to microplastics</span><span class="srcs">The New England Journal of Medicine, Nature Reviews, Environmental Health Perspectives, World Health Organization (WHO)</span></div>
-        <div class="src-row"><span class="topic">Biodegradability of natural fibres</span><span class="srcs">The Woolmark Company, Australian Wool Innovation (AWI), peer-reviewed environmental science literature</span></div>
-        <div class="src-row"><span class="topic">General textile fibre science</span><span class="srcs">Textile Research Journal, Journal of the Textile Institute</span></div>
-      </div>
-      <div class="feat"><h3>A note on scientific research</h3>
-        <p>Science is continually evolving. Topics such as the environmental impact of synthetic fibres and human exposure to microplastics remain active areas of research. Where evidence is still emerging, we aim to present the current state of scientific understanding without overstating conclusions.</p>
-        <p>Our philosophy isn’t built on a single study. It’s built on decades of textile science, ongoing research and a simple belief that the materials closest to your skin should be chosen for how they perform, how they feel and how they fit into a life lived for the long run.</p></div>
+      <p>At Enduro, we believe transparency matters. Our philosophy is informed by peer-reviewed scientific literature, textile engineering research and publications from internationally recognised organisations. We don&rsquo;t claim to have all the answers, and where the science continues to evolve, we&rsquo;ll continue to learn alongside it.</p>
+      <details class="sources">
+        <summary>View the research</summary>
+        <div class="src-wrap">
+          <div class="src-row"><span class="topic">Merino odour resistance</span><span class="srcs">The Woolmark Company, CSIRO, Textile Research Journal, Journal of the Textile Institute</span></div>
+          <div class="src-row"><span class="topic">Temperature regulation</span><span class="srcs">The Woolmark Company Performance Research, North Carolina State University Textile Research</span></div>
+          <div class="src-row"><span class="topic">Moisture management</span><span class="srcs">Australian Wool Innovation (AWI), The Woolmark Company</span></div>
+          <div class="src-row"><span class="topic">Reduced washing frequency</span><span class="srcs">Australian Wool Innovation (AWI), AgResearch New Zealand, Consumption Research Norway (SIFO)</span></div>
+          <div class="src-row"><span class="topic">Merino fibre performance</span><span class="srcs">The Woolmark Company, Textile Research Journal</span></div>
+          <div class="src-row"><span class="topic">Cotton fibre properties</span><span class="srcs">Cotton Incorporated, Textile Research Journal, peer-reviewed textile engineering literature</span></div>
+          <div class="src-row"><span class="topic">Microplastic release from synthetic textiles</span><span class="srcs">Environmental Science &amp; Technology, International Union for Conservation of Nature (IUCN), European Environment Agency</span></div>
+          <div class="src-row"><span class="topic">Human exposure to microplastics</span><span class="srcs">The New England Journal of Medicine, Nature Reviews, Environmental Health Perspectives, World Health Organization (WHO)</span></div>
+          <div class="src-row"><span class="topic">Biodegradability of natural fibres</span><span class="srcs">The Woolmark Company, Australian Wool Innovation (AWI), peer-reviewed environmental science literature</span></div>
+          <div class="src-row"><span class="topic">General textile fibre science</span><span class="srcs">Textile Research Journal, Journal of the Textile Institute</span></div>
+        </div>
+        <div class="feat"><h3>A note on scientific research</h3>
+          <p>Science is continually evolving. Topics such as the environmental impact of synthetic fibres and human exposure to microplastics remain active areas of research. Where evidence is still emerging, we aim to present the current state of scientific understanding without overstating conclusions.</p>
+          <p>Our philosophy isn&rsquo;t built on a single study. It&rsquo;s built on decades of textile science, ongoing research and a simple belief that the materials closest to your skin should be chosen for how they perform, how they feel and how they fit into a life lived for the long run.</p></div>
+      </details>
     </section>
 
-    <div class="closer">
-      <p>Enduro exists to prove that exceptional performance doesn’t have to come from plastic.</p>
-      <p>We choose materials for people, not production lines.</p>
-      <p>Sometimes, the best innovation isn’t inventing something new. It’s recognising that nature solved the problem long ago.</p>
-      <div class="sign">For the long run.</div>
-    </div>
-
   </div>
+
+  <section class="bleed finale" id="finale">
+    <div class="fin-lines">
+      <p>Enduro exists to prove that exceptional performance doesn&rsquo;t have to come from plastic.</p>
+      <p>We choose materials for people, not production lines.</p>
+      <p>Sometimes, the best innovation isn&rsquo;t inventing something new. It&rsquo;s recognising that nature solved the problem long ago.</p>
+    </div>
+    <div class="fin-sign">For the long run.</div>
+    <a class="fin-cta" href="shop.html">Shop the collection</a>
+  </section>
 </main>
 
 <footer role="contentinfo">
@@ -276,5 +349,54 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   </div>
 </footer>
 
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveal on scroll (cards, rows, bands, finale) */
+  var els = document.querySelectorAll('.reveal, .finale');
+  if(reduced || !('IntersectionObserver' in window)){
+    els.forEach(function(e){ e.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.14});
+    els.forEach(function(e){ io.observe(e); });
+  }
+
+  /* manifesto: words light up with scroll */
+  var st = document.getElementById('scrub-t');
+  if(st){
+    var nodes = [];
+    (function split(el){
+      Array.prototype.slice.call(el.childNodes).forEach(function(n){
+        if(n.nodeType===3){
+          var frag=document.createDocumentFragment();
+          n.nodeValue.split(/(\s+)/).forEach(function(t){
+            if(/^\s+$/.test(t)||t===''){ frag.appendChild(document.createTextNode(t)); }
+            else { var sp=document.createElement('span'); sp.className='w'+(el.classList&&el.classList.contains('em')?' em':''); sp.textContent=t; frag.appendChild(sp); nodes.push(sp); }
+          });
+          el.replaceChild(frag,n);
+        } else if(n.nodeType===1){ split(n); }
+      });
+    })(st);
+    if(reduced){ nodes.forEach(function(w){ w.classList.add('lit'); }); }
+    else {
+      var wrap = st.closest('.scrub-wrap');
+      var ticking=false;
+      function update(){
+        ticking=false;
+        var r = wrap.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var p = Math.min(1, Math.max(0, -r.top / (r.height - vh)));
+        var lit = Math.round(p * 1.15 * nodes.length);
+        nodes.forEach(function(w,i){ w.classList.toggle('lit', i < lit); });
+      }
+      window.addEventListener('scroll', function(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }, {passive:true});
+      update();
+    }
+  }
+})();
+</script>
 </body>
 </html>
