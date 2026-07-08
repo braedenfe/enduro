@@ -215,24 +215,45 @@ a{color:inherit;text-decoration:none}
 .rcard-price{font-weight:400;font-size:0.96rem;white-space:nowrap}
 
 /* ───────── SPEC BAND ───────── */
-#specs{background:var(--bone);color:var(--ink);padding:0 32px clamp(72px,10vh,130px)}
-.specs-grid{
-  max-width:1280px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line-dark);
+#specs{background:var(--bone);color:var(--ink);padding:0 24px clamp(72px,10vh,130px)}
+.specs-head{max-width:1280px;margin:0 auto clamp(26px,4vh,44px)}
+.specs-head .t-label{color:var(--forest);display:block}
+.specs-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.spec{
+  position:relative;background:#FBFAF6;border:1px solid var(--line-dark);border-radius:22px;
+  padding:34px 24px 56px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s, border-color .35s;
 }
-.spec{padding:42px 28px 0;border-left:1px solid var(--line-dark)}
-.spec:first-child{border-left:none;padding-left:0}
+@media(hover:hover){
+  .spec:hover{transform:translateY(-4px);border-color:rgba(31,61,53,0.35);box-shadow:0 18px 40px -22px rgba(14,21,18,0.28)}
+}
 .spec-n{
-  font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,5vw,4.2rem);
-  letter-spacing:-0.02em;line-height:1;color:var(--forest);
+  font-family:var(--serif);font-weight:400;font-size:clamp(2.7rem,5vw,4.2rem);line-height:1;color:var(--forest);
+  font-feature-settings:"lnum" 1,"pnum" 1;font-variant-numeric:lining-nums proportional-nums;
 }
-.spec-n sup{font-size:0.42em;font-style:italic;font-weight:400;margin-left:2px}
-.spec-l{margin-top:12px;font-family:var(--cond);font-size:0.8rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(14,21,18,0.55)}
+.spec-n sup{font-size:0.4em;font-style:italic;font-weight:400;margin-left:3px}
+.spec-l{margin-top:13px;font-family:var(--cond);font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.78)}
+.spec-c{margin-top:7px;font-size:0.84rem;font-weight:300;line-height:1.55;color:rgba(14,21,18,0.48)}
+.spec-plus{
+  position:absolute;right:16px;bottom:16px;width:28px;height:28px;border-radius:50%;
+  border:1px solid rgba(14,21,18,0.2);display:flex;align-items:center;justify-content:center;
+  font-family:var(--sans);font-weight:300;font-size:1.05rem;color:rgba(14,21,18,0.55);
+  transition:transform .35s, background .35s, color .35s, border-color .35s;line-height:1;
+}
+.spec-more{
+  position:absolute;inset:0;background:var(--forest);color:var(--bone);border-radius:21px;
+  padding:26px 24px;opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .4s, transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.spec-more .spec-ml{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,236,0.6)}
+.spec-more p{margin-top:10px;font-size:0.85rem;font-weight:300;line-height:1.6;color:rgba(245,242,236,0.92)}
+.spec.open .spec-more{opacity:1;transform:translateY(0);pointer-events:auto}
+.spec.open .spec-plus{transform:rotate(45deg);background:var(--bone);color:var(--forest);border-color:var(--bone);z-index:2}
 @media(max-width:860px){
-  .specs-grid{grid-template-columns:1fr 1fr}
-  .spec{padding:34px 12px 0;text-align:center}
-  .spec:nth-child(odd){border-left:none}
+  .specs-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .spec{padding:26px 18px 52px;border-radius:18px}
+  .spec-more{padding:20px 18px;border-radius:17px}
+  .spec-more p{font-size:0.78rem;line-height:1.55}
 }
 
 /* ───────── GIANT TYPE INTERSTITIAL ───────── */
@@ -484,11 +505,53 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 
 <!-- SPEC BAND -->
 <section id="specs">
+  <div class="specs-head"><span class="t-label reveal">The standard</span></div>
   <div class="specs-grid">
-    <div class="spec reveal"><div class="spec-n">17.5<sup>&micro;</sup></div><div class="spec-l">Extra fine merino</div></div>
-    <div class="spec reveal"><div class="spec-n">155<sup>gsm</sup></div><div class="spec-l">Featherweight jersey</div></div>
-    <div class="spec reveal"><div class="spec-n">100<sup>%</sup></div><div class="spec-l">Natural fibres</div></div>
-    <div class="spec reveal"><div class="spec-n">0</div><div class="spec-l">Synthetics, always</div></div>
+
+    <div class="spec reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="spec-n" data-count="17.5" data-dec="1">17.5<sup>&micro;</sup></div>
+      <div class="spec-l">Extra fine merino</div>
+      <p class="spec-c">Below the itch threshold, soft against skin</p>
+      <span class="spec-plus" aria-hidden="true">+</span>
+      <div class="spec-more">
+        <span class="spec-ml">Extra fine merino</span>
+        <p>Merino is graded by fibre diameter in microns. At 17.5 microns, ours sits below the human itch threshold of around 21, so it feels soft worn directly against skin, run after run.</p>
+      </div>
+    </div>
+
+    <div class="spec reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="spec-n" data-count="90">90<sup>gsm</sup></div>
+      <div class="spec-l">Ultra light cotton</div>
+      <p class="spec-c">Our lightest jersey, barely there over distance</p>
+      <span class="spec-plus" aria-hidden="true">+</span>
+      <div class="spec-more">
+        <span class="spec-ml">Ultra light cotton</span>
+        <p>Grams per square metre is fabric weight. At 90gsm, the Essential Tee is our lightest jersey, cut from airy organic cotton that moves and breathes through warm sessions.</p>
+      </div>
+    </div>
+
+    <div class="spec reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="spec-n" data-count="100">100<sup>%</sup></div>
+      <div class="spec-l">Natural fibres</div>
+      <p class="spec-c">OEKO-TEX&reg; Standard 100 certified fabrics</p>
+      <span class="spec-plus" aria-hidden="true">+</span>
+      <div class="spec-more">
+        <span class="spec-ml">Natural fibres</span>
+        <p>Merino wool and organic cotton across the collection. Our fabrics are OEKO-TEX&reg; Standard 100 certified, tested for harmful substances from yarn to finished garment.</p>
+      </div>
+    </div>
+
+    <div class="spec reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="spec-n">SYD</div>
+      <div class="spec-l">Designed in Sydney</div>
+      <p class="spec-c">Tested in harsh Australian conditions</p>
+      <span class="spec-plus" aria-hidden="true">+</span>
+      <div class="spec-more">
+        <span class="spec-ml">Designed in Sydney</span>
+        <p>Designed in Sydney and worn in daily. Every piece is tested through Australian summers, coastal humidity and long training blocks before it earns a place in the range.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -639,6 +702,50 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
     }
     if(reduced){ words.forEach(function(w){ w.classList.add('lit'); }); }
     else { window.addEventListener('scroll', litWords, {passive:true}); litWords(); }
+  }
+
+  /* Spec cards: count-up */
+  var specNums = document.querySelectorAll('.spec-n[data-count]');
+  if(specNums.length && !reduced){
+    var sio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        sio.unobserve(e.target);
+        var el=e.target, target=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||'0',10);
+        var node=el.firstChild, t0=null, dur=1100;
+        function tick(t){
+          if(!t0) t0=t;
+          var p=Math.min(1,(t-t0)/dur), eased=1-Math.pow(1-p,3);
+          node.nodeValue=(target*eased).toFixed(dec);
+          if(p<1) requestAnimationFrame(tick);
+          else node.nodeValue=target.toFixed(dec).replace(/\.0$/,'');
+        }
+        node.nodeValue=(0).toFixed(dec);
+        requestAnimationFrame(tick);
+      });
+    },{threshold:0.5});
+    specNums.forEach(function(el){ sio.observe(el); });
+  }
+
+  /* Spec cards: exclusive open/close */
+  var specCards = document.querySelectorAll('.spec');
+  if(specCards.length){
+    var finePtr = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var setOpen=function(c,v){ c.classList.toggle('open',v); c.setAttribute('aria-expanded',v); };
+    var openOnly=function(c){ specCards.forEach(function(o){ setOpen(o,o===c); }); };
+    var closeAll=function(){ specCards.forEach(function(o){ setOpen(o,false); }); };
+    specCards.forEach(function(c){
+      c.addEventListener('click', function(){
+        c.classList.contains('open') ? closeAll() : openOnly(c);
+      });
+      c.addEventListener('keydown', function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.classList.contains('open') ? closeAll() : openOnly(c); }
+      });
+      if(finePtr){
+        c.addEventListener('mouseenter', function(){ openOnly(c); });
+        c.addEventListener('mouseleave', function(){ setOpen(c,false); });
+      }
+    });
   }
 
   if(reduced) return;
