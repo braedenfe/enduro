@@ -159,13 +159,27 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .card p{font-size:0.9rem;font-weight:300;line-height:1.65;color:rgba(14,21,18,0.66);margin:0;max-width:none}
 @media(max-width:640px){.cards{grid-template-columns:1fr;gap:10px}.card{padding:22px 20px;border-radius:18px}}
 .rows{margin-top:6px}
-.row{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:30px 0;border-top:1px solid var(--line-dark)}
-.row:last-child{border-bottom:1px solid var(--line-dark)}
-.row .no{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.5rem;color:rgba(31,61,53,0.55);line-height:1.2}
-.row h3{margin:2px 0 10px;font-family:var(--cond);font-size:0.82rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink)}
-.row p{margin-bottom:10px}
-.row p:last-child{margin-bottom:0}
-@media(max-width:640px){.row{grid-template-columns:44px 1fr;gap:14px;padding:26px 0}}
+details.case{border-top:1px solid var(--line-dark)}
+details.case:last-child{border-bottom:1px solid var(--line-dark)}
+details.case summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:20px;padding:24px 0;-webkit-tap-highlight-color:transparent}
+details.case summary::-webkit-details-marker{display:none}
+details.case .no{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.5rem;color:rgba(31,61,53,0.55);line-height:1.2}
+details.case .case-t{font-family:var(--cond);font-size:0.84rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink)}
+details.case .case-x{width:28px;height:28px;border-radius:50%;border:1px solid rgba(14,21,18,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:300;font-size:1.05rem;color:rgba(14,21,18,0.55);transition:transform .3s, background .3s, color .3s;line-height:1}
+details.case[open] .case-x{transform:rotate(45deg);background:var(--forest);color:var(--bone);border-color:var(--forest)}
+details.case .case-b{padding:0 28px 28px 84px}
+details.case .case-b p{margin-bottom:10px}
+details.case .case-b p:last-child{margin-bottom:0}
+details.case[open] .case-b{animation:caseIn .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes caseIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(max-width:640px){
+  details.case summary{grid-template-columns:44px 1fr 26px;gap:14px;padding:20px 0}
+  details.case .case-b{padding:0 0 24px 58px}
+}
+/* intro readability */
+.intro p{font-size:1.04rem;line-height:1.9}
+.intro > p:first-of-type::first-letter{font-family:var(--serif);font-weight:500;font-size:3.9em;float:left;line-height:0.82;padding:8px 12px 0 0;color:var(--forest)}
+@media(prefers-reduced-motion:reduce){details.case[open] .case-b{animation:none}}
 details.sources{margin-top:22px;border-top:1px solid var(--line-dark)}
 details.sources summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:20px 2px;font-family:var(--cond);font-size:0.84rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);-webkit-tap-highlight-color:transparent}
 details.sources summary::-webkit-details-marker{display:none}
@@ -195,12 +209,12 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
   <div class="doc-body">
 
-    <section class="group">
-      <p>For centuries, Merino wool helped people adapt to changing climates, regulating temperature, managing moisture and remaining comfortable across days of movement. Cotton clothed generations of athletes, workers and adventurers alike, prized for its breathability, durability and comfort whether training, travelling or living everyday life.</p>
+    <section class="group intro">
+      <p>For centuries, Merino wool helped people adapt to changing climates: regulating temperature, managing moisture, staying comfortable across days of movement. Cotton clothed generations of athletes, workers and adventurers, prized for its breathability, durability and comfort.</p>
       <div class="stack"><span>Neither was designed in a laboratory.</span><span>Both were refined by nature over thousands of years.</span></div>
-      <p>Then came synthetics. Polyester and nylon changed the apparel industry: lighter, cheaper to produce, easier to manufacture at scale. Because they could be made consistently and at a lower cost than premium natural fibres, they quickly became the standard for modern sportswear.</p>
-      <p>Today, the vast majority of performance apparel is made from petroleum-based plastics. Not necessarily because they&rsquo;re the best materials, but because they&rsquo;re among the most economical to manufacture.</p>
-      <p>Premium natural fibres like Merino wool and long-staple cotton cost more to source and produce. For us, that&rsquo;s a trade-off worth making. The materials closest to your skin should be chosen for how they perform, not simply for how cheaply they can be made.</p>
+      <p>Then came synthetics. <strong>Polyester and nylon changed the apparel industry</strong>: lighter, cheaper to produce, easier to manufacture at scale. They quickly became the standard for modern sportswear.</p>
+      <p>Today, <strong>the vast majority of performance apparel is made from petroleum-based plastics</strong>. Not because they&rsquo;re the best materials, but because they&rsquo;re among the most economical to manufacture.</p>
+      <p>Premium natural fibres cost more to source and produce. For us, that&rsquo;s a trade-off worth making. <strong>The materials closest to your skin should be chosen for how they perform</strong>, not for how cheaply they can be made.</p>
     </section>
 
     <div class="bleed scrub"><div class="scrub-wrap"><div class="scrub-sticky">
@@ -255,23 +269,14 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <h2>Why we choose <span class="em">natural fibres.</span></h2>
       <p>Most modern performance apparel is made from polyester or nylon. These materials are lightweight and durable, but they also come with compromises.</p>
       <div class="rows">
-        <div class="row reveal"><span class="no">01</span><div>
-          <h3>Odour</h3>
-          <p>Polyester fibres are naturally hydrophobic, meaning sweat and body oils remain closer to the fabric&rsquo;s surface. Over time, this can encourage the build-up of odour-causing bacteria, which is why many synthetic garments develop persistent smells after repeated use. Merino wool naturally helps resist odour, allowing garments to stay fresher between washes.</p>
-        </div></div>
-        <div class="row reveal"><span class="no">02</span><div>
-          <h3>Comfort beyond the workout</h3>
-          <p>Many synthetic garments are designed to perform during exercise but are less comfortable for extended wear. We believe the best apparel should transition effortlessly from a morning run to a long flight, a day exploring a new city or an afternoon at a caf&eacute;. Natural fibres are designed for movement and for life.</p>
-        </div></div>
-        <div class="row reveal"><span class="no">03</span><div>
-          <h3>Washing less</h3>
-          <p>Because Merino stays fresh for longer, it often requires less frequent washing than synthetic apparel. That means less time doing laundry, less water and energy, and more time wearing your clothes instead of washing them.</p>
-        </div></div>
-        <div class="row reveal"><span class="no">04</span><div>
-          <h3>Microplastics</h3>
-          <p>Synthetic garments shed tiny plastic fibres throughout their lifetime, particularly during wear and washing. These microplastics have been detected in rivers, oceans, wildlife and human tissues. Researchers are also exploring whether wearing synthetic textiles, particularly during exercise when heat, friction and increased respiration are involved, may contribute to exposure through inhalation, absorption through your skin and other potential pathways.</p>
-          <p>While the science is still evolving, we believe it&rsquo;s another reason to question our reliance on petroleum-based performance fabrics. Natural fibres such as Merino wool and premium cotton are biodegradable, offering a different approach to performance apparel.</p>
-        </div></div>
+        <details class="case reveal" name="case"><summary><span class="no">01</span><span class="case-t">Odour</span><span class="case-x" aria-hidden="true">+</span></summary>
+        <div class="case-b"><p>Polyester fibres are naturally hydrophobic, meaning sweat and body oils remain closer to the fabric&rsquo;s surface. Over time, this can encourage the build-up of odour-causing bacteria, which is why many synthetic garments develop persistent smells after repeated use. Merino wool naturally helps resist odour, allowing garments to stay fresher between washes.</p></div></details>
+        <details class="case reveal" name="case"><summary><span class="no">02</span><span class="case-t">Comfort beyond the workout</span><span class="case-x" aria-hidden="true">+</span></summary>
+        <div class="case-b"><p>Many synthetic garments are designed to perform during exercise but are less comfortable for extended wear. We believe the best apparel should transition effortlessly from a morning run to a long flight, a day exploring a new city or an afternoon at a caf&eacute;. Natural fibres are designed for movement and for life.</p></div></details>
+        <details class="case reveal" name="case"><summary><span class="no">03</span><span class="case-t">Washing less</span><span class="case-x" aria-hidden="true">+</span></summary>
+        <div class="case-b"><p>Because Merino stays fresh for longer, it often requires less frequent washing than synthetic apparel. That means less time doing laundry, less water and energy, and more time wearing your clothes instead of washing them.</p></div></details>
+        <details class="case reveal" name="case"><summary><span class="no">04</span><span class="case-t">Microplastics</span><span class="case-x" aria-hidden="true">+</span></summary>
+        <div class="case-b"><p>Synthetic garments shed tiny plastic fibres throughout their lifetime, particularly during wear and washing. These microplastics have been detected in rivers, oceans, wildlife and human tissues. Researchers are also exploring whether wearing synthetic textiles, particularly during exercise when heat, friction and increased respiration are involved, may contribute to exposure through inhalation, absorption through your skin and other potential pathways.</p><p>While the science is still evolving, we believe it&rsquo;s another reason to question our reliance on petroleum-based performance fabrics. Natural fibres such as Merino wool and premium cotton are biodegradable, offering a different approach to performance apparel.</p></div></details>
       </div>
     </section>
 
