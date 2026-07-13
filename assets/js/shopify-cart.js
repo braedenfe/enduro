@@ -18,7 +18,8 @@
     'wool-long-run-tee':   '15871256396145',
     'organic-tote':        '15876958191985',
     'merino-micro-short':  '15905028702577',
-    'merino-bandeau':      '15904981254513'
+    'merino-bandeau':      '15904981254513',
+    'gift-with-purchase':  '15906560278897'
   };
 
   const CREDS_READY  = !SHOP_DOMAIN.includes('YOUR-STORE') && !STOREFRONT_TOKEN.includes('YOUR_');
@@ -33,10 +34,12 @@
   /* ---------- Free gift promotion (modular) ----------
      To change the offer, edit THRESHOLD or productKey only. */
   const GIFT = {
-    enabled:    true,
-    threshold:  100,             // qualifying AUD subtotal (excludes shipping & the gift line)
-    productKey: 'organic-tote',  // key in PRODUCTS map
-    label:      'Enduro Tote'
+    enabled:       true,
+    threshold:     100,               // qualifying AUD subtotal (excludes shipping & the gift line)
+    productKey:    'organic-tote',    // standard gift (BXGY discount zeroes it at checkout)
+    bundleSafeKey: 'gift-with-purchase', // $0 product used when a bundle is in the cart (BXGY can't see bundles)
+    displayValue:  20,                // struck-through value shown in the cart drawer
+    label:         'Enduro Tote'
   };
   /* ---------- Bundle: Micro Short + Bandeau (modular) ----------
      When one of each is in the cart, the pair is swapped for the
@@ -59,13 +62,24 @@
     cart.lines.edges.reduce((sum, { node }) =>
       isGiftLine(node) ? sum : sum + parseFloat(node.merchandise.price.amount) * node.quantity, 0);
 
-  let giftVariantId = null;
-  async function resolveGiftVariant() {
-    if (giftVariantId) return giftVariantId;
-    const list = await resolveVariants(GIFT.productKey);
+  const giftVariantIds = {};
+  async function resolveGiftVariant(key) {
+    key = key || GIFT.productKey;
+    if (giftVariantIds[key]) return giftVariantIds[key];
+    const list = await resolveVariants(key);
     if (!list || !list.length) return null;
-    giftVariantId = (list.find(v => v.available) || list[0]).id;
-    return giftVariantId;
+    giftVariantIds[key] = (list.find(v => v.available && v.priceNum === 0) || list.find(v => v.available) || list[0]).id;
+    return giftVariantIds[key];
+  }
+  // which gift product should this cart carry?
+  function desiredGiftKey(cart) {
+    const bs = GIFT.bundleSafeKey;
+    if (bs && PRODUCTS[bs] && /^\d+$/.test(PRODUCTS[bs]) && typeof BUNDLE !== 'undefined' && BUNDLE.productId) {
+      const bGid = gid(BUNDLE.productId);
+      const hasBundle = cart.lines.edges.some(({ node }) => node.merchandise.product.id === bGid);
+      if (hasBundle) return bs;
+    }
+    return GIFT.productKey;
   }
 
   async function gql(query, variables) {
@@ -87,12 +101,12 @@
     if (!id || !/^\d+$/.test(id)) return null;
     const d = await gql(
       `query($id:ID!){ product(id:$id){ title variants(first:100){ edges{ node{
-        id availableForSale selectedOptions{ name value } } } } } }`,
+        id availableForSale price { amount } selectedOptions{ name value } } } } } }`,
       { id: gid(id) });
     if (!d.product) { console.warn('[enduro-cart] product not found / not published to Headless:', key); return null; }
     const list = d.product.variants.edges.map(({ node }) => {
       const opt = (n) => { const o = node.selectedOptions.find(x => x.name.toLowerCase() === n); return o ? o.value.toLowerCase() : null; };
-      return { id: node.id, available: node.availableForSale, size: opt('size'), color: opt('color') };
+      return { id: node.id, available: node.availableForSale, priceNum: parseFloat(node.price.amount), size: opt('size'), color: opt('color') };
     });
     variantCache[key] = list;
     return list;
@@ -249,9 +263,17 @@
       const sub = qualifyingSubtotal(cart);
       const giftLine = cart.lines.edges.find(({ node }) => isGiftLine(node));
       if (sub >= GIFT.threshold) {
+        const key = desiredGiftKey(cart);
+        const wantGid = gid(PRODUCTS[key]);
         if (!giftLine) {
-          const vid = await resolveGiftVariant();
+          const vid = await resolveGiftVariant(key);
           if (vid) return await addLine(cartId, { merchandiseId: vid, quantity: 1, attributes: [{ key: GIFT_ATTR, value: '1' }] });
+        } else if (giftLine.node.merchandise.product.id !== wantGid) {
+          // bundle presence changed: swap the gift for the right type
+          const vid = await resolveGiftVariant(key);
+          let c = await removeLine(cartId, giftLine.node.id);
+          if (vid) c = await addLine(cartId, { merchandiseId: vid, quantity: 1, attributes: [{ key: GIFT_ATTR, value: '1' }] });
+          return c;
         } else if (giftLine.node.quantity !== 1) {
           return await updateLine(cartId, giftLine.node.id, 1); // enforce single gift
         }
@@ -363,7 +385,7 @@
         return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">Gift</div>
-        <div class="p"><s>${money(v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+        <div class="p"><s>${money(GIFT.displayValue || v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
       }
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
@@ -505,7 +527,8 @@
       const list = await resolveVariants(key);
       const colorEl = document.getElementById('sel-colour');
       const colorName = colorEl ? colorEl.textContent.trim() : null;
-      const v = (list && list.length === 1) ? list[0] : (list && pickVariant(list, size, colorName));
+      const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list; // $0 variants are gift-only
+      const v = (sellable && sellable.length === 1) ? sellable[0] : (sellable && pickVariant(sellable, size, colorName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       await refresh(cart); openDrawer();
