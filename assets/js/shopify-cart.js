@@ -16,7 +16,9 @@
     'cotton-short-womens': '15876964417905',
     'cotton-long-run-tee': '15871282184561',
     'wool-long-run-tee':   '15871256396145',
-    'organic-tote':        '15876958191985'
+    'organic-tote':        '15876958191985',
+    'merino-micro-short':  '15905028702577',
+    'merino-bandeau':      '15904981254513'
   };
 
   const CREDS_READY  = !SHOP_DOMAIN.includes('YOUR-STORE') && !STOREFRONT_TOKEN.includes('YOUR_');
@@ -36,6 +38,16 @@
     productKey: 'organic-tote',  // key in PRODUCTS map
     label:      'Enduro Tote'
   };
+  /* ---------- Bundle: Micro Short + Bandeau (modular) ----------
+     When one of each is in the cart, the pair is swapped for the
+     matching bundle variant so the set discount applies. */
+  const BUNDLE = {
+    enabled:   true,
+    productId: '15905319354737',
+    partShort: 'merino-micro-short',  // option name containing 'micro short' holds this size
+    partBand:  'merino-bandeau'       // the plain 'Size' option holds this size
+  };
+
   const GIFT_ATTR = '_enduro_gift';
   const giftProductGid = () =>
     (GIFT.enabled && PRODUCTS[GIFT.productKey]) ? gid(PRODUCTS[GIFT.productKey]) : null;
@@ -98,8 +110,12 @@
 
   /* ---------- Cart API ---------- */
   const CART = `id checkoutUrl totalQuantity
-    cost { subtotalAmount { amount currencyCode } }
+    cost { subtotalAmount { amount currencyCode } totalAmount { amount currencyCode } }
+    discountCodes { code applicable }
+    discountAllocations { discountedAmount { amount currencyCode } }
     lines(first:50){ edges { node { id quantity attributes { key value }
+      cost { subtotalAmount { amount currencyCode } totalAmount { amount currencyCode } }
+      discountAllocations { discountedAmount { amount currencyCode } }
       merchandise { ... on ProductVariant {
         id title price { amount currencyCode }
         product { id title featuredImage { url altText } } } } } } }`;
@@ -117,6 +133,9 @@
   const updateLine = (cartId, lineId, quantity) => gql(
     `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
     { cartId, lines:[{ id: lineId, quantity }] }).then(d => d.cartLinesUpdate.cart);
+  const updateCodes = (cartId, codes) => gql(
+    `mutation($cartId:ID!,$codes:[String!]!){cartDiscountCodesUpdate(cartId:$cartId,discountCodes:$codes){cart{${CART}} userErrors{message}}}`,
+    { cartId, codes }).then(d => d.cartDiscountCodesUpdate.cart);
 
   async function addToCartFlow(variantId) {
     const cartId = localStorage.getItem(CART_KEY);
@@ -162,11 +181,26 @@
     .ec-line .t{font-size:.92rem;color:#0E1512}
     .ec-line .s{font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
     .ec-line .p{font-size:.88rem;margin-top:6px;color:#0E1512}
+    .ec-line .p s{color:rgba(14,21,18,.4);font-weight:300;margin-right:7px}
+    .ec-line .dtag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:3px 9px;margin-top:7px}
+    .ec-row{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:8px;color:rgba(14,21,18,.75)}
+    .ec-row.disc span:last-child{color:#1F3D35;font-weight:500}
+    .ec-total{display:flex;justify-content:space-between;font-size:1rem;font-weight:500;margin:2px 0 14px;color:#0E1512}
     .ec-qty{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
     .ec-qty button{width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
     .ec-qty span{font-size:.88rem;min-width:16px;text-align:center;color:#0E1512;font-weight:500}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1)}
+    .ec-code{display:flex;gap:8px;margin-bottom:12px}
+    .ec-code input{flex:1;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.85rem;background:#fff;min-width:0;outline:none;text-transform:uppercase}
+    .ec-code input:focus{border-color:#1F3D35}
+    .ec-code input::placeholder{text-transform:none;color:rgba(14,21,18,.4)}
+    .ec-code button{border:none;border-radius:99px;background:#0E1512;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:0 18px;cursor:pointer}
+    .ec-code button:disabled{opacity:.5}
+    .ec-code-msg{font-size:.78rem;color:#8C3B2E;margin:-4px 0 10px}
+    .ec-code-msg:empty{display:none}
+    .ec-chip{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:6px 8px 6px 13px;margin-bottom:12px}
+    .ec-chip button{background:none;border:none;color:#1F3D35;font-size:1rem;line-height:1;padding:0 4px;cursor:pointer}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:14px}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
     .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
@@ -188,7 +222,15 @@
     </div>
     <div class="ec-lines" id="ec-lines"></div>
     <div class="ec-foot" id="ec-foot" style="display:none">
+      <div class="ec-code" id="ec-code-row">
+        <input id="ec-code-input" type="text" placeholder="Discount code" autocomplete="off">
+        <button id="ec-code-apply" type="button">Apply</button>
+      </div>
+      <div class="ec-code-msg" id="ec-code-msg"></div>
+      <div id="ec-chips"></div>
       <div class="ec-sub"><span>Subtotal</span><span id="ec-sub"></span></div>
+      <div class="ec-row disc" id="ec-disc-row" style="display:none"><span>Discount</span><span id="ec-disc"></span></div>
+      <div class="ec-total" id="ec-total-row" style="display:none"><span>Total</span><span id="ec-total"></span></div>
       <button class="ec-co" id="ec-co">Checkout</button></div>`;
   document.body.appendChild(overlay); document.body.appendChild(drawer);
 
@@ -220,9 +262,64 @@
     return cart;
   }
 
+  /* ---------- Bundle reconcile ---------- */
+  let bundleVariants = null;
+  async function resolveBundleVariants() {
+    if (bundleVariants) return bundleVariants;
+    const d = await gql(
+      `query($id:ID!){ product(id:$id){ variants(first:100){ edges{ node{
+        id availableForSale selectedOptions{ name value } } } } } }`,
+      { id: gid(BUNDLE.productId) });
+    if (!d.product) { console.warn('[enduro-cart] bundle product not found / not published to Headless'); return null; }
+    bundleVariants = d.product.variants.edges.map(({ node }) => {
+      let shortSize = null, bandSize = null;
+      node.selectedOptions.forEach(o => {
+        if (o.name.toLowerCase().indexOf('micro short') > -1) shortSize = o.value.toLowerCase();
+        else bandSize = o.value.toLowerCase();
+      });
+      return { id: node.id, available: node.availableForSale, shortSize: shortSize, bandSize: bandSize };
+    });
+    return bundleVariants;
+  }
+
+  async function reconcileBundle(cart) {
+    if (!BUNDLE.enabled || !cart || !PRODUCTS[BUNDLE.partShort] || !PRODUCTS[BUNDLE.partBand]) return cart;
+    try {
+      const shortGid = gid(PRODUCTS[BUNDLE.partShort]);
+      const bandGid  = gid(PRODUCTS[BUNDLE.partBand]);
+      const shortLine = cart.lines.edges.find(({ node }) => node.merchandise.product.id === shortGid);
+      const bandLine  = cart.lines.edges.find(({ node }) => node.merchandise.product.id === bandGid);
+      if (!shortLine || !bandLine) return cart;
+      const list = await resolveBundleVariants();
+      if (!list) return cart;
+      const sSize = (shortLine.node.merchandise.title || '').toLowerCase();
+      const bSize = (bandLine.node.merchandise.title || '').toLowerCase();
+      const v = list.find(x => x.shortSize === sSize && x.bandSize === bSize);
+      if (!v || !v.available) {
+        if (v && !v.available) console.warn('[enduro-cart] bundle variant unavailable (check inventory / continue-selling):', sSize, bSize);
+        return cart;
+      }
+      const qty = Math.min(shortLine.node.quantity, bandLine.node.quantity);
+      let c = cart;
+      c = (shortLine.node.quantity - qty) > 0
+        ? await updateLine(c.id, shortLine.node.id, shortLine.node.quantity - qty)
+        : await removeLine(c.id, shortLine.node.id);
+      c = (bandLine.node.quantity - qty) > 0
+        ? await updateLine(c.id, bandLine.node.id, bandLine.node.quantity - qty)
+        : await removeLine(c.id, bandLine.node.id);
+      const exist = c.lines.edges.find(({ node }) => node.merchandise.id === v.id);
+      c = exist
+        ? await updateLine(c.id, exist.node.id, exist.node.quantity + qty)
+        : await addLine(c.id, { merchandiseId: v.id, quantity: qty });
+      // repeat in case other size combinations of the pair remain
+      return await reconcileBundle(c);
+    } catch (e) { return cart; /* fail soft: parts stay as separate lines */ }
+  }
+
   /* reconcile gift state, then paint */
   async function refresh(cart) {
-    const updated = await reconcileGift(cart);
+    const bundled = await reconcileBundle(cart);
+    const updated = await reconcileGift(bundled);
     render(updated);
     return updated;
   }
@@ -271,14 +368,57 @@
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
-        <div class="p">${money(v.price.amount * node.quantity, v.price.currencyCode)}</div>
+        <div class="p">${(function(){
+          const cur = v.price.currencyCode;
+          const sub = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : v.price.amount * node.quantity;
+          const tot = node.cost ? parseFloat(node.cost.totalAmount.amount) : sub;
+          return tot < sub ? '<s>' + money(sub, cur) + '</s>' + money(tot, cur) : money(sub, cur);
+        })()}</div>
+        ${(node.discountAllocations && node.discountAllocations.length) ? '<span class="dtag">Set discount applied</span>' : ''}
         <div class="ec-qty">
           <button data-line="${node.id}" data-qty="${node.quantity - 1}">&#8722;</button>
           <span>${node.quantity}</span>
           <button data-line="${node.id}" data-qty="${node.quantity + 1}">+</button>
         </div></div></div>`;
     }).join('');
-    document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD');
+    const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
+    document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
+    /* discount + total rows (shown only when a discount is active) */
+    let savings = 0;
+    cart.lines.edges.forEach(({ node }) => (node.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); }));
+    (cart.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); });
+    const discRow = document.getElementById('ec-disc-row');
+    const totalRow = document.getElementById('ec-total-row');
+    if (savings > 0 && cart.cost.totalAmount) {
+      let total = parseFloat(cart.cost.totalAmount.amount);
+      const gl = cart.lines.edges.find(({ node }) => isGiftLine(node));
+      if (gl && gl.node.cost) {
+        const giftPaid = parseFloat(gl.node.cost.totalAmount.amount);
+        if (giftPaid > 0) total -= giftPaid; // gift is complimentary; keep drawer consistent
+      }
+      document.getElementById('ec-disc').textContent = '\u2212' + money(savings, footCur);
+      document.getElementById('ec-total').textContent = money(total, footCur);
+      discRow.style.display = 'flex';
+      totalRow.style.display = 'flex';
+    } else {
+      discRow.style.display = 'none';
+      totalRow.style.display = 'none';
+    }
+    /* discount code chips */
+    const chips = document.getElementById('ec-chips');
+    const appliedCodes = (cart.discountCodes || []).filter(c => c.applicable);
+    chips.innerHTML = appliedCodes.map(c =>
+      '<span class="ec-chip">' + c.code + '<button data-code="' + c.code + '" aria-label="Remove discount code">&times;</button></span>'
+    ).join('');
+    chips.querySelectorAll('button').forEach(b => b.addEventListener('click', async () => {
+      const cid = localStorage.getItem(CART_KEY);
+      const remain = appliedCodes.filter(c => c.code !== b.dataset.code).map(c => c.code);
+      try {
+        document.getElementById('ec-code-msg').textContent = '';
+        render(await updateCodes(cid, remain));
+      } catch (e) {}
+    }));
+    document.getElementById('ec-code-row').style.display = appliedCodes.length ? 'none' : 'flex';
     foot.style.display = 'block';
     updateGiftBar(cart);
     lines.querySelectorAll('.ec-qty button').forEach(b => b.addEventListener('click', async () => {
@@ -290,6 +430,32 @@
       } catch (e) {}
     }));
   }
+
+  /* ---------- discount codes ---------- */
+  async function applyCode() {
+    const input = document.getElementById('ec-code-input');
+    const msg = document.getElementById('ec-code-msg');
+    const btn = document.getElementById('ec-code-apply');
+    const code = input.value.trim();
+    const cartId = localStorage.getItem(CART_KEY);
+    if (!code || !cartId || !current) return;
+    btn.disabled = true; msg.textContent = '';
+    try {
+      let cart = await updateCodes(cartId, [code]);
+      const dc = (cart.discountCodes || []).find(c => c.code.toLowerCase() === code.toLowerCase());
+      if (!dc || !dc.applicable) {
+        cart = await updateCodes(cartId, []);
+        msg.textContent = 'That code isn\u2019t valid or doesn\u2019t apply to this cart.';
+      } else {
+        input.value = '';
+      }
+      render(cart);
+    } catch (e) {
+      msg.textContent = 'Something went wrong. Please try again.';
+    } finally { btn.disabled = false; }
+  }
+  document.getElementById('ec-code-apply').addEventListener('click', applyCode);
+  document.getElementById('ec-code-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); applyCode(); } });
 
   document.getElementById('ec-co').addEventListener('click', () => {
     if (!current) return;
