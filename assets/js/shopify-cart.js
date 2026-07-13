@@ -363,7 +363,7 @@
         return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">Gift</div>
-        <div class="p">Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+        <div class="p"><s>${money(v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
       }
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
@@ -374,7 +374,11 @@
           const tot = node.cost ? parseFloat(node.cost.totalAmount.amount) : sub;
           return tot < sub ? '<s>' + money(sub, cur) + '</s>' + money(tot, cur) : money(sub, cur);
         })()}</div>
-        ${(node.discountAllocations && node.discountAllocations.length) ? '<span class="dtag">Set discount applied</span>' : ''}
+        ${(function(){
+          const s = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : 0;
+          const t = node.cost ? parseFloat(node.cost.totalAmount.amount) : s;
+          return t < s ? '<span class="dtag">Discount applied</span>' : '';
+        })()}
         <div class="ec-qty">
           <button data-line="${node.id}" data-qty="${node.quantity - 1}">&#8722;</button>
           <span>${node.quantity}</span>
@@ -385,7 +389,10 @@
     document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
     /* discount + total rows (shown only when a discount is active) */
     let savings = 0;
-    cart.lines.edges.forEach(({ node }) => (node.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); }));
+    cart.lines.edges.forEach(({ node }) => {
+      if (isGiftLine(node)) return; // gift is presented as Complimentary, not as a discount
+      (node.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); });
+    });
     (cart.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); });
     const discRow = document.getElementById('ec-disc-row');
     const totalRow = document.getElementById('ec-total-row');
