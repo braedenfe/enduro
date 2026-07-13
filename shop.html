@@ -364,6 +364,48 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <div id="grid-wrap">
   <div class="product-grid" role="list">
 
+    <!-- Merino Wool Micro Short -->
+    <a class="pcard" href="pages/product-merino-micro-short.html" data-product="merino-micro-short" data-fibre="wool" data-gender="women" role="listitem">
+      <div class="pcard-img">
+        <img class="main" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-model.jpg" alt="Merino Wool Micro Short, front, worn with the Merino Bandeau" loading="lazy">
+        <img class="alt" src="assets/images/products/merino-micro-short/merino-micro-short-black-back-model.jpg" alt="Merino Wool Micro Short, back" loading="lazy">
+        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-gender">Women's</span>
+        <div class="pcard-quick">
+          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-micro-short')">Quick view</button>
+          <span class="pq-btn primary">Shop now</span>
+        </div>
+      </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">Merino Wool Micro Short</h2>
+          <span class="pcard-fibre">Seamless merino &middot; Studio</span>
+        </div>
+        <span class="pcard-price">A$100</span>
+      </div>
+    </a>
+
+    <!-- Merino Bandeau -->
+    <a class="pcard" href="pages/product-merino-bandeau.html" data-product="merino-bandeau" data-fibre="wool" data-gender="women" role="listitem">
+      <div class="pcard-img">
+        <img class="main" src="assets/images/products/merino-bandeau/merino-bandeau-black-front-model.jpg" alt="Merino Bandeau, front, worn with the Merino Wool Micro Short" loading="lazy">
+        <img class="alt" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-model.jpg" alt="Merino Bandeau, back" loading="lazy">
+        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-gender">Women's</span>
+        <div class="pcard-quick">
+          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-bandeau')">Quick view</button>
+          <span class="pq-btn primary">Shop now</span>
+        </div>
+      </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">Merino Bandeau</h2>
+          <span class="pcard-fibre">Seamless merino &middot; Studio</span>
+        </div>
+        <span class="pcard-price">A$60</span>
+      </div>
+    </a>
+
     <!-- Cotton Essential Tee -->
     <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
@@ -695,6 +737,46 @@ const products = {
       ['Pockets','Dual zip side pockets, zippered rear pocket'],
     ]
   },
+  'merino-micro-short': {
+    name: 'Merino Wool Micro Short',
+    material: '95% Merino Wool, 5% Spandex',
+    category: 'Studio \u00b7 Women',
+    price: 'A$100',
+    preorder: true,
+    page: 'pages/product-merino-micro-short.html',
+    photo: 'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg',
+    desc: 'A seamless rib micro short in 95% merino wool. Mid-rise, softly supportive, and naturally breathable from studio to sauna. Pair with the Merino Bandeau and save 25% on both, applied automatically in your cart.',
+    fit: 'Seamless knit with high stretch. Model wears size S/M.',
+    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
+    sizes: ['S/M','L/XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','95% merino wool, 5% spandex'],
+      ['Construction','Seamless rib knit, mid-rise'],
+      ['Sizes','S/M \u2013 L/XL'],
+      ['Origin','Designed and made in Australia'],
+    ]
+  },
+  'merino-bandeau': {
+    name: 'Merino Bandeau',
+    material: '95% Merino Wool, 5% Spandex',
+    category: 'Studio \u00b7 Women',
+    price: 'A$60',
+    preorder: true,
+    page: 'pages/product-merino-bandeau.html',
+    photo: 'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg',
+    desc: 'A seamless double-layer bandeau in 95% merino wool. Light support with a smooth, secure fit, from studio to sauna. Pair with the Merino Wool Micro Short and save 25% on both, applied automatically in your cart.',
+    fit: 'Seamless knit with high stretch. Model wears size S/M.',
+    care: 'Machine wash cold on wool cycle. Lay flat to dry.',
+    sizes: ['S/M','L/XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','95% merino wool, 5% spandex'],
+      ['Construction','Seamless double-layer knit'],
+      ['Sizes','S/M \u2013 L/XL'],
+      ['Origin','Designed and made in Australia'],
+    ]
+  },
   'merino-short-womens': {
     name: 'Merino Long Run Short 3\u2033 \u2014 Women\u2019s',
     material: '100% Merino Wool',
@@ -882,6 +964,8 @@ const productConditions = {
   'wool-long-run-tee':    { tempMin: 5,  tempMax: 30, conditions: [{name:'Rain',fill:40},{name:'Wind',fill:80}] },
   'merino-short-mens':    { tempMin: 8,  tempMax: 30, conditions: [{name:'Rain',fill:30},{name:'Wind',fill:50}] },
   'merino-short-womens':  { tempMin: 8,  tempMax: 30, conditions: [{name:'Rain',fill:30},{name:'Wind',fill:50}] },
+  'merino-micro-short':   { tempMin: 20, tempMax: 80, scale: {min:0, max:90, ticks:[0,30,60,90]}, conditions: [{name:'Sauna',fill:100},{name:'Rain',fill:30}] },
+  'merino-bandeau':       { tempMin: 20, tempMax: 80, scale: {min:0, max:90, ticks:[0,30,60,90]}, conditions: [{name:'Sauna',fill:100},{name:'Rain',fill:30}] },
 };
 function cToF(c){ return Math.round(c * 9/5 + 32); }
 function renderConditions(key) {
@@ -890,14 +974,15 @@ function renderConditions(key) {
   if (!p) { if (widget) widget.style.display = 'none'; return; }
   if (widget) widget.style.display = '';
   const isF = conditionsUnit === 'f';
-  const sMin = isF ? cToF(SCALE_MIN_C) : SCALE_MIN_C;
-  const sMax = isF ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
+  const sc = p.scale || { min: SCALE_MIN_C, max: SCALE_MAX_C, ticks: SCALE_TICKS_C };
+  const sMin = isF ? cToF(sc.min) : sc.min;
+  const sMax = isF ? cToF(sc.max) : sc.max;
   const pMin = isF ? cToF(p.tempMin) : p.tempMin;
   const pMax = isF ? cToF(p.tempMax) : p.tempMax;
   const fill = document.getElementById('drawer-temp-fill');
   fill.style.left  = ((pMin - sMin) / (sMax - sMin)) * 100 + '%';
   fill.style.width = ((pMax - pMin) / (sMax - sMin)) * 100 + '%';
-  document.getElementById('drawer-temp-ticks').innerHTML = SCALE_TICKS_C.map(c => {
+  document.getElementById('drawer-temp-ticks').innerHTML = sc.ticks.map(c => {
     const v = isF ? cToF(c) : c;
     return '<div class="temp-tick"><span class="temp-tick-label">' + v + (isF ? '\u00b0F' : '\u00b0C') + '</span></div>';
   }).join('');
