@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --forest:#1F3D35;
@@ -37,6 +38,7 @@
   --cond:'Barlow Condensed',sans-serif;
   --sans:'DM Sans',-apple-system,sans-serif;
 }
+
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -283,7 +285,7 @@ a{color:inherit;text-decoration:none}
   display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,100px);align-items:center;
 }
 .origin-img{border-radius:4px;overflow:hidden;aspect-ratio:4/5}
-.origin-img img{width:100%;height:100%;object-fit:cover;object-position:0% 72%}
+.origin-img img{width:100%;height:100%;object-fit:cover;object-position:50% 55%}
 .origin-copy .t-label{color:var(--mist);display:block;margin-bottom:26px}
 .origin-h{
   font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,4.6vw,3.8rem);
@@ -570,7 +572,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <!-- EDITORIAL SPLIT -->
 <section id="origin">
   <div class="origin-grid">
-    <div class="origin-img reveal"><img src="assets/images/merino-sheep.png" alt="Merino sheep on Australian high country" loading="lazy"></div>
+    <div class="origin-img reveal"><img src="assets/images/merino-sheep.jpg" alt="Merino sheep grazing below snow-capped mountains" loading="lazy"></div>
     <div class="origin-copy reveal">
       <span class="t-label">From the source</span>
       <h2 class="origin-h">Fibre with a <span class="em">postcode.</span></h2>
