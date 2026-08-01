@@ -148,6 +148,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 .bleed{width:100vw;margin-left:calc(50% - 50vw)}
 .band{background:var(--forest);color:var(--bone);padding:clamp(72px,12vh,140px) 32px;text-align:center}
+.philvid{margin-top:clamp(44px,7vh,80px);margin-bottom:clamp(44px,7vh,80px);display:flex;justify-content:center;padding:0 24px}
+.philvid video{display:block;width:100%;max-width:440px;height:auto;border-radius:6px;overflow:hidden}
 .band .band-q{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,4.6vw,3rem);line-height:1.22;letter-spacing:-0.012em;max-width:24ch;margin:0 auto}
 .band .band-q .em{font-style:italic;color:rgba(245,242,236,0.66)}
 .band .band-s{margin:22px auto 0;font-weight:300;line-height:1.7;color:rgba(245,242,236,0.66);max-width:46ch}
@@ -294,6 +296,13 @@ details.sources[open] summary::after{transform:rotate(45deg)}
         <span>Pieces you can train in. Travel in. Recover in. Live in.</span>
       </div>
       <p class="band-s">The fewer compromises your clothing makes, the more often you&rsquo;ll choose to wear it. Better for your wardrobe, better for your travel, a more thoughtful way to consume.</p>
+    </section>
+
+    <section class="philvid reveal">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/philosophy-poster.jpg">
+        <source src="assets/video/philosophy.mp4" type="video/mp4">
+        <source src="assets/video/philosophy.webm" type="video/webm">
+      </video>
     </section>
 
     <section class="group">
