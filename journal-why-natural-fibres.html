@@ -207,12 +207,13 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 .btn-ghost:hover{border-color:var(--forest);color:var(--forest)}
 
 .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
-.nav-burger span{display:block;width:24px;height:2px;background:currentColor;margin:0 auto;transition:transform .35s ease,opacity .25s ease}
+.nav-burger span{display:block;width:24px;height:2px;background:var(--bone);margin:0 auto;transition:transform .35s ease,opacity .25s ease}
 .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav-burger.open span:nth-child(2){opacity:0}
 .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .mobile-menu{position:fixed;inset:0;z-index:110;background:var(--ink);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;display:flex;align-items:center;justify-content:center}
 .mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu-close{position:absolute;top:22px;right:28px;background:none;border:none;color:var(--bone);font-size:2.4rem;line-height:1;cursor:pointer;padding:0;width:44px;height:44px;z-index:130}
 .mobile-menu-inner{display:flex;flex-direction:column;align-items:center;gap:34px}
 .mobile-menu-inner a{font-family:var(--cond);font-size:1.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);transition:color .3s}
 .mobile-menu-inner a:hover{color:var(--bone)}
@@ -231,6 +232,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
   <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </header>
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()">&times;</button>
   <nav class="mobile-menu-inner" aria-label="Mobile navigation">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
