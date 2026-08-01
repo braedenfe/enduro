@@ -216,6 +216,18 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 .p-gift{margin-top:16px;padding-top:15px;border-top:1px solid rgba(31,61,53,0.18);font-weight:400;line-height:1.55;color:var(--forest);font-size:0.85rem}.p-gift a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:2px}.p-gift a:hover{opacity:0.7}.acc-jlink{margin-top:16px;padding-top:14px;border-top:1px solid rgba(14,21,18,0.1)}.acc-jlink a{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.3);padding-bottom:2px;transition:border-color .25s}.acc-jlink a:hover{border-color:var(--forest)}
+
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
+.nav-burger span{display:block;width:24px;height:2px;background:currentColor;margin:0 auto;transition:transform .35s ease,opacity .25s ease}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:110;background:var(--ink);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;display:flex;align-items:center;justify-content:center}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu-inner{display:flex;flex-direction:column;align-items:center;gap:34px}
+.mobile-menu-inner a{font-family:var(--cond);font-size:1.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.mobile-menu-inner a:hover{color:var(--bone)}
+@media(max-width:760px){.nav-links{display:none}.nav-burger{display:flex}}
 </style>
 <script type="application/ld+json">
 {
@@ -254,7 +266,15 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <li><a href="../shop.html">Shop</a></li>
     <li><a href="../journal.html">Journal</a></li>
   </ul>
+  <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <nav class="mobile-menu-inner" aria-label="Mobile navigation">
+    <a href="../index.html">Home</a>
+    <a href="../shop.html">Shop</a>
+    <a href="../journal.html">Journal</a>
+  </nav>
+</div>
 
 <nav class="breadcrumb" aria-label="Breadcrumb">
   <a href="../index.html">Home</a><span class="sep">&middot;</span><a href="../shop.html">Shop</a><span class="sep">&middot;</span><span>Essential Short 5&Prime;</span>
@@ -562,6 +582,18 @@ if (notifyForm) {
   if(touch){document.addEventListener('click',function(e){if(!e.target.closest('.feat-pill'))closeAll(null);});}
   window.addEventListener('resize',function(){closeAll(null);});
 })();
+</script>
+
+<script>
+function toggleMenu(){
+  var menu=document.getElementById('mobile-menu');
+  var burger=document.querySelector('.nav-burger');
+  var isOpen=menu.classList.toggle('open');
+  burger.classList.toggle('open',isOpen);
+  burger.setAttribute('aria-expanded',isOpen?'true':'false');
+  menu.setAttribute('aria-hidden',isOpen?'false':'true');
+  document.body.style.overflow=isOpen?'hidden':'';
+}
 </script>
 </body>
 </html>
