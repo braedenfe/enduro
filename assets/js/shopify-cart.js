@@ -19,6 +19,8 @@
     'organic-tote':        '15876958191985',
     'merino-micro-short':  '15905028702577',
     'merino-bandeau':      '15904981254513',
+    'o-tee':               '15947967398257',
+    'enduro-tee':          '15948280660337',
     'gift-with-purchase':  '15906560278897'
   };
 
