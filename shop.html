@@ -983,11 +983,16 @@ function applyFilters() {
     const okG = fstate.gender === 'all' || g.split(' ').includes(fstate.gender);
     const okF = fstate.fibre === 'all' || fib === fstate.fibre;
     card.style.display = (okG && okF) ? '' : 'none';
-    // When Women is selected: push the two women's 3" shorts to the end, tote stays last of all
     const prod = card.dataset.product || '';
     const isWomensShort = prod === 'merino-short-womens' || prod === 'cotton-short-womens';
     const isTote = prod === 'organic-tote';
-    if (fstate.gender === 'women' && isWomensShort) card.style.order = '1';
+    // Men filter: merino shorts first, then merino tees, then everything else
+    const merinoShortsMen = prod === 'merino-short-mens';
+    const merinoTees = prod === 'wool-long-run-tee' || prod === 'o-tee' || prod === 'enduro-tee';
+    if (fstate.gender === 'men' && merinoShortsMen) card.style.order = '-2';
+    else if (fstate.gender === 'men' && merinoTees) card.style.order = '-1';
+    // Women filter: push the two women's 3" shorts to the end, tote stays last of all
+    else if (fstate.gender === 'women' && isWomensShort) card.style.order = '1';
     else if (isTote) card.style.order = '2';
     else card.style.order = '';
   });
