@@ -83,6 +83,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .mobile-menu-inner a{font-family:var(--cond);font-size:1.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);transition:color .3s}
 .mobile-menu-inner a:hover{color:var(--bone)}
 @media(max-width:760px){.nav-links{display:none}.nav-burger{display:flex}}
+
+.nav-cart{position:relative;display:inline-flex;align-items:center;color:var(--bone);margin-left:4px}
+.nav-cart svg{width:23px;height:23px;display:block}
+.nav-cart-count{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--forest);color:var(--bone);font-family:var(--cond);font-size:0.66rem;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1}
+.nav-right{display:flex;align-items:center;gap:18px}
 </style>
 </head>
 <body>
@@ -94,7 +99,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <li><a href="shop.html">Shop</a></li>
     <li><a href="journal.html">Journal</a></li>
   </ul>
-  <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
 </header>
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()">&times;</button>
@@ -102,6 +107,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
     <a href="journal.html">Journal</a>
+    <a href="philosophy.html">Philosophy</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </div>
 
@@ -154,5 +161,6 @@ function toggleMenu(){
   document.body.style.overflow=isOpen?'hidden':'';
 }
 </script>
+<script src="assets/js/shopify-cart.js"></script>
 </body>
 </html>

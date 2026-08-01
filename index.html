@@ -357,6 +357,11 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   .statement-text .w{opacity:1}
 }
 .panel-inl{color:inherit;border-bottom:1px solid rgba(245,242,236,0.4);transition:border-color .25s}.panel-inl:hover{border-color:var(--bone)}
+
+.nav-cart{position:relative;display:inline-flex;align-items:center;color:var(--bone);margin-left:4px}
+.nav-cart svg{width:23px;height:23px;display:block}
+.nav-cart-count{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--forest);color:var(--bone);font-family:var(--cond);font-size:0.66rem;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1}
+.nav-right{display:flex;align-items:center;gap:18px}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
@@ -406,20 +411,19 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
     <li><a href="#origin">Materials</a></li>
     <li><a href="philosophy.html">Philosophy</a></li>
   </ul>
-  <a href="shop.html" class="nav-cta">Shop the collection</a>
-  <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">
+  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">
     <span></span><span></span><span></span>
-  </button>
+  </button></div>
 </header>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()">&times;</button>
   <nav class="mobile-menu-inner" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
     <a href="journal.html">Journal</a>
-    <a href="#origin" onclick="toggleMenu()">Materials</a>
     <a href="philosophy.html">Philosophy</a>
-    <a href="shop.html" class="mobile-menu-cta">Shop the collection</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </div>
 
