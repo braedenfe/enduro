@@ -250,6 +250,8 @@
 
   const openDrawer = () => { overlay.classList.add('open'); drawer.classList.add('open'); };
   const closeDrawer = () => { overlay.classList.remove('open'); drawer.classList.remove('open'); };
+  // expose a global so the nav cart icon can open the cart (named distinctly to avoid the shop page's quick-view openDrawer)
+  window.ecOpenCart = openDrawer;
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelector('.ec-x').addEventListener('click', closeDrawer);
 
@@ -372,6 +374,12 @@
     current = cart;
     const link = document.getElementById('ec-link');
     if (link) link.textContent = 'Cart (' + (cart && cart.totalQuantity || 0) + ')';
+    // update nav cart count badge(s) across the site
+    const qty = (cart && cart.totalQuantity) || 0;
+    document.querySelectorAll('.nav-cart-count').forEach(function(b){
+      b.textContent = qty;
+      b.style.display = qty > 0 ? 'flex' : 'flex';
+    });
     const lines = document.getElementById('ec-lines');
     const foot = document.getElementById('ec-foot');
     if (!cart || cart.totalQuantity === 0) {
