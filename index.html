@@ -80,8 +80,19 @@ a{color:inherit;text-decoration:none}
   border:1px solid var(--line);padding:9px 22px;border-radius:99px;color:var(--bone);
   transition:background .3s,color .3s,border-color .3s;
 }
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
+.nav-burger span{display:block;width:24px;height:2px;background:var(--bone);margin:0 auto;transition:transform .35s ease,opacity .25s ease}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:110;background:var(--ink);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;display:flex;align-items:center;justify-content:center}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu-inner{display:flex;flex-direction:column;align-items:center;gap:34px}
+.mobile-menu-inner a{font-family:var(--cond);font-size:1.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.mobile-menu-inner a:hover{color:var(--bone)}
+.mobile-menu-cta{margin-top:14px;border:1px solid var(--line);padding:14px 34px;border-radius:99px;color:var(--bone)!important;font-size:0.9rem!important}
 .nav-cta:hover{background:var(--bone);color:var(--ink);border-color:var(--bone)}
-@media(max-width:760px){.nav-links{display:none}}
+@media(max-width:760px){.nav-links{display:none}.nav-cta{display:none}.nav-burger{display:flex}}
 
 /* ───────── HERO ───────── */
 #hero{
@@ -395,7 +406,20 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
     <li><a href="philosophy.html">Philosophy</a></li>
   </ul>
   <a href="shop.html" class="nav-cta">Shop the collection</a>
+  <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <nav class="mobile-menu-inner" aria-label="Mobile navigation">
+    <a href="shop.html">Shop</a>
+    <a href="journal.html">Journal</a>
+    <a href="#origin" onclick="toggleMenu()">Materials</a>
+    <a href="philosophy.html">Philosophy</a>
+    <a href="shop.html" class="mobile-menu-cta">Shop the collection</a>
+  </nav>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -782,6 +806,17 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   }, {passive:true});
   frame();
 })();
+
+/* Mobile hamburger menu */
+function toggleMenu(){
+  var menu = document.getElementById('mobile-menu');
+  var burger = document.querySelector('.nav-burger');
+  var isOpen = menu.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+  burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  menu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
 </script>
 <script src="assets/js/shopify-cart.js"></script>
 </body>
