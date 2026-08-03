@@ -164,6 +164,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   font-family:var(--cond);font-size:0.7rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
   background:var(--forest);color:var(--bone);padding:6px 14px;border-radius:99px;
 }
+.pcard-badge.aus{top:calc(14px + 32px)}
 .pcard-badge.soon{background:var(--ink)}
 .pcard-gender{
   position:absolute;top:14px;right:14px;z-index:2;
@@ -406,7 +407,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg" alt="STRATUS Flow Merino Micro Short, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-model.jpg" alt="STRATUS Flow Merino Micro Short, worn with the Merino Bandeau" loading="lazy">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         <div class="pcard-quick">
           <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-micro-short')">Quick view</button>
@@ -427,7 +428,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-bandeau/merino-bandeau-black-front-model.jpg" alt="STRATUS Flow Merino Bandeau, front, worn with the Micro Short" loading="lazy">
         <img class="alt" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-model.jpg" alt="STRATUS Flow Merino Bandeau, back" loading="lazy">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         <div class="pcard-quick">
           <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-bandeau')">Quick view</button>
@@ -553,7 +554,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img class="main" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg" alt="Long Run Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg" alt="Long Run Tee in Natural White, worn" loading="lazy">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
           <button class="pq-btn" onclick="event.preventDefault();openDrawer('wool-long-run-tee')">Quick view</button>
@@ -572,7 +573,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img class="main" src="assets/images/products/o-tee/o-tee-white-front-flat.jpg" alt="&Oslash; Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/o-tee/o-tee-black-front-flat.jpg" alt="&Oslash; Tee in Black, front flat" loading="lazy">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
           <button class="pq-btn" onclick="event.preventDefault();openDrawer('o-tee')">Quick view</button>
@@ -591,7 +592,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img class="main" src="assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg" alt="Enduro Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/enduro-tee/enduro-tee-black-front-flat.jpg" alt="Enduro Tee in Black, front flat" loading="lazy">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
           <button class="pq-btn" onclick="event.preventDefault();openDrawer('enduro-tee')">Quick view</button>
@@ -760,7 +761,7 @@ const products = {
     price: 'A$140',
     soon: false,
     photo: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg',
-    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar.',
+    desc: 'Our flagship tee in 100% merino wool. Thermoregulating across conditions, naturally odour resistant, and machine washable. A relaxed performance cut with a soft self-fabric collar. Made in Melbourne, Australia',
     fit: 'Relaxed performance fit. True to size.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S','M','L','XL'],
@@ -779,7 +780,7 @@ const products = {
     price: 'A$140',
     soon: false,
     photo: 'assets/images/products/o-tee/o-tee-white-front-flat.jpg',
-    desc: 'Our flagship tee in 100% merino wool, marked with the \u00d8. Designed for running, travel and everyday performance. Naturally thermoregulating, odour resistant and machine washable.',
+    desc: 'Our flagship tee in 100% merino wool, marked with the \u00d8. Designed for running, travel and everyday performance. Naturally thermoregulating, odour resistant and machine washable. Made in Melbourne, Australia',
     fit: 'Relaxed performance fit. True to size.',
     care: 'Warm machine wash up to 40\u00b0C with a Woolmark-approved detergent. Do not bleach. Warm tumble dry. Cool iron.',
     sizes: ['S','M','L','XL'],
@@ -798,7 +799,7 @@ const products = {
     price: 'A$140',
     soon: false,
     photo: 'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg',
-    desc: 'Our flagship tee in 100% merino wool, with the enduro wordmark. Designed for running, travel and everyday performance. Naturally thermoregulating, odour resistant and machine washable.',
+    desc: 'Our flagship tee in 100% merino wool, with the enduro wordmark. Designed for running, travel and everyday performance. Naturally thermoregulating, odour resistant and machine washable. Made in Melbourne, Australia',
     fit: 'Relaxed performance fit. True to size.',
     care: 'Warm machine wash up to 40\u00b0C with a Woolmark-approved detergent. Do not bleach. Warm tumble dry. Cool iron.',
     sizes: ['S','M','L','XL'],
@@ -858,7 +859,7 @@ const products = {
     preorder: true,
     page: 'pages/product-merino-micro-short.html',
     photo: 'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg',
-    desc: 'A seamless rib micro short in 95% merino wool, lined with a 100% merino gusset so only pure natural fibre sits against your most delicate skin. Mid-rise, softly supportive, and naturally breathable from studio to sauna. Pair with the STRATUS Flow\u2122 Bandeau and save 25% on both, applied automatically in your cart.',
+    desc: 'A seamless rib micro short in 95% merino wool, lined with a 100% merino gusset so only pure natural fibre sits against your most delicate skin. Mid-rise, softly supportive, and naturally breathable from studio to sauna. Pair with the STRATUS Flow\u2122 Bandeau and save 25% on both, applied automatically in your cart. Made in Melbourne, Australia',
     fit: 'Seamless knit with high stretch. Model wears size S/M.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S/M','L/XL'],
@@ -878,7 +879,7 @@ const products = {
     preorder: true,
     page: 'pages/product-merino-bandeau.html',
     photo: 'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg',
-    desc: 'A seamless double-layer bandeau in 95% merino wool. Light support with a smooth, secure fit, from studio to sauna. Pair with the STRATUS Flow\u2122 Micro Short and save 25% on both, applied automatically in your cart.',
+    desc: 'A seamless double-layer bandeau in 95% merino wool. Light support with a smooth, secure fit, from studio to sauna. Pair with the STRATUS Flow\u2122 Micro Short and save 25% on both, applied automatically in your cart. Made in Melbourne, Australia',
     fit: 'Seamless knit with high stretch. Model wears size S/M.',
     care: 'Machine wash cold on wool cycle. Lay flat to dry.',
     sizes: ['S/M','L/XL'],
