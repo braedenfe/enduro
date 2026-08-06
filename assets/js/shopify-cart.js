@@ -707,14 +707,7 @@
       #ec-fit-res .sz{font-weight:600}
       #ec-fit-sel{display:none;width:100%;border:1px solid #1F3D35;border-radius:99px;background:transparent;color:#1F3D35;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;padding:12px;cursor:pointer;margin-top:12px}
       #ec-fit .note{font-size:.76rem;color:rgba(14,21,18,.5);margin:14px 0 0}
-      #ec-fit-x{float:right;background:none;border:none;font-size:1.3rem;color:#0E1512;line-height:1;cursor:pointer;padding:0}
-      .ec-temp{max-width:1380px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:2px 32px 14px;font-family:'DM Sans',sans-serif}
-      .ec-temp-label{font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);white-space:nowrap}
-      .ec-temp input[type=range]{flex:0 1 220px;accent-color:#1F3D35;min-width:120px}
-      .ec-temp-val{font-size:.84rem;color:#0E1512;min-width:44px}
-      .ec-temp-clear{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0}
-      .pcard.ec-temp-dim{opacity:.25}
-      @media(max-width:620px){.ec-temp{padding:2px 16px 12px}}`;
+      #ec-fit-x{float:right;background:none;border:none;font-size:1.3rem;color:#0E1512;line-height:1;cursor:pointer;padding:0}`;
     const st = document.createElement('style'); st.textContent = uxCss; document.head.appendChild(st);
 
     /* ---------- 1. page fade transitions ---------- */
@@ -892,48 +885,6 @@
         }
       });
     })();
-
-    /* ---------- 6. shop conditions selector (real per-product comfort ranges) ---------- */
-    (function () {
-      const inner = document.querySelector('#filters .filters-inner');
-      const cards = document.querySelectorAll('.product-grid .pcard');
-      if (!inner || !cards.length) return;
-      const TEMP = {
-        'cotton-long-run-tee': [12, 28], 'cotton-short-mens': [12, 30], 'cotton-short-womens': [12, 30],
-        'enduro-tee': [5, 30], 'merino-bandeau': [20, 35], 'merino-micro-short': [20, 35],
-        'merino-short-mens': [8, 30], 'merino-short-womens': [8, 30],
-        'o-tee': [5, 30], 'wool-long-run-tee': [5, 30]
-      };
-      const row = document.createElement('div');
-      row.className = 'ec-temp';
-      row.innerHTML = '<span class="ec-temp-label">Running in</span>' +
-        '<input type="range" id="ec-temp-range" min="0" max="35" step="1" value="18" aria-label="Temperature in degrees Celsius">' +
-        '<span class="ec-temp-val" id="ec-temp-val">Any</span>' +
-        '<button class="ec-temp-clear" id="ec-temp-clear" type="button" hidden>Clear</button>';
-      inner.after(row);
-      const range = document.getElementById('ec-temp-range');
-      const val = document.getElementById('ec-temp-val');
-      const clear = document.getElementById('ec-temp-clear');
-      function apply(t) {
-        cards.forEach(function (c) {
-          const r = TEMP[c.dataset.product];
-          const dim = (t !== null) && r && !(t >= r[0] && t <= r[1]);
-          c.classList.toggle('ec-temp-dim', !!dim);
-        });
-      }
-      range.addEventListener('input', function () {
-        const t = parseInt(range.value, 10);
-        val.textContent = t + '\u00B0C';
-        clear.hidden = false;
-        apply(t);
-      });
-      clear.addEventListener('click', function () {
-        val.textContent = 'Any';
-        clear.hidden = true;
-        range.value = 18;
-        apply(null);
-      });
-    })();
   })();
 
   /* ============================================================
@@ -962,13 +913,10 @@
     ];
 
     const css2 = `
-      #ec-o{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;opacity:0;transition:opacity .16s ease;z-index:10000;pointer-events:none}
+      #ec-o{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:84px;height:auto;opacity:0;transition:opacity .16s ease;z-index:10000;pointer-events:none}
       #ec-fade.on #ec-o{opacity:1}
-      #ec-o circle,#ec-o line{stroke:#1F3D35;stroke-width:1.6;fill:none;stroke-linecap:round}
-      #ec-o circle{stroke-dasharray:126;stroke-dashoffset:126;animation:ecOdraw .75s cubic-bezier(.4,0,.2,1) forwards}
-      #ec-o line{stroke-dasharray:34;stroke-dashoffset:34;animation:ecOslash .45s cubic-bezier(.4,0,.2,1) .3s forwards}
-      @keyframes ecOdraw{to{stroke-dashoffset:0}}
-      @keyframes ecOslash{to{stroke-dashoffset:0}}
+      #ec-o path{fill:#1F3D35;animation:ecOpulse 1.15s ease-in-out infinite}
+      @keyframes ecOpulse{0%,100%{opacity:.32}50%{opacity:1}}
       .ec-notify-row{display:flex;gap:8px}
       .ec-notify input{flex:1;min-width:0;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:#fff;outline:none}
       .ec-notify input:focus{border-color:#1F3D35}
@@ -1002,13 +950,7 @@
       #ec-exit .ec-notify-row{margin-bottom:0}
       #ec-exit-no{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;cursor:pointer;margin-top:16px}
       .ec-gsm{margin:16px 0 0}
-      .ec-gsm-lab{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-bottom:9px}
-      .ec-gsm-bar{display:flex;align-items:flex-end;gap:5px;height:46px}
-      .ec-gsm-b{flex:1;background:rgba(31,61,53,.14);border-radius:2px 2px 0 0;position:relative;transition:background .3s}
-      .ec-gsm-b.on{background:#1F3D35}
-      .ec-gsm-t{display:flex;gap:5px;margin-top:6px}
-      .ec-gsm-t span{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(14,21,18,.45);text-align:center;line-height:1.3}
-      .ec-gsm-t span.on{color:#1F3D35;font-weight:500}
+      .ec-gsm-lab{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55)}
       .care-item{position:relative}
       .care-item[data-tip]{cursor:help}
       .care-item[data-tip]:hover::after,.care-item[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:0;background:#0E1512;color:#F5F2EC;font-family:'DM Sans',sans-serif;font-size:.75rem;line-height:1.4;padding:8px 11px;border-radius:3px;width:max-content;max-width:250px;z-index:20;pointer-events:none}
@@ -1036,8 +978,8 @@
     (function () {
       const fade = document.getElementById('ec-fade');
       if (!fade || REDUCED) return;
-      fade.innerHTML = '<svg id="ec-o" viewBox="0 0 44 44" aria-hidden="true">' +
-        '<circle cx="22" cy="22" r="20"/><line x1="9" y1="35" x2="35" y2="9"/></svg>';
+      fade.innerHTML = '<svg id="ec-o" viewBox="0 0 100 61.28" aria-hidden="true">' +
+        '<path fill-rule="evenodd" d="M82.55,0.00 L99.89,0.00 L85.86,10.44 L87.71,11.90 L89.39,13.80 L90.57,15.99 L91.13,18.07 L91.30,21.27 L91.08,23.29 L90.40,26.15 L89.28,29.24 L87.09,33.50 L84.90,36.70 L81.93,40.12 L78.56,43.21 L74.41,46.24 L70.26,48.65 L65.66,50.79 L60.83,52.53 L56.34,53.76 L52.86,54.49 L48.93,55.11 L43.88,55.61 L40.63,55.78 L35.07,55.78 L30.30,55.50 L25.65,54.94 L17.23,61.22 L0.06,61.22 L13.69,51.07 L13.64,50.84 L12.29,49.89 L10.83,48.43 L9.88,47.08 L9.20,45.74 L8.81,44.67 L8.36,42.37 L8.31,40.07 L8.42,38.72 L8.87,36.25 L9.43,34.23 L10.44,31.59 L11.50,29.41 L14.14,25.25 L17.45,21.32 L21.16,17.90 L23.34,16.22 L26.21,14.31 L28.73,12.85 L31.65,11.39 L35.24,9.88 L37.93,8.92 L41.36,7.91 L46.02,6.85 L50.11,6.17 L54.88,5.67 L59.20,5.44 L64.31,5.44 L69.53,5.72 L74.19,6.23 L82.49,0.06 Z M56.45,15.99 L59.65,16.05 L60.66,16.22 L60.49,16.39 L34.40,35.63 L35.30,33.28 L36.87,30.19 L38.83,27.16 L41.19,24.24 L43.38,22.05 L44.56,21.04 L45.96,19.98 L48.37,18.46 L50.34,17.51 L52.53,16.72 L54.66,16.22 L56.40,16.05 Z M65.10,25.81 L65.21,25.76 L64.70,27.10 L63.47,29.74 L62.18,31.99 L60.77,34.06 L58.31,37.09 L56.40,39.00 L53.93,41.02 L51.68,42.48 L49.72,43.49 L46.80,44.56 L44.84,45.01 L42.99,45.23 L40.40,45.23 L39.11,45.06 L65.04,25.87 Z"/></svg>';
     })();
 
     /* ---------- bundle nudge in the drawer ---------- */
@@ -1176,19 +1118,13 @@
     (function () {
       const line = document.querySelector('.p-fabric-line');
       if (!line || typeof PAGE === 'undefined') return;
-      const GSM = { 'merino-micro-short':95, 'merino-bandeau':95, 'wool-long-run-tee':170, 'o-tee':170, 'enduro-tee':170,
+      const GSM = { 'merino-micro-short':210, 'merino-bandeau':210, 'wool-long-run-tee':170, 'o-tee':170, 'enduro-tee':170,
                     'cotton-long-run-tee':90, 'merino-short-mens':250, 'merino-short-womens':250 };
       const g = GSM[PAGE.key];
       if (!g) return;
-      const STOPS = [{ v:95, l:'95<br>Flow' }, { v:170, l:'170<br>Air' }, { v:250, l:'250<br>Core' }];
       const box = document.createElement('div');
       box.className = 'ec-gsm';
-      box.innerHTML = '<div class="ec-gsm-lab">Fabric weight &middot; ' + g + ' gsm</div>' +
-        '<div class="ec-gsm-bar">' + STOPS.map(function (s) {
-          return '<div class="ec-gsm-b' + (s.v === g ? ' on' : '') + '" style="height:' + Math.round(s.v / 250 * 100) + '%"></div>';
-        }).join('') + '</div><div class="ec-gsm-t">' + STOPS.map(function (s) {
-          return '<span class="' + (s.v === g ? 'on' : '') + '">' + s.l + '</span>';
-        }).join('') + '</div>';
+      box.innerHTML = '<div class="ec-gsm-lab">Fabric weight &middot; ' + g + ' gsm</div>';
       const tag = document.querySelector('.p-tagline');
       if (tag) tag.after(box); else line.after(box);
     })();
