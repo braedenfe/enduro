@@ -623,16 +623,25 @@
     }
   };
 
+  /* product name from the H1, excluding the fabric/weight suffix */
+  function productName(fallback) {
+    const el = document.querySelector('.p-name');
+    if (!el) return fallback || '';
+    const c = el.cloneNode(true);
+    const meta = c.querySelector('.p-meta');
+    if (meta) meta.remove();
+    return c.textContent.replace(/\s+/g, ' ').trim() || (fallback || '');
+  }
+
   /* ---------- Sticky mobile add-to-cart (product pages only) ---------- */
   (function () {
     const mainBtn = document.querySelector('.atc');
     if (!mainBtn || !('IntersectionObserver' in window)) return;
-    const nameEl = document.querySelector('.p-name');
     const priceEl = document.querySelector('.p-price');
     const priceTxt = priceEl ? priceEl.textContent.trim() : '';
     const bar = document.createElement('div'); bar.id = 'ec-sticky';
     bar.innerHTML = '<div class="ec-sticky-info">' +
-      '<div class="ec-sticky-name">' + (nameEl ? nameEl.textContent.trim() : 'Add to cart') + '</div>' +
+      '<div class="ec-sticky-name">' + productName('Add to cart') + '</div>' +
       '<div class="ec-sticky-sub" id="ec-sticky-sub">' + priceTxt + '</div></div>' +
       '<button class="ec-sticky-btn" id="ec-sticky-btn">' + (mainBtn.textContent.trim() || 'Add to cart') + '</button>';
     document.body.appendChild(bar);
@@ -772,12 +781,11 @@
       let list = [];
       try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
       if (typeof PAGE === 'undefined' || !PAGE.key || !document.querySelector('.atc')) return;
-      const nameEl = document.querySelector('.p-name');
       const priceEl = document.querySelector('.p-price');
       const gimg = document.getElementById('g-img');
       const entry = {
         key: PAGE.key,
-        name: PAGE.klName || (nameEl ? nameEl.textContent.trim() : ''),
+        name: productName(PAGE.klName || ''),
         price: priceEl ? priceEl.textContent.trim() : '',
         img: gimg ? new URL(gimg.getAttribute('src'), location.href).href : '',
         url: location.pathname
@@ -1173,9 +1181,8 @@
       b.id = 'ec-share'; b.type = 'button'; b.textContent = 'Share this';
       note.after(b);
       b.addEventListener('click', function () {
-        const n = document.querySelector('.p-name');
         navigator.share({
-          title: (n ? n.textContent.trim() : 'Enduro') + ' \u00B7 Enduro',
+          title: productName('Enduro') + ' \u00B7 Enduro',
           url: location.href.split('?')[0]
         }).catch(function () {});
       });
