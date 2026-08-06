@@ -669,6 +669,273 @@
     io.observe(mainBtn);
   })();
 
+  /* ============================================================
+     UX enhancements (site-wide, injected — no page markup edits)
+     1. Page fade transitions    2. Product gallery zoom
+     3. Related-section reveal   4. Recently viewed strip
+     5. Fit finder modal         6. Shop conditions selector
+     ============================================================ */
+  (function () {
+    const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const uxCss = `
+      #ec-fade{position:fixed;inset:0;background:#F5F2EC;opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:9999}
+      #ec-fade.on{opacity:1;pointer-events:auto}
+      #g-main.ec-zoomable #g-img{cursor:zoom-in}
+      #g-main.ec-zoomed #g-img{cursor:zoom-out}
+      #g-main #g-img{transition:transform .3s ease}
+      #g-main.ec-zoomed #g-img{transition:transform .25s ease}
+      .ec-rev{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+      .ec-rev.in{opacity:1;transform:none}
+      #ec-recent{max-width:1380px;margin:0 auto;padding:0 32px clamp(72px,10vh,120px)}
+      #ec-recent h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.9rem,4vw,3rem);letter-spacing:-0.01em;margin-bottom:28px;color:#0E1512}
+      #ec-recent h2 .em{font-style:italic;color:#1F3D35}
+      @media(max-width:760px){#ec-recent{padding-left:20px;padding-right:20px}}
+      #ec-fit-btn{margin-left:14px}
+      #ec-fit-ov{position:fixed;inset:0;background:rgba(14,21,18,.45);opacity:0;pointer-events:none;transition:opacity .3s;z-index:600;display:flex;align-items:center;justify-content:center;padding:20px}
+      #ec-fit-ov.open{opacity:1;pointer-events:auto}
+      #ec-fit{background:#F5F2EC;border-radius:4px;max-width:380px;width:100%;padding:30px 28px;font-family:'DM Sans',sans-serif;transform:translateY(14px);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+      #ec-fit-ov.open #ec-fit{transform:none}
+      #ec-fit h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;color:#0E1512;margin:0 0 4px}
+      #ec-fit .sub{font-size:.84rem;color:rgba(14,21,18,.6);margin:0 0 18px}
+      .ec-fit-row{display:flex;gap:10px;margin-bottom:12px}
+      .ec-fit-field{flex:1}
+      .ec-fit-field label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-bottom:6px}
+      .ec-fit-field input{width:100%;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;outline:none;box-sizing:border-box}
+      .ec-fit-field input:focus{border-color:#1F3D35}
+      #ec-fit-go{display:block;width:100%;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.84rem;letter-spacing:.2em;text-transform:uppercase;padding:14px;cursor:pointer;margin-top:4px}
+      #ec-fit-res{font-size:.95rem;color:#0E1512;margin:16px 0 0;min-height:1.2em}
+      #ec-fit-res .sz{font-weight:600}
+      #ec-fit-sel{display:none;width:100%;border:1px solid #1F3D35;border-radius:99px;background:transparent;color:#1F3D35;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;padding:12px;cursor:pointer;margin-top:12px}
+      #ec-fit .note{font-size:.76rem;color:rgba(14,21,18,.5);margin:14px 0 0}
+      #ec-fit-x{float:right;background:none;border:none;font-size:1.3rem;color:#0E1512;line-height:1;cursor:pointer;padding:0}
+      .ec-temp{max-width:1380px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:2px 32px 14px;font-family:'DM Sans',sans-serif}
+      .ec-temp-label{font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);white-space:nowrap}
+      .ec-temp input[type=range]{flex:0 1 220px;accent-color:#1F3D35;min-width:120px}
+      .ec-temp-val{font-size:.84rem;color:#0E1512;min-width:44px}
+      .ec-temp-clear{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0}
+      .pcard.ec-temp-dim{opacity:.25}
+      @media(max-width:620px){.ec-temp{padding:2px 16px 12px}}`;
+    const st = document.createElement('style'); st.textContent = uxCss; document.head.appendChild(st);
+
+    /* ---------- 1. page fade transitions ---------- */
+    if (!REDUCED) {
+      const ov = document.createElement('div'); ov.id = 'ec-fade';
+      document.body.appendChild(ov);
+      document.addEventListener('click', function (e) {
+        const a = e.target.closest && e.target.closest('a[href]');
+        if (!a) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.defaultPrevented) return;
+        if (a.target && a.target !== '_self') return;
+        if (a.hasAttribute('download')) return;
+        const href = a.getAttribute('href');
+        if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+        let url; try { url = new URL(href, location.href); } catch (err) { return; }
+        if (url.origin !== location.origin) return;
+        if (url.pathname === location.pathname && url.hash) return;
+        e.preventDefault();
+        ov.classList.add('on');
+        setTimeout(function () { location.href = url.href; }, 190);
+      });
+      window.addEventListener('pageshow', function () { ov.classList.remove('on'); });
+    }
+
+    /* ---------- 2. product gallery zoom ---------- */
+    (function () {
+      const wrap = document.getElementById('g-main');
+      const img = document.getElementById('g-img');
+      if (!wrap || !img) return;
+      wrap.classList.add('ec-zoomable');
+      let zoomed = false;
+      const Z = 2.2;
+      function setOrigin(x, y) {
+        const r = wrap.getBoundingClientRect();
+        const px = Math.max(0, Math.min(100, (x - r.left) / r.width * 100));
+        const py = Math.max(0, Math.min(100, (y - r.top) / r.height * 100));
+        img.style.transformOrigin = px + '% ' + py + '%';
+      }
+      function zoomOff() {
+        if (!zoomed) return;
+        zoomed = false; wrap.classList.remove('ec-zoomed'); img.style.transform = '';
+      }
+      img.addEventListener('click', function (e) {
+        if (zoomed) { zoomOff(); return; }
+        zoomed = true; wrap.classList.add('ec-zoomed');
+        setOrigin(e.clientX, e.clientY);
+        img.style.transform = 'scale(' + Z + ')';
+      });
+      wrap.addEventListener('mousemove', function (e) { if (zoomed) setOrigin(e.clientX, e.clientY); });
+      wrap.addEventListener('touchmove', function (e) {
+        if (zoomed) { setOrigin(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+      }, { passive: false });
+      /* while zoomed, swallow touchend before the gallery swipe handler sees it */
+      document.addEventListener('touchend', function (e) { if (zoomed) e.stopPropagation(); }, true);
+      /* leaving the image (nav arrows / colour change) exits zoom */
+      new MutationObserver(zoomOff).observe(img, { attributes: true, attributeFilter: ['src'] });
+    })();
+
+    /* ---------- 4. recently viewed (built before reveal so it animates too) ---------- */
+    (function () {
+      const KEY = 'enduro_recent';
+      let list = [];
+      try { list = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) {}
+      if (typeof PAGE === 'undefined' || !PAGE.key || !document.querySelector('.atc')) return;
+      const nameEl = document.querySelector('.p-name');
+      const priceEl = document.querySelector('.p-price');
+      const gimg = document.getElementById('g-img');
+      const entry = {
+        key: PAGE.key,
+        name: PAGE.klName || (nameEl ? nameEl.textContent.trim() : ''),
+        price: priceEl ? priceEl.textContent.trim() : '',
+        img: gimg ? new URL(gimg.getAttribute('src'), location.href).href : '',
+        url: location.pathname
+      };
+      list = [entry].concat(list.filter(function (i) { return i.key !== entry.key; })).slice(0, 9);
+      try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+      const others = list.filter(function (i) { return i.key !== PAGE.key && i.img; }).slice(0, 3);
+      const rel = document.getElementById('related');
+      if (!others.length || !rel) return;
+      const sec = document.createElement('section');
+      sec.id = 'ec-recent'; sec.setAttribute('aria-label', 'Recently viewed');
+      sec.innerHTML = '<h2>Recently <span class="em">viewed.</span></h2><div class="rel-grid">' +
+        others.map(function (i) {
+          return '<a class="rel-card" href="' + i.url + '"><div class="rel-img"><img src="' + i.img +
+            '" alt="' + i.name + '" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">' +
+            i.name + '</div></div><span class="rel-price">' + i.price + '</span></div></a>';
+        }).join('') + '</div>';
+      rel.after(sec);
+    })();
+
+    /* ---------- 3. reveal below-the-fold cards on product pages ---------- */
+    if (!REDUCED && 'IntersectionObserver' in window) {
+      const targets = document.querySelectorAll('#related h2, #related .rel-card, #ec-recent h2, #ec-recent .rel-card');
+      if (targets.length) {
+        const io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.12 });
+        targets.forEach(function (t, i) {
+          t.classList.add('ec-rev');
+          t.style.transitionDelay = (i % 4) * 70 + 'ms';
+          io.observe(t);
+        });
+      }
+    }
+
+    /* ---------- 5. fit finder modal ---------- */
+    (function () {
+      const guideBtn = document.querySelector('.size-guide');
+      const sizeBtns = document.querySelectorAll('.size-btn');
+      if (!guideBtn || !sizeBtns.length) return;
+      const ORDER = ['XS', 'S', 'M', 'L', 'XL'];
+      const btn = document.createElement('button');
+      btn.className = 'size-guide'; btn.id = 'ec-fit-btn'; btn.type = 'button';
+      btn.textContent = 'Find my size';
+      guideBtn.after(btn);
+      const ov = document.createElement('div'); ov.id = 'ec-fit-ov';
+      ov.innerHTML = '<div id="ec-fit" role="dialog" aria-label="Find your size">' +
+        '<button id="ec-fit-x" aria-label="Close">&times;</button>' +
+        '<h3>Find your size</h3><p class="sub">Enter your height and weight for a suggested fit.</p>' +
+        '<div class="ec-fit-row">' +
+        '<div class="ec-fit-field"><label for="ec-fit-h">Height (cm)</label><input id="ec-fit-h" type="number" inputmode="numeric" min="120" max="230" placeholder="178"></div>' +
+        '<div class="ec-fit-field"><label for="ec-fit-w">Weight (kg)</label><input id="ec-fit-w" type="number" inputmode="numeric" min="35" max="180" placeholder="76"></div></div>' +
+        '<button id="ec-fit-go" type="button">Suggest my size</button>' +
+        '<p id="ec-fit-res"></p>' +
+        '<button id="ec-fit-sel" type="button"></button>' +
+        '<p class="note">A guide only. Between sizes? We suggest sizing up for a relaxed fit.</p></div>';
+      document.body.appendChild(ov);
+      const open = function () { ov.classList.add('open'); };
+      const close = function () { ov.classList.remove('open'); };
+      btn.addEventListener('click', open);
+      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+      document.getElementById('ec-fit-x').addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      function isWomens() {
+        const k = (PAGE && PAGE.key) || '';
+        if (k.indexOf('womens') > -1 || k === 'merino-micro-short' || k === 'merino-bandeau') return true;
+        const g = document.getElementById('sel-gender');
+        return !!(g && g.textContent.indexOf('Women') === 0);
+      }
+      function band(v, arr) { for (let i = 0; i < arr.length; i++) { if (v < arr[i]) return i; } return arr.length; }
+      document.getElementById('ec-fit-go').addEventListener('click', function () {
+        const h = parseFloat(document.getElementById('ec-fit-h').value);
+        const w = parseFloat(document.getElementById('ec-fit-w').value);
+        const res = document.getElementById('ec-fit-res');
+        const sel = document.getElementById('ec-fit-sel');
+        sel.style.display = 'none';
+        if (!h || !w || h < 120 || h > 230 || w < 35 || w > 180) {
+          res.textContent = 'Please enter a valid height and weight.'; return;
+        }
+        const women = isWomens();
+        const H = women ? [160, 166, 172, 178] : [168, 174, 181, 188];
+        const W = women ? [50, 58, 66, 75] : [60, 70, 80, 92];
+        const b = Math.max(band(h, H), band(w, W)); /* 0..4 in XS..XL space */
+        /* map to the sizes this product actually offers */
+        const avail = Array.prototype.map.call(document.querySelectorAll('.size-btn'), function (x) { return x.textContent.trim(); });
+        let pick = ORDER[b];
+        if (avail.indexOf(pick) === -1) {
+          let best = null, bestD = 99;
+          avail.forEach(function (s) {
+            const d = Math.abs(ORDER.indexOf(s) - b) - (ORDER.indexOf(s) > b ? 0.25 : 0); /* prefer sizing up on ties */
+            if (ORDER.indexOf(s) > -1 && d < bestD) { bestD = d; best = s; }
+          });
+          pick = best || avail[0];
+        }
+        res.innerHTML = 'We suggest size <span class="sz">' + pick + '</span>.';
+        const target = Array.prototype.find.call(document.querySelectorAll('.size-btn'), function (x) {
+          return x.textContent.trim() === pick && !x.classList.contains('sold-out');
+        });
+        if (target) {
+          sel.textContent = 'Select ' + pick;
+          sel.style.display = 'block';
+          sel.onclick = function () { target.click(); close(); };
+        }
+      });
+    })();
+
+    /* ---------- 6. shop conditions selector (real per-product comfort ranges) ---------- */
+    (function () {
+      const inner = document.querySelector('#filters .filters-inner');
+      const cards = document.querySelectorAll('.product-grid .pcard');
+      if (!inner || !cards.length) return;
+      const TEMP = {
+        'cotton-long-run-tee': [12, 28], 'cotton-short-mens': [12, 30], 'cotton-short-womens': [12, 30],
+        'enduro-tee': [5, 30], 'merino-bandeau': [20, 35], 'merino-micro-short': [20, 35],
+        'merino-short-mens': [8, 30], 'merino-short-womens': [8, 30],
+        'o-tee': [5, 30], 'wool-long-run-tee': [5, 30]
+      };
+      const row = document.createElement('div');
+      row.className = 'ec-temp';
+      row.innerHTML = '<span class="ec-temp-label">Running in</span>' +
+        '<input type="range" id="ec-temp-range" min="0" max="35" step="1" value="18" aria-label="Temperature in degrees Celsius">' +
+        '<span class="ec-temp-val" id="ec-temp-val">Any</span>' +
+        '<button class="ec-temp-clear" id="ec-temp-clear" type="button" hidden>Clear</button>';
+      inner.after(row);
+      const range = document.getElementById('ec-temp-range');
+      const val = document.getElementById('ec-temp-val');
+      const clear = document.getElementById('ec-temp-clear');
+      function apply(t) {
+        cards.forEach(function (c) {
+          const r = TEMP[c.dataset.product];
+          const dim = (t !== null) && r && !(t >= r[0] && t <= r[1]);
+          c.classList.toggle('ec-temp-dim', !!dim);
+        });
+      }
+      range.addEventListener('input', function () {
+        const t = parseInt(range.value, 10);
+        val.textContent = t + '\u00B0C';
+        clear.hidden = false;
+        apply(t);
+      });
+      clear.addEventListener('click', function () {
+        val.textContent = 'Any';
+        clear.hidden = true;
+        range.value = 18;
+        apply(null);
+      });
+    })();
+  })();
+
   /* ---------- restore existing cart on load ---------- */
   (async function () {
     const id = localStorage.getItem(CART_KEY);
