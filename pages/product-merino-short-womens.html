@@ -218,7 +218,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 @media(max-width:600px){.foot-nav{gap:28px}.foot-bottom{flex-direction:column}}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
-.p-gift{margin-top:16px;padding-top:15px;border-top:1px solid rgba(31,61,53,0.18);font-weight:400;line-height:1.55;color:var(--forest);font-size:0.85rem}.p-gift a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:2px}.p-gift a:hover{opacity:0.7}.acc-jlink{margin-top:16px;padding-top:14px;border-top:1px solid rgba(14,21,18,0.1)}.acc-jlink a{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.3);padding-bottom:2px;transition:border-color .25s}.acc-jlink a:hover{border-color:var(--forest)}
+.p-gift{margin-top:12px;text-align:center;font-weight:400;line-height:1.55;color:var(--forest);font-size:0.85rem}.p-gift a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:2px}.p-gift a:hover{opacity:0.7}.acc-jlink{margin-top:16px;padding-top:14px;border-top:1px solid rgba(14,21,18,0.1)}.acc-jlink a{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.3);padding-bottom:2px;transition:border-color .25s}.acc-jlink a:hover{border-color:var(--forest)}
 
 .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
 .nav-burger span{display:block;width:24px;height:2px;background:var(--bone);margin:0 auto;transition:transform .35s ease,opacity .25s ease}
@@ -239,7 +239,9 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .nav-right{display:flex;align-items:center;gap:18px}
 .p-desc-jrow{margin-top:12px}
 .p-desc-jlink{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(14,21,18,0.35);transition:text-decoration-color .25s}.p-desc-jlink:hover{text-decoration-color:var(--ink)}
-.p-fabric-line{font-family:var(--cond);font-size:0.82rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--forest);margin-top:12px}
+.p-meta{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--forest);white-space:nowrap;margin-left:14px}
+.p-sep{opacity:0.45;font-weight:400;margin:0 2px}
+.p-name{display:flex;align-items:baseline;flex-wrap:wrap;row-gap:4px}
 .g-badge.fabric{left:auto;right:14px;background:rgba(245,242,236,0.9);color:var(--ink)}
 </style>
 <script type="application/ld+json">
@@ -316,12 +318,9 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <!-- PANEL -->
   <div class="panel">
     <p class="p-cat t-label">Running &middot; Women</p>
-    <h1 class="p-name">&Oslash; <span class="em">Short 3&Prime;.</span></h1>
-    <div class="p-fabric-line">STRATUS Pace&trade; Merino</div>
+    <h1 class="p-name" data-gsm-inline="1">&Oslash; <span class="em">Short 3&Prime;.</span><span class="p-meta">STRATUS Pace&trade; Merino <span class="p-sep">&middot;</span> 250 gsm</span></h1>
     <div class="p-price">A$150</div>
     <p class="p-tagline">Built for movement. Crafted from our signature STRATUS Pace&trade; fabric, this 3&Prime; running short is knit from 100% Australian Merino Wool in a durable, structured interlock that holds its shape. Naturally thermoregulating and odour resistant, cut for a natural range of motion with a zippered rear waistband pocket.</p>
-    <p class="p-desc-jrow"><a href="../journal-why-natural-fibres.html" class="p-desc-jlink">Read more on why we prefer natural fibres &rarr;</a></p>
-    <p class="p-gift">Spend A$100 or more and receive a complimentary Enduro <a href="product-organic-tote.html">Organic Tote bag</a> with your order.</p>
 
     <div class="sel-label">Colour <span>Washed Black</span></div>
     <div class="colour-row"><button class="colour-option active" style="cursor:default"><span class="colour-swatch" style="background:#2C2C2A"></span>Washed Black</button></div>
@@ -332,6 +331,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
     <button class="atc" onclick="addToCart()">Pre-order now</button>
     <p class="atc-note">Free AUS shipping over A$150 &middot; 30 day free returns</p>
+    <p class="p-gift">Spend A$100 or more and receive a complimentary Enduro <a href="product-organic-tote.html">Organic Tote bag</a> with your order.</p>
 
     <!-- Conditions -->
     <div class="cw">
