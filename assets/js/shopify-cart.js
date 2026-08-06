@@ -936,6 +936,315 @@
     })();
   })();
 
+  /* ============================================================
+     UX module 2 — conversion + brand texture
+     ============================================================ */
+  (function () {
+    const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const KL_COMPANY = 'VMZvez';
+    const KL_LIST = 'TavxE9';
+    const inPages = location.pathname.indexOf('/pages/') > -1;
+    const base = inPages ? '' : 'pages/';
+    const root = inPages ? '../' : '';
+
+    const CATALOGUE = [
+      { key:'wool-long-run-tee',   name:'Merino Long Run Tee',    fibre:'Merino',        price:'A$140', file:'product-wool-long-run-tee.html',   img:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg' },
+      { key:'cotton-long-run-tee', name:'Essential Tee',          fibre:'Organic cotton',price:'A$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
+      { key:'o-tee',               name:'Ø Tee',                  fibre:'Merino',        price:'A$140', file:'product-o-tee.html',               img:'assets/images/products/o-tee/o-tee-white-front-flat.jpg' },
+      { key:'enduro-tee',          name:'Enduro Tee',             fibre:'Merino',        price:'A$140', file:'product-enduro-tee.html',          img:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg' },
+      { key:'merino-short-mens',   name:'Merino Long Run Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
+      { key:'merino-short-womens', name:'Merino Long Run Short 3\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-womens.html', img:'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg' },
+      { key:'cotton-short-mens',   name:'Essential Short 5\u2033', fibre:'Organic cotton',price:'A$100',file:'product-cotton-short-mens.html',   img:'assets/images/products/cotton-short-mens/cotton-short-mens-front-flat.jpg' },
+      { key:'cotton-short-womens', name:'Essential Short 3\u2033', fibre:'Organic cotton',price:'A$100',file:'product-cotton-short-womens.html', img:'assets/images/products/cotton-short-womens/cotton-short-womens-front-flat.jpg' },
+      { key:'merino-micro-short',  name:'Merino Micro Short',     fibre:'Merino',        price:'A$100', file:'product-merino-micro-short.html',  img:'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg' },
+      { key:'merino-bandeau',      name:'Merino Bandeau',         fibre:'Merino',        price:'A$60',  file:'product-merino-bandeau.html',      img:'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg' },
+      { key:'organic-tote',        name:'Organic Tote',           fibre:'Organic cotton',price:'A$20',  file:'product-organic-tote.html',        img:'assets/images/products/organic-tote/organic-tote-front.jpg' }
+    ];
+
+    const css2 = `
+      #ec-o{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;opacity:0;transition:opacity .16s ease;z-index:10000;pointer-events:none}
+      #ec-fade.on #ec-o{opacity:1}
+      #ec-o circle,#ec-o line{stroke:#1F3D35;stroke-width:1.6;fill:none;stroke-linecap:round}
+      #ec-o circle{stroke-dasharray:126;stroke-dashoffset:126;animation:ecOdraw .75s cubic-bezier(.4,0,.2,1) forwards}
+      #ec-o line{stroke-dasharray:34;stroke-dashoffset:34;animation:ecOslash .45s cubic-bezier(.4,0,.2,1) .3s forwards}
+      @keyframes ecOdraw{to{stroke-dashoffset:0}}
+      @keyframes ecOslash{to{stroke-dashoffset:0}}
+      .ec-notify-row{display:flex;gap:8px}
+      .ec-notify input{flex:1;min-width:0;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:#fff;outline:none}
+      .ec-notify input:focus{border-color:#1F3D35}
+      .ec-notify button{flex:0 0 auto;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:0 20px;cursor:pointer}
+      .ec-notify button:disabled{opacity:.55}
+      .ec-notify-msg{font-size:.8rem;color:#1F3D35;margin:9px 0 0}
+      .ec-notify-msg.err{color:#8C3B2E}
+      .ec-nudge{margin:2px 0 14px;padding:13px 15px;background:rgba(31,61,53,.06);border-radius:4px;display:flex;align-items:center;gap:12px}
+      .ec-nudge span{flex:1;font-size:.83rem;line-height:1.4;color:#0E1512}
+      .ec-nudge a{flex:0 0 auto;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:#1F3D35;border-bottom:1px solid rgba(31,61,53,.4);padding-bottom:2px;text-decoration:none;cursor:pointer}
+      #ec-search-ov{position:fixed;inset:0;background:rgba(14,21,18,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:700;padding:14vh 20px 20px;display:flex;justify-content:center}
+      #ec-search-ov.open{opacity:1;pointer-events:auto}
+      #ec-search{width:100%;max-width:520px;background:#F5F2EC;border-radius:4px;overflow:hidden;font-family:'DM Sans',sans-serif;height:max-content;transform:translateY(12px);transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+      #ec-search-ov.open #ec-search{transform:none}
+      #ec-search-in{width:100%;border:none;border-bottom:1px solid rgba(14,21,18,.1);padding:20px 22px;font-family:'DM Sans',sans-serif;font-size:1rem;background:#fff;outline:none;box-sizing:border-box}
+      #ec-search-res{max-height:46vh;overflow-y:auto}
+      .ec-sr{display:flex;align-items:center;gap:13px;padding:11px 22px;text-decoration:none;border-bottom:1px solid rgba(14,21,18,.06)}
+      .ec-sr:last-child{border-bottom:none}
+      .ec-sr.sel{background:rgba(31,61,53,.07)}
+      .ec-sr img{width:44px;height:55px;object-fit:contain;background:#fff;border-radius:2px;flex:0 0 auto}
+      .ec-sr-n{font-size:.9rem;color:#0E1512}
+      .ec-sr-f{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(14,21,18,.5);margin-top:2px}
+      .ec-sr-p{margin-left:auto;font-size:.86rem;color:#0E1512}
+      .ec-sr-empty{padding:26px 22px;font-size:.88rem;color:rgba(14,21,18,.5)}
+      .ec-sr-hint{padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.38);border-top:1px solid rgba(14,21,18,.07)}
+      #ec-exit-ov{position:fixed;inset:0;background:rgba(14,21,18,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:650;display:flex;align-items:center;justify-content:center;padding:20px}
+      #ec-exit-ov.open{opacity:1;pointer-events:auto}
+      #ec-exit{background:#F5F2EC;border-radius:4px;max-width:400px;width:100%;padding:32px 30px;font-family:'DM Sans',sans-serif;text-align:center}
+      #ec-exit h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.6rem;color:#0E1512;margin:0 0 8px}
+      #ec-exit p{font-size:.88rem;color:rgba(14,21,18,.68);line-height:1.5;margin:0 0 18px}
+      #ec-exit .ec-notify-row{margin-bottom:0}
+      #ec-exit-no{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;cursor:pointer;margin-top:16px}
+      .ec-gsm{margin:16px 0 0}
+      .ec-gsm-lab{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-bottom:9px}
+      .ec-gsm-bar{display:flex;align-items:flex-end;gap:5px;height:46px}
+      .ec-gsm-b{flex:1;background:rgba(31,61,53,.14);border-radius:2px 2px 0 0;position:relative;transition:background .3s}
+      .ec-gsm-b.on{background:#1F3D35}
+      .ec-gsm-t{display:flex;gap:5px;margin-top:6px}
+      .ec-gsm-t span{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(14,21,18,.45);text-align:center;line-height:1.3}
+      .ec-gsm-t span.on{color:#1F3D35;font-weight:500}
+      .care-item{position:relative}
+      .care-item[data-tip]{cursor:help}
+      .care-item[data-tip]:hover::after,.care-item[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:0;background:#0E1512;color:#F5F2EC;font-family:'DM Sans',sans-serif;font-size:.75rem;line-height:1.4;padding:8px 11px;border-radius:3px;width:max-content;max-width:250px;z-index:20;pointer-events:none}
+      #ec-prog{position:fixed;top:0;left:0;height:2px;width:0;background:#1F3D35;z-index:480;transition:width .1s linear}
+      #ec-share{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0;margin-top:12px}`;
+    const st2 = document.createElement('style'); st2.textContent = css2; document.head.appendChild(st2);
+
+    function klSubscribe(email, props) {
+      const profile = { type: 'profile', attributes: { email: email } };
+      if (props) profile.attributes.properties = props;
+      return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KL_COMPANY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: { profile: { data: profile } },
+            relationships: { list: { data: { type: 'list', id: KL_LIST } } }
+          }
+        })
+      });
+    }
+
+    /* ---------- Ø loader inside the page fade ---------- */
+    (function () {
+      const fade = document.getElementById('ec-fade');
+      if (!fade || REDUCED) return;
+      fade.innerHTML = '<svg id="ec-o" viewBox="0 0 44 44" aria-hidden="true">' +
+        '<circle cx="22" cy="22" r="20"/><line x1="9" y1="35" x2="35" y2="9"/></svg>';
+    })();
+
+    /* ---------- bundle nudge in the drawer ---------- */
+    (function () {
+      const lines = document.getElementById('ec-lines');
+      if (!lines || typeof BUNDLE === 'undefined' || !BUNDLE.enabled) return;
+      const PAIR = {
+        'merino-micro-short': { partner:'merino-bandeau', label:'Merino Bandeau', file:'product-merino-bandeau.html' },
+        'merino-bandeau':     { partner:'merino-micro-short', label:'Merino Micro Short', file:'product-merino-micro-short.html' }
+      };
+      new MutationObserver(function () {
+        const old = document.getElementById('ec-nudge'); if (old) old.remove();
+        if (!current || !current.lines) return;
+        const have = {};
+        current.lines.edges.forEach(function (e) {
+          Object.keys(PAIR).forEach(function (k) {
+            if (PRODUCTS[k] && e.node.merchandise.product.id === gid(PRODUCTS[k])) have[k] = true;
+          });
+        });
+        const keys = Object.keys(PAIR).filter(function (k) { return have[k]; });
+        if (keys.length !== 1) return;
+        const p = PAIR[keys[0]];
+        const el = document.createElement('div');
+        el.id = 'ec-nudge'; el.className = 'ec-nudge';
+        el.innerHTML = '<span>Add the ' + p.label + ' to complete the set and the pair price applies.</span>' +
+          '<a href="' + base + p.file + '">View</a>';
+        lines.prepend(el);
+      }).observe(lines, { childList: true });
+    })();
+
+    /* ---------- search overlay ---------- */
+    (function () {
+      const ov = document.createElement('div'); ov.id = 'ec-search-ov';
+      ov.innerHTML = '<div id="ec-search" role="dialog" aria-label="Search products">' +
+        '<input id="ec-search-in" type="search" placeholder="Search products\u2026" autocomplete="off">' +
+        '<div id="ec-search-res"></div>' +
+        '<div class="ec-sr-hint">Enter to open &middot; Esc to close</div></div>';
+      document.body.appendChild(ov);
+      const input = document.getElementById('ec-search-in');
+      const res = document.getElementById('ec-search-res');
+      let sel = 0, shown = [];
+      function paint(q) {
+        const t = q.trim().toLowerCase();
+        shown = !t ? CATALOGUE.slice(0, 5) : CATALOGUE.filter(function (p) {
+          return (p.name + ' ' + p.fibre + ' ' + p.key).toLowerCase().indexOf(t) > -1;
+        });
+        sel = 0;
+        if (!shown.length) { res.innerHTML = '<div class="ec-sr-empty">Nothing matched that.</div>'; return; }
+        res.innerHTML = shown.map(function (p, i) {
+          return '<a class="ec-sr' + (i === 0 ? ' sel' : '') + '" href="' + base + p.file + '">' +
+            '<img src="' + root + p.img + '" alt="" loading="lazy">' +
+            '<div><div class="ec-sr-n">' + p.name + '</div><div class="ec-sr-f">' + p.fibre + '</div></div>' +
+            '<span class="ec-sr-p">' + p.price + '</span></a>';
+        }).join('');
+      }
+      function mark() {
+        res.querySelectorAll('.ec-sr').forEach(function (a, i) { a.classList.toggle('sel', i === sel); });
+      }
+      const open = function () { ov.classList.add('open'); input.value = ''; paint(''); setTimeout(function () { input.focus(); }, 60); };
+      const close = function () { ov.classList.remove('open'); };
+      window.ecOpenSearch = open;
+      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+      input.addEventListener('input', function () { paint(input.value); });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(sel + 1, shown.length - 1); mark(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(sel - 1, 0); mark(); }
+        else if (e.key === 'Enter' && shown[sel]) { location.href = base + shown[sel].file; }
+      });
+      /* ---------- keyboard shortcuts ---------- */
+      document.addEventListener('keydown', function (e) {
+        const tag = (e.target.tagName || '').toLowerCase();
+        const typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+        if (e.key === 'Escape') { close(); return; }
+        if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key === '/') { e.preventDefault(); open(); }
+        else if (e.key === 'c' || e.key === 'C') { if (window.ecOpenCart) { e.preventDefault(); window.ecOpenCart(); } }
+      });
+    })();
+
+    /* ---------- exit intent (desktop, cart has items, once per session) ---------- */
+    (function () {
+      if (matchMedia('(hover: none)').matches) return;
+      if (sessionStorage.getItem('enduro_exit_shown')) return;
+      const ov = document.createElement('div'); ov.id = 'ec-exit-ov';
+      ov.innerHTML = '<div id="ec-exit" role="dialog" aria-label="Save your cart">' +
+        '<h3>Before you go.</h3><p>We\u2019ll hold your cart and send you a link, so you can pick up where you left off.</p>' +
+        '<div class="ec-notify-row"><input id="ec-exit-email" type="email" placeholder="your@email.com" autocomplete="email">' +
+        '<button id="ec-exit-go" type="button">Send</button></div>' +
+        '<p class="ec-notify-msg" id="ec-exit-msg"></p>' +
+        '<button id="ec-exit-no" type="button">No thanks</button></div>';
+      document.body.appendChild(ov);
+      const close = function () { ov.classList.remove('open'); };
+      document.getElementById('ec-exit-no').addEventListener('click', close);
+      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+      document.addEventListener('mouseout', function (e) {
+        if (e.relatedTarget || e.clientY > 12) return;
+        if (sessionStorage.getItem('enduro_exit_shown')) return;
+        if (!current || !current.totalQuantity) return;
+        if (document.getElementById('ec-drawer').classList.contains('open')) return;
+        sessionStorage.setItem('enduro_exit_shown', '1');
+        ov.classList.add('open');
+      });
+      document.getElementById('ec-exit-go').addEventListener('click', function () {
+        const inp = document.getElementById('ec-exit-email');
+        const msg = document.getElementById('ec-exit-msg');
+        const btn = this;
+        const email = inp.value.trim();
+        msg.classList.remove('err');
+        if (!email || email.indexOf('@') < 0) { msg.textContent = 'Please enter a valid email address.'; msg.classList.add('err'); return; }
+        btn.disabled = true;
+        const items = current ? current.lines.edges.map(function (e) { return e.node.merchandise.product.title; }) : [];
+        klSubscribe(email, { SavedCartURL: current && current.checkoutUrl, SavedCartItems: items })
+          .then(function (r) {
+            if (!r.ok && r.status !== 202) throw new Error();
+            klTrack('Saved Cart', { $email: email, CheckoutURL: current && current.checkoutUrl, ItemNames: items });
+            msg.textContent = 'Sent. Your cart is waiting.';
+            setTimeout(close, 1400);
+          }).catch(function () {
+            msg.textContent = 'Something went wrong. Please try again.'; msg.classList.add('err'); btn.disabled = false;
+          });
+      });
+    })();
+
+    /* ---------- returning cart nudge ---------- */
+    (function () {
+      if (sessionStorage.getItem('enduro_seen')) return;
+      sessionStorage.setItem('enduro_seen', '1');
+      if (!localStorage.getItem(CART_KEY)) return;
+      setTimeout(function () {
+        if (!current || !current.totalQuantity) return;
+        if (window.showToast) showToast('Your cart is waiting \u2014 ' + current.totalQuantity + ' item' + (current.totalQuantity > 1 ? 's' : '') + ' saved');
+      }, 1800);
+    })();
+
+    /* ---------- fabric weight scale (product pages) ---------- */
+    (function () {
+      const line = document.querySelector('.p-fabric-line');
+      if (!line || typeof PAGE === 'undefined') return;
+      const GSM = { 'merino-micro-short':95, 'merino-bandeau':95, 'wool-long-run-tee':170, 'o-tee':170, 'enduro-tee':170,
+                    'cotton-long-run-tee':90, 'merino-short-mens':250, 'merino-short-womens':250 };
+      const g = GSM[PAGE.key];
+      if (!g) return;
+      const STOPS = [{ v:95, l:'95<br>Flow' }, { v:170, l:'170<br>Air' }, { v:250, l:'250<br>Core' }];
+      const box = document.createElement('div');
+      box.className = 'ec-gsm';
+      box.innerHTML = '<div class="ec-gsm-lab">Fabric weight &middot; ' + g + ' gsm</div>' +
+        '<div class="ec-gsm-bar">' + STOPS.map(function (s) {
+          return '<div class="ec-gsm-b' + (s.v === g ? ' on' : '') + '" style="height:' + Math.round(s.v / 250 * 100) + '%"></div>';
+        }).join('') + '</div><div class="ec-gsm-t">' + STOPS.map(function (s) {
+          return '<span class="' + (s.v === g ? 'on' : '') + '">' + s.l + '</span>';
+        }).join('') + '</div>';
+      const tag = document.querySelector('.p-tagline');
+      if (tag) tag.after(box); else line.after(box);
+    })();
+
+    /* ---------- care icon tooltips ---------- */
+    (function () {
+      const TIPS = [
+        ['machine wash', 'Warm machine wash up to 40\u00B0C. Wool is more resilient than most assume, but a gentle cycle preserves the handle.'],
+        ['detergent', 'A Woolmark-approved detergent protects the fibre. Bleach breaks down the protein structure of wool.'],
+        ['tumble', 'Warm tumble dry, cool iron. Reshaping while damp keeps the panel lines true.'],
+        ['cold', 'Cold machine wash preserves the cotton fibre and keeps colour from fading.'],
+        ['dry', 'Line dry where you can. It uses no energy and is kinder to natural fibre.'],
+        ['iron', 'Cool iron only. High heat flattens the surface texture of the knit.']
+      ];
+      document.querySelectorAll('.care-item').forEach(function (it) {
+        const t = (it.textContent || '').toLowerCase();
+        for (let i = 0; i < TIPS.length; i++) {
+          if (t.indexOf(TIPS[i][0]) > -1) { it.setAttribute('data-tip', TIPS[i][1]); it.setAttribute('tabindex', '0'); return; }
+        }
+      });
+    })();
+
+    /* ---------- journal reading progress ---------- */
+    (function () {
+      const doc = document.querySelector('.doc-body');
+      if (!doc) return;
+      const bar = document.createElement('div'); bar.id = 'ec-prog';
+      document.body.appendChild(bar);
+      const upd = function () {
+        const r = doc.getBoundingClientRect();
+        const total = r.height - window.innerHeight;
+        const done = Math.min(1, Math.max(0, -r.top / (total > 0 ? total : 1)));
+        bar.style.width = (done * 100) + '%';
+      };
+      addEventListener('scroll', upd, { passive: true });
+      addEventListener('resize', upd);
+      upd();
+    })();
+
+    /* ---------- share (product pages, where supported) ---------- */
+    (function () {
+      const note = document.querySelector('.atc-note');
+      if (!note || !navigator.share) return;
+      const b = document.createElement('button');
+      b.id = 'ec-share'; b.type = 'button'; b.textContent = 'Share this';
+      note.after(b);
+      b.addEventListener('click', function () {
+        const n = document.querySelector('.p-name');
+        navigator.share({
+          title: (n ? n.textContent.trim() : 'Enduro') + ' \u00B7 Enduro',
+          url: location.href.split('?')[0]
+        }).catch(function () {});
+      });
+    })();
+  })();
+
   /* ---------- restore existing cart on load ---------- */
   (async function () {
     const id = localStorage.getItem(CART_KEY);
