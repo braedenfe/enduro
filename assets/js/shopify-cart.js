@@ -1118,6 +1118,7 @@
     (function () {
       const line = document.querySelector('.p-fabric-line');
       if (!line || typeof PAGE === 'undefined') return;
+      if (line.hasAttribute('data-gsm-inline')) return; /* page prints the weight in the title line */
       const GSM = { 'merino-micro-short':210, 'merino-bandeau':210, 'wool-long-run-tee':170, 'o-tee':170, 'enduro-tee':170,
                     'cotton-long-run-tee':90, 'merino-short-mens':250, 'merino-short-womens':250 };
       const g = GSM[PAGE.key];
