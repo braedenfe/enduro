@@ -43,6 +43,13 @@
     displayValue:  20,                // struck-through value shown in the cart drawer
     label:         'Enduro Tote'
   };
+  /* ---------- Free shipping milestone (modular) ----------
+     Shown on the same progress bar as the gift. Edit threshold only. */
+  const SHIPPING = {
+    enabled:   true,
+    threshold: 150,                   // qualifying AUD subtotal for free standard AUS shipping
+    label:     'free standard AUS shipping'
+  };
   /* ---------- Bundle: Micro Short + Bandeau (modular) ----------
      When one of each is in the cart, the pair is swapped for the
      matching bundle variant so the set discount applies. */
@@ -225,8 +232,18 @@
     .ec-gift-msg .amt{font-weight:600}
     .ec-gift-check{flex:0 0 auto;width:15px;height:15px;color:#071e04;opacity:0;transform:scale(.6);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
     .ec-gift.qualified .ec-gift-check{opacity:1;transform:scale(1)}
-    .ec-gift-track{height:4px;border-radius:99px;background:rgba(7,30,4,.12);overflow:hidden}
-    .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}`;
+    .ec-gift-track{position:relative;height:4px;border-radius:99px;background:rgba(7,30,4,.12)}
+    .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}
+    .ec-gift-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#FAFAF8;border:1.5px solid rgba(7,30,4,.25);transform:translate(-50%,-50%);transition:border-color .45s,background .45s}
+    .ec-gift-dot.passed{background:#071e04;border-color:#071e04}
+    #ec-sticky{position:fixed;left:0;right:0;bottom:0;z-index:490;display:none;align-items:center;gap:14px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:rgba(250,250,248,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid rgba(14,21,18,.1);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.2,1);font-family:'DM Sans',sans-serif}
+    #ec-sticky.show{transform:translateY(0)}
+    @media(max-width:920px){#ec-sticky{display:flex}}
+    .ec-sticky-info{flex:1;min-width:0}
+    .ec-sticky-name{font-size:.9rem;color:#0E1512;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ec-sticky-sub{font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-top:1px}
+    .ec-sticky-btn{flex:0 0 auto;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.84rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:14px 26px;cursor:pointer}
+    .ec-sticky-btn:disabled{opacity:.6}`;
   const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
   const overlay = document.createElement('div'); overlay.id = 'ec-overlay';
@@ -353,22 +370,53 @@
   function updateGiftBar(cart) {
     const box = document.getElementById('ec-gift');
     if (!box) return;
-    if (!GIFT.enabled || !giftProductGid()) { box.style.display = 'none'; return; }
+    const giftOn = GIFT.enabled && !!giftProductGid();
+    const shipOn = SHIPPING.enabled;
+    if (!giftOn && !shipOn) { box.style.display = 'none'; return; }
     const cur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     const sub = qualifyingSubtotal(cart);
-    const qualified = sub >= GIFT.threshold;
-    const pct = Math.max(0, Math.min(100, (sub / GIFT.threshold) * 100));
+    const maxT = shipOn ? SHIPPING.threshold : GIFT.threshold;
+    const pct = Math.max(0, Math.min(100, (sub / maxT) * 100));
     box.style.display = 'block';
-    box.classList.toggle('qualified', qualified);
     const fill = document.getElementById('ec-gift-fill');
     if (fill) fill.style.width = pct + '%';
+    /* mid-track marker for the gift milestone when both are active */
+    const track = box.querySelector('.ec-gift-track');
+    if (track) {
+      let dot = document.getElementById('ec-gift-dot');
+      if (giftOn && shipOn && GIFT.threshold < SHIPPING.threshold) {
+        if (!dot) {
+          dot = document.createElement('div');
+          dot.id = 'ec-gift-dot'; dot.className = 'ec-gift-dot';
+          track.appendChild(dot);
+        }
+        dot.style.left = ((GIFT.threshold / SHIPPING.threshold) * 100) + '%';
+        dot.classList.toggle('passed', sub >= GIFT.threshold);
+      } else if (dot) { dot.remove(); }
+    }
     const check = '<svg class="ec-gift-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     const msg = document.getElementById('ec-gift-msg');
-    if (qualified) {
-      msg.innerHTML = check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + '.</span>';
+    const giftDone = giftOn && sub >= GIFT.threshold;
+    const shipDone = shipOn && sub >= SHIPPING.threshold;
+    box.classList.toggle('qualified', giftDone || shipDone);
+    if (giftOn && shipOn) {
+      if (!giftDone) {
+        msg.innerHTML = check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) +
+          '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
+      } else if (!shipDone) {
+        msg.innerHTML = check + '<span>' + GIFT.label + ' unlocked. Spend <span class="amt">' + money(SHIPPING.threshold - sub, cur) +
+          '</span> more for ' + SHIPPING.label + '.</span>';
+      } else {
+        msg.innerHTML = check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + ' and ' + SHIPPING.label + '.</span>';
+      }
+    } else if (shipOn) {
+      msg.innerHTML = shipDone
+        ? check + '<span>You\u2019ve qualified for ' + SHIPPING.label + '.</span>'
+        : check + '<span>Spend <span class="amt">' + money(SHIPPING.threshold - sub, cur) + '</span> more for ' + SHIPPING.label + '.</span>';
     } else {
-      msg.innerHTML = check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) +
-        '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
+      msg.innerHTML = giftDone
+        ? check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + '.</span>'
+        : check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) + '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
     }
   }
 
@@ -574,6 +622,52 @@
       if (btn) { btn.disabled = false; btn.textContent = label; }
     }
   };
+
+  /* ---------- Sticky mobile add-to-cart (product pages only) ---------- */
+  (function () {
+    const mainBtn = document.querySelector('.atc');
+    if (!mainBtn || !('IntersectionObserver' in window)) return;
+    const nameEl = document.querySelector('.p-name');
+    const priceEl = document.querySelector('.p-price');
+    const priceTxt = priceEl ? priceEl.textContent.trim() : '';
+    const bar = document.createElement('div'); bar.id = 'ec-sticky';
+    bar.innerHTML = '<div class="ec-sticky-info">' +
+      '<div class="ec-sticky-name">' + (nameEl ? nameEl.textContent.trim() : 'Add to cart') + '</div>' +
+      '<div class="ec-sticky-sub" id="ec-sticky-sub">' + priceTxt + '</div></div>' +
+      '<button class="ec-sticky-btn" id="ec-sticky-btn">' + (mainBtn.textContent.trim() || 'Add to cart') + '</button>';
+    document.body.appendChild(bar);
+    const btn = document.getElementById('ec-sticky-btn');
+    btn.addEventListener('click', function () {
+      if (mainBtn.disabled) return;
+      if (!document.querySelector('.size-btn.active')) {
+        const row = document.getElementById('size-row');
+        if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (window.showToast) showToast('Please select a size');
+        return;
+      }
+      window.addToCart();
+    });
+    /* reflect the chosen size next to the price */
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('.size-btn')) return;
+      setTimeout(function () {
+        const s = document.querySelector('.size-btn.active');
+        const sub = document.getElementById('ec-sticky-sub');
+        if (sub) sub.textContent = priceTxt + (s ? ' \u00B7 Size ' + s.textContent.trim() : '');
+      }, 0);
+    });
+    /* mirror the main button's label and busy state */
+    new MutationObserver(function () {
+      btn.disabled = mainBtn.disabled;
+      const t = mainBtn.textContent.trim();
+      if (t && btn.textContent !== t) btn.textContent = t;
+    }).observe(mainBtn, { attributes: true, childList: true, characterData: true, subtree: true });
+    /* show whenever the panel button is out of view */
+    const io = new IntersectionObserver(function (entries) {
+      bar.classList.toggle('show', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    io.observe(mainBtn);
+  })();
 
   /* ---------- restore existing cart on load ---------- */
   (async function () {
