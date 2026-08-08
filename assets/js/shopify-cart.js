@@ -900,8 +900,6 @@
      ============================================================ */
   (function () {
     const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const KL_COMPANY = 'VMZvez';
-    const KL_LIST = 'TavxE9';
     const inPages = location.pathname.indexOf('/pages/') > -1;
     const base = inPages ? '' : 'pages/';
     const root = inPages ? '../' : '';
@@ -925,13 +923,6 @@
       #ec-fade.on #ec-o{opacity:1}
       #ec-o path{fill:#1F3D35;animation:ecOpulse 1.15s ease-in-out infinite}
       @keyframes ecOpulse{0%,100%{opacity:.32}50%{opacity:1}}
-      .ec-notify-row{display:flex;gap:8px}
-      .ec-notify input{flex:1;min-width:0;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.86rem;background:#fff;outline:none}
-      .ec-notify input:focus{border-color:#1F3D35}
-      .ec-notify button{flex:0 0 auto;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:0 20px;cursor:pointer}
-      .ec-notify button:disabled{opacity:.55}
-      .ec-notify-msg{font-size:.8rem;color:#1F3D35;margin:9px 0 0}
-      .ec-notify-msg.err{color:#8C3B2E}
       .ec-nudge{margin:2px 0 14px;padding:13px 15px;background:rgba(31,61,53,.06);border-radius:4px;display:flex;align-items:center;gap:12px}
       .ec-nudge span{flex:1;font-size:.83rem;line-height:1.4;color:#0E1512}
       .ec-nudge a{flex:0 0 auto;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:#1F3D35;border-bottom:1px solid rgba(31,61,53,.4);padding-bottom:2px;text-decoration:none;cursor:pointer}
@@ -950,13 +941,6 @@
       .ec-sr-p{margin-left:auto;font-size:.86rem;color:#0E1512}
       .ec-sr-empty{padding:26px 22px;font-size:.88rem;color:rgba(14,21,18,.5)}
       .ec-sr-hint{padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.38);border-top:1px solid rgba(14,21,18,.07)}
-      #ec-exit-ov{position:fixed;inset:0;background:rgba(14,21,18,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:650;display:flex;align-items:center;justify-content:center;padding:20px}
-      #ec-exit-ov.open{opacity:1;pointer-events:auto}
-      #ec-exit{background:#F5F2EC;border-radius:4px;max-width:400px;width:100%;padding:32px 30px;font-family:'DM Sans',sans-serif;text-align:center}
-      #ec-exit h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.6rem;color:#0E1512;margin:0 0 8px}
-      #ec-exit p{font-size:.88rem;color:rgba(14,21,18,.68);line-height:1.5;margin:0 0 18px}
-      #ec-exit .ec-notify-row{margin-bottom:0}
-      #ec-exit-no{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;cursor:pointer;margin-top:16px}
       .ec-gsm{margin:16px 0 0}
       .ec-gsm-lab{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55)}
       .care-item{position:relative}
@@ -966,21 +950,6 @@
       #ec-share{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0;margin-top:12px}`;
     const st2 = document.createElement('style'); st2.textContent = css2; document.head.appendChild(st2);
 
-    function klSubscribe(email, props) {
-      const profile = { type: 'profile', attributes: { email: email } };
-      if (props) profile.attributes.properties = props;
-      return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KL_COMPANY, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
-        body: JSON.stringify({
-          data: {
-            type: 'subscription',
-            attributes: { profile: { data: profile } },
-            relationships: { list: { data: { type: 'list', id: KL_LIST } } }
-          }
-        })
-      });
-    }
 
     /* ---------- Ø loader inside the page fade ---------- */
     (function () {
@@ -1064,50 +1033,6 @@
         if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
         if (e.key === '/') { e.preventDefault(); open(); }
         else if (e.key === 'c' || e.key === 'C') { if (window.ecOpenCart) { e.preventDefault(); window.ecOpenCart(); } }
-      });
-    })();
-
-    /* ---------- exit intent (desktop, cart has items, once per session) ---------- */
-    (function () {
-      if (matchMedia('(hover: none)').matches) return;
-      if (sessionStorage.getItem('enduro_exit_shown')) return;
-      const ov = document.createElement('div'); ov.id = 'ec-exit-ov';
-      ov.innerHTML = '<div id="ec-exit" role="dialog" aria-label="Save your cart">' +
-        '<h3>Before you go.</h3><p>We\u2019ll hold your cart and send you a link, so you can pick up where you left off.</p>' +
-        '<div class="ec-notify-row"><input id="ec-exit-email" type="email" placeholder="your@email.com" autocomplete="email">' +
-        '<button id="ec-exit-go" type="button">Send</button></div>' +
-        '<p class="ec-notify-msg" id="ec-exit-msg"></p>' +
-        '<button id="ec-exit-no" type="button">No thanks</button></div>';
-      document.body.appendChild(ov);
-      const close = function () { ov.classList.remove('open'); };
-      document.getElementById('ec-exit-no').addEventListener('click', close);
-      ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
-      document.addEventListener('mouseout', function (e) {
-        if (e.relatedTarget || e.clientY > 12) return;
-        if (sessionStorage.getItem('enduro_exit_shown')) return;
-        if (!current || !current.totalQuantity) return;
-        if (document.getElementById('ec-drawer').classList.contains('open')) return;
-        sessionStorage.setItem('enduro_exit_shown', '1');
-        ov.classList.add('open');
-      });
-      document.getElementById('ec-exit-go').addEventListener('click', function () {
-        const inp = document.getElementById('ec-exit-email');
-        const msg = document.getElementById('ec-exit-msg');
-        const btn = this;
-        const email = inp.value.trim();
-        msg.classList.remove('err');
-        if (!email || email.indexOf('@') < 0) { msg.textContent = 'Please enter a valid email address.'; msg.classList.add('err'); return; }
-        btn.disabled = true;
-        const items = current ? current.lines.edges.map(function (e) { return e.node.merchandise.product.title; }) : [];
-        klSubscribe(email, { SavedCartURL: current && current.checkoutUrl, SavedCartItems: items })
-          .then(function (r) {
-            if (!r.ok && r.status !== 202) throw new Error();
-            klTrack('Saved Cart', { $email: email, CheckoutURL: current && current.checkoutUrl, ItemNames: items });
-            msg.textContent = 'Sent. Your cart is waiting.';
-            setTimeout(close, 1400);
-          }).catch(function () {
-            msg.textContent = 'Something went wrong. Please try again.'; msg.classList.add('err'); btn.disabled = false;
-          });
       });
     })();
 
