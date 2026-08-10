@@ -344,6 +344,47 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .nav-cart svg{width:23px;height:23px;display:block}
 .nav-cart-count{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--forest);color:var(--bone);font-family:var(--cond);font-size:0.66rem;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1}
 .nav-right{display:flex;align-items:center;gap:18px}
+
+/* ───────── QUICK ADD (frosted) ───────── */
+.pq-panel{
+  position:absolute;left:12px;right:12px;bottom:12px;z-index:4;
+  padding:14px;border-radius:14px;
+  background:rgba(245,242,236,0.62);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.55);
+  box-shadow:0 8px 30px rgba(14,21,18,0.16);
+  opacity:0;pointer-events:none;transform:translateY(10px) scale(0.985);
+  transition:opacity .32s cubic-bezier(.2,.7,.2,1),transform .32s cubic-bezier(.2,.7,.2,1);
+}
+.pcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:none}
+.pcard.pq-open .pcard-quick{opacity:0;pointer-events:none}
+.pq-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.pq-row:last-of-type{margin-bottom:12px}
+.pq-lab{font-family:var(--cond);font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.55);flex:0 0 42px}
+.pq-opts{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.pq-opt{
+  font-family:var(--cond);font-size:0.76rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:8px 11px;border-radius:9px;border:1px solid rgba(14,21,18,0.12);
+  background:rgba(255,255,255,0.75);color:var(--ink);cursor:pointer;line-height:1;
+  transition:background .22s,color .22s,border-color .22s;
+}
+.pq-opt:hover{border-color:rgba(14,21,18,0.35)}
+.pq-opt.on{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.pq-opt .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px;border:1px solid rgba(14,21,18,0.2)}
+.pq-add{
+  width:100%;font-family:var(--cond);font-size:0.8rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
+  padding:13px 10px;border-radius:10px;border:none;cursor:pointer;
+  background:rgba(14,21,18,0.28);color:rgba(245,242,236,0.9);transition:background .25s;
+}
+.pq-add.ready{background:var(--forest);color:var(--bone)}
+.pq-add:disabled{cursor:default}
+.pq-close{
+  display:block;width:100%;margin-top:8px;background:none;border:none;cursor:pointer;
+  font-family:var(--cond);font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.5);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .pq-panel{background:rgba(245,242,236,0.95)}
+}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
@@ -355,6 +396,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <li><a href="index.html">Home</a></li>
     <li class="hide-m"><a href="philosophy.html">Philosophy</a></li>
     <li><a href="journal.html">Journal</a></li>
+    <li><a href="community.html">Community</a></li>
     <li><a href="shop.html" class="current" aria-current="page">Shop</a></li>
   </ul>
   <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
@@ -366,6 +408,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <a href="shop.html">Shop</a>
     <a href="journal.html">Journal</a>
     <a href="philosophy.html">Philosophy</a>
+    <a href="community.html">Community</a>
     <a href="contact.html">Contact</a>
   </nav>
 </div>
@@ -410,8 +453,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-micro-short')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -431,8 +474,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-bandeau')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -452,8 +495,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Cotton</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('cotton-long-run-tee')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -473,8 +516,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-short-mens')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -494,8 +537,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('cotton-short-mens')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -515,8 +558,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('merino-short-womens')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -536,8 +579,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('cotton-short-womens')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -557,8 +600,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('wool-long-run-tee')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -576,8 +619,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('o-tee')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -595,8 +638,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('enduro-tee')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -616,8 +659,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-badge">Gift over A$150</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
         <div class="pcard-quick">
-          <button class="pq-btn" onclick="event.preventDefault();openDrawer('organic-tote')">Quick view</button>
-          <span class="pq-btn primary">Shop now</span>
+          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+          <span class="pq-btn">View product</span>
         </div>
       </div>
       <div class="pcard-info">
@@ -649,6 +692,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <nav class="foot-nav" aria-label="Footer navigation">
       <a href="shop.html">Shop</a>
       <a href="philosophy.html">About Us</a>
+      <a href="community.html">Community</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -1131,6 +1175,100 @@ function addToCart() {
   showToast(p.name + ' (' + active.textContent + ') \u2014 ' + (p.preorder ? 'Pre-order confirmed' : 'Added to cart') + ' \u2713');
   closeDrawer();
 }
+
+/* ───────── QUICK ADD ───────── */
+const QA_COLOURS = {
+  'wool-long-run-tee': [['Natural White','#F5F3EE'],['Black','#2C2C2A']],
+  'o-tee':             [['Natural White','#F5F3EE'],['Black','#2C2C2A']],
+  'enduro-tee':        [['Natural White','#F5F3EE'],['Black','#2C2C2A']]
+};
+
+function buildQuickPanel(card, key) {
+  const p = products[key];
+  if (!p) return null;
+  const panel = document.createElement('div');
+  panel.className = 'pq-panel';
+  const cols = QA_COLOURS[key];
+  let html = '';
+  if (cols) {
+    html += '<div class="pq-row"><span class="pq-lab">Colour</span><div class="pq-opts">' +
+      cols.map(function (c, i) {
+        return '<button type="button" class="pq-opt' + (i === 0 ? ' on' : '') + '" data-col="' + c[0] + '">' +
+          '<span class="sw" style="background:' + c[1] + '"></span>' + c[0] + '</button>';
+      }).join('') + '</div></div>';
+  }
+  const sizes = p.sizes || [];
+  const single = sizes.length === 1;
+  html += '<div class="pq-row"><span class="pq-lab">Size</span><div class="pq-opts">' +
+    sizes.map(function (sz, i) {
+      const out = (p.soldOut || []).indexOf(sz) > -1;
+      return '<button type="button" class="pq-opt' + (single && !out ? ' on' : '') + '" data-size="' + sz + '"' +
+        (out ? ' disabled style="opacity:.4;cursor:default"' : '') + '>' + sz + '</button>';
+    }).join('') + '</div></div>';
+  html += '<button type="button" class="pq-add' + (single ? ' ready' : '') + '">' +
+    (single ? (p.preorder ? 'Pre-order \u00b7 ' + p.price : 'Add \u00b7 ' + p.price) : 'Select a size') + '</button>' +
+    '<button type="button" class="pq-close">Close options</button>';
+  panel.innerHTML = html;
+
+  const addBtn = panel.querySelector('.pq-add');
+  function selectedSize() { const b = panel.querySelector('[data-size].on'); return b ? b.dataset.size : null; }
+  function selectedCol() { const b = panel.querySelector('[data-col].on'); return b ? b.dataset.col : null; }
+  function sync() {
+    const ready = !!selectedSize();
+    addBtn.classList.toggle('ready', ready);
+    addBtn.textContent = ready
+      ? (p.preorder ? 'Pre-order \u00b7 ' + p.price : 'Add \u00b7 ' + p.price)
+      : 'Select a size';
+  }
+  panel.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    const opt = e.target.closest('.pq-opt');
+    if (opt && !opt.disabled) {
+      const group = opt.dataset.size !== undefined ? '[data-size]' : '[data-col]';
+      panel.querySelectorAll(group).forEach(function (b) { b.classList.remove('on'); });
+      opt.classList.add('on');
+      sync();
+      return;
+    }
+    if (e.target.closest('.pq-close')) { closeQuickAdd(card); return; }
+    if (e.target.closest('.pq-add')) {
+      const size = selectedSize();
+      if (!size) { showToast('Please select a size.'); return; }
+      if (typeof window.ecQuickAdd !== 'function') { showToast('Cart unavailable. Please refresh.'); return; }
+      addBtn.disabled = true; addBtn.textContent = 'Adding\u2026';
+      window.ecQuickAdd(key, size, selectedCol()).then(function (ok) {
+        addBtn.disabled = false;
+        if (ok) { closeQuickAdd(card); }
+        sync();
+      });
+    }
+  });
+  return panel;
+}
+
+function closeQuickAdd(card) { card.classList.remove('pq-open'); }
+
+function openQuickAdd(btn) {
+  const card = btn.closest('.pcard');
+  if (!card) return;
+  document.querySelectorAll('.pcard.pq-open').forEach(function (c) { if (c !== card) closeQuickAdd(c); });
+  if (card.classList.contains('pq-open')) { closeQuickAdd(card); return; }
+  if (!card.querySelector('.pq-panel')) {
+    const panel = buildQuickPanel(card, card.dataset.product);
+    if (!panel) { window.location.href = card.getAttribute('href'); return; }
+    card.querySelector('.pcard-img').appendChild(panel);
+  }
+  card.classList.add('pq-open');
+}
+
+document.addEventListener('click', function (e) {
+  if (e.target.closest('.pcard')) return;
+  document.querySelectorAll('.pcard.pq-open').forEach(closeQuickAdd);
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') document.querySelectorAll('.pcard.pq-open').forEach(closeQuickAdd);
+});
+
 function showToast(msg) {
   const old = document.getElementById('toast');
   if (old) old.remove();
