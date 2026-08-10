@@ -566,6 +566,36 @@
     navList.appendChild(li);
   }
 
+  /* ---------- quick add from a product card (shop page) ---------- */
+  window.ecQuickAdd = async function (key, size, colourName) {
+    if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) {
+      if (window.showToast) showToast('That option isn\u2019t available yet');
+      return false;
+    }
+    try {
+      const list = await resolveVariants(key);
+      const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list;
+      const v = (sellable && sellable.length === 1)
+        ? sellable[0]
+        : (sellable && pickVariant(sellable, size, colourName || null));
+      if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return false; }
+      const cart = await addToCartFlow(v.id);
+      await refresh(cart); openDrawer();
+      const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
+      const m = justAdded && justAdded.merchandise;
+      klTrack('Added to Cart', {
+        $value: parseFloat(cart.cost.subtotalAmount.amount),
+        AddedItemProductName: m ? m.product.title : key,
+        AddedItemProductID: key,
+        AddedItemQuantity: 1
+      });
+      return true;
+    } catch (e) {
+      if (window.showToast) showToast('Something went wrong. Please try again.');
+      return false;
+    }
+  };
+
   /* ---------- override addToCart() ---------- */
   const _origAddToCart = window.addToCart;
   window.addToCart = async function () {
