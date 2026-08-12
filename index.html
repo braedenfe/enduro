@@ -222,12 +222,12 @@ a{color:inherit;text-decoration:none}
 .rail-track::-webkit-scrollbar{display:none}
 .rcard{
   flex:0 0 min(78vw,420px);scroll-snap-align:start;
-  background:var(--white);border-radius:4px;overflow:hidden;
+  background:var(--white);border-radius:16px;overflow:hidden;
 }
 .rcard-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:#EAE6DE}
 .rcard-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
 .rcard:hover .rcard-img img{transform:scale(1.05)}
-.rcard-body{display:flex;align-items:baseline;justify-content:space-between;padding:18px 20px 22px;gap:12px}
+.rcard-body{display:flex;align-items:baseline;justify-content:space-between;padding:18px 18px 14px;gap:12px}
 .rcard-name{font-family:var(--serif);font-weight:600;font-size:1.25rem;letter-spacing:0.01em}
 .rcard-fibre{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:4px}
 .rcard-price{font-weight:400;font-size:0.96rem;white-space:nowrap}
@@ -376,35 +376,52 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 .nav-right{display:flex;align-items:center;gap:18px}
 
 /* ───────── QUICK ADD (frosted) ───────── */
+.rcard-actions{display:flex;gap:10px;padding:0 14px 14px}
+.rq-trigger,.rq-view{
+  flex:1 1 0;min-width:0;
+  font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+  padding:15px 8px;border-radius:14px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  transition:background .3s,box-shadow .3s,transform .2s;
+}
+.rq-trigger::after,.rq-view::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(160deg,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0) 45%);
+}
+.rq-view{
+  background:rgba(255,255,255,0.42);color:var(--ink);border:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 1px 2px rgba(14,21,18,0.06),inset 0 1px 0 rgba(255,255,255,0.7);
+}
+.rq-view:hover{background:rgba(255,255,255,0.65);box-shadow:0 3px 10px rgba(14,21,18,0.1),inset 0 1px 0 rgba(255,255,255,0.85)}
 .rq-trigger{
-  position:absolute;left:12px;right:12px;bottom:12px;z-index:3;
-  font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
-  padding:12px 10px;border-radius:99px;border:none;cursor:pointer;
-  background:rgba(245,242,236,0.72);color:var(--ink);
-  -webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
-  opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;
+  background:rgba(31,61,53,0.82);color:var(--bone);border:1px solid rgba(31,61,53,0.5);
+  box-shadow:0 1px 2px rgba(14,21,18,0.14),inset 0 1px 0 rgba(255,255,255,0.22);
 }
-@media(hover:hover){.rcard:hover .rq-trigger{opacity:1;transform:none}}
-@media(hover:none){.rq-trigger{opacity:1;transform:none}}
-.rcard.pq-open .rq-trigger{opacity:0;pointer-events:none}
+.rq-trigger::after{background:linear-gradient(160deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0) 48%)}
+.rq-trigger:hover{background:rgba(31,61,53,0.94);box-shadow:0 3px 12px rgba(31,61,53,0.28),inset 0 1px 0 rgba(255,255,255,0.28)}
+.rq-trigger:active,.rq-view:active{transform:scale(0.985)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .rq-view{background:rgba(245,242,236,0.96)}
+  .rq-trigger{background:var(--forest)}
+}
+}
+
 .pq-panel{
-  position:absolute;left:10px;right:10px;bottom:10px;z-index:4;
-  padding:13px;border-radius:14px;
-  background:rgba(245,242,236,0.62);
-  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.55);
-  box-shadow:0 8px 30px rgba(14,21,18,0.16);
-  opacity:0;pointer-events:none;transform:translateY(10px) scale(0.985);
-  transition:opacity .32s cubic-bezier(.2,.7,.2,1),transform .32s cubic-bezier(.2,.7,.2,1);
+  margin:0 16px;border-radius:14px;padding:0 14px;
+  background:rgba(31,61,53,0.05);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid rgba(14,21,18,0.08);
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .38s cubic-bezier(.2,.7,.2,1),opacity .28s ease,padding .38s cubic-bezier(.2,.7,.2,1),margin .38s ease;
 }
-.rcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:none}
+.rcard.pq-open .pq-panel{max-height:340px;opacity:1;padding:14px;margin:0 16px 14px}
 .pq-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
 .pq-row:last-of-type{margin-bottom:11px}
 .pq-lab{font-family:var(--cond);font-size:0.64rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.55);flex:0 0 40px}
 .pq-opts{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .pq-opt{
   font-family:var(--cond);font-size:0.74rem;letter-spacing:0.1em;text-transform:uppercase;
-  padding:8px 10px;border-radius:9px;border:1px solid rgba(14,21,18,0.12);
+  padding:8px 10px;border-radius:10px;border:1px solid rgba(14,21,18,0.12);
   background:rgba(255,255,255,0.75);color:var(--ink);cursor:pointer;line-height:1;
   transition:background .22s,color .22s,border-color .22s;
 }
@@ -412,15 +429,14 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 .pq-opt .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px;border:1px solid rgba(14,21,18,0.2)}
 .pq-add{
   width:100%;font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
-  padding:13px 10px;border-radius:10px;border:none;cursor:pointer;
-  background:rgba(14,21,18,0.28);color:rgba(245,242,236,0.9);transition:background .25s;
+  padding:13px 10px;border-radius:12px;border:none;cursor:pointer;
+  background:rgba(14,21,18,0.22);color:rgba(245,242,236,0.9);transition:background .25s;
 }
 .pq-add.ready{background:var(--forest);color:var(--bone)}
 .pq-close{display:block;width:100%;margin-top:8px;background:none;border:none;cursor:pointer;
   font-family:var(--cond);font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.5)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .pq-panel{background:rgba(245,242,236,0.95)}
-  .rq-trigger{background:rgba(245,242,236,0.95)}
 }
 </style>
 <!-- Klaviyo onsite tracking -->
@@ -566,38 +582,58 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   </div>
   <div class="rail-track">
     <a class="rcard reveal" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee">
-      <div class="rcard-img"><img src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee in Bone" loading="lazy"><button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button></div>
+      <div class="rcard-img"><img src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee in Bone" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Essential Tee</div><span class="rcard-fibre">Cotton</span></div>
         <span class="rcard-price">A$100</span>
       </div>
+      <div class="rcard-actions">
+        <button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="rq-view">View product</span>
+      </div>
     </a>
     <a class="rcard reveal" href="pages/product-merino-short-mens.html" data-product="merino-short-mens">
-      <div class="rcard-img"><img src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="Men's Merino Long Run Short 5 inch" loading="lazy"><button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button></div>
+      <div class="rcard-img"><img src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="Men's Merino Long Run Short 5 inch" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Long Run Short 5&Prime;</div><span class="rcard-fibre">Knitted merino</span></div>
         <span class="rcard-price">A$150</span>
       </div>
+      <div class="rcard-actions">
+        <button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="rq-view">View product</span>
+      </div>
     </a>
     <a class="rcard reveal" href="pages/product-merino-short-womens.html" data-product="merino-short-womens">
-      <div class="rcard-img"><img src="assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg" alt="Women's Merino Long Run Short 3 inch" loading="lazy"><button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button></div>
+      <div class="rcard-img"><img src="assets/images/products/merino-short-womens/merino-short-womens-front-model.jpg" alt="Women's Merino Long Run Short 3 inch" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Long Run Short 3&Prime;</div><span class="rcard-fibre">Knitted merino</span></div>
         <span class="rcard-price">A$150</span>
       </div>
+      <div class="rcard-actions">
+        <button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="rq-view">View product</span>
+      </div>
     </a>
     <a class="rcard reveal" href="pages/product-cotton-short-womens.html" data-product="cotton-short-womens">
-      <div class="rcard-img"><img src="assets/images/products/cotton-short-womens/cotton-short-womens-front-close.jpg" alt="Women's Essential Short 3 inch" loading="lazy"><button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button></div>
+      <div class="rcard-img"><img src="assets/images/products/cotton-short-womens/cotton-short-womens-front-close.jpg" alt="Women's Essential Short 3 inch" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Essential Short 3&Prime;</div><span class="rcard-fibre">Organic cotton</span></div>
         <span class="rcard-price">A$100</span>
       </div>
+      <div class="rcard-actions">
+        <button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="rq-view">View product</span>
+      </div>
     </a>
     <a class="rcard reveal" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee">
-      <div class="rcard-img"><img src="assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model.jpg" alt="Merino Long Run Tee" loading="lazy"><button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button></div>
+      <div class="rcard-img"><img src="assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model.jpg" alt="Merino Long Run Tee" loading="lazy"></div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Long Run Tee</div><span class="rcard-fibre">100% merino</span></div>
         <span class="rcard-price">A$140</span>
+      </div>
+      <div class="rcard-actions">
+        <button class="rq-trigger" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="rq-view">View product</span>
       </div>
     </a>
   </div>
@@ -821,7 +857,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
     if(!card.querySelector('.pq-panel')){
       var panel = buildPanel(card, card.dataset.product);
       if(!panel){ window.location.href = card.getAttribute('href'); return; }
-      card.querySelector('.rcard-img').appendChild(panel);
+      card.appendChild(panel);
     }
     card.classList.add('pq-open');
   };

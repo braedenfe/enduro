@@ -141,7 +141,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 @media(max-width:640px){.product-grid{grid-template-columns:1fr;gap:28px}#grid-wrap{padding-left:20px;padding-right:20px}}
 
 .pcard{
-  background:var(--white);border-radius:4px;overflow:hidden;display:block;position:relative;
+  background:var(--white);border-radius:16px;overflow:hidden;display:block;position:relative;
   opacity:0;transform:translateY(28px);
   transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1);
 }
@@ -176,24 +176,36 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   font-family:var(--cond);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
   background:rgba(245,242,236,0.85);color:var(--ink);padding:6px 14px;border-radius:99px;
 }
-.pcard-quick{
-  position:absolute;left:14px;right:14px;bottom:14px;z-index:2;
-  display:flex;gap:8px;opacity:0;transform:translateY(8px);
-  transition:opacity .35s ease,transform .35s ease;
 }
-@media(hover:hover){.pcard:hover .pcard-quick{opacity:1;transform:none}}
-@media(hover:none){.pcard-quick{opacity:1;transform:none}}
+.pcard-actions{display:flex;gap:10px;padding:0 14px 14px}
 .pq-btn{
-  flex:1;font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
-  padding:12px 10px;border-radius:99px;text-align:center;border:none;
-  background:rgba(245,242,236,0.92);color:var(--ink);
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  transition:background .3s;
+  flex:1 1 0;min-width:0;
+  font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+  padding:15px 8px;border-radius:14px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
+  background:rgba(255,255,255,0.42);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 1px 2px rgba(14,21,18,0.06),inset 0 1px 0 rgba(255,255,255,0.7);
+  color:var(--ink);transition:background .3s,box-shadow .3s,transform .2s;
 }
-.pq-btn:hover{background:var(--white)}
-.pq-btn.primary{background:var(--forest);color:var(--bone)}
-.pq-btn.primary:hover{background:#173028}
-.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:18px 20px 22px}
+.pq-btn::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(160deg,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0) 45%);
+}
+.pq-btn:hover{background:rgba(255,255,255,0.65);box-shadow:0 3px 10px rgba(14,21,18,0.1),inset 0 1px 0 rgba(255,255,255,0.85)}
+.pq-btn:active{transform:scale(0.985)}
+.pq-btn.primary{
+  background:rgba(31,61,53,0.82);color:var(--bone);
+  border-color:rgba(31,61,53,0.5);
+  box-shadow:0 1px 2px rgba(14,21,18,0.14),inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.pq-btn.primary::after{background:linear-gradient(160deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0) 48%)}
+.pq-btn.primary:hover{background:rgba(31,61,53,0.94);box-shadow:0 3px 12px rgba(31,61,53,0.28),inset 0 1px 0 rgba(255,255,255,0.28)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .pq-btn{background:rgba(245,242,236,0.96)}
+  .pq-btn.primary{background:var(--forest)}
+}
+.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:18px 18px 14px}
 .pcard-name{font-family:var(--serif);font-weight:600;font-size:1.3rem;letter-spacing:0.01em;line-height:1.1}
 .pcard-fibre{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:5px}
 .pcard-price{font-weight:400;font-size:0.98rem;white-space:nowrap}
@@ -347,24 +359,22 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ───────── QUICK ADD (frosted) ───────── */
 .pq-panel{
-  position:absolute;left:12px;right:12px;bottom:12px;z-index:4;
-  padding:14px;border-radius:14px;
-  background:rgba(245,242,236,0.62);
-  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.55);
-  box-shadow:0 8px 30px rgba(14,21,18,0.16);
-  opacity:0;pointer-events:none;transform:translateY(10px) scale(0.985);
-  transition:opacity .32s cubic-bezier(.2,.7,.2,1),transform .32s cubic-bezier(.2,.7,.2,1);
+  margin:0 16px;border-radius:14px;padding:0 14px;
+  background:rgba(31,61,53,0.05);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid rgba(14,21,18,0.08);
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .38s cubic-bezier(.2,.7,.2,1),opacity .28s ease,padding .38s cubic-bezier(.2,.7,.2,1),margin .38s ease;
 }
-.pcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:none}
-.pcard.pq-open .pcard-quick{opacity:0;pointer-events:none}
+.pcard.pq-open .pq-panel{max-height:340px;opacity:1;padding:14px;margin:0 16px 14px}
+
 .pq-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
 .pq-row:last-of-type{margin-bottom:12px}
 .pq-lab{font-family:var(--cond);font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.55);flex:0 0 42px}
 .pq-opts{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .pq-opt{
   font-family:var(--cond);font-size:0.76rem;letter-spacing:0.1em;text-transform:uppercase;
-  padding:8px 11px;border-radius:9px;border:1px solid rgba(14,21,18,0.12);
+  padding:8px 11px;border-radius:10px;border:1px solid rgba(14,21,18,0.12);
   background:rgba(255,255,255,0.75);color:var(--ink);cursor:pointer;line-height:1;
   transition:background .22s,color .22s,border-color .22s;
 }
@@ -373,8 +383,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .pq-opt .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px;border:1px solid rgba(14,21,18,0.2)}
 .pq-add{
   width:100%;font-family:var(--cond);font-size:0.8rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
-  padding:13px 10px;border-radius:10px;border:none;cursor:pointer;
-  background:rgba(14,21,18,0.28);color:rgba(245,242,236,0.9);transition:background .25s;
+  padding:13px 10px;border-radius:12px;border:none;cursor:pointer;
+  background:rgba(14,21,18,0.22);color:rgba(245,242,236,0.9);transition:background .25s;
 }
 .pq-add.ready{background:var(--forest);color:var(--bone)}
 .pq-add:disabled{cursor:default}
@@ -452,17 +462,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-model.jpg" alt="STRATUS Flow Merino Micro Short, worn with the Merino Bandeau" loading="lazy">
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Micro Short</h2>
           <span class="pcard-fibre">STRATUS Flow&trade; Merino &middot; Studio to Sauna</span>
         </div>
         <span class="pcard-price">A$100</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -473,17 +483,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-model.jpg" alt="STRATUS Flow Merino Bandeau, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Bandeau</h2>
           <span class="pcard-fibre">STRATUS Flow&trade; Merino &middot; Studio to Sauna</span>
         </div>
         <span class="pcard-price">A$60</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -494,17 +504,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee in Natural White, worn" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Cotton</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Essential Tee</h2>
           <span class="pcard-fibre">Cotton &middot; Running &amp; Everyday</span>
         </div>
         <span class="pcard-price">A$100</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -515,17 +525,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="STRATUS Pace Merino Long Run Short 5 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Long Run Short 5&Prime;</h2>
           <span class="pcard-fibre">STRATUS Pace&trade; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$150</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -536,17 +546,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-back-model.jpg" alt="Men's Essential Short 5 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Essential Short 5&Prime;</h2>
           <span class="pcard-fibre">Organic Cotton &middot; Running &amp; Everyday</span>
         </div>
         <span class="pcard-price">A$100</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -557,17 +567,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg" alt="STRATUS Pace Merino Long Run Short 3 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">&Oslash; Short 3&Prime;</h2>
           <span class="pcard-fibre">STRATUS Pace&trade; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$150</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -578,17 +588,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/cotton-short-womens/cotton-short-womens-back-model.jpg" alt="Women's Essential Short 3 inch, back" loading="lazy">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Essential Short 3&Prime;</h2>
           <span class="pcard-fibre">Organic Cotton &middot; Running</span>
         </div>
         <span class="pcard-price">A$100</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -599,17 +609,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg" alt="Long Run Tee in Natural White, worn" loading="lazy">
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Long Run Tee</h2>
           <span class="pcard-fibre">STRATUS Air&trade; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$140</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
     <a class="pcard" href="pages/product-o-tee.html" data-product="o-tee" data-fibre="wool" data-gender="men women" role="listitem">
@@ -618,17 +628,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/o-tee/o-tee-black-front-flat.jpg" alt="&Oslash; Tee in Black, front flat" loading="lazy">
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">&Oslash; Tee</h2>
           <span class="pcard-fibre">STRATUS Air&trade; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$140</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
     <a class="pcard" href="pages/product-enduro-tee.html" data-product="enduro-tee" data-fibre="wool" data-gender="men women" role="listitem">
@@ -637,17 +647,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/enduro-tee/enduro-tee-black-front-flat.jpg" alt="Enduro Tee in Black, front flat" loading="lazy">
         <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Enduro Tee</h2>
           <span class="pcard-fibre">STRATUS Air&trade; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$140</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -658,17 +668,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img class="alt" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote" loading="lazy">
         <span class="pcard-badge">Gift over A$150</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
-        <div class="pcard-quick">
-          <button class="pq-btn primary" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
-          <span class="pq-btn">View product</span>
         </div>
-      </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Organic Tote</h2>
           <span class="pcard-fibre">Organic Cotton &middot; Everyday</span>
         </div>
         <span class="pcard-price">A$20</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pq-btn primary" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pq-btn">View product</span>
       </div>
     </a>
 
@@ -1256,7 +1266,7 @@ function openQuickAdd(btn) {
   if (!card.querySelector('.pq-panel')) {
     const panel = buildQuickPanel(card, card.dataset.product);
     if (!panel) { window.location.href = card.getAttribute('href'); return; }
-    card.querySelector('.pcard-img').appendChild(panel);
+    card.appendChild(panel);
   }
   card.classList.add('pq-open');
 }
