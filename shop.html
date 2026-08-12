@@ -176,22 +176,19 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   font-family:var(--cond);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
   background:rgba(245,242,236,0.85);color:var(--ink);padding:6px 14px;border-radius:99px;
 }
+.pcard-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 18px 20px}
+.pcard-btn{
+  display:flex;align-items:center;justify-content:center;min-width:0;
+  font-family:var(--cond);font-size:0.8rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
+  padding:15px 8px;border-radius:99px;text-align:center;cursor:pointer;
+  transition:background .3s ease,color .3s ease,border-color .3s ease;
 }
-.pcard-add{
-  display:block;width:100%;margin:0;padding:15px 18px 17px;border:none;border-top:1px solid rgba(14,21,18,0.09);
-  background:transparent;cursor:pointer;text-align:left;
-  font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;
-  color:rgba(14,21,18,0.55);transition:color .3s,background .3s;
-}
-.pcard-add span{position:relative}
-.pcard-add span::after{
-  content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--forest);
-  transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1);
-}
-.pcard:hover .pcard-add{color:var(--forest)}
-.pcard:hover .pcard-add span::after{transform:scaleX(1)}
-.pcard.pq-open .pcard-add{color:var(--forest);background:rgba(31,61,53,0.03)}
-.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:20px 18px 18px}
+.pcard-btn.add{background:var(--forest);color:var(--bone);border:1px solid var(--forest)}
+.pcard-btn.add:hover{background:#173028;border-color:#173028}
+.pcard-btn.view{background:transparent;color:var(--ink);border:1px solid rgba(14,21,18,0.18)}
+.pcard-btn.view:hover{border-color:var(--forest);color:var(--forest)}
+.pcard.pq-open .pcard-btn.add{background:#173028;border-color:#173028}
+.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:20px 18px 16px}
 .pcard-name{font-family:var(--serif);font-weight:600;font-size:1.3rem;letter-spacing:0.01em;line-height:1.1}
 .pcard-fibre{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:5px}
 .pcard-price{font-weight:400;font-size:0.98rem;white-space:nowrap}
@@ -345,11 +342,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ───────── QUICK ADD (frosted) ───────── */
 .pq-panel{
-  padding:0 18px;background:rgba(31,61,53,0.03);
+  padding:0 18px;background:rgba(31,61,53,0.04);border-top:1px solid rgba(14,21,18,0.07);
   max-height:0;opacity:0;overflow:hidden;
   transition:max-height .42s cubic-bezier(.2,.7,.2,1),opacity .3s ease,padding .42s cubic-bezier(.2,.7,.2,1);
 }
-.pcard.pq-open .pq-panel{max-height:340px;opacity:1;padding:4px 18px 20px}
+.pcard.pq-open .pq-panel{max-height:340px;opacity:1;padding:16px 18px 20px}
 
 .pq-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
 .pq-row:last-of-type{margin-bottom:12px}
@@ -453,7 +450,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$100</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- STRATUS Flow Merino Bandeau -->
@@ -469,9 +469,12 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
           <h2 class="pcard-name">Bandeau</h2>
           <span class="pcard-fibre">STRATUS Flow&trade; Merino &middot; Studio to Sauna</span>
         </div>
-        <span class="pcard-price">A$60</span>
+        <span class="pcard-price">A$80</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Cotton Essential Tee -->
@@ -489,7 +492,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$100</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Men's Merino Short 5" -->
@@ -507,7 +513,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$150</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Men's Cotton Short 5" -->
@@ -525,7 +534,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$100</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Women's Merino Short 3" -->
@@ -543,7 +555,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$150</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Women's Cotton Short 3" -->
@@ -561,7 +576,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$100</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Merino Tee -->
@@ -579,7 +597,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$140</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
     <a class="pcard" href="pages/product-o-tee.html" data-product="o-tee" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
@@ -595,7 +616,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$140</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
     <a class="pcard" href="pages/product-enduro-tee.html" data-product="enduro-tee" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
@@ -611,7 +635,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$140</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
     <!-- Organic Tote -->
@@ -629,7 +656,10 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         </div>
         <span class="pcard-price">A$20</span>
       </div>
-      <button class="pcard-add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)"><span>Quick add</span></button>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
     </a>
 
   </div>
@@ -879,7 +909,7 @@ const products = {
     name: 'Bandeau',
     material: '95% Merino Wool, 5% Spandex',
     category: 'Studio \u00b7 Women',
-    price: 'A$60',
+    price: 'A$80',
     preorder: true,
     page: 'pages/product-merino-bandeau.html',
     photo: 'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg',
