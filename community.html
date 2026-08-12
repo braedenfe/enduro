@@ -218,25 +218,25 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
 /* ───────── COMMUNITY ───────── */
 .join-card{position:relative;border-radius:6px;overflow:hidden;background:var(--forest);margin-top:8px}
-.join-card::before{content:"";position:absolute;inset:0;background:url('assets/images/hero.jpeg') center/cover no-repeat;opacity:0.42}
-.join-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,21,18,0.35) 0%,rgba(14,21,18,0.72) 100%)}
+.join-card::before{content:"";position:absolute;inset:0;background:url('assets/images/community-forest.jpg') center/cover no-repeat}
+.join-card::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(14,21,18,0.92) 0%,rgba(14,21,18,0.86) 34%,rgba(14,21,18,0.55) 58%,rgba(14,21,18,0.18) 100%)}
 .join-card-inner{position:relative;z-index:2;padding:clamp(40px,5vw,64px) clamp(26px,4.5vw,58px);max-width:520px}
-.join-eyebrow{display:block;font-family:var(--cond);font-size:0.78rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(245,242,236,0.72);margin-bottom:16px}
+.join-eyebrow{display:block;font-family:var(--cond);font-size:0.78rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(245,242,236,0.85);margin-bottom:16px}
 .join-h{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4.2vw,3.1rem);line-height:1.06;letter-spacing:-0.015em;margin:0;color:var(--bone);max-width:14ch}
-.join-h .em{font-style:italic;color:var(--bone);opacity:0.85}
-.join-p{margin:16px 0 0;max-width:42ch;font-weight:300;color:rgba(245,242,236,0.78);line-height:1.7}
+.join-h .em{font-style:italic;color:var(--bone)}
+.join-p{margin:16px 0 0;max-width:38ch;font-weight:400;color:rgba(245,242,236,0.92);line-height:1.7}
 .join-form{display:flex;flex-direction:column;gap:16px;max-width:400px;margin:30px 0 0}
 .join-field{display:flex;flex-direction:column;gap:7px}
-.join-field label{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,236,0.7)}
-.join-form input{width:100%;border:1px solid rgba(245,242,236,0.3);border-radius:99px;outline:none;padding:14px 22px;font-family:var(--sans);font-size:0.95rem;background:rgba(245,242,236,0.08);color:var(--bone);box-sizing:border-box;transition:border-color .3s,background .3s}
-.join-form input::placeholder{color:rgba(245,242,236,0.4)}
-.join-form input:focus{border-color:rgba(245,242,236,0.75);background:rgba(245,242,236,0.14)}
+.join-field label{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,236,0.88)}
+.join-form input{width:100%;border:1px solid rgba(245,242,236,0.38);border-radius:99px;outline:none;padding:14px 22px;font-family:var(--sans);font-size:0.95rem;background:rgba(14,21,18,0.45);color:var(--bone);box-sizing:border-box;transition:border-color .3s,background .3s}
+.join-form input::placeholder{color:rgba(245,242,236,0.55)}
+.join-form input:focus{border-color:var(--bone);background:rgba(14,21,18,0.6)}
 .join-form button{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.2em;text-transform:uppercase;background:var(--bone);color:var(--forest);border:none;border-radius:99px;padding:15px 30px;cursor:pointer;transition:opacity .3s;margin-top:4px}
 .join-form button:hover{opacity:0.88}
 .join-form button:disabled{opacity:0.6;cursor:default}
 .join-msg{margin-top:16px;font-size:0.88rem;font-weight:300;color:var(--bone);min-height:1.2em}
 .join-msg.err{color:#E8A092}
-.join-fine{margin-top:18px;font-size:0.78rem;font-weight:300;color:rgba(245,242,236,0.55);line-height:1.6}
+.join-fine{margin-top:18px;font-size:0.78rem;font-weight:300;color:rgba(245,242,236,0.7);line-height:1.6}
 .c-h{font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,3.6vw,2.6rem);letter-spacing:-0.01em;margin:0 0 28px;color:var(--ink)}
 .c-h .em{font-style:italic;color:var(--forest)}
 .c-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -246,6 +246,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 .c-tile-p{margin:12px 0 18px;font-size:0.88rem;font-weight:300;line-height:1.65;color:rgba(14,21,18,0.65);flex:1}
 .c-tile-go{font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink)}
 @media(max-width:820px){.c-grid{grid-template-columns:1fr}}
+@media(max-width:820px){
+  .join-card::after{background:linear-gradient(180deg,rgba(14,21,18,0.55) 0%,rgba(14,21,18,0.88) 34%,rgba(14,21,18,0.93) 100%)}
+  .join-card-inner{max-width:none}
+}
 @media(max-width:620px){.join-card-inner{padding:34px 22px}}
 </style>
 </head>
