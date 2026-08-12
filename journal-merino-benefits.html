@@ -17,12 +17,12 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Journal — enduro</title>
-<link rel="canonical" href="https://www.enduroapparel.com.au/journal.html">
-<meta name="description" content="The Enduro journal. Thinking on natural fibres, performance and building activewear that lasts.">
-<meta property="og:title" content="Journal — enduro">
+<title>The Benefits of Merino Wool &mdash; enduro</title>
+<link rel="canonical" href="https://www.enduroapparel.com.au/journal-merino-benefits.html">
+<meta name="description" content="One fibre that works through an Australian summer and a New Zealand winter. How merino regulates temperature, manages moisture and resists odour, from the high country above Queenstown.">
+<meta property="og:title" content="The Benefits of Merino Wool &mdash; enduro">
 <meta property="og:image" content="og-image.png">
-<meta property="og:description" content="Nature never stopped performing. Our philosophy on natural fibres, performance and buying better.">
+<meta property="og:description" content="One fibre, from an Australian summer to a New Zealand winter. What merino does for temperature, moisture and odour.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
@@ -194,15 +194,17 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
-.jlist{display:flex;flex-direction:column;gap:0}
-.jentry{display:block;padding:clamp(28px,4vh,40px) 0;border-bottom:1px solid var(--line-dark);transition:opacity .2s}
-.jentry:first-child{border-top:1px solid var(--line-dark)}
-.jentry:hover{opacity:0.72}
-.jentry-cat{font-family:var(--cond);font-size:0.78rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--forest)}
-.jentry-title{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.05;letter-spacing:-0.015em;margin:14px 0 12px}
-.jentry-title .em{font-style:italic;color:var(--forest)}
-.jentry-ex{font-weight:300;line-height:1.75;color:rgba(14,21,18,0.7);max-width:64ch;margin-bottom:16px}
-.jentry-more{font-family:var(--cond);font-size:0.8rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink)}
+.doc-back{display:inline-block;font-family:var(--cond);font-size:0.8rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--forest);margin-bottom:28px;transition:opacity .2s}
+.doc-back:hover{opacity:0.62}
+.doc-quote{font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.2;color:var(--forest);margin:clamp(32px,5vh,52px) 0;padding-left:24px;border-left:2px solid var(--forest);max-width:70ch}
+.doc-close{font-family:var(--serif);font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.3;color:var(--ink);margin-top:clamp(28px,4vh,44px)}
+.doc-close .em{font-style:italic;color:var(--forest)}
+.doc-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(40px,6vh,64px);padding-top:34px;border-top:1px solid var(--line-dark)}
+.btn{font-family:var(--cond);font-size:0.82rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:15px 30px;border-radius:2px;transition:all .25s;display:inline-block}
+.btn-solid{background:var(--forest);color:var(--bone)}
+.btn-solid:hover{background:var(--ink)}
+.btn-ghost{border:1px solid rgba(14,21,18,0.24);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--forest);color:var(--forest)}
 
 .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
 .nav-burger span{display:block;width:24px;height:2px;background:var(--bone);margin:0 auto;transition:transform .35s ease,opacity .25s ease}
@@ -221,6 +223,18 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 .nav-cart svg{width:23px;height:23px;display:block}
 .nav-cart-count{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--forest);color:var(--bone);font-family:var(--cond);font-size:0.66rem;font-weight:600;display:flex;align-items:center;justify-content:center;line-height:1}
 .nav-right{display:flex;align-items:center;gap:18px}
+
+.doc-fig{margin:clamp(32px,5vh,52px) 0}
+.doc-fig img{width:100%;height:auto;display:block;border-radius:4px}
+.doc-fig figcaption{margin-top:12px;font-family:var(--cond);font-size:0.76rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.45)}
+.sci{margin:22px 0 0;padding:18px 22px;background:rgba(31,61,53,0.05);border-radius:4px}
+.sci-l{display:block;font-family:var(--cond);font-size:0.72rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--forest);margin-bottom:8px}
+.sci p{margin:0;font-size:0.92rem;line-height:1.7;color:rgba(14,21,18,0.72)}
+.sci a{color:var(--forest);text-decoration:underline;text-underline-offset:3px}
+.nutshell{margin:0 0 clamp(26px,4vh,40px);padding:20px 24px;border-left:2px solid var(--forest);background:rgba(31,61,53,0.04)}
+.nutshell p{margin:0;font-size:1rem;line-height:1.75;color:var(--ink)}
+.result{color:var(--forest)}
+.result strong{font-weight:600}
 </style>
 </head>
 <body>
@@ -249,25 +263,135 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
 
 <main class="doc">
+  <a href="journal.html" class="doc-back">&larr; Journal</a>
   <header class="doc-head">
     <span class="t-label">Journal</span>
-    <h1>Notes for <span class="em">the long run.</span></h1>
-    <p class="lead">Thinking on natural fibres, performance and the way we build. Written from the workshop, the trail and everywhere in between.</p>
+    <h1>Merino wool: performance, <span class="em">naturally.</span></h1>
+    <p class="lead">One fibre that works through an Australian summer and a New Zealand winter. Notes from the high country above Queenstown, and what that range does for a run.</p>
+    <div class="updated">Enduro &middot; For the long run</div>
   </header>
 
-  <div class="jlist">
-    <a class="jentry reveal" href="journal-merino-benefits.html">
-      <span class="jentry-cat">On merino</span>
-      <h2 class="jentry-title">Merino wool: performance, <span class="em">naturally.</span></h2>
-      <p class="jentry-ex">One fibre that works through an Australian summer and a New Zealand winter. Temperature regulation, moisture, breathability and odour resistance, from the high country above Queenstown.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
-    </a>
-    <a class="jentry reveal" href="journal-why-natural-fibres.html">
-      <span class="jentry-cat">On materials</span>
-      <h2 class="jentry-title">Why we choose <span class="em">natural fibres.</span></h2>
-      <p class="jentry-ex">We&rsquo;ve never believed performance has to come from plastic. Merino wool, organic cotton, and the case against building activewear from petroleum.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
-    </a>
+  <div class="doc-body">
+
+    <figure class="doc-fig">
+      <img src="assets/images/journal-merino-queenstown.jpg" alt="Merino sheep grazing below the snow line in the high country near Queenstown, New Zealand" loading="lazy">
+      <figcaption>The high country, Queenstown, New Zealand</figcaption>
+    </figure>
+
+    <p>We went to Queenstown to see the fibre at the far end of its range.</p>
+
+    <p>The same fleece has to work at both extremes. An Australian summer of thirty five degree heat and dry wind. A New Zealand winter below the snow line, through frost and southerly fronts. One fibre, no change of kit, and the animals wearing it are comfortable throughout.</p>
+
+    <p>A run is that problem compressed into an hour. You start cool, you heat up, you crest a hill into wind and cool again. Here is what merino does about it.</p>
+
+    <div class="nutshell">
+      <p><strong>In a nutshell:</strong> Merino wool naturally helps regulate temperature, manage moisture, breathe and resist odour. Combined with a loose, free flowing fit, it creates a different kind of performance layer: soft against the body, unrestricted in movement and designed to let air move naturally.</p>
+    </div>
+
+    <span class="group-label">Temperature regulation</span>
+
+    <p>Running can take you through constantly changing conditions. You start cool, your body heats up, you sweat, and the environment around you can change again.</p>
+
+    <p>Merino wool is naturally suited to these changes.</p>
+
+    <p>When you&rsquo;re hot, your body produces moisture to cool itself. Merino can absorb moisture vapour into its fibres, helping manage the humidity created by your body. As that moisture moves through the fabric and evaporates, it helps carry heat away from your skin.</p>
+
+    <p>When you&rsquo;re cold, merino&rsquo;s naturally crimped fibres trap tiny pockets of air, helping retain warmth.</p>
+
+    <p>Our relaxed cut adds another element. Rather than sitting tightly against your body, the fabric falls naturally around you, creating space for air to move between your skin and the garment.</p>
+
+    <p class="result"><strong>The result:</strong> natural temperature regulation combined with a loose, breathable silhouette that doesn&rsquo;t cling to your body as you heat up.</p>
+
+    <div class="sci">
+      <span class="sci-l">The science</span>
+      <p>Wool&rsquo;s natural fibre structure, moisture absorption and insulating properties contribute to its thermoregulatory performance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+    </div>
+
+    <span class="group-label">Moisture management</span>
+
+    <p>Sweat is your body&rsquo;s natural cooling system. The important part is what happens next.</p>
+
+    <p>For sweat to cool you, it needs to evaporate. When moisture builds up against your skin, you can start to feel wet, sticky and clammy.</p>
+
+    <p>Merino helps manage moisture at the fibre level. Its fibres can absorb water vapour, helping regulate humidity around your body. That moisture can then move through the fabric and evaporate into the surrounding air.</p>
+
+    <p>And because our tees aren&rsquo;t designed to cling to your skin, there is room between your body and the fabric for air to circulate.</p>
+
+    <p>You&rsquo;re not wrapped in a tight layer of fabric holding moisture against you. You&rsquo;re wearing a soft, loose garment that allows your body to breathe and move naturally.</p>
+
+    <p class="result"><strong>The result:</strong> less cling, less clamminess and a more comfortable environment as you heat up.</p>
+
+    <div class="sci">
+      <span class="sci-l">The science</span>
+      <p>Wool can absorb significantly more moisture vapour than many common apparel fibres, helping regulate humidity next to the skin. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+    </div>
+
+    <span class="group-label">Breathability</span>
+
+    <p>Breathability isn&rsquo;t just about air passing through a fabric. It&rsquo;s about allowing heat and moisture to move away from your body.</p>
+
+    <p>As you exercise, your body produces both. A breathable garment helps prevent heat and humidity from becoming trapped around you.</p>
+
+    <p>Merino&rsquo;s natural fibre structure helps manage moisture vapour, while our loose silhouette gives that moisture and heat somewhere to go.</p>
+
+    <p>The relaxed fit means the fabric doesn&rsquo;t constantly sit against your skin. As you move, air can circulate naturally through the space between your body and the garment.</p>
+
+    <p class="result"><strong>The result:</strong> a lighter, freer feeling while you run, without the restrictive feeling of a close fitting performance tee.</p>
+
+    <div class="sci">
+      <span class="sci-l">The science</span>
+      <p>Wool&rsquo;s moisture vapour buffering properties contribute to its natural breathability. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+    </div>
+
+    <span class="group-label">Softness</span>
+
+    <p>Performance shouldn&rsquo;t mean sacrificing comfort.</p>
+
+    <p>Fine merino fibres are exceptionally soft against the body, without the scratchiness associated with traditional coarse wool.</p>
+
+    <p>Our relaxed tees take that softness a step further. Instead of compressing against your body, the fabric falls naturally around it, giving you freedom to move without feeling restricted.</p>
+
+    <p>No tight compression. No cling. No unnecessary structure.</p>
+
+    <p>Just soft, lightweight natural fibre that moves with you.</p>
+
+    <p class="result"><strong>The result:</strong> a relaxed fit that feels as good at kilometre one as it does at kilometre twenty.</p>
+
+    <span class="group-label">Natural odour resistance</span>
+
+    <p>Sweat itself isn&rsquo;t what makes your running clothes smell.</p>
+
+    <p>Odour develops when moisture, sweat compounds and bacteria interact. The longer these remain in a garment, the more noticeable the smell can become.</p>
+
+    <p>Merino wool naturally helps manage this process.</p>
+
+    <p>Its fibres can absorb moisture and bind odour molecules within their structure, helping reduce the buildup of unwanted smells.</p>
+
+    <p>This is one of the reasons merino can be worn repeatedly between washes without developing the same level of odour as many synthetic fabrics.</p>
+
+    <p class="result"><strong>The result:</strong> a fresher garment, longer wear between washes and less unnecessary washing.</p>
+
+    <div class="sci">
+      <span class="sci-l">The science</span>
+      <p>Research has found that wool&rsquo;s moisture management and ability to bind odour compounds contribute to its natural odour resistance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+    </div>
+
+    <span class="group-label">Performance, without the plastic</span>
+
+    <p>Performance clothing doesn&rsquo;t have to be made from plastic.</p>
+
+    <blockquote class="doc-quote">Merino wool has been regulating temperature, managing moisture and protecting against the elements for thousands of years.</blockquote>
+
+    <p>We believe the best performance technology doesn&rsquo;t always need to be engineered in a laboratory.</p>
+
+    <p>Sometimes, nature got there first.</p>
+
+    <p>100% performance. Naturally.</p>
+
+    <p>Our merino is grown in Australia and our tees are knitted and made in Melbourne. The high country is simply where the fibre&rsquo;s range is easiest to see.</p>
+
+    <p class="doc-cta"><a href="shop.html">Shop merino &rarr;</a></p>
+
   </div>
 </main>
 
