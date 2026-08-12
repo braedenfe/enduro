@@ -189,10 +189,18 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 #related{max-width:1380px;margin:0 auto;padding:0 32px clamp(72px,10vh,120px)}
 #related h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);letter-spacing:-0.01em;margin-bottom:28px}
 #related h2 .em{font-style:italic;color:var(--forest)}
-.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:760px){.rel-grid{grid-template-columns:1fr;gap:22px}#related{padding-left:20px;padding-right:20px}}
-.rel-card{background:var(--white);border-radius:4px;overflow:hidden;display:block}
-.rel-img{aspect-ratio:4/5;overflow:hidden;background:#EAE6DE}
+.rel-grid{
+  display:flex;gap:16px;overflow-x:auto;
+  padding-bottom:6px;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.rel-grid::-webkit-scrollbar{display:none}
+.rel-card{flex:0 0 clamp(210px,62vw,300px);scroll-snap-align:start}
+@media(min-width:900px){.rel-card{flex-basis:calc((100% - 48px)/4)}}
+@media(max-width:760px){#related{padding-left:20px;padding-right:20px}}
+.rel-card{background:var(--white);border-radius:12px;overflow:hidden;display:block}
+.rel-img{aspect-ratio:4/5;overflow:hidden;background:#fff}
+.rel-img img.fit-contain{object-fit:contain;padding:6px;box-sizing:border-box}
 .rel-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
 .rel-card:hover .rel-img img{transform:scale(1.04)}
 .rel-info{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:14px 16px 18px}
@@ -387,7 +395,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <section id="related" aria-label="You may also like">
   <h2>Complete the <span class="em">kit.</span></h2>
   <div class="rel-grid">
-    <a class="rel-card" href="product-cotton-long-run-tee.html"><div class="rel-img"><img src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Essential Tee</div><span class="rel-fibre">Organic cotton</span></div><span class="rel-price">A$100</span></div></a><a class="rel-card" href="product-merino-short-mens.html"><div class="rel-img"><img src="../assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg" alt="Long Run Short 5″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Long Run Short 5″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a><a class="rel-card" href="product-merino-short-womens.html"><div class="rel-img"><img src="../assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg" alt="Ø Short 3″" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Ø Short 3″</div><span class="rel-fibre">Knitted merino</span></div><span class="rel-price">A$150</span></div></a>
+    <a class="rel-card" href="product-wool-long-run-tee.html"><div class="rel-img"><img class="fit-contain" src="../assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg" alt="Merino Long Run Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">STRATUS Air&trade; Merino Long Run Tee</div><span class="rel-fibre">100% merino</span></div><span class="rel-price">A$140</span></div></a><a class="rel-card" href="product-enduro-tee.html"><div class="rel-img"><img class="fit-contain" src="../assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg" alt="Enduro Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">STRATUS Air&trade; Enduro Tee</div><span class="rel-fibre">100% merino</span></div><span class="rel-price">A$140</span></div></a><a class="rel-card" href="product-merino-short-mens.html"><div class="rel-img"><img class="fit-contain" src="../assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg" alt="Merino Long Run Short 5&Prime;" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">STRATUS Pace&trade; Merino Long Run Short 5&Prime;</div><span class="rel-fibre">100% merino</span></div><span class="rel-price">A$150</span></div></a><a class="rel-card" href="product-cotton-long-run-tee.html"><div class="rel-img"><img class="fit-contain" src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Essential Tee</div><span class="rel-fibre">100% cotton</span></div><span class="rel-price">A$100</span></div></a><a class="rel-card" href="product-organic-tote.html"><div class="rel-img"><img class="fit-contain" src="../assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote" loading="lazy"></div><div class="rel-info"><div><div class="rel-name">Organic Tote</div><span class="rel-fibre">GOTS organic cotton</span></div><span class="rel-price">A$20</span></div></a>
   </div>
 </section>
 
