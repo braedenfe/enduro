@@ -390,17 +390,17 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 .rcard.pq-open .pcard-btn.add{background:var(--ink);border-color:var(--ink)}
 
 .pq-panel{
-  position:absolute;left:14px;right:14px;top:50%;z-index:4;
+  position:absolute;left:12px;right:12px;bottom:12px;top:auto;z-index:4;
   padding:16px;border-radius:20px;
   background:rgba(245,242,236,0.66);
   -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
   border:1px solid rgba(255,255,255,0.6);
   box-shadow:0 12px 40px rgba(14,21,18,0.22);
   opacity:0;pointer-events:none;
-  transform:translateY(-50%) scale(0.97);
+  transform:translateY(10px) scale(0.98);
   transition:opacity .34s cubic-bezier(.2,.7,.2,1),transform .34s cubic-bezier(.2,.7,.2,1);
 }
-.rcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
+.rcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
 .pq-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .pq-row:last-of-type{margin-bottom:12px}
 .pq-lab{font-family:var(--cond);font-size:0.64rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.55);flex:0 0 40px}

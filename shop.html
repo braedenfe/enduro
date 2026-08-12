@@ -135,10 +135,11 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 /* ───────── PRODUCT GRID ───────── */
 #grid-wrap{max-width:1380px;margin:0 auto;padding:clamp(28px,4vh,48px) 32px clamp(72px,10vh,120px)}
 .product-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
 }
-@media(max-width:980px){.product-grid{gap:14px}}
-@media(max-width:640px){.product-grid{grid-template-columns:1fr;gap:28px}#grid-wrap{padding-left:20px;padding-right:20px}}
+@media(max-width:1280px){.product-grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
+@media(max-width:560px){.product-grid{grid-template-columns:1fr;gap:24px}#grid-wrap{padding-left:20px;padding-right:20px}}
 
 .pcard{
   background:var(--white);border-radius:16px;overflow:hidden;display:block;position:relative;
@@ -188,7 +189,15 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pcard-btn.view{background:transparent;color:var(--ink);border:1px solid rgba(14,21,18,0.18)}
 .pcard-btn.view:hover{border-color:var(--forest);color:var(--forest)}
 .pcard.pq-open .pcard-btn.add{background:var(--ink);border-color:var(--ink)}
-.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:20px 18px 16px}
+.pcard-info{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:16px 14px 12px}
+@media(min-width:901px){
+  .pcard-name{font-size:1.05rem}
+  .pcard-fibre{font-size:0.66rem;letter-spacing:0.12em}
+  .pcard-price{font-size:0.9rem}
+  .pcard-actions{gap:7px;padding:0 14px 14px}
+  .pcard-btn{font-size:0.68rem;letter-spacing:0.12em;padding:12px 6px}
+  .pcard-badge,.pcard-fabric{font-size:0.62rem;letter-spacing:0.14em;padding:5px 11px}
+}
 .pcard-name{font-family:var(--serif);font-weight:600;font-size:1.3rem;letter-spacing:0.01em;line-height:1.1}
 .pcard-fibre{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:5px}
 .pcard-price{font-weight:400;font-size:0.98rem;white-space:nowrap}
@@ -342,17 +351,17 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ───────── QUICK ADD (frosted) ───────── */
 .pq-panel{
-  position:absolute;left:14px;right:14px;top:50%;z-index:4;
+  position:absolute;left:12px;right:12px;bottom:12px;top:auto;z-index:4;
   padding:16px;border-radius:20px;
   background:rgba(245,242,236,0.66);
   -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
   border:1px solid rgba(255,255,255,0.6);
   box-shadow:0 12px 40px rgba(14,21,18,0.22);
   opacity:0;pointer-events:none;
-  transform:translateY(-50%) scale(0.97);
+  transform:translateY(10px) scale(0.98);
   transition:opacity .34s cubic-bezier(.2,.7,.2,1),transform .34s cubic-bezier(.2,.7,.2,1);
 }
-.pcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
+.pcard.pq-open .pq-panel{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
 
 .pq-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .pq-row:last-of-type{margin-bottom:12px}
