@@ -235,6 +235,16 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 .nutshell p{margin:0;font-size:1rem;line-height:1.75;color:var(--ink)}
 .result{color:var(--forest)}
 .result strong{font-weight:600}
+
+.sec{display:flex;align-items:center;gap:16px;margin:clamp(52px,8vh,88px) 0 26px;padding-top:30px;border-top:1px solid var(--line-dark)}
+.sec-ico{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:rgba(31,61,53,0.07)}
+.sec-ico svg{width:24px;height:24px;stroke:var(--forest);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.sec-h{font-family:var(--serif);font-weight:500;font-size:clamp(1.65rem,3.6vw,2.3rem);line-height:1.12;letter-spacing:-0.01em;color:var(--ink);margin:0}
+@media(max-width:520px){
+  .sec{gap:13px;margin-top:52px;padding-top:26px}
+  .sec-ico{width:40px;height:40px}
+  .sec-ico svg{width:21px;height:21px}
+}
 </style>
 </head>
 <body>
@@ -288,7 +298,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p><strong>In a nutshell:</strong> Merino wool naturally helps regulate temperature, manage moisture, breathe and resist odour. Combined with a loose, free flowing fit, it creates a different kind of performance layer: soft against the body, unrestricted in movement and designed to let air move naturally.</p>
     </div>
 
-    <span class="group-label">Temperature regulation</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/></svg></span><h2 class="sec-h">Temperature regulation</h2></div>
 
     <p>Running can take you through constantly changing conditions. You start cool, your body heats up, you sweat, and the environment around you can change again.</p>
 
@@ -307,7 +317,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p>Wool&rsquo;s natural fibre structure, moisture absorption and insulating properties contribute to its thermoregulatory performance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
     </div>
 
-    <span class="group-label">Moisture management</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s5.5 6 5.5 9.5a5.5 5.5 0 1 1-11 0C6.5 9 12 3 12 3Z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></span><h2 class="sec-h">Moisture management</h2></div>
 
     <p>Sweat is your body&rsquo;s natural cooling system. The important part is what happens next.</p>
 
@@ -326,7 +336,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p>Wool can absorb significantly more moisture vapour than many common apparel fibres, helping regulate humidity next to the skin. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
     </div>
 
-    <span class="group-label">Breathability</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h11a3 3 0 1 0-3-3"/><path d="M4 12.5h14a3 3 0 1 1-3 3"/><path d="M4 16.5h7"/></svg></span><h2 class="sec-h">Breathability</h2></div>
 
     <p>Breathability isn&rsquo;t just about air passing through a fabric. It&rsquo;s about allowing heat and moisture to move away from your body.</p>
 
@@ -343,7 +353,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p>Wool&rsquo;s moisture vapour buffering properties contribute to its natural breathability. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
     </div>
 
-    <span class="group-label">Softness</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 15.5c3-1 4.5-3.5 4.5-6.5a3 3 0 1 1 6 0c0 3 1.5 5.5 4.5 6.5"/><path d="M5 18.5h14"/></svg></span><h2 class="sec-h">Softness</h2></div>
 
     <p>Performance shouldn&rsquo;t mean sacrificing comfort.</p>
 
@@ -357,7 +367,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <p class="result"><strong>The result:</strong> a relaxed fit that feels as good at kilometre one as it does at kilometre twenty.</p>
 
-    <span class="group-label">Natural odour resistance</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4c0 3-3 4.5-3 8a6 6 0 0 0 12 0c0-3.5-3-5-3-8"/><path d="M9.5 15a2.5 2.5 0 0 0 5 0"/></svg></span><h2 class="sec-h">Natural odour resistance</h2></div>
 
     <p>Sweat itself isn&rsquo;t what makes your running clothes smell.</p>
 
@@ -376,7 +386,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p>Research has found that wool&rsquo;s moisture management and ability to bind odour compounds contribute to its natural odour resistance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
     </div>
 
-    <span class="group-label">Performance, without the plastic</span>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-7 4.5-12 14-12 0 8-5 12-11 12H5Z"/><path d="M8 16c2-3 4.5-5 8-6.5"/></svg></span><h2 class="sec-h">Performance, without the plastic</h2></div>
 
     <p>Performance clothing doesn&rsquo;t have to be made from plastic.</p>
 
