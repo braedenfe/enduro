@@ -97,46 +97,16 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   color:rgba(14,21,18,0.45);padding-bottom:10px;max-width:250px;line-height:1.7;
 }
 @media(max-width:620px){
-  #collection-head{padding-top:calc(56px + clamp(24px,4vh,44px));padding-bottom:18px}
+  #collection-head{padding-top:calc(56px + clamp(20px,3vh,34px));padding-bottom:14px}
   .head-row{flex-direction:column;align-items:flex-start;gap:0}
   .head-left{flex:0 0 auto}
-  .head-intro{margin-top:14px}
-  .head-note{max-width:none;margin-top:20px;padding-bottom:0;font-size:0.66rem;letter-spacing:0.05em;line-height:1.5}
+  .head-intro{margin-top:12px;margin-bottom:0}
+  .head-note{max-width:none;margin-top:8px;padding-bottom:0;font-size:0.66rem;letter-spacing:0.06em;line-height:1.5}
 }
 
-/* ───────── FILTER PILLS (sticky) ───────── */
-#filters{
-  position:sticky;top:61px;z-index:50;
-  background:rgba(245,242,236,0.92);
-  -webkit-backdrop-filter:blur(10px);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line-dark);
-}
-.filters-inner{
-  max-width:1380px;margin:0 auto;
-  display:flex;flex-wrap:wrap;align-items:center;gap:10px;row-gap:10px;padding:14px 32px;
-}
-.fpill{
-  font-family:var(--cond);font-size:0.82rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
-  padding:9px 26px;border-radius:99px;border:1px solid var(--line-dark);
-  background:transparent;color:rgba(14,21,18,0.6);
-  transition:all .3s ease;
-  display:inline-flex;align-items:center;gap:7px;
-}
-.fic{width:15px;height:15px;flex:none;background:currentColor;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
-.fic-wool{-webkit-mask-image:url(assets/images/icons/wool-sheep.png);mask-image:url(assets/images/icons/wool-sheep.png)}
-.fic-cotton{-webkit-mask-image:url(assets/images/icons/cotton-boll.png);mask-image:url(assets/images/icons/cotton-boll.png)}
-.fgroup{display:flex;gap:10px;align-items:center}
-.fdiv{width:1px;height:20px;background:var(--line-dark);flex:none}
-@media(max-width:620px){.filters-inner{flex-wrap:nowrap;overflow-x:auto;gap:7px;padding:12px 16px;scrollbar-width:none}.filters-inner::-webkit-scrollbar{display:none}.fgroup{gap:7px}.fdiv{height:18px;margin:0 3px}.fpill{padding:8px 14px;letter-spacing:0.06em;font-size:0.74rem;white-space:nowrap;flex:none}.fic{width:14px;height:14px}}
-.fpill:hover{border-color:var(--ink);color:var(--ink)}
-.fpill.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
 
-/* ───────── PRODUCT GRID ───────── */
-#grid-wrap{max-width:1380px;margin:0 auto;padding:clamp(28px,4vh,48px) 32px clamp(72px,10vh,120px)}
-.product-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
-}
+
+
 @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
 @media(max-width:560px){.product-grid{grid-template-columns:1fr;gap:24px}#grid-wrap{padding-left:20px;padding-right:20px}}
 
@@ -328,7 +298,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   *,*::before,*::after{transition:none!important;animation:none!important}
   .pcard{opacity:1;transform:none}
 }
-.head-jlink{color:var(--mist);border-bottom:1px solid rgba(245,242,236,0.3);white-space:nowrap;transition:color .25s,border-color .25s}.head-jlink:hover{color:var(--white);border-color:var(--white)}
+.head-jlink{display:inline-block;margin-left:2px;font-size:inherit;font-weight:400;color:var(--forest);border-bottom:1px solid rgba(31,61,53,0.28);white-space:nowrap;transition:color .25s,border-color .25s}
+.head-jlink:hover{border-color:var(--forest)}.head-jlink:hover{color:var(--white);border-color:var(--white)}
 
 .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0;z-index:120}
 .nav-burger span{display:block;width:24px;height:2px;background:var(--bone);margin:0 auto;transition:transform .35s ease,opacity .25s ease}
@@ -449,6 +420,120 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   }
 }
 .pq-grip,.pq-head{display:none}
+
+/* ───────── FILTER ───────── */
+.fbtn-alt{background:rgba(255,255,255,0.55);color:rgba(14,21,18,0.62)}
+.fbtn-alt:hover{color:var(--ink)}
+#fabdrop.set .fbtn-alt{color:var(--forest);border-color:rgba(31,61,53,0.4)}
+.fbtn-c{width:10px;height:7px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s ease}
+#fabdrop.on .fbtn-c{transform:rotate(180deg)}
+.fdrop{position:relative}
+.fdrop-menu{
+  position:absolute;top:calc(100% + 7px);left:0;z-index:80;min-width:100%;width:max-content;
+  background:var(--white);border:1px solid rgba(14,21,18,0.1);border-radius:12px;
+  box-shadow:0 10px 26px rgba(14,21,18,0.1);padding:5px 0;overflow:hidden;
+  opacity:0;visibility:hidden;transform:translateY(-4px);
+  transition:opacity .22s ease,transform .22s ease,visibility .22s;
+}
+#fabdrop.on .fdrop-menu{opacity:1;visibility:visible;transform:none}
+@media(max-width:760px){
+  .fbar{gap:10px}
+  .fbtn{padding:10px 18px;font-size:0.72rem;letter-spacing:0.16em}
+  .fdrop-menu{min-width:100%}
+  }
+
+#filters{position:sticky;top:61px;z-index:60;padding:12px 32px;pointer-events:none}
+.fbar{max-width:1380px;margin:0 auto;display:flex;align-items:center;gap:12px;pointer-events:auto}
+.fbtn{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+  font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--ink);background:rgba(255,255,255,0.72);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid rgba(14,21,18,0.13);border-radius:99px;padding:11px 22px;
+  transition:border-color .25s,background .25s;
+}
+.fbtn:hover{border-color:rgba(14,21,18,0.32)}
+.fbtn-i{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.fbtn-n{background:var(--forest);color:var(--bone);border-radius:99px;font-size:0.66rem;letter-spacing:0.04em;padding:2px 7px;margin-left:2px}
+.fscrim{position:fixed;inset:0;z-index:70;background:rgba(14,21,18,0.2);opacity:0;pointer-events:none;transition:opacity .3s}
+.fscrim.on{opacity:1;pointer-events:auto}
+.fpanel{
+  position:absolute;top:calc(100% + 8px);left:32px;z-index:80;width:330px;pointer-events:auto;
+  background:var(--white);border:1px solid rgba(14,21,18,0.1);border-radius:18px;
+  box-shadow:0 18px 44px rgba(14,21,18,0.13);
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .26s ease,transform .26s ease,visibility .26s;
+  display:flex;flex-direction:column;max-height:min(70vh,540px);
+}
+#filters.open .fpanel{opacity:1;visibility:visible;transform:none}
+.fpanel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:15px 22px 13px;border-bottom:1px solid rgba(14,21,18,0.08);
+}
+.fpanel-t{font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink)}
+.fpanel-acts{display:flex;align-items:center;gap:16px}
+.fpanel-x{background:none;border:none;font-size:1.35rem;line-height:1;color:rgba(14,21,18,0.4);cursor:pointer;padding:0 2px;transition:color .25s}
+.fpanel-x:hover{color:var(--ink)}
+.fpanel-body{overflow-y:auto;padding:6px 0}
+.fsec{border-bottom:1px solid rgba(14,21,18,0.07)}
+.fsec:last-child{border-bottom:none}
+.fsec-h{
+  width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;
+  padding:15px 22px;font-family:var(--cond);font-size:0.76rem;font-weight:500;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--ink);text-align:left;
+}
+.fsec-l{flex:0 0 auto}
+.fsec-v{flex:1;font-size:0.72rem;letter-spacing:0.1em;color:var(--forest);text-align:right}
+.fsec-c{width:10px;height:7px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  color:rgba(14,21,18,0.4);transition:transform .3s ease;flex:0 0 auto}
+.fsec.on .fsec-c{transform:rotate(180deg)}
+.fsec-b{max-height:0;overflow:hidden;transition:max-height .32s cubic-bezier(.2,.7,.2,1)}
+.fsec.on .fsec-b{max-height:260px}
+.fsec-in{padding:0 22px 14px}
+.fopt{
+  display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  padding:9px 0;font-family:var(--sans);font-size:0.9rem;font-weight:300;
+  color:rgba(14,21,18,0.6);transition:color .2s;
+}
+.fopt:hover{color:var(--ink)}
+.fopt.active{color:var(--forest);font-weight:400}
+.fopt.active::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--forest);margin-left:10px;vertical-align:middle}
+.fopt:disabled{opacity:.3;cursor:default}
+.fdrop-menu .fopt{
+  padding:11px 20px;font-family:var(--cond);font-size:0.75rem;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(14,21,18,0.55);
+  white-space:nowrap;line-height:1;
+}
+.fdrop-menu .fopt:hover{background:rgba(31,61,53,0.05);color:var(--forest)}
+.fdrop-menu .fopt.active{color:var(--forest)}
+.fdrop-menu .fopt.active::after{width:4px;height:4px;margin-left:10px}
+@media(max-width:760px){
+  .fdrop-menu .fopt{font-size:0.72rem;padding:11px 18px}
+}
+.fpanel-foot{
+  padding:14px 22px;border-top:1px solid rgba(14,21,18,0.09);
+}
+.fclear{background:none;border:none;cursor:pointer;font-family:var(--cond);font-size:0.7rem;
+  letter-spacing:0.16em;text-transform:uppercase;color:rgba(14,21,18,0.45);padding:0;
+  border-bottom:1px solid rgba(14,21,18,0.22);transition:color .25s,border-color .25s}
+.fclear:hover{color:var(--ink);border-color:var(--ink)}
+.fapply{
+  display:block;width:100%;background:var(--forest);color:var(--bone);border:none;border-radius:99px;cursor:pointer;
+  font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;padding:13px 22px;
+}
+@media(max-width:760px){
+  #filters{padding:10px 20px}
+  .fpanel{
+    position:fixed;left:10px;right:10px;bottom:10px;top:auto;width:auto;
+    border-radius:24px;transform:translateY(110%);max-height:78vh;
+    transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility .38s;
+    opacity:1;visibility:hidden;
+  }
+  #filters.open .fpanel{transform:translateY(0);visibility:visible}
+  .fpanel-head{padding:16px 20px 13px}
+  .fpanel-x{font-size:1.5rem}
+  .fpanel-foot{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
@@ -479,11 +564,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <!-- COLLECTION HEADER -->
 <section id="collection-head">
-  <span class="t-label">Collection 01 &middot; SS26</span>
+  <span class="t-label">Collection 01 &middot; SS27</span>
   <div class="head-row">
     <div class="head-left">
       <h1>Built for the <span class="em">long run.</span></h1>
-      <p class="head-intro">Merino wool and premium natural fibres, designed for running, training and recovery. <a href="journal-why-natural-fibres.html" class="head-jlink">Why natural fibres &rarr;</a></p>
+      <p class="head-intro">Merino wool and natural fibres. Designed for movement, travel, recovery and everything in between. <a href="journal-why-natural-fibres.html" class="head-jlink">Why natural fibres &rarr;</a></p>
     </div>
     <p class="head-note">Complimentary Australian shipping over A$150 &middot; 30 day returns</p>
   </div>
@@ -491,16 +576,34 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <!-- FILTERS -->
 <div id="filters">
-  <div class="filters-inner" aria-label="Filter products">
-    <button class="fpill active" data-axis="gender" data-val="all" aria-pressed="true">All</button>
-    <div class="fgroup" role="group" aria-label="Gender">
-      <button class="fpill" data-axis="gender" data-val="men" aria-pressed="false">Men</button>
-      <button class="fpill" data-axis="gender" data-val="women" aria-pressed="false">Women</button>
+  <div class="fbar">
+    <button class="fbtn" type="button" id="fbtn" aria-expanded="false" aria-controls="fpanel">
+      <svg class="fbtn-i" viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5.5h15M5 10h10M8 14.5h4"/></svg>
+      <span>Filter</span><span class="fbtn-n" id="fbtn-n" hidden></span>
+    </button>
+    <div class="fdrop" id="fabdrop">
+      <button class="fbtn fbtn-alt" type="button" id="fabbtn" aria-expanded="false" aria-haspopup="true">
+        <span class="fab-l">Fabric</span>
+        <svg class="fbtn-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg>
+      </button>
+      <div class="fdrop-menu" role="menu">
+        <button class="fopt fopt-inline" type="button" role="menuitemradio" data-axis="fibre" data-val="wool" aria-checked="false">Merino wool</button>
+        <button class="fopt fopt-inline" type="button" role="menuitemradio" data-axis="fibre" data-val="cotton" aria-checked="false">Cotton</button>
+      </div>
     </div>
-    <span class="fdiv" aria-hidden="true"></span>
-    <div class="fgroup" role="group" aria-label="Fibre">
-      <button class="fpill" data-axis="fibre" data-val="wool" aria-pressed="false"><span class="fic fic-wool" aria-hidden="true"></span>Merino</button>
-      <button class="fpill" data-axis="fibre" data-val="cotton" aria-pressed="false"><span class="fic fic-cotton" aria-hidden="true"></span>Cotton</button>
+  </div>
+  <div class="fscrim" id="fscrim" hidden></div>
+  <div class="fpanel" id="fpanel" role="dialog" aria-label="Filter products">
+    <div class="fpanel-head">
+      <span class="fpanel-t">Filter</span>
+      <div class="fpanel-acts">
+        <button class="fclear" type="button" id="fclear" hidden>Clear all</button>
+        <button class="fpanel-x" type="button" id="fpanel-x" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    <div class="fpanel-body"><div class="fsec" data-axis="gender"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Gender</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="gender" data-val="men" aria-checked="false">Men's</button><button class="fopt" type="button" role="menuitemradio" data-axis="gender" data-val="women" aria-checked="false">Women's</button></div></div></div><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
+    <div class="fpanel-foot">
+      <button class="fapply" type="button" id="fapply">View <span id="fapply-n"></span></button>
     </div>
   </div>
 </div>
@@ -510,7 +613,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <div class="product-grid" role="list">
 
     <!-- STRATUS Flow Merino Micro Short -->
-    <a class="pcard" href="pages/product-merino-micro-short.html" data-product="merino-micro-short" data-fibre="wool" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-merino-micro-short.html" data-product="merino-micro-short" data-sizes="s m l xl" data-cat="shorts" data-activity="pilates sauna gym" data-fibre="wool" data-gender="women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg" alt="STRATUS Flow Merino Micro Short, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-model.jpg" alt="STRATUS Flow Merino Micro Short, worn with the Merino Bandeau" loading="lazy">
@@ -531,7 +634,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- STRATUS Flow Merino Bandeau -->
-    <a class="pcard" href="pages/product-merino-bandeau.html" data-product="merino-bandeau" data-fibre="wool" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-merino-bandeau.html" data-product="merino-bandeau" data-sizes="s m l xl" data-cat="tops" data-activity="pilates sauna gym" data-fibre="wool" data-gender="women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-bandeau/merino-bandeau-black-front-model.jpg" alt="STRATUS Flow Merino Bandeau, front, worn with the Micro Short" loading="lazy">
         <img class="alt" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-model.jpg" alt="STRATUS Flow Merino Bandeau, back" loading="lazy">
@@ -552,7 +655,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Cotton Essential Tee -->
-    <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-fibre="cotton" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-sizes="s m l xl" data-cat="tees" data-activity="running gym" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee in Natural White, worn" loading="lazy">
@@ -573,7 +676,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Men's Merino Short 5" -->
-    <a class="pcard" href="pages/product-merino-short-mens.html" data-product="merino-short-mens" data-fibre="wool" data-gender="men" role="listitem">
+    <a class="pcard" href="pages/product-merino-short-mens.html" data-product="merino-short-mens" data-sizes="s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="wool" data-gender="men" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg" alt="STRATUS Pace Merino Long Run Short 5 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="STRATUS Pace Merino Long Run Short 5 inch, back" loading="lazy">
@@ -594,7 +697,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Men's Cotton Short 5" -->
-    <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-fibre="cotton" data-gender="men" role="listitem">
+    <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-sizes="s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="cotton" data-gender="men" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/cotton-short-mens/cotton-short-mens-front-model.jpg" alt="Men's Essential Short 5 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-back-model.jpg" alt="Men's Essential Short 5 inch, back" loading="lazy">
@@ -615,7 +718,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Women's Merino Short 3" -->
-    <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-fibre="wool" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-merino-short-womens.html" data-product="merino-short-womens" data-sizes="xs s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="wool" data-gender="women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg" alt="STRATUS Pace Merino Long Run Short 3 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg" alt="STRATUS Pace Merino Long Run Short 3 inch, back" loading="lazy">
@@ -636,7 +739,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Women's Cotton Short 3" -->
-    <a class="pcard" href="pages/product-cotton-short-womens.html" data-product="cotton-short-womens" data-fibre="cotton" data-gender="women" role="listitem">
+    <a class="pcard" href="pages/product-cotton-short-womens.html" data-product="cotton-short-womens" data-sizes="xs s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="cotton" data-gender="women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/cotton-short-womens/cotton-short-womens-front-model.jpg" alt="Women's Essential Short 3 inch, front" loading="lazy">
         <img class="alt" src="assets/images/products/cotton-short-womens/cotton-short-womens-back-model.jpg" alt="Women's Essential Short 3 inch, back" loading="lazy">
@@ -657,7 +760,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Merino Tee -->
-    <a class="pcard" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee" data-fibre="wool" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee" data-sizes="s m l xl" data-cat="tees" data-activity="running gym" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg" alt="Long Run Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg" alt="Long Run Tee in Natural White, worn" loading="lazy">
@@ -676,7 +779,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
-    <a class="pcard" href="pages/product-o-tee.html" data-product="o-tee" data-fibre="wool" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-o-tee.html" data-product="o-tee" data-sizes="s m l xl" data-cat="tees" data-activity="running gym" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/o-tee/o-tee-white-front-flat.jpg" alt="&Oslash; Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/o-tee/o-tee-black-front-flat.jpg" alt="&Oslash; Tee in Black, front flat" loading="lazy">
@@ -695,7 +798,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
-    <a class="pcard" href="pages/product-enduro-tee.html" data-product="enduro-tee" data-fibre="wool" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-enduro-tee.html" data-product="enduro-tee" data-sizes="s m l xl" data-cat="tees" data-activity="running gym" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg" alt="Enduro Tee in Natural White, front flat" loading="lazy">
         <img class="alt" src="assets/images/products/enduro-tee/enduro-tee-black-front-flat.jpg" alt="Enduro Tee in Black, front flat" loading="lazy">
@@ -716,7 +819,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Organic Tote -->
-    <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-fibre="cotton" data-gender="men women" role="listitem">
+    <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-sizes="onesize" data-cat="accessories" data-activity="accessories" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img class="main" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote in natural cotton" loading="lazy">
         <img class="alt" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote" loading="lazy">
@@ -1055,72 +1158,130 @@ document.querySelectorAll('.pcard').forEach((card, i) => {
   cardObserver.observe(card);
 });
 
-/* ─── FILTERS (gender + fibre, independent axes) ─── */
-const fpills = document.querySelectorAll('.fpill');
+/* ─── FILTERS ─── */
 const cards = document.querySelectorAll('.pcard');
-const fstate = { gender: 'all', fibre: 'all' };
+const fstate = { gender:'all', cat:'all', activity:'all', fibre:'all', size:'all' };
+const AXES = ['gender','cat','activity','fibre','size'];
+const filtersEl = document.getElementById('filters');
+const fbtn = document.getElementById('fbtn');
+const fpanel = document.getElementById('fpanel');
+const fscrim = document.getElementById('fscrim');
+const fopts = document.querySelectorAll('.fopt');
+const fsecs = document.querySelectorAll('.fsec');
+const fabdrop = document.getElementById('fabdrop');
+const fabbtn = document.getElementById('fabbtn');
 
-/* Women-first imagery: female model shots when Women is selected,
-   and the close-up for the women's short so it doesn't read as a tee */
-const WOMEN_IMGS = {
-  'cotton-long-run-tee':  { main: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model-womens.jpg' },
-  'wool-long-run-tee':    { main: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-model-womens.jpg' },
-  'merino-short-womens':  { main: 'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg', alt: 'assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg' },
-};
-const DEFAULT_IMGS = {};
-cards.forEach(card => {
-  const key = card.dataset.product;
-  const main = card.querySelector('.pcard-img img.main');
-  const alt  = card.querySelector('.pcard-img img.alt');
-  if (key && main && alt) DEFAULT_IMGS[key] = { main: main.getAttribute('src'), alt: alt.getAttribute('src') };
-});
-function applyCardImages() {
-  cards.forEach(card => {
-    const key = card.dataset.product;
-    const set = (fstate.gender === 'women' && WOMEN_IMGS[key]) ? WOMEN_IMGS[key] : DEFAULT_IMGS[key];
-    if (!set) return;
-    const main = card.querySelector('.pcard-img img.main');
-    const alt  = card.querySelector('.pcard-img img.alt');
-    if (main.getAttribute('src') !== set.main) main.src = set.main;
-    if (alt.getAttribute('src') !== set.alt) alt.src = set.alt;
+function cardMatches(card, ignore) {
+  return AXES.every(ax => {
+    if (ax === ignore || fstate[ax] === 'all') return true;
+    const key = ax === 'cat' ? 'cat' : ax === 'activity' ? 'activity' : ax === 'size' ? 'sizes' : ax;
+    const v = card.dataset[key] || '';
+    return v.split(' ').includes(fstate[ax]);
   });
 }
+
 function applyFilters() {
+  let shown = 0;
   cards.forEach(card => {
-    const g = card.dataset.gender || '';
-    const fib = card.dataset.fibre || '';
-    const okG = fstate.gender === 'all' || g.split(' ').includes(fstate.gender);
-    const okF = fstate.fibre === 'all' || fib === fstate.fibre;
-    card.style.display = (okG && okF) ? '' : 'none';
-    const prod = card.dataset.product || '';
-    const isWomensShort = prod === 'merino-short-womens' || prod === 'cotton-short-womens';
-    const isTote = prod === 'organic-tote';
-    // Men filter: merino shorts first, then merino tees, then everything else
-    const merinoShortsMen = prod === 'merino-short-mens';
-    const merinoTees = prod === 'wool-long-run-tee' || prod === 'o-tee' || prod === 'enduro-tee';
-    if (fstate.gender === 'men' && merinoShortsMen) card.style.order = '-2';
-    else if (fstate.gender === 'men' && merinoTees) card.style.order = '-1';
-    // Women filter: push the two women's 3" shorts to the end, tote stays last of all
-    else if (fstate.gender === 'women' && isWomensShort) card.style.order = '1';
+    const ok = cardMatches(card);
+    card.style.display = ok ? '' : 'none';
+    if (ok) shown++;
+    const isWomensShort = card.dataset.product === 'merino-short-womens' || card.dataset.product === 'cotton-short-womens';
+    const isTote = card.dataset.product === 'organic-tote';
+    if (fstate.gender === 'women' && isWomensShort) card.style.order = '-1';
     else if (isTote) card.style.order = '2';
     else card.style.order = '';
   });
   applyCardImages();
-  fpills.forEach(p => {
-    const on = p.dataset.reset
-      ? (fstate.gender === 'all' && fstate.fibre === 'all')
-      : (fstate[p.dataset.axis] === p.dataset.val);
-    p.classList.toggle('active', on);
-    p.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
+  syncFilterUI(shown);
 }
-fpills.forEach(p => {
-  p.addEventListener('click', () => {
-    if (p.dataset.reset) { fstate.gender = 'all'; fstate.fibre = 'all'; }
-    else { const ax = p.dataset.axis, v = p.dataset.val; fstate[ax] = (fstate[ax] === v) ? 'all' : v; }
+
+function syncFilterUI(shown) {
+  fopts.forEach(o => {
+    const on = fstate[o.dataset.axis] === o.dataset.val;
+    o.classList.toggle('active', on);
+    o.setAttribute('aria-checked', on ? 'true' : 'false');
+    if (!on) {
+      const prev = fstate[o.dataset.axis];
+      fstate[o.dataset.axis] = o.dataset.val;
+      const any = Array.from(cards).some(c => cardMatches(c));
+      fstate[o.dataset.axis] = prev;
+      o.disabled = !any;
+    } else { o.disabled = false; }
+  });
+  fsecs.forEach(sec => {
+    const ax = sec.dataset.axis;
+    const chosen = Array.from(sec.querySelectorAll('.fopt')).find(o => o.dataset.val === fstate[ax]);
+    sec.querySelector('.fsec-v').textContent = chosen ? chosen.textContent.trim() : '';
+  });
+  const n = AXES.filter(a => a !== 'fibre' && fstate[a] !== 'all').length;
+  const badge = document.getElementById('fbtn-n');
+  badge.hidden = n === 0; badge.textContent = n;
+  document.getElementById('fclear').hidden = AXES.every(a => fstate[a] === 'all');
+  const fab = Array.from(document.querySelectorAll('.fopt-inline')).find(o => o.dataset.val === fstate.fibre);
+  fabdrop.classList.toggle('set', !!fab);
+  fabdrop.querySelector('.fab-l').textContent = fab ? fab.textContent.trim() : 'Fabric';
+  const label = shown === 1 ? '1 piece' : shown + ' pieces';
+  document.getElementById('fapply-n').textContent = label;
+}
+
+function openPanel(on) {
+  filtersEl.classList.toggle('open', on);
+  fbtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  fscrim.hidden = false;
+  fscrim.classList.toggle('on', on && window.matchMedia('(max-width:760px)').matches);
+  if (window.matchMedia('(max-width:760px)').matches) document.body.style.overflow = on ? 'hidden' : '';
+}
+fbtn.addEventListener('click', e => {
+  e.stopPropagation();
+  fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
+  openPanel(!filtersEl.classList.contains('open'));
+});
+fabbtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (filtersEl.classList.contains('open')) openPanel(false);
+  const on = !fabdrop.classList.contains('on');
+  fabdrop.classList.toggle('on', on);
+  fabbtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+});
+fabdrop.querySelector('.fdrop-menu').addEventListener('click', e => e.stopPropagation());
+fscrim.addEventListener('click', () => openPanel(false));
+document.getElementById('fpanel-x').addEventListener('click', () => openPanel(false));
+document.getElementById('fapply').addEventListener('click', () => openPanel(false));
+fpanel.addEventListener('click', e => e.stopPropagation());
+document.addEventListener('click', () => {
+  if (filtersEl.classList.contains('open')) openPanel(false);
+  fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  openPanel(false);
+  fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
+});
+
+fsecs.forEach(sec => {
+  const h = sec.querySelector('.fsec-h');
+  h.addEventListener('click', () => {
+    const on = !sec.classList.contains('on');
+    sec.classList.toggle('on', on);
+    h.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+});
+fopts.forEach(o => {
+  o.addEventListener('click', () => {
+    const ax = o.dataset.axis, v = o.dataset.val;
+    fstate[ax] = (fstate[ax] === v) ? 'all' : v;
+    if (o.classList.contains('fopt-inline')) {
+      fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
+    }
     applyFilters();
   });
 });
+document.getElementById('fclear').addEventListener('click', () => {
+  AXES.forEach(a => fstate[a] = 'all');
+  applyFilters();
+});
+
 const _fp = new URLSearchParams(window.location.search);
 const _uf = _fp.get('filter'), _ufib = _fp.get('fibre');
 if (_uf === 'men' || _uf === 'women') fstate.gender = _uf;
