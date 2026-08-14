@@ -471,8 +471,9 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .fbtn-n{background:var(--forest);color:var(--bone);border-radius:99px;font-size:0.66rem;letter-spacing:0.04em;padding:2px 7px;margin-left:2px}
 .fscrim{position:fixed;inset:0;z-index:70;background:rgba(14,21,18,0.2);opacity:0;pointer-events:none;transition:opacity .3s}
 .fscrim.on{opacity:1;pointer-events:auto}
+.fbtn-wrap{position:relative}
 .fpanel{
-  position:absolute;top:calc(100% + 8px);left:32px;z-index:80;width:330px;pointer-events:auto;
+  position:absolute;top:calc(100% + 8px);left:0;z-index:80;width:330px;pointer-events:auto;
   background:var(--white);border:1px solid rgba(14,21,18,0.1);border-radius:18px;
   box-shadow:0 18px 44px rgba(14,21,18,0.13);
   opacity:0;visibility:hidden;transform:translateY(-6px);
@@ -596,10 +597,25 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <!-- FILTERS -->
 <div id="filters">
   <div class="fbar">
+    <div class="fbtn-wrap">
     <button class="fbtn" type="button" id="fbtn" aria-expanded="false" aria-controls="fpanel">
       <svg class="fbtn-i" viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5.5h15M5 10h10M8 14.5h4"/></svg>
       <span>Filter</span><span class="fbtn-n" id="fbtn-n" hidden></span>
     </button>
+  <div class="fpanel" id="fpanel" role="dialog" aria-label="Filter products">
+    <div class="fpanel-head">
+      <span class="fpanel-t">Filter</span>
+      <div class="fpanel-acts">
+        <button class="fclear" type="button" id="fclear" hidden>Clear all</button>
+        <button class="fpanel-x" type="button" id="fpanel-x" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    <div class="fpanel-body"><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
+    <div class="fpanel-foot">
+      <button class="fapply" type="button" id="fapply">View <span id="fapply-n"></span></button>
+    </div>
+  </div>
+    </div>
     <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="men" aria-pressed="false">Men&rsquo;s</button>
     <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="women" aria-pressed="false">Women&rsquo;s</button>
     <div class="fdrop" id="fabdrop">
@@ -614,19 +630,6 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </div>
   </div>
   <div class="fscrim" id="fscrim" hidden></div>
-  <div class="fpanel" id="fpanel" role="dialog" aria-label="Filter products">
-    <div class="fpanel-head">
-      <span class="fpanel-t">Filter</span>
-      <div class="fpanel-acts">
-        <button class="fclear" type="button" id="fclear" hidden>Clear all</button>
-        <button class="fpanel-x" type="button" id="fpanel-x" aria-label="Close">&times;</button>
-      </div>
-    </div>
-    <div class="fpanel-body"><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
-    <div class="fpanel-foot">
-      <button class="fapply" type="button" id="fapply">View <span id="fapply-n"></span></button>
-    </div>
-  </div>
 </div>
 
 <!-- GRID -->
@@ -649,7 +652,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$100</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -670,7 +673,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$80</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -691,7 +694,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$100</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -712,7 +715,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$150</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -733,7 +736,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$100</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -754,7 +757,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$150</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -775,7 +778,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$100</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -796,7 +799,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$140</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -815,7 +818,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$140</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -834,7 +837,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$140</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -855,7 +858,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <span class="pcard-price">A$20</span>
       </div>
       <div class="pcard-actions">
-        <button class="pcard-btn add" type="button" onclick="event.preventDefault();event.stopPropagation();openQuickAdd(this)">Quick add</button>
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
@@ -1193,6 +1196,31 @@ const fgbtns = document.querySelectorAll('.fbtn-g');
 const fabdrop = document.getElementById('fabdrop');
 const fabbtn = document.getElementById('fabbtn');
 
+/* Women-first imagery: female model shots when Women is selected,
+   and the close-up for the women's short so it doesn't read as a tee */
+const WOMEN_IMGS = {
+  'cotton-long-run-tee':  { main: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model-womens.jpg' },
+  'wool-long-run-tee':    { main: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model-womens.jpg', alt: 'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-model-womens.jpg' },
+  'merino-short-womens':  { main: 'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg', alt: 'assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg' },
+};
+const DEFAULT_IMGS = {};
+cards.forEach(card => {
+  const key = card.dataset.product;
+  const main = card.querySelector('.pcard-img img.main');
+  const alt  = card.querySelector('.pcard-img img.alt');
+  if (key && main && alt) DEFAULT_IMGS[key] = { main: main.getAttribute('src'), alt: alt.getAttribute('src') };
+});
+function applyCardImages() {
+  cards.forEach(card => {
+    const key = card.dataset.product;
+    const set = (fstate.gender === 'women' && WOMEN_IMGS[key]) ? WOMEN_IMGS[key] : DEFAULT_IMGS[key];
+    if (!set) return;
+    const main = card.querySelector('.pcard-img img.main');
+    const alt  = card.querySelector('.pcard-img img.alt');
+    if (main.getAttribute('src') !== set.main) main.src = set.main;
+    if (alt.getAttribute('src') !== set.alt) alt.src = set.alt;
+  });
+}
 function cardMatches(card, ignore) {
   return AXES.every(ax => {
     if (ax === ignore || fstate[ax] === 'all') return true;
@@ -1581,6 +1609,16 @@ function openQuickAdd(btn) {
   pqSheetOpen(card, true);
   if(!pqSheetMode()) revealPanel(card);
 }
+
+/* quick add: capture-phase delegation so nothing else can intercept first */
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest && e.target.closest('[data-qa]');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  try { openQuickAdd(btn); }
+  catch (err) { console.error('quick add failed:', err); }
+}, true);
 
 document.addEventListener('click', function (e) {
   if (e.target.closest('.pcard')) return;
