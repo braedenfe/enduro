@@ -114,9 +114,8 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   .head-note{max-width:none;margin-top:8px;padding-bottom:0;font-size:0.66rem;letter-spacing:0.06em;line-height:1.5}
 }
 
-
-
-
+#grid-wrap{max-width:1380px;margin:0 auto;padding:26px 32px clamp(72px,10vh,120px)}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
 @media(max-width:560px){.product-grid{grid-template-columns:1fr;gap:24px}#grid-wrap{padding-left:20px;padding-right:20px}}
 
@@ -433,7 +432,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ───────── FILTER ───────── */
 .fbtn-alt{background:rgba(255,255,255,0.55);color:rgba(14,21,18,0.62)}
-.fbtn-alt:hover{color:var(--ink)}
+.fbtn-g{letter-spacing:0.18em}
+.fbar .fbtn.fbtn-g.active,
+.fbar .fbtn.fbtn-g.active:hover{
+  background:var(--forest);color:var(--bone);border-color:var(--forest);
+}
+.fbar > *{flex:0 0 auto}
+
+.fbtn-alt:not(.active):hover{color:var(--ink)}
 #fabdrop.set .fbtn-alt{color:var(--forest);border-color:rgba(31,61,53,0.4)}
 .fbtn-c{width:10px;height:7px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s ease}
 #fabdrop.on .fbtn-c{transform:rotate(180deg)}
@@ -447,23 +453,21 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 }
 #fabdrop.on .fdrop-menu{opacity:1;visibility:visible;transform:none}
 @media(max-width:760px){
-  .fbar{gap:10px}
-  .fbtn{padding:10px 18px;font-size:0.72rem;letter-spacing:0.16em}
   .fdrop-menu{min-width:100%}
   }
 
 #filters{position:sticky;top:61px;z-index:60;padding:12px 32px;pointer-events:none}
-.fbar{max-width:1380px;margin:0 auto;display:flex;align-items:center;gap:12px;pointer-events:auto}
+.fbar{max-width:1380px;margin:0 auto;display:flex;align-items:center;flex-wrap:nowrap;gap:10px;pointer-events:auto}
 .fbtn{
   display:inline-flex;align-items:center;gap:10px;cursor:pointer;
-  font-family:var(--cond);font-size:0.78rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
+  font-family:var(--cond);font-size:0.82rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
   color:var(--ink);background:rgba(255,255,255,0.72);
   -webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);
-  border:1px solid rgba(14,21,18,0.13);border-radius:99px;padding:11px 22px;
+  border:1px solid rgba(14,21,18,0.13);border-radius:99px;padding:14px 26px;
   transition:border-color .25s,background .25s;
 }
-.fbtn:hover{border-color:rgba(14,21,18,0.32)}
-.fbtn-i{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.fbtn:not(.active):hover{border-color:rgba(14,21,18,0.32)}
+.fbtn-i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
 .fbtn-n{background:var(--forest);color:var(--bone);border-radius:99px;font-size:0.66rem;letter-spacing:0.04em;padding:2px 7px;margin-left:2px}
 .fscrim{position:fixed;inset:0;z-index:70;background:rgba(14,21,18,0.2);opacity:0;pointer-events:none;transition:opacity .3s}
 .fscrim.on{opacity:1;pointer-events:auto}
@@ -532,7 +536,12 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;padding:13px 22px;
 }
 @media(max-width:760px){
-  #filters{padding:10px 20px}
+  #filters{padding:10px 18px}
+  .fbar{gap:7px}
+  .fbtn{padding:12px 15px;font-size:0.7rem;letter-spacing:0.11em;gap:7px}
+  .fbtn-i{width:14px;height:14px}
+  .fbtn-c{width:9px;height:6px}
+  .fbtn-n{font-size:0.6rem;padding:2px 6px}
   .fpanel{
     position:fixed;left:10px;right:10px;bottom:10px;top:auto;width:auto;
     border-radius:24px;transform:translateY(110%);max-height:78vh;
@@ -591,6 +600,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <svg class="fbtn-i" viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5.5h15M5 10h10M8 14.5h4"/></svg>
       <span>Filter</span><span class="fbtn-n" id="fbtn-n" hidden></span>
     </button>
+    <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="men" aria-pressed="false">Men&rsquo;s</button>
+    <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="women" aria-pressed="false">Women&rsquo;s</button>
     <div class="fdrop" id="fabdrop">
       <button class="fbtn fbtn-alt" type="button" id="fabbtn" aria-expanded="false" aria-haspopup="true">
         <span class="fab-l">Fabric</span>
@@ -611,7 +622,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <button class="fpanel-x" type="button" id="fpanel-x" aria-label="Close">&times;</button>
       </div>
     </div>
-    <div class="fpanel-body"><div class="fsec" data-axis="gender"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Gender</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="gender" data-val="men" aria-checked="false">Men's</button><button class="fopt" type="button" role="menuitemradio" data-axis="gender" data-val="women" aria-checked="false">Women's</button></div></div></div><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
+    <div class="fpanel-body"><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
     <div class="fpanel-foot">
       <button class="fapply" type="button" id="fapply">View <span id="fapply-n"></span></button>
     </div>
@@ -1178,6 +1189,7 @@ const fpanel = document.getElementById('fpanel');
 const fscrim = document.getElementById('fscrim');
 const fopts = document.querySelectorAll('.fopt');
 const fsecs = document.querySelectorAll('.fsec');
+const fgbtns = document.querySelectorAll('.fbtn-g');
 const fabdrop = document.getElementById('fabdrop');
 const fabbtn = document.getElementById('fabbtn');
 
@@ -1224,7 +1236,12 @@ function syncFilterUI(shown) {
     const chosen = Array.from(sec.querySelectorAll('.fopt')).find(o => o.dataset.val === fstate[ax]);
     sec.querySelector('.fsec-v').textContent = chosen ? chosen.textContent.trim() : '';
   });
-  const n = AXES.filter(a => a !== 'fibre' && fstate[a] !== 'all').length;
+  fgbtns.forEach(b => {
+    const on = fstate.gender === b.dataset.val;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const n = AXES.filter(a => a !== 'fibre' && a !== 'gender' && fstate[a] !== 'all').length;
   const badge = document.getElementById('fbtn-n');
   badge.hidden = n === 0; badge.textContent = n;
   document.getElementById('fclear').hidden = AXES.every(a => fstate[a] === 'all');
@@ -1284,6 +1301,16 @@ fopts.forEach(o => {
     if (o.classList.contains('fopt-inline')) {
       fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
     }
+    applyFilters();
+  });
+});
+fgbtns.forEach(b => {
+  b.addEventListener('click', e => {
+    e.stopPropagation();
+    const v = b.dataset.val;
+    fstate.gender = (fstate.gender === v) ? 'all' : v;
+    if (filtersEl.classList.contains('open')) openPanel(false);
+    fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
     applyFilters();
   });
 });
