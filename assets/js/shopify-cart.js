@@ -235,7 +235,7 @@
     .ec-code-msg:empty{display:none}
     .ec-chip{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:6px 8px 6px 13px;margin-bottom:12px}
     .ec-chip button{background:none;border:none;color:#1F3D35;font-size:1rem;line-height:1;padding:0 4px;cursor:pointer}
-    .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:14px}
+    .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:5px}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
     .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
     .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
@@ -243,7 +243,8 @@
     .ec-gift-msg .amt{font-weight:600}
     .ec-gift-check{flex:0 0 auto;width:15px;height:15px;color:#071e04;opacity:0;transform:scale(.6);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
     .ec-gift.qualified .ec-gift-check{opacity:1;transform:scale(1)}
-    #ec-afterpay{margin-top:8px;min-height:0}
+    #ec-afterpay{margin:0 0 16px;min-height:0}
+    #ec-afterpay:empty{margin:0 0 9px}
     #ec-afterpay square-placement{display:block}
     .ec-gift-track{position:relative;height:4px;border-radius:99px;background:rgba(7,30,4,.12)}
     .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}
