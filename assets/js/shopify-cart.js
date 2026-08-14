@@ -60,6 +60,17 @@
     partBand:  'merino-bandeau'       // the plain 'Size' option holds this size
   };
 
+  /* ---------- Afterpay on-site messaging ----------
+     Cart placement ID comes from Business Hub > On-Site Messaging >
+     Implementation guide > section 3 (Cart page). */
+  const AFTERPAY = {
+    enabled:     true,
+    mpid:        '8d553645-40c0-4122-97f9-9c8e90287c7d',
+    cartPlacement: 'c283ee40-6e80-4d5e-937c-621c419202d9',
+    currency:    'AUD',
+    locale:      'en_AU'
+  };
+
   const GIFT_ATTR = '_enduro_gift';
   const giftProductGid = () =>
     (GIFT.enabled && PRODUCTS[GIFT.productKey]) ? gid(PRODUCTS[GIFT.productKey]) : null;
@@ -232,6 +243,8 @@
     .ec-gift-msg .amt{font-weight:600}
     .ec-gift-check{flex:0 0 auto;width:15px;height:15px;color:#071e04;opacity:0;transform:scale(.6);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
     .ec-gift.qualified .ec-gift-check{opacity:1;transform:scale(1)}
+    #ec-afterpay{margin-top:8px;min-height:0}
+    #ec-afterpay square-placement{display:block}
     .ec-gift-track{position:relative;height:4px;border-radius:99px;background:rgba(7,30,4,.12)}
     .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}
     .ec-gift-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#FAFAF8;border:1.5px solid rgba(7,30,4,.25);transform:translate(-50%,-50%);transition:border-color .45s,background .45s}
@@ -262,6 +275,7 @@
       <div class="ec-code-msg" id="ec-code-msg"></div>
       <div id="ec-chips"></div>
       <div class="ec-sub"><span>Subtotal</span><span id="ec-sub"></span></div>
+      <div id="ec-afterpay"></div>
       <div class="ec-row disc" id="ec-disc-row" style="display:none"><span>Discount</span><span id="ec-disc"></span></div>
       <div class="ec-total" id="ec-total-row" style="display:none"><span>Total</span><span id="ec-total"></span></div>
       <button class="ec-co" id="ec-co">Checkout</button></div>`;
@@ -467,6 +481,7 @@
     }).join('');
     const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
+    updateAfterpay(cart);
     /* discount + total rows (shown only when a discount is active) */
     let savings = 0;
     cart.lines.edges.forEach(({ node }) => {
@@ -1154,6 +1169,29 @@
       });
     })();
   })();
+
+  /* ---------- Afterpay cart placement ---------- */
+  function updateAfterpay(cart) {
+    const host = document.getElementById('ec-afterpay');
+    if (!host) return;
+    if (!AFTERPAY.enabled) { host.innerHTML = ''; return; }
+    const amt = qualifyingSubtotal(cart);
+    if (!amt) { host.innerHTML = ''; return; }
+    const skus = cart.lines.edges.map(e => e.node.merchandise.product.title).join(',');
+    let el = host.querySelector('square-placement');
+    if (!el) {
+      el = document.createElement('square-placement');
+      el.setAttribute('data-mpid', AFTERPAY.mpid);
+      el.setAttribute('data-placement-id', AFTERPAY.cartPlacement);
+      el.setAttribute('data-page-type', 'cart');
+      el.setAttribute('data-currency', AFTERPAY.currency);
+      el.setAttribute('data-consumer-locale', AFTERPAY.locale);
+      el.setAttribute('data-is-eligible', 'true');
+      host.appendChild(el);
+    }
+    el.setAttribute('data-amount', amt.toFixed(2));
+    el.setAttribute('data-item-skus', skus);
+  }
 
   /* ---------- restore existing cart on load ---------- */
   (async function () {
