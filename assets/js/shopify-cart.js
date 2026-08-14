@@ -202,14 +202,14 @@
   /* ---------- UI: drawer + nav link ---------- */
   const css = `
     #ec-link{cursor:pointer}
-    #ec-overlay{position:fixed;inset:0;background:rgba(14,21,18,.45);opacity:0;pointer-events:none;transition:opacity .3s;z-index:500}
+    #ec-overlay{position:fixed;inset:0;overscroll-behavior:contain;touch-action:none;background:rgba(14,21,18,.45);opacity:0;pointer-events:none;transition:opacity .3s;z-index:500}
     #ec-overlay.open{opacity:1;pointer-events:auto}
-    #ec-drawer{position:fixed;top:0;right:0;height:100dvh;width:min(420px,100vw);background:#FAFAF8;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:501;display:flex;flex-direction:column;font-family:'DM Sans',sans-serif}
+    #ec-drawer{position:fixed;top:0;right:0;height:100dvh;overscroll-behavior:contain;width:min(420px,100vw);background:#FAFAF8;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:501;display:flex;flex-direction:column;font-family:'DM Sans',sans-serif}
     #ec-drawer.open{transform:translateX(0)}
     .ec-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(14,21,18,.1)}
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
     .ec-x{background:none;border:none;font-size:1.4rem;color:#0E1512;line-height:1}
-    .ec-lines{flex:1;overflow-y:auto;padding:8px 24px}
+    .ec-lines{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 24px}
     .ec-line{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(14,21,18,.08)}
     .ec-line img{width:64px;height:80px;object-fit:cover;border-radius:3px;background:#EAE6DE}
     .ec-line .t{font-size:.92rem;color:#0E1512}
@@ -281,8 +281,30 @@
       <button class="ec-co" id="ec-co">Checkout</button></div>`;
   document.body.appendChild(overlay); document.body.appendChild(drawer);
 
-  const openDrawer = () => { overlay.classList.add('open'); drawer.classList.add('open'); };
-  const closeDrawer = () => { overlay.classList.remove('open'); drawer.classList.remove('open'); };
+  let _scrollY = 0;
+  const lockPage = (on) => {
+    if (on) {
+      _scrollY = window.scrollY || window.pageYOffset || 0;
+      /* compensate for the scrollbar so the page doesn't jump sideways on desktop */
+      const sbw = window.innerWidth - document.documentElement.clientWidth;
+      if (sbw > 0) document.body.style.paddingRight = sbw + 'px';
+      document.body.style.position = 'fixed';
+      document.body.style.top = -_scrollY + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.paddingRight = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      window.scrollTo(0, _scrollY);
+    }
+  };
+  const openDrawer = () => { overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true); };
+  const closeDrawer = () => { overlay.classList.remove('open'); drawer.classList.remove('open'); lockPage(false); };
   // expose a global so the nav cart icon can open the cart (named distinctly to avoid the shop page's quick-view openDrawer)
   window.ecOpenCart = openDrawer;
   overlay.addEventListener('click', closeDrawer);
