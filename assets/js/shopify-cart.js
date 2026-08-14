@@ -997,7 +997,17 @@
         'merino-micro-short': { partner:'merino-bandeau', label:'Merino Bandeau', file:'product-merino-bandeau.html' },
         'merino-bandeau':     { partner:'merino-micro-short', label:'Merino Micro Short', file:'product-merino-micro-short.html' }
       };
-      new MutationObserver(function () {
+      let syncing = false;
+      const obs = new MutationObserver(function () {
+        if (syncing) return;              /* our own edits must not retrigger this */
+        syncing = true;
+        obs.disconnect();
+        try { drawNudge(); } finally {
+          obs.observe(lines, { childList: true });
+          syncing = false;
+        }
+      });
+      function drawNudge() {
         const old = document.getElementById('ec-nudge'); if (old) old.remove();
         if (!current || !current.lines) return;
         const have = {};
@@ -1014,7 +1024,8 @@
         el.innerHTML = '<span>Add the ' + p.label + ' to complete the set and the pair price applies.</span>' +
           '<a href="' + base + p.file + '">View</a>';
         lines.prepend(el);
-      }).observe(lines, { childList: true });
+      }
+      obs.observe(lines, { childList: true });
     })();
 
     /* ---------- search overlay ---------- */
