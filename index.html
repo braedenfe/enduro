@@ -321,8 +321,8 @@ a{color:inherit;text-decoration:none}
 /* ───────── EMAIL ───────── */
 #join{background:var(--bone);color:var(--ink);padding:clamp(70px,9vh,120px) 32px}
 .join-card{position:relative;max-width:1080px;margin:0 auto;border-radius:6px;overflow:hidden;background:var(--forest)}
-.join-card::before{content:"";position:absolute;inset:0;background:url('assets/images/hero.jpeg') center/cover no-repeat;opacity:0.42}
-.join-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,21,18,0.35) 0%,rgba(14,21,18,0.72) 100%)}
+.join-card::before{content:"";position:absolute;inset:0;background:url('assets/images/community-forest.jpg') center/cover no-repeat}
+.join-card::after{content:"";position:absolute;inset:0;background:rgba(9,16,13,0.66)}
 .join-card-inner{position:relative;z-index:2;padding:clamp(44px,6vw,80px) clamp(28px,5vw,72px);max-width:560px}
 .join-eyebrow{display:block;font-family:var(--cond);font-size:0.78rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(245,242,236,0.72);margin-bottom:18px}
 .join-fine{margin-top:20px;font-size:0.78rem;font-weight:300;color:rgba(245,242,236,0.55);line-height:1.6}
@@ -496,6 +496,99 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   }
 }
 .pq-grip,.pq-head{display:none}
+
+/* form styling shared with the community page */
+.join-row{display:flex;gap:14px}
+.join-row .join-field{flex:1 1 0;min-width:0}
+.join-field label .opt{font-size:0.62rem;letter-spacing:0.14em;opacity:0.6;margin-left:6px}
+.join-consent{display:flex;align-items:flex-start;gap:11px;cursor:pointer;margin-top:-2px}
+.join-consent[hidden]{display:none}
+.join-form .join-consent input[type="checkbox"]{
+  appearance:none;-webkit-appearance:none;
+  flex:0 0 auto;width:18px;height:18px;min-width:18px;max-width:18px;margin:2px 0 0;padding:0;
+  border:1px solid rgba(245,242,236,0.55);border-radius:4px;
+  background:rgba(9,16,13,0.34);
+  cursor:pointer;box-sizing:border-box;
+  transition:background .25s,border-color .25s;
+}
+.join-form .join-consent input[type="checkbox"]:checked{background:var(--bone);border-color:var(--bone)}
+.join-form .join-consent input[type="checkbox"]:checked::after{
+  content:"";display:block;width:5px;height:9px;margin:1px auto 0;
+  border:solid #1F3D35;border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+.join-consent span{
+  flex:1 1 auto;min-width:0;font-size:0.76rem;line-height:1.55;
+  color:rgba(245,242,236,0.85);text-shadow:0 1px 12px rgba(9,16,13,0.8);
+}
+.join-tel{display:flex;gap:10px}
+.join-tel select{
+  flex:0 0 auto;width:106px;box-sizing:border-box;outline:none;cursor:pointer;
+  padding:15px 14px 15px 18px;
+  font-family:var(--cond);font-size:0.82rem;letter-spacing:0.1em;
+  color:var(--bone);-webkit-text-fill-color:var(--bone);
+  border-radius:99px;
+  border:1px solid rgba(245,242,236,0.38);
+  background-color:rgba(9,16,13,0.34);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.6 6 6.4l5-4.8' fill='none' stroke='%23F5F2EC' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;background-size:10px 7px;
+  appearance:none;-webkit-appearance:none;
+  transition:border-color .3s,background-color .3s;
+}
+.join-tel select:focus{border-color:var(--bone);background-color:rgba(9,16,13,0.46)}
+.join-tel select option{background:#0E1512;color:var(--bone)}
+.join-tel input{flex:1 1 auto;min-width:0}
+.join-form input:not([type="checkbox"]){
+  width:100%;box-sizing:border-box;outline:none;
+  padding:15px 22px;font-family:var(--sans);font-size:0.95rem;
+  color:var(--bone);
+  border-radius:99px;
+  border:1px solid rgba(245,242,236,0.38);
+  background:rgba(9,16,13,0.34);
+  transition:border-color .3s,background .3s;
+}
+.join-form input:not([type="checkbox"])::placeholder{color:rgba(245,242,236,0.62)}
+.join-form input:not([type="checkbox"]):focus{border-color:var(--bone);background:rgba(9,16,13,0.46)}
+.join-form input:not([type="checkbox"]){-webkit-text-fill-color:var(--bone)}
+.join-form input:-webkit-autofill,
+.join-form input:-webkit-autofill:hover,
+.join-form input:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--bone);
+  caret-color:var(--bone);
+  -webkit-box-shadow:0 0 0 1000px rgba(9,16,13,0.72) inset;
+  transition:background-color 9999s ease-in-out 0s;
+}
+.join-form button{
+  font-family:var(--cond);font-size:0.84rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--bone);color:var(--ink);border:none;border-radius:99px;
+  padding:16px 22px;cursor:pointer;transition:opacity .3s;
+}
+
+/* everything inside the join card sits on a photo: force it readable */
+.join-card-inner,
+.join-card-inner p,
+.join-card-inner span,
+.join-card-inner label,
+.join-card-inner h2,
+.join-card-inner .join-eyebrow,
+.join-card-inner .join-p,
+.join-card-inner .join-fine,
+.join-card-inner .join-msg{
+  color:var(--bone);
+}
+.join-card-inner .join-p,
+.join-card-inner .join-fine{
+  color:rgba(245,242,236,0.92);
+  text-shadow:0 1px 14px rgba(9,16,13,0.85);
+}
+.join-card-inner .join-msg.err{color:#E8A092}
+.join-card-inner .join-h,
+.join-card-inner .join-h .em,
+.join-card-inner .join-eyebrow,
+.join-card-inner .join-field label,
+.join-card-inner .join-field label .opt{color:var(--bone)}
+.join-card-inner .join-h .em{color:rgba(245,242,236,0.82)}
+.join-card-inner .join-consent span{color:rgba(245,242,236,0.88)}
+@media(max-width:620px){.join-card::after{background:rgba(9,16,13,0.72)}}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
@@ -779,16 +872,44 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
       <h2 class="join-h">Join the <span class="em">long run.</span></h2>
       <p class="join-p">First access to new releases, plus 10% off your first order.</p>
       <form class="join-form" id="join-form" novalidate>
-        <div class="join-field">
-          <label for="join-name">First name</label>
-          <input type="text" id="join-name" autocomplete="given-name" placeholder="Optional">
-        </div>
-        <div class="join-field">
-          <label for="join-email">Email</label>
-          <input type="email" id="join-email" aria-label="Email address" autocomplete="email" placeholder="you@email.com" required>
-        </div>
-        <button type="submit" id="join-btn">Join the list</button>
-      </form>
+            <div class="join-row">
+              <div class="join-field">
+                <label for="join-name">First name</label>
+                <input type="text" id="join-name" autocomplete="given-name">
+              </div>
+              <div class="join-field">
+                <label for="join-last">Last name</label>
+                <input type="text" id="join-last" autocomplete="family-name">
+              </div>
+            </div>
+            <div class="join-field">
+              <label for="join-email">Email</label>
+              <input type="email" id="join-email" aria-label="Email address" autocomplete="email" required>
+            </div>
+            <div class="join-field">
+              <label for="join-phone">Phone <span class="opt">optional</span></label>
+              <div class="join-tel">
+                <select id="join-cc" aria-label="Country code">
+                  <option data-country="AU" value="+61" data-min="9" data-max="9" data-ex="491 570 006" selected>🇦🇺  +61</option>
+                  <option data-country="NZ" value="+64" data-min="8" data-max="10" data-ex="21 234 567">🇳🇿  +64</option>
+                  <option data-country="UK" value="+44" data-min="10" data-max="10" data-ex="7700 900 123">🇬🇧  +44</option>
+                  <option data-country="US" value="+1" data-min="10" data-max="10" data-ex="202 555 0134">🇺🇸  +1</option>
+                  <option data-country="CA" value="+1" data-min="10" data-max="10" data-ex="204 555 0134">🇨🇦  +1</option>
+                  <option data-country="IE" value="+353" data-min="9" data-max="9" data-ex="85 123 4567">🇮🇪  +353</option>
+                  <option data-country="SG" value="+65" data-min="8" data-max="8" data-ex="8123 4567">🇸🇬  +65</option>
+                  <option data-country="JP" value="+81" data-min="10" data-max="10" data-ex="90 1234 5678">🇯🇵  +81</option>
+                  <option data-country="DE" value="+49" data-min="10" data-max="11" data-ex="1512 3456789">🇩🇪  +49</option>
+                  <option data-country="FR" value="+33" data-min="9" data-max="9" data-ex="6 12 34 56 78">🇫🇷  +33</option>
+                </select>
+                <input type="tel" id="join-phone" autocomplete="tel-national" inputmode="tel" placeholder="491 570 006">
+              </div>
+            </div>
+            <label class="join-consent" id="join-consent-row" hidden>
+              <input type="checkbox" id="join-sms-consent">
+              <span>Stay in the loop, without the noise. Occasional messages from Enduro, when there&rsquo;s something worth sharing. Reply STOP to opt out at any time.</span>
+            </label>
+            <button type="submit" id="join-btn">Join the list</button>
+          </form>
       <p class="join-msg" id="join-msg" role="status" aria-live="polite"></p>
       <p class="join-fine">New releases and field notes only. Unsubscribe whenever you like.</p>
     </div>
@@ -980,13 +1101,53 @@ function revealPanel(card){
   });
 
   /* Klaviyo subscribe */
+    /* phone placeholder follows the selected country */
+  var ccSel = document.getElementById('join-cc'), phoneIn = document.getElementById('join-phone');
+  var consentRow = document.getElementById('join-consent-row');
+  if (ccSel && phoneIn) {
+    ccSel.addEventListener('change', function () {
+      var ex = ccSel.options[ccSel.selectedIndex].getAttribute('data-ex');
+      if (ex) phoneIn.placeholder = ex;
+    });
+    phoneIn.addEventListener('input', function () {
+      if (consentRow) consentRow.hidden = phoneIn.value.trim() === '';
+      var m = document.getElementById('join-msg');
+      if (m && m.classList.contains('err')) { m.textContent = ''; m.classList.remove('err'); }
+    });
+  }
+
   var joinForm = document.getElementById('join-form');
   if(joinForm){
     joinForm.addEventListener('submit', function(e){
       e.preventDefault();
       var email = document.getElementById('join-email').value.trim();
-      var nameEl = document.getElementById('join-name');
+      var nameEl  = document.getElementById('join-name');
+      var lastEl  = document.getElementById('join-last');
+      var phoneEl = document.getElementById('join-phone');
       var first = nameEl ? nameEl.value.trim() : '';
+      var last  = lastEl ? lastEl.value.trim() : '';
+      var phone = phoneEl ? phoneEl.value.trim() : '';
+      /* Klaviyo requires E.164, e.g. +61400000000 */
+      var ccEl = document.getElementById('join-cc');
+      var smsEl = document.getElementById('join-sms-consent');
+      var smsOk = !!(smsEl && smsEl.checked);
+      var cc = ccEl ? ccEl.value : '+61';
+      if (phone && !smsOk) phone = '';        /* no explicit consent, no number */
+      if (phone) {
+        var digits = phone.replace(/[^\d]/g, '');
+        if (digits.charAt(0) === '0') digits = digits.slice(1);   /* drop the national trunk 0 */
+        var opt = ccEl.options[ccEl.selectedIndex];
+        var lo = Number(opt.getAttribute('data-min') || 6);
+        var hi = Number(opt.getAttribute('data-max') || 14);
+        if (digits.length < lo || digits.length > hi) {
+          msg.textContent = 'That number doesn\u2019t look right for ' + (opt.getAttribute('data-country') || 'that country') +
+                            '. Check it, or clear the field to join with email only.';
+          msg.classList.add('err');
+          phoneEl.focus();
+          return;
+        }
+        phone = cc + digits;
+      }
       var btn = document.getElementById('join-btn');
       var msg = document.getElementById('join-msg');
       if(!email || email.indexOf('@') < 0){
@@ -995,29 +1156,50 @@ function revealPanel(card){
         return;
       }
       btn.disabled = true; btn.textContent = 'Joining'; msg.textContent = ''; msg.classList.remove('err');
-      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
-        body: JSON.stringify({
+
+      function payload(withPhone) {
+        var a = { email: email };
+        if (first) a.first_name = first;
+        if (last)  a.last_name  = last;
+        a.subscriptions = { email: { marketing: { consent: 'SUBSCRIBED' } } };
+        if (withPhone && phone) {
+          a.phone_number = phone;
+          a.subscriptions.sms = { marketing: { consent: 'SUBSCRIBED' } };
+        }
+        return JSON.stringify({
           data: {
             type: 'subscription',
-            attributes: {
-              profile: { data: { type: 'profile', attributes: first
-                ? { email: email, first_name: first }
-                : { email: email } } }
-            },
+            attributes: { profile: { data: { type: 'profile', attributes: a } } },
             relationships: { list: { data: { type: 'list', id: 'TavxE9' } } }
           }
-        })
-      }).then(function(res){
-        if(res.ok || res.status === 202){
-          msg.textContent = 'Welcome to the long run. Check your inbox.';
+        });
+      }
+      function send(withPhone) {
+        return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=VMZvez', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+          body: payload(withPhone)
+        });
+      }
+
+      var smsDropped = false;
+      send(true).then(function (res) {
+        /* if SMS isn't set up or the number is rejected, don't lose the email signup */
+        if (!res.ok && res.status !== 202 && phone) { smsDropped = true; return send(false); }
+        return res;
+      }).then(function (res) {
+        if (res.ok || res.status === 202) {
+          msg.textContent = smsDropped
+            ? 'Welcome to the long run. Check your inbox. We couldn\u2019t add your number, so you\u2019re on email for now.'
+            : 'Welcome to the long run. Check your inbox.';
           joinForm.reset();
+          var cr = document.getElementById('join-consent-row');
+          if (cr) cr.hidden = true;
           btn.textContent = 'Joined';
         } else {
           throw new Error('subscribe failed');
         }
-      }).catch(function(){
+      }).catch(function () {
         msg.textContent = 'Something went wrong. Please try again.';
         msg.classList.add('err');
         btn.disabled = false; btn.textContent = 'Join the list';

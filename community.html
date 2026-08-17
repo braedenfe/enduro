@@ -256,7 +256,8 @@ details.sources[open] summary::after{transform:rotate(45deg)}
   appearance:none;-webkit-appearance:none;
   flex:0 0 auto;width:18px;height:18px;min-width:18px;max-width:18px;margin:2px 0 0;padding:0;
   border:1px solid rgba(245,242,236,0.55);border-radius:4px;
-  background:rgba(9,16,13,0.4);cursor:pointer;box-sizing:border-box;
+  background:rgba(9,16,13,0.34);
+  cursor:pointer;box-sizing:border-box;
   transition:background .25s,border-color .25s;
 }
 .join-form .join-consent input[type="checkbox"]:checked{background:var(--bone);border-color:var(--bone)}
@@ -270,16 +271,19 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 }
 .join-tel{display:flex;gap:10px}
 .join-tel select{
-  flex:0 0 auto;width:106px;border:1px solid rgba(245,242,236,0.45);border-radius:99px;outline:none;
-  padding:14px 14px 14px 18px;font-family:var(--cond);font-size:0.82rem;letter-spacing:0.1em;
+  flex:0 0 auto;width:106px;box-sizing:border-box;outline:none;cursor:pointer;
+  padding:15px 14px 15px 18px;
+  font-family:var(--cond);font-size:0.82rem;letter-spacing:0.1em;
   color:var(--bone);-webkit-text-fill-color:var(--bone);
-  background:rgba(9,16,13,0.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-  box-sizing:border-box;cursor:pointer;appearance:none;-webkit-appearance:none;
+  border-radius:99px;
+  border:1px solid rgba(245,242,236,0.38);
+  background-color:rgba(9,16,13,0.34);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.6 6 6.4l5-4.8' fill='none' stroke='%23F5F2EC' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 15px center;background-size:10px 7px;
+  appearance:none;-webkit-appearance:none;
   transition:border-color .3s,background-color .3s;
 }
-.join-tel select:focus{border-color:var(--bone);background-color:rgba(9,16,13,0.55)}
+.join-tel select:focus{border-color:var(--bone);background-color:rgba(9,16,13,0.46)}
 .join-tel select option{background:#0E1512;color:var(--bone)}
 .join-tel input{flex:1 1 auto;min-width:0}
 .join-row{display:flex;gap:14px}
@@ -289,7 +293,15 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
 .join-field{display:flex;flex-direction:column;gap:7px}
 .join-field label{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--bone);text-shadow:0 1px 10px rgba(9,16,13,0.7)}
-.join-form input:not([type="checkbox"]){width:100%;border:1px solid rgba(245,242,236,0.45);border-radius:99px;outline:none;padding:14px 22px;font-family:var(--sans);font-size:0.95rem;background:rgba(9,16,13,0.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--bone);box-sizing:border-box;transition:border-color .3s,background .3s}
+.join-form input:not([type="checkbox"]){
+  width:100%;box-sizing:border-box;outline:none;
+  padding:15px 22px;font-family:var(--sans);font-size:0.95rem;
+  color:var(--bone);
+  border-radius:99px;
+  border:1px solid rgba(245,242,236,0.38);
+  background:rgba(9,16,13,0.34);
+  transition:border-color .3s,background .3s;
+}
 .join-form input:not([type="checkbox"])::placeholder{color:rgba(245,242,236,0.62)}
 .join-form input:-webkit-autofill,
 .join-form input:-webkit-autofill:hover,
@@ -301,8 +313,12 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 }
 .join-form input:not([type="checkbox"]){-webkit-text-fill-color:var(--bone)}
 
-.join-form input:not([type="checkbox"]):focus{border-color:var(--bone);background:rgba(9,16,13,0.55)}
-.join-form button{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.2em;text-transform:uppercase;background:var(--bone);color:var(--forest);border:none;border-radius:99px;padding:15px 30px;cursor:pointer;transition:opacity .3s;margin-top:4px}
+.join-form input:not([type="checkbox"]):focus{border-color:var(--bone);background:rgba(9,16,13,0.46)}
+.join-form button{
+  font-family:var(--cond);font-size:0.84rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--bone);color:var(--ink);border:none;border-radius:99px;
+  padding:16px 22px;cursor:pointer;transition:opacity .3s;
+}
 .join-form button:hover{opacity:0.88}
 .join-form button:disabled{opacity:0.6;cursor:default}
 .join-msg{margin-top:16px;font-size:0.88rem;font-weight:300;color:var(--bone);min-height:1.2em}
@@ -394,33 +410,33 @@ details.sources[open] summary::after{transform:rotate(45deg)}
           <div class="join-row">
             <div class="join-field">
               <label for="join-name">First name</label>
-              <input type="text" id="join-name" autocomplete="given-name" placeholder="Jane">
+              <input type="text" id="join-name" autocomplete="given-name">
             </div>
             <div class="join-field">
               <label for="join-last">Last name</label>
-              <input type="text" id="join-last" autocomplete="family-name" placeholder="Smith">
+              <input type="text" id="join-last" autocomplete="family-name">
             </div>
           </div>
           <div class="join-field">
             <label for="join-email">Email</label>
-            <input type="email" id="join-email" aria-label="Email address" autocomplete="email" placeholder="you@email.com" required>
+            <input type="email" id="join-email" aria-label="Email address" autocomplete="email" required>
           </div>
           <div class="join-field">
             <label for="join-phone">Phone <span class="opt">optional</span></label>
             <div class="join-tel">
               <select id="join-cc" aria-label="Country code">
-                <option data-country="AU" value="+61" data-min="9" data-max="9" data-ex="400 000 000" selected>🇦🇺  +61</option>
-                <option data-country="NZ" value="+64" data-min="8" data-max="10" data-ex="21 000 000">🇳🇿  +64</option>
-                <option data-country="UK" value="+44" data-min="10" data-max="10" data-ex="7400 000000">🇬🇧  +44</option>
-                <option data-country="US" value="+1" data-min="10" data-max="10" data-ex="201 555 0123">🇺🇸  +1</option>
-                <option data-country="CA" value="+1" data-min="10" data-max="10" data-ex="204 555 0123">🇨🇦  +1</option>
-                <option data-country="IE" value="+353" data-min="9" data-max="9" data-ex="85 000 0000">🇮🇪  +353</option>
-                <option data-country="SG" value="+65" data-min="8" data-max="8" data-ex="8000 0000">🇸🇬  +65</option>
-                <option data-country="JP" value="+81" data-min="10" data-max="10" data-ex="90 0000 0000">🇯🇵  +81</option>
-                <option data-country="DE" value="+49" data-min="10" data-max="11" data-ex="1512 0000000">🇩🇪  +49</option>
-                <option data-country="FR" value="+33" data-min="9" data-max="9" data-ex="6 00 00 00 00">🇫🇷  +33</option>
+                <option data-country="AU" value="+61" data-min="9" data-max="9" data-ex="491 570 006" selected>🇦🇺  +61</option>
+                <option data-country="NZ" value="+64" data-min="8" data-max="10" data-ex="21 234 567">🇳🇿  +64</option>
+                <option data-country="UK" value="+44" data-min="10" data-max="10" data-ex="7700 900 123">🇬🇧  +44</option>
+                <option data-country="US" value="+1" data-min="10" data-max="10" data-ex="202 555 0134">🇺🇸  +1</option>
+                <option data-country="CA" value="+1" data-min="10" data-max="10" data-ex="204 555 0134">🇨🇦  +1</option>
+                <option data-country="IE" value="+353" data-min="9" data-max="9" data-ex="85 123 4567">🇮🇪  +353</option>
+                <option data-country="SG" value="+65" data-min="8" data-max="8" data-ex="8123 4567">🇸🇬  +65</option>
+                <option data-country="JP" value="+81" data-min="10" data-max="10" data-ex="90 1234 5678">🇯🇵  +81</option>
+                <option data-country="DE" value="+49" data-min="10" data-max="11" data-ex="1512 3456789">🇩🇪  +49</option>
+                <option data-country="FR" value="+33" data-min="9" data-max="9" data-ex="6 12 34 56 78">🇫🇷  +33</option>
               </select>
-              <input type="tel" id="join-phone" autocomplete="tel-national" inputmode="tel" placeholder="400 000 000">
+              <input type="tel" id="join-phone" autocomplete="tel-national" inputmode="tel" placeholder="491 570 006">
             </div>
           </div>
           <label class="join-consent" id="join-consent-row" hidden>
