@@ -199,6 +199,25 @@
     window.klaviyo.push(['track', event, props]);
   }
 
+  /* ---------- GA4 helper ---------- */
+  function ga(event, params) {
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', event, params);
+  }
+  function gaItems(cart) {
+    if (!cart || !cart.lines) return [];
+    return cart.lines.edges.map(function (e) {
+      const n = e.node, m = n.merchandise;
+      return {
+        item_id: (m.sku || m.id || '').split('/').pop(),
+        item_name: m.product ? m.product.title : '',
+        item_variant: m.title || '',
+        price: Number(m.price && m.price.amount) || 0,
+        quantity: n.quantity
+      };
+    });
+  }
+
   /* ---------- UI: drawer + nav link ---------- */
   const css = `
     #ec-link{cursor:pointer}
@@ -304,7 +323,14 @@
       window.scrollTo(0, _scrollY);
     }
   };
-  const openDrawer = () => { overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true); };
+  const openDrawer = () => {
+    overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true);
+    ga('view_cart', {
+      currency: 'AUD',
+      value: qualifyingSubtotal(current),
+      items: gaItems(current)
+    });
+  };
   const closeDrawer = () => { overlay.classList.remove('open'); drawer.classList.remove('open'); lockPage(false); };
   // expose a global so the nav cart icon can open the cart (named distinctly to avoid the shop page's quick-view openDrawer)
   window.ecOpenCart = openDrawer;
@@ -588,6 +614,11 @@
       const v = node.merchandise;
       return { ProductName: v.product.title, ProductID: v.id, Quantity: node.quantity, ItemPrice: parseFloat(v.price.amount) };
     });
+    ga('begin_checkout', {
+      currency: (current && current.cost && current.cost.subtotalAmount && current.cost.subtotalAmount.currencyCode) || 'AUD',
+      value: qualifyingSubtotal(current),
+      items: gaItems(current)
+    });
     klTrack('Started Checkout', {
       $value: parseFloat(current.cost.subtotalAmount.amount),
       ItemNames: items.map(i => i.ProductName),
@@ -626,6 +657,11 @@
         AddedItemProductName: m ? m.product.title : key,
         AddedItemProductID: key,
         AddedItemQuantity: 1
+      });
+      ga('add_to_cart', {
+        currency: (cart && cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD',
+        value: Number(cart && cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.amount) || 0,
+        items: gaItems(cart)
       });
       return true;
     } catch (e) {
@@ -683,6 +719,11 @@
             ImageURL: mm.product.featuredImage ? mm.product.featuredImage.url : undefined
           };
         })
+      });
+      ga('add_to_cart', {
+        currency: (cart && cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD',
+        value: Number(cart && cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.amount) || 0,
+        items: gaItems(cart)
       });
     } catch (e) {
       if (window.showToast) showToast('Something went wrong. Please try again.');
