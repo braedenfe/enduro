@@ -496,6 +496,21 @@ window.klaviyo = window.klaviyo || [];
     Price: PAGE.priceNum
   };
   klaviyo.push(['track', 'Viewed Product', item]);
+
+  /* GA4: view_item */
+  if (typeof gtag === 'function') {
+    gtag('event', 'view_item', {
+      currency: 'AUD',
+      value: PAGE.priceNum,
+      items: [{
+        item_id: PAGE.key,
+        item_name: PAGE.klName,
+        item_category: (PAGE.klCategories || [])[0] || '',
+        price: PAGE.priceNum,
+        quantity: 1
+      }]
+    });
+  }
   klaviyo.push(['trackViewedItem', {
     Title: item.ProductName, ItemId: item.ProductID, Categories: item.Categories,
     ImageUrl: item.ImageURL, Url: item.URL, Metadata: { Brand: 'enduro', Price: item.Price }
