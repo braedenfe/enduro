@@ -226,7 +226,7 @@ a{color:inherit;text-decoration:none}
 .rail-head h2 .em{font-style:italic;color:var(--forest)}
 .rail-link{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--forest);white-space:nowrap;border-bottom:1px solid var(--forest);padding-bottom:4px}
 .rail-track{
-  display:flex;gap:18px;overflow-x:auto;
+  display:flex;gap:18px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;touch-action:pan-x;
   padding:0 32px 24px;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
