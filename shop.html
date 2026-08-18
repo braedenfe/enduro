@@ -142,6 +142,8 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pcard:hover .pcard-img.swiped img.on{opacity:1}
 
 .pcard-img img[data-fit="contain"]{object-fit:contain}
+/* flat-lays are shot at different ratios; scale each so the garment reads at a consistent size */
+
 .pcard-img:has(img.main[data-fit="contain"]){background:#fff}
 @media(hover:hover){
   .pcard:hover .pcard-img img.main{opacity:0}
