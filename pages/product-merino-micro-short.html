@@ -232,7 +232,10 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 #related h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);letter-spacing:-0.01em;margin-bottom:28px}
 #related h2 .em{font-style:italic;color:var(--forest)}
 .rel-grid{
-  display:flex;gap:16px;overflow-x:auto;
+  display:flex;gap:16px;
+  overflow-x:auto;overflow-y:hidden;      /* lock the vertical axis */
+  overscroll-behavior-x:contain;          /* and stop it chaining to the page */
+  touch-action:pan-x;                     /* horizontal drags only */
   padding-bottom:6px;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
