@@ -47,7 +47,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-html{overflow-x:hidden}
 body{font-family:var(--sans);background:var(--bone);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100%}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -146,6 +145,17 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   border:1px solid var(--line-dark);background:transparent;color:rgba(14,21,18,0.5);transition:all .25s}
 .unit-btn.active{background:var(--forest);color:var(--bone);border-color:var(--forest)}
 .temp-bar{position:relative;height:6px;border-radius:3px;background:rgba(14,21,18,0.08);margin-top:13px}
+
+
+/* live conditions */
+.temp-now{position:absolute;top:-4px;width:2px;height:14px;background:var(--ink);border-radius:1px;
+  opacity:0;transition:opacity .5s ease,left .5s ease}
+.temp-now.on{opacity:1}
+.cw-live{margin-top:16px;text-align:center;font-family:var(--cond);font-size:0.74rem;
+  letter-spacing:0.14em;text-transform:uppercase;color:rgba(14,21,18,0.55);
+  opacity:0;transition:opacity .5s ease}
+.cw-live.on{opacity:1}
+.cw-live .in{color:var(--forest)}
 .temp-fill{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--forest);transition:all .4s ease}
 .temp-ticks{display:flex;justify-content:space-between;margin-top:8px}
 .temp-tick-label{font-family:var(--cond);font-size:0.7rem;letter-spacing:0.08em;color:rgba(14,21,18,0.4)}
@@ -275,7 +285,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .fab-prop span{font-family:var(--cond);font-size:0.72rem;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:rgba(14,21,18,0.62);line-height:1.3}
 .p-price-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;margin-top:8px}
 .p-price-row .p-price{margin-top:0}
-.ap-msg{display:block;min-height:18px;max-width:100%}
+.ap-msg{display:block;min-height:18px;max-width:100%;overflow:hidden}
 .p-price-row{min-width:0}
 @media(max-width:430px){.ap-msg{transform:scale(0.93);transform-origin:left center}}
 @media(max-width:520px){.p-price-row{gap:4px 12px}}
@@ -609,6 +619,83 @@ function setUnit(u) {
   renderConditions();
 }
 renderConditions();
+
+
+/* ─── LIVE CONDITIONS ──────────────────────────────────────────────
+   No permission prompt. Nearest city from IP (ipwho.is, falling back
+   to ipapi.co), then Open-Meteo for temperature and sunrise. Both are
+   free, keyless and HTTPS. Result cached 12h. Fails silently. ─────── */
+(function () {
+  const bar = document.querySelector('.temp-bar');
+  if (!bar || !window.fetch) return;
+  const KEY = 'ec_geo_v1', TTL = 43200000;
+
+  const mark = document.createElement('div'); mark.className = 'temp-now'; bar.appendChild(mark);
+  const line = document.createElement('div'); line.className = 'cw-live'; bar.parentElement.appendChild(line);
+  let state = null;
+
+  function render() {
+    if (!state) return;
+    const isF = unit === 'f';
+    const sMin = isF ? cToF(SCALE_MIN_C) : SCALE_MIN_C;
+    const sMax = isF ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
+    const t = isF ? cToF(state.temp) : Math.round(state.temp);
+    mark.style.left = Math.max(0, Math.min(100, (t - sMin) / (sMax - sMin) * 100)) + '%';
+    mark.classList.add('on');
+    let txt = (state.city ? state.city + ' ' : '') + t + (isF ? '\u00b0F' : '\u00b0C');
+    if (state.temp >= PAGE.tempMin && state.temp <= PAGE.tempMax) txt += ' &middot; <span class="in">in range</span>';
+    if (state.light) txt += ' &middot; ' + state.light;
+    line.innerHTML = txt;
+    line.classList.add('on');
+  }
+  const _su = window.setUnit;
+  window.setUnit = function (u) { _su(u); render(); };
+
+  function weather(lat, lon, city) {
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+          '&current=temperature_2m&daily=sunrise,sunset&timezone=auto&forecast_days=2')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        const t = d && d.current && d.current.temperature_2m;
+        if (typeof t !== 'number') return;
+        let light = '';
+        try {
+          /* all times are in the location's own timezone, so compare directly */
+          const now = d.current.time;
+          const riseToday = d.daily.sunrise[0], setToday = d.daily.sunset[0];
+          const riseTomorrow = d.daily.sunrise[1];
+          let label, iso;
+          if (now < riseToday)      { label = 'First light'; iso = riseToday; }
+          else if (now < setToday)  { label = 'Last light';  iso = setToday; }
+          else                      { label = 'First light'; iso = riseTomorrow || riseToday; }
+          const hm = iso.split('T')[1].slice(0, 5).split(':');
+          let h = +hm[0]; const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12;
+          light = label + ' ' + h + ':' + hm[1] + ap;
+        } catch (e) {}
+        state = { temp: t, city: city, light: light };
+        render();
+      }).catch(function () {});
+  }
+
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) {
+      const o = JSON.parse(raw);
+      if (Date.now() - o.at < TTL) { weather(o.lat, o.lon, o.city); return; }
+    }
+  } catch (e) {}
+
+  function use(g) {
+    if (!g || typeof g.latitude !== 'number') throw new Error('no coords');
+    const lat = g.latitude.toFixed(2), lon = g.longitude.toFixed(2), city = g.city || '';
+    try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), lat: lat, lon: lon, city: city })); } catch (e) {}
+    weather(lat, lon, city);
+  }
+  fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(use)
+    .catch(function () {
+      fetch('https://ipapi.co/json/').then(function (r) { return r.json(); }).then(use).catch(function () {});
+    });
+})();
 
 /* ─── NOTIFY (coming soon pages) ─── */
 const notifyForm = document.getElementById('notify-form');
