@@ -145,9 +145,18 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 
 
 /* live conditions */
-.temp-now{position:absolute;top:-4px;width:2px;height:14px;background:var(--ink);border-radius:1px;
+.temp-now{position:absolute;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;
   opacity:0;transition:opacity .5s ease,left .5s ease}
 .temp-now.on{opacity:1}
+.temp-now::before{content:"";position:absolute;inset:-3px;border-radius:50%;animation:temp-pulse 2.4s ease-out infinite}
+.temp-now.cold{background:#8FC4DE;box-shadow:0 0 0 3px rgba(143,196,222,0.26)}
+.temp-now.cold::before{background:rgba(143,196,222,0.55)}
+.temp-now.mid{background:#2E8C80;box-shadow:0 0 0 3px rgba(46,140,128,0.24)}
+.temp-now.mid::before{background:rgba(46,140,128,0.5)}
+.temp-now.hot{background:#C98A4B;box-shadow:0 0 0 3px rgba(201,138,75,0.26)}
+.temp-now.hot::before{background:rgba(201,138,75,0.5)}
+@keyframes temp-pulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(2.4);opacity:0}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.temp-now::before{animation:none}}
 .cw-live{margin-top:16px;text-align:center;font-family:var(--cond);font-size:0.74rem;
   letter-spacing:0.14em;text-transform:uppercase;color:rgba(14,21,18,0.55);
   opacity:0;transition:opacity .5s ease}
@@ -635,6 +644,8 @@ renderConditions();
     const sMax = isF ? cToF(SCALE_MAX_C) : SCALE_MAX_C;
     const t = isF ? cToF(state.temp) : Math.round(state.temp);
     mark.style.left = Math.max(0, Math.min(100, (t - sMin) / (sMax - sMin) * 100)) + '%';
+    mark.classList.remove('cold', 'mid', 'hot');
+    mark.classList.add(state.temp < PAGE.tempMin ? 'cold' : (state.temp > PAGE.tempMax ? 'hot' : 'mid'));
     mark.classList.add('on');
     let txt = (state.city ? state.city + ' ' : '') + t + (isF ? '\u00b0F' : '\u00b0C');
     if (state.temp >= PAGE.tempMin && state.temp <= PAGE.tempMax) txt += ' &middot; <span class="in">in range</span>';
