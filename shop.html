@@ -1699,6 +1699,40 @@ function openQuickAdd(btn) {
   }, true);
 })();
 
+/* ─── GA4: collection tracking ─── */
+(function () {
+  if (typeof gtag !== 'function') return;
+  function itemsFrom(cards) {
+    return Array.prototype.map.call(cards, function (c, i) {
+      const p = products[c.dataset.product] || {};
+      return {
+        item_id: c.dataset.product,
+        item_name: (p.name || '').trim(),
+        item_category: c.dataset.cat || '',
+        price: Number(String(p.price || '').replace(/[^0-9.]/g, '')) || 0,
+        index: i,
+        quantity: 1
+      };
+    });
+  }
+  /* which products were actually seen */
+  gtag('event', 'view_item_list', {
+    item_list_id: 'shop',
+    item_list_name: 'Collection 01',
+    items: itemsFrom(document.querySelectorAll('.pcard'))
+  });
+  /* which card earned the click */
+  document.addEventListener('click', function (e) {
+    const card = e.target.closest && e.target.closest('.pcard');
+    if (!card) return;
+    gtag('event', 'select_item', {
+      item_list_id: 'shop',
+      item_list_name: 'Collection 01',
+      items: itemsFrom([card])
+    });
+  }, true);
+})();
+
 /* quick add: capture-phase delegation so nothing else can intercept first */
 document.addEventListener('click', function (e) {
   const btn = e.target.closest && e.target.closest('[data-qa]');
