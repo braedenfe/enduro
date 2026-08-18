@@ -226,13 +226,13 @@ a{color:inherit;text-decoration:none}
 .rail-head h2 .em{font-style:italic;color:var(--forest)}
 .rail-link{font-family:var(--cond);font-size:0.84rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--forest);white-space:nowrap;border-bottom:1px solid var(--forest);padding-bottom:4px}
 .rail-track{
-  display:flex;gap:18px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;touch-action:pan-x;
+  display:flex;gap:18px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;
   padding:0 32px 24px;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
 .rail-track::-webkit-scrollbar{display:none}
 .rcard{
-  flex:0 0 min(78vw,420px);scroll-snap-align:start;
+  flex:0 0 min(66vw,380px);scroll-snap-align:start;
   background:var(--white);border-radius:16px;overflow:hidden;
 }
 .rcard-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:#EAE6DE}
@@ -590,6 +590,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 .join-card-inner .join-h .em{color:rgba(245,242,236,0.82)}
 .join-card-inner .join-consent span{color:rgba(245,242,236,0.88)}
 @media(max-width:620px){.join-card::after{background:rgba(9,16,13,0.72)}}
+@media(max-width:620px){.rcard{flex-basis:min(62vw,340px)}}
 </style>
 <!-- Klaviyo onsite tracking -->
 <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=VMZvez"></script>
