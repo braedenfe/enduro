@@ -20,6 +20,11 @@
       "source": "/pages/product-cotton-short-womens.html",
       "destination": "/shop.html",
       "permanent": false
+    },
+    {
+      "source": "/pages/product-wool-long-run-tee.html",
+      "destination": "/shop.html",
+      "permanent": false
     }
   ]
 }
