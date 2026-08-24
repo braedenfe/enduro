@@ -662,10 +662,9 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <!-- HERO -->
 <section id="hero">
   <div class="hero-media" id="hero-media">
-    <!-- PLACEHOLDER VIDEO: swap src for brand footage. Poster falls back to existing hero image. -->
-    <video autoplay muted loop playsinline preload="auto" poster="assets/images/hero.jpeg">
-      <source src="https://videos.pexels.com/video-files/3125907/3125907-hd_1920_1080_25fps.mp4" type="video/mp4">
-      <source src="https://videos.pexels.com/video-files/3125907/3125907-uhd_2560_1440_25fps.mp4" type="video/mp4">
+    <!-- Brand footage. Poster is frame 1 so there is no jump on play. -->
+    <video autoplay muted loop playsinline preload="auto" poster="assets/video/enduro-hero-poster.jpg">
+      <source src="assets/video/enduro-hero.mp4" type="video/mp4">
     </video>
   </div>
   <div class="hero-shade"></div>
