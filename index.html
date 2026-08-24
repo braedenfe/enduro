@@ -16,6 +16,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Enduro &mdash; Merino &amp; Natural Fibre Activewear</title>
+<meta name="theme-color" content="#0E1512">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.enduroapparel.com.au/">
 <meta property="og:site_name" content="Enduro">
@@ -972,6 +973,35 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   function navState(){ nav.classList.toggle('solid', window.scrollY > 40); }
   window.addEventListener('scroll', navState, {passive:true});
   navState();
+
+  /* Safari tints its toolbars from theme-color. Sections alternate Ink and
+     Bone, so follow whatever sits at the bottom edge of the viewport. */
+  (function(){
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(!meta || !document.elementFromPoint) return;
+    var last = '', ticking = false;
+    function opaqueBg(el){
+      while(el && el !== document.documentElement){
+        var c = getComputedStyle(el).backgroundColor;
+        if(c && c !== 'transparent' && !/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(c)) return c;
+        el = el.parentElement;
+      }
+      return getComputedStyle(document.body).backgroundColor;
+    }
+    function sample(){
+      ticking = false;
+      var el = document.elementFromPoint(window.innerWidth/2, window.innerHeight-2);
+      if(!el) return;
+      var c = opaqueBg(el);
+      if(c && c !== last){ last = c; meta.setAttribute('content', c); }
+    }
+    function onScroll(){
+      if(!ticking){ ticking = true; requestAnimationFrame(sample); }
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll, {passive:true});
+    sample();
+  })();
 
   /* iOS Low Power Mode blocks autoplay; retry on first interaction */
   function kickVideos(){
