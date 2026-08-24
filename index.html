@@ -662,10 +662,27 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
 <!-- HERO -->
 <section id="hero">
   <div class="hero-media" id="hero-media">
-    <!-- Brand footage. Poster is frame 1 so there is no jump on play. -->
-    <video autoplay muted loop playsinline preload="auto" poster="assets/video/enduro-hero-poster.jpg">
-      <source src="assets/video/enduro-hero.mp4" type="video/mp4">
-    </video>
+    <!-- Brand footage. Portrait crop for phones, landscape for wider screens.
+         Source is chosen before the element loads so nothing is fetched twice. -->
+    <video id="hero-video" autoplay muted loop playsinline preload="auto"
+           poster="assets/video/enduro-hero-poster.jpg"></video>
+    <script>
+    (function(){
+      var v=document.getElementById('hero-video');
+      if(!v) return;
+      var portrait=window.matchMedia('(max-aspect-ratio: 1/1)').matches;
+      v.poster='assets/video/enduro-hero-poster'+(portrait?'-portrait':'')+'.jpg';
+      var s=document.createElement('source');
+      s.src='assets/video/enduro-hero'+(portrait?'-portrait':'')+'.mp4';
+      s.type='video/mp4';
+      v.appendChild(s);
+      v.load();
+      v.playbackRate = 0.4;
+      v.addEventListener('loadedmetadata', function(){ v.playbackRate = 0.4; });
+      var p=v.play();
+      if(p&&p.catch) p.catch(function(){});
+    })();
+    </script>
   </div>
   <div class="hero-shade"></div>
   <div class="hero-inner">
