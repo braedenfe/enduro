@@ -9,5 +9,17 @@
         { "key": "Content-Type", "value": "font/woff2" }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/pages/product-merino-short-womens.html",
+      "destination": "/shop.html",
+      "permanent": false
+    },
+    {
+      "source": "/pages/product-cotton-short-womens.html",
+      "destination": "/shop.html",
+      "permanent": false
+    }
   ]
 }
