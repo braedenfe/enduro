@@ -746,11 +746,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <!-- Men's Cotton Short 5" -->
     <a class="pcard" href="pages/product-cotton-short-mens.html" data-product="cotton-short-mens" data-sizes="s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="cotton" data-gender="men" role="listitem">
       <div class="pcard-img">
-        <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/cotton-short-mens/cotton-short-mens-front-flat.jpg" alt="Essential Short 5″, view 1" loading="lazy" decoding="async">
-        <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-back-flat.jpg" alt="Essential Short 5″, view 2" loading="lazy" decoding="async">
-        <img width="896" height="1372" class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-front-model.jpg" alt="Essential Short 5″, view 3" loading="lazy" decoding="async">
-        <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-back-model.jpg" alt="Essential Short 5″, view 4" loading="lazy" decoding="async">
-        <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-detail.jpg" alt="Essential Short 5″, view 5" loading="lazy" decoding="async">
+        <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg" alt="Essential Short 5″, view 1" loading="lazy" decoding="async">
+        <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-back-flat.jpg" alt="Essential Short 5″, view 2" loading="lazy" decoding="async">
+        <img width="896" height="1372" class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-front-model.jpg" alt="Essential Short 5″, view 3" loading="lazy" decoding="async">
+        <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-back-model.jpg" alt="Essential Short 5″, view 4" loading="lazy" decoding="async">
+        <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-detail.jpg" alt="Essential Short 5″, view 5" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Organic Cotton</span>
         </div>
@@ -759,13 +759,38 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
           <h2 class="pcard-name">Essential Short 5&Prime;</h2>
           <span class="pcard-fibre">Organic Cotton &middot; Running &amp; Everyday</span>
         </div>
-        <span class="pcard-price">A$100</span>
+        <span class="pcard-price">A$110</span>
       </div>
       <div class="pcard-actions">
         <button class="pcard-btn add" type="button" data-qa>Quick add</button>
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
+
+    <a class="pcard" href="pages/product-o-cotton-short-mens.html" data-product="o-cotton-short-mens" data-sizes="s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="cotton" data-gender="men" role="listitem">
+      <div class="pcard-img">
+        <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg" alt="Ø Essential Short 5″, view 1" loading="lazy" decoding="async">
+        <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg" alt="Ø Essential Short 5″, view 2" loading="lazy" decoding="async">
+        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-fabric">100% Organic Cotton</span>
+        </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">&Oslash; Essential Short 5&Prime;</h2>
+          <span class="pcard-fibre">Organic Cotton &middot; Running &amp; Everyday</span>
+        </div>
+        <span class="pcard-price">A$110</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
+    </a>
+
+    <!-- HIDDEN-AT-LAUNCH: Ø Short 3″ and Essential Short 3″. Uncomment to relist. -->
+    <!--
+     Women's Merino Short 3" 
+    
 
     <!-- HIDDEN-AT-LAUNCH: Ø Short 3″ and Essential Short 3″. Uncomment to relist. -->
     <!--
@@ -1112,10 +1137,10 @@ const products = {
     name: 'Essential Short 5\u2033 \u2014 Men\u2019s',
     material: '100% Organic Cotton',
     category: 'Running \u00b7 Men',
-    price: 'A$100',
+    price: 'A$110',
     preorder: true,
     page: 'pages/product-cotton-short-mens.html',
-    photo: 'assets/images/products/cotton-short-mens/cotton-short-mens-front-flat.jpg',
+    photo: 'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg',
     desc: 'A 5 inch everyday short in 100% organic cotton. Lightweight and breathable, with dual zip side pockets and a zippered rear security pocket. Built for training, travel, and warm-weather miles.',
     fit: 'True to size. Model is 183cm wearing size M.',
     care: 'Machine wash cold. Line dry in shade.',
@@ -1123,7 +1148,28 @@ const products = {
     soldOut: [],
     details: [
       ['Fibre','100% organic cotton interlock, GOTS & OCS'],
-      ['Weight','170\u2013190gsm'],
+      ['Weight','180gsm'],
+      ['Inseam','5\u2033'],
+      ['Pockets','Dual zip side pockets, zippered rear pocket'],
+    ]
+  },
+
+  'o-cotton-short-mens': {
+    name: '\u00d8 Essential Short 5\u2033 \u2014 Men\u2019s',
+    material: '100% Organic Cotton',
+    category: 'Running \u00b7 Men',
+    price: 'A$110',
+    preorder: true,
+    page: 'pages/product-o-cotton-short-mens.html',
+    photo: 'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg',
+    desc: 'A 5 inch everyday short in 100% organic cotton. Lightweight and breathable, with dual zip side pockets and a zippered rear security pocket. Built for training, travel, and warm-weather miles.',
+    fit: 'True to size. Model is 183cm wearing size M.',
+    care: 'Machine wash cold. Line dry in shade.',
+    sizes: ['S','M','L','XL'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% organic cotton interlock, GOTS & OCS'],
+      ['Weight','180gsm'],
       ['Inseam','5\u2033'],
       ['Pockets','Dual zip side pockets, zippered rear pocket'],
     ]
@@ -1203,7 +1249,7 @@ const products = {
     soldOut: [],
     details: [
       ['Fibre','100% organic cotton interlock, GOTS & OCS'],
-      ['Weight','170\u2013190gsm'],
+      ['Weight','180gsm'],
       ['Inseam','3\u2033'],
       ['Pockets','Zippered rear waistband pocket'],
     ]
