@@ -771,7 +771,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
     <a class="rcard reveal" href="pages/product-merino-short-mens.html" data-product="merino-short-mens">
       <div class="rcard-img"><img width="896" height="1372" src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="Men's Merino Long Run Short 5 inch" loading="lazy" decoding="async"></div>
       <div class="rcard-body">
-        <div><div class="rcard-name">Merino Long Run Short 5&Prime;</div><span class="rcard-fibre">Knitted merino</span></div>
+        <div><div class="rcard-name">FTLR Merino Lined Short 5&Prime;</div><span class="rcard-fibre">Cotton &amp; merino</span></div>
         <span class="rcard-price">A$150</span>
       </div>
       <div class="rcard-actions">
@@ -807,11 +807,10 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
       </div>
     </a>
     -->
-    <!-- HIDDEN-AT-LAUNCH: Merino Long Run Tee. Uncomment to relist. -->
+    <!-- HIDDEN-AT-LAUNCH: Merino Long Run Tee. Uncomment this block to relist. -->
     <!--
     <a class="rcard reveal" href="pages/product-wool-long-run-tee.html" data-product="wool-long-run-tee">
       <div class="rcard-img"><img width="812" height="1008" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model.jpg" alt="Merino Long Run Tee" loading="lazy" decoding="async">
-    -->
 </div>
       <div class="rcard-body">
         <div><div class="rcard-name">Merino Long Run Tee</div><span class="rcard-fibre">100% merino</span></div>
@@ -822,6 +821,8 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
         <span class="pcard-btn view">View product</span>
       </div>
     </a>
+    -->
+
   </div>
 </section>
 
@@ -1047,7 +1048,7 @@ footer{background:var(--ink);padding:64px 32px 36px;border-top:1px solid var(--l
   function buildPanel(card, key){
     var p = QA[key]; if(!p) return null;
     var panel = document.createElement('div'); panel.className='pq-panel';
-    var NAMES={'cotton-long-run-tee':'FTLR CottonLite&trade; Tee','merino-short-mens':'Merino Long Run Short 5\u2033','merino-short-womens':'Merino Long Run Short 3\u2033','cotton-short-womens':'Essential Short 3\u2033','wool-long-run-tee':'Merino Long Run Tee'};
+    var NAMES={'cotton-long-run-tee':'FTLR CottonLite&trade; Tee','merino-short-mens':'FTLR Merino Lined Short 5\u2033','merino-short-womens':'Merino Long Run Short 3\u2033','cotton-short-womens':'Essential Short 3\u2033','wool-long-run-tee':'Merino Long Run Tee'};
     var html = '<span class="pq-grip" aria-hidden="true"></span>' +
       '<div class="pq-head"><span class="pq-head-n">' + (NAMES[key]||'') + '</span>' +
       '<span class="pq-head-p">' + p.price + '</span></div>';
