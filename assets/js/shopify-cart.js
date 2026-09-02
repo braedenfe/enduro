@@ -1019,7 +1019,7 @@
 
     const CATALOGUE = [
       /* HIDDEN-AT-LAUNCH */ //{ key:'wool-long-run-tee',   name:'Merino Long Run Tee',    fibre:'Merino',        price:'A$140', file:'product-wool-long-run-tee.html',   img:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg' },
-      { key:'cotton-long-run-tee', name:'Essential Tee',          fibre:'Organic cotton',price:'A$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
+      { key:'cotton-long-run-tee', name:'FTLR CottonLite\u2122 Tee',          fibre:'Organic cotton',price:'A$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
       { key:'o-tee',               name:'Ø Tee',                  fibre:'Merino',        price:'A$140', file:'product-o-tee.html',               img:'assets/images/products/o-tee/o-tee-white-front-flat.jpg' },
       { key:'enduro-tee',          name:'Enduro Tee',             fibre:'Merino',        price:'A$140', file:'product-enduro-tee.html',          img:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg' },
       { key:'merino-short-mens',   name:'FTLR Merino Lined Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
