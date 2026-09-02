@@ -147,7 +147,9 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 
 .pcard-img:has(img.main[data-fit="contain"]){background:#fff}
 @media(hover:hover){
-  .pcard:hover .pcard-img img.main{opacity:0}
+  /* only fade the main image when there is an alt to fade to */
+  .pcard-img:has(img.alt):hover img.main,
+  .pcard:hover .pcard-img:has(img.alt) img.main{opacity:0}
   .pcard:hover .pcard-img img.alt{opacity:1;transform:scale(1.04)}
 }
 .pcard-badge{
@@ -696,19 +698,19 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       </div>
     </a>
 
-    <!-- Cotton Essential Tee -->
+    <!-- Cotton FTLR CottonLite&trade; Tee -->
     <a class="pcard" href="pages/product-cotton-long-run-tee.html" data-product="cotton-long-run-tee" data-sizes="s m l xl" data-cat="tees" data-activity="running gym" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img width="1008" height="1008" data-fit="contain" class="main" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="Essential Tee, view 1" loading="lazy" decoding="async">
-        <img width="1008" height="1120" data-fit="contain" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg" alt="Essential Tee, view 2" loading="lazy" decoding="async">
-        <img width="980" height="1232" class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="Essential Tee, view 3" loading="lazy" decoding="async">
-        <img width="980" height="1232" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg" alt="Essential Tee, view 4" loading="lazy" decoding="async">
+        <img width="1008" height="1008" data-fit="contain" class="main" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="FTLR CottonLite&trade; Tee, view 1" loading="lazy" decoding="async">
+        <img width="1008" height="1120" data-fit="contain" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg" alt="FTLR CottonLite&trade; Tee, view 2" loading="lazy" decoding="async">
+        <img width="980" height="1232" class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="FTLR CottonLite&trade; Tee, view 3" loading="lazy" decoding="async">
+        <img width="980" height="1232" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg" alt="FTLR CottonLite&trade; Tee, view 4" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">100% Cotton</span>
         </div>
       <div class="pcard-info">
         <div>
-          <h2 class="pcard-name">Essential Tee</h2>
+          <h2 class="pcard-name">FTLR CottonLite&trade; Tee</h2>
           <span class="pcard-fibre">Cotton &middot; Running &amp; Everyday</span>
         </div>
         <span class="pcard-price">A$100</span>
@@ -728,11 +730,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="896" height="1372" class="extra" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="FTLR Merino Lined Short 5″, view 4" loading="lazy" decoding="async">
         <img width="896" height="1372" class="extra" src="assets/images/products/merino-short-mens/merino-short-mens-detail.jpg" alt="FTLR Merino Lined Short 5″, view 5" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
-        <span class="pcard-fabric">100% Merino Wool</span>
+        <span class="pcard-fabric">Cotton &amp; Merino</span>
         </div>
       <div class="pcard-info">
         <div>
-          <h2 class="pcard-name">Long Run Short 5&Prime;</h2>
+          <h2 class="pcard-name">FTLR Merino Lined Short 5&Prime;</h2>
           <span class="pcard-fibre">Organic Cotton &amp; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$150</span>
@@ -748,11 +750,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 1" loading="lazy" decoding="async">
         <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-back-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 2" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
-        <span class="pcard-fabric">100% Merino Wool</span>
+        <span class="pcard-fabric">Cotton &amp; Merino</span>
         </div>
       <div class="pcard-info">
         <div>
-          <h2 class="pcard-name">Long Run Short 5&Prime;</h2>
+          <h2 class="pcard-name">&Oslash; Merino Lined Short 5&Prime;</h2>
           <span class="pcard-fibre">Organic Cotton &amp; Merino &middot; Running</span>
         </div>
         <span class="pcard-price">A$150</span>
@@ -952,14 +954,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
     <a class="pcard" href="pages/product-merino-long-run-sock.html" data-product="merino-long-run-sock" data-sizes="onesize" data-cat="accessories" data-activity="running gym accessories" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img width="1008" height="1008" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
+        <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
         <span class="pcard-badge">Gift over A$150</span>
-        <span class="pcard-fabric">100% Organic Cotton</span>
+        <span class="pcard-fabric">95% Merino Wool</span>
         </div>
       <div class="pcard-info">
         <div>
           <h2 class="pcard-name">Merino Long Run Sock</h2>
-          <span class="pcard-fibre">Organic Cotton &middot; Everyday</span>
+          <span class="pcard-fibre">Merino Wool &middot; Running</span>
         </div>
         <span class="pcard-price">A$30</span>
       </div>
@@ -1096,7 +1098,7 @@ const products = {
     ]
   },
   'cotton-long-run-tee': {
-    name: 'Essential Tee',
+    name: 'FTLR CottonLite&trade; Tee',
     material: '100% Cotton',
     category: 'Running & Gym',
     price: 'A$100',
