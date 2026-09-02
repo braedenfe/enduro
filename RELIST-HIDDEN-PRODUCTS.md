@@ -48,3 +48,23 @@ commented, and keeping them means relisting needs no rebuilding.
 copied from the Merino Long Run Tee: wrong `name`, wrong `sku`, and an
 `offers.url` pointing at the wrong product page. Both corrected to their
 own product. This was a pre-existing bug, not part of the hiding.
+
+---
+
+## Archived: original 100% merino Long Run Short 5″
+
+`archive/product-merino-short-mens-100-merino.html` is the original STRATUS
+Pace™ version, kept for when that fabric is restocked. It is not linked, not
+in the sitemap, marked `noindex, nofollow`, blocked in `robots.txt`, and
+`/archive/*` redirects to shop.html.
+
+To restore it over the 2-in-1:
+1. Copy it to `pages/product-merino-short-mens.html`
+2. Shop card: `data-fibre="wool cotton"` back to `data-fibre="wool"`
+3. Shop quick-view: `material` back to `100% Merino Wool`
+4. Seven product pages: rel-card `rel-fibre` from `Cotton &amp; merino`
+   back to `100% merino`
+
+Note the archived copy predates the A$110/180gsm corrections, which do not
+apply to it (it is A$150), but it also predates the o-cotton-short-mens
+rel-card additions.

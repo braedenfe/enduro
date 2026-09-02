@@ -22,6 +22,11 @@
   ],
   "redirects": [
     {
+      "source": "/archive/(.*)",
+      "destination": "/shop.html",
+      "permanent": false
+    },
+    {
       "source": "/pages/product-merino-short-womens.html",
       "destination": "/shop.html",
       "permanent": false
