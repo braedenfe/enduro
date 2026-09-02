@@ -11,6 +11,7 @@
 
   const PRODUCTS = {
     'merino-short-mens':   '15871280546161',
+    'o-merino-short-mens': '15979936186737',
     'merino-short-womens': '15871281135985',
     'cotton-short-mens':   '15871285887345',
     'o-cotton-short-mens': '15979935007089',
@@ -18,6 +19,7 @@
     'cotton-long-run-tee': '15871282184561',
     'wool-long-run-tee':   '15871256396145',
     'organic-tote':        '15876958191985',
+    'merino-long-run-sock':'15974934675825',
     'merino-micro-short':  '15905028702577',
     'merino-bandeau':      '15904981254513',
     'o-tee':               '15947967398257',
@@ -1020,14 +1022,16 @@
       { key:'cotton-long-run-tee', name:'Essential Tee',          fibre:'Organic cotton',price:'A$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
       { key:'o-tee',               name:'Ø Tee',                  fibre:'Merino',        price:'A$140', file:'product-o-tee.html',               img:'assets/images/products/o-tee/o-tee-white-front-flat.jpg' },
       { key:'enduro-tee',          name:'Enduro Tee',             fibre:'Merino',        price:'A$140', file:'product-enduro-tee.html',          img:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg' },
-      { key:'merino-short-mens',   name:'Merino Long Run Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
+      { key:'merino-short-mens',   name:'FTLR Merino Lined Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
+{ key:'o-merino-short-mens',   name:'\u00d8 Merino Lined Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-o-merino-short-mens.html',   img:'assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg' },
       /* HIDDEN-AT-LAUNCH */ //{ key:'merino-short-womens', name:'Merino Long Run Short 3\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-womens.html', img:'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg' },
-      { key:'cotton-short-mens',   name:'Essential Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-cotton-short-mens.html',   img:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg' },
-      { key:'o-cotton-short-mens', name:'\u00d8 Essential Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-o-cotton-short-mens.html', img:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg' },
+      { key:'cotton-short-mens',   name:'FTLR CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-cotton-short-mens.html',   img:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg' },
+      { key:'o-cotton-short-mens', name:'\u00d8 CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-o-cotton-short-mens.html', img:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg' },
       /* HIDDEN-AT-LAUNCH */ //{ key:'cotton-short-womens', name:'Essential Short 3\u2033', fibre:'Organic cotton',price:'A$100',file:'product-cotton-short-womens.html', img:'assets/images/products/cotton-short-womens/cotton-short-womens-front-flat.jpg' },
       { key:'merino-micro-short',  name:'Merino Micro Short',     fibre:'Merino',        price:'A$100', file:'product-merino-micro-short.html',  img:'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg' },
       { key:'merino-bandeau',      name:'Merino Bandeau',         fibre:'Merino',        price:'A$60',  file:'product-merino-bandeau.html',      img:'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg' },
-      { key:'organic-tote',        name:'Organic Tote',           fibre:'Organic cotton',price:'A$20',  file:'product-organic-tote.html',        img:'assets/images/products/organic-tote/organic-tote-front.jpg' }
+      { key:'organic-tote',        name:'Organic Tote',           fibre:'Organic cotton',price:'A$20',  file:'product-organic-tote.html',        img:'assets/images/products/organic-tote/organic-tote-front.jpg' },
+{ key:'merino-long-run-sock',        name:'Merino Long Run Sock',           fibre:'95% merino',price:'A$30',  file:'product-merino-long-run-sock.html',        img:'assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg' }
     ];
 
     const css2 = `
