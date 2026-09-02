@@ -117,6 +117,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 
 #grid-wrap{max-width:1380px;margin:0 auto;padding:26px 32px clamp(72px,10vh,120px)}
 .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
 @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
 @media(max-width:560px){.product-grid{grid-template-columns:1fr;gap:24px}#grid-wrap{padding-left:20px;padding-right:20px}}
 
@@ -1502,7 +1503,7 @@ function applyCardColour(card, name) {
   box.classList.remove('swiped');
   box.querySelectorAll('img.on').forEach(im => im.classList.remove('on'));
   card.dataset.colour = col.name;
-  box.querySelectorAll('.pcard-swatch').forEach(b => b.classList.toggle('on', b.dataset.col === col.name));
+  card.querySelectorAll('.pcard-swatch').forEach(b => b.classList.toggle('on', b.dataset.col === col.name));
   /* keep the swatch label in sync with the fabric line, e.g. "Black · Running" is not needed; leave copy alone */
 }
 cards.forEach(card => {
@@ -1551,17 +1552,34 @@ function cardMatches(card, ignore) {
   });
 }
 
+/* ───────── RUNNING ORDER ─────────
+   Ordered so no two products of the same category sit next to each other.
+   Four black shorts in a row read as one product when scrolling on a phone. */
+const ORDER = [
+  'merino-short-mens',      /* short  */
+  'o-tee',                  /* tee    */
+  'cotton-short-mens',      /* short  */
+  'merino-bandeau',         /* top    */
+  'o-merino-short-mens',    /* short  */
+  'cotton-long-run-tee',    /* tee    */
+  'o-cotton-short-mens',    /* short  */
+  'merino-long-run-sock',   /* access */
+  'enduro-tee',             /* tee    */
+  'merino-micro-short',     /* short  */
+  'organic-tote'            /* access */
+];
+const ORDER_POS = {}; ORDER.forEach((k, i) => ORDER_POS[k] = i + 1);
+
 function applyFilters() {
   let shown = 0;
   cards.forEach(card => {
     const ok = cardMatches(card);
     card.style.display = ok ? '' : 'none';
     if (ok) shown++;
+    const base = ORDER_POS[card.dataset.product] || 99;
+    /* on the women's view, women's shorts come first */
     const isWomensShort = card.dataset.product === 'merino-short-womens' || card.dataset.product === 'cotton-short-womens';
-    const isTote = card.dataset.product === 'organic-tote';
-    if (fstate.gender === 'women' && isWomensShort) card.style.order = '-1';
-    else if (isTote) card.style.order = '2';
-    else card.style.order = '';
+    card.style.order = String(fstate.gender === 'women' && isWomensShort ? -1 : base);
   });
   applyCardImages();
   syncFilterUI(shown);
