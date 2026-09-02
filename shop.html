@@ -149,9 +149,9 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pcard-img:has(img.main[data-fit="contain"]){background:#fff}
 .pcard-img img[hidden]{display:none}
 @media(hover:hover){
-  /* only fade the main image when there is a visible alt to fade to */
-  .pcard:hover .pcard-img:has(img.alt:not([hidden])) img.main{opacity:0}
-  .pcard:hover .pcard-img img.alt:not([hidden]){opacity:1;transform:scale(1.04)}
+  /* the photo swaps only when the pointer is over the photo, not the whole card */
+  .pcard-img:hover:has(img.alt:not([hidden])) img.main{opacity:0}
+  .pcard-img:hover img.alt:not([hidden]){opacity:1;transform:scale(1.04)}
 }
 /* crossfade layer: a snapshot of the outgoing photo that fades away over the new one */
 .pcard-img img.fade{opacity:1;transition:opacity .45s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:2}
@@ -164,13 +164,13 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 }
 .pcard-swatch::before{
   content:"";width:14px;height:14px;border-radius:50%;background:var(--sw);
-  /* ring, not border: a gap of white, then a hairline of Ink */
-  box-shadow:0 0 0 3px #fff, 0 0 0 4px transparent;
+  /* inset hairline gives pale colours an edge; ring sits outside a gap of white */
+  box-shadow:inset 0 0 0 1px rgba(14,21,18,.16), 0 0 0 3px #fff, 0 0 0 4px transparent;
   transition:box-shadow .2s ease;
 }
-.pcard-swatch.on::before{box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--ink)}
+.pcard-swatch.on::before{box-shadow:inset 0 0 0 1px rgba(14,21,18,.16), 0 0 0 3px #fff, 0 0 0 4px var(--ink)}
 .pcard-swatch:focus-visible{outline:none}
-.pcard-swatch:focus-visible::before{box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--forest)}
+.pcard-swatch:focus-visible::before{box-shadow:inset 0 0 0 1px rgba(14,21,18,.16), 0 0 0 3px #fff, 0 0 0 4px var(--forest)}
 .pcard-fibre .col{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.pcard-img img.fade{transition:none}}
 .pcard-badge{
