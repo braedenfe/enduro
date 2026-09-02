@@ -1435,14 +1435,15 @@ const CARD_COLOURS = {
       extras:[] }
   ],
   'o-cotton-short-mens': [
-    { name:'Black', hex:'#1C1C1A',
-      main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg',
-      alt:null,
-      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg'] },
+    /* Navy leads: it sits next to a black short in the running order */
     { name:'Navy', hex:'#1E2A44',
       main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-front-flat.jpg',
       alt:null,
-      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-back-flat.jpg'] }
+      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-back-flat.jpg'] },
+    { name:'Black', hex:'#1C1C1A',
+      main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg',
+      alt:null,
+      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg'] }
   ],
   'o-tee': [
     { name:'Natural White', hex:'#F5F3EE',
@@ -1486,7 +1487,8 @@ function applyCardColour(card, name) {
     else im.hidden = true;
   }
   /* crossfade: pin a copy of the outgoing photo on top, change the real one underneath, fade the copy away */
-  if (main && !main.hidden && main.getAttribute('src') !== col.main && !box.classList.contains('swiped')) {
+  if (main && !main.hidden && main.getAttribute('src') !== col.main
+      && !box.classList.contains('swiped') && !box.classList.contains('no-fade')) {
     const ghost = main.cloneNode();
     ghost.className = 'fade'; ghost.removeAttribute('alt'); ghost.removeAttribute('loading');
     box.insertBefore(ghost, main.nextSibling);
@@ -1531,6 +1533,14 @@ cards.forEach(card => {
     fib.insertAdjacentHTML('afterbegin', '<span class="col">' + cols[0].name + '</span> &middot; ');
   }
   card.dataset.colour = cols[0].name;
+  /* if the default colour is not the one in the markup, swap it in silently */
+  const imgBox = card.querySelector('.pcard-img');
+  const firstMain = imgBox && imgBox.querySelector('img.main');
+  if (imgBox && firstMain && firstMain.getAttribute('src') !== cols[0].main) {
+    imgBox.classList.add('no-fade');
+    applyCardColour(card, cols[0].name);
+    imgBox.classList.remove('no-fade');
+  }
   /* preload the other colours on first pointer contact so the crossfade never stutters */
   card.addEventListener('pointerenter', function () {
     cols.forEach(c => { if (c.name !== card.dataset.colour) { const im = new Image(); im.src = c.main; } });
@@ -1556,16 +1566,16 @@ function cardMatches(card, ignore) {
    Ordered so no two products of the same category sit next to each other.
    Four black shorts in a row read as one product when scrolling on a phone. */
 const ORDER = [
-  'merino-short-mens',      /* short  */
   'o-tee',                  /* tee    */
-  'cotton-short-mens',      /* short  */
+  'merino-micro-short',     /* short  */
   'merino-bandeau',         /* top    */
   'o-merino-short-mens',    /* short  */
   'cotton-long-run-tee',    /* tee    */
-  'o-cotton-short-mens',    /* short  */
-  'merino-long-run-sock',   /* access */
+  'cotton-short-mens',      /* short  */
   'enduro-tee',             /* tee    */
-  'merino-micro-short',     /* short  */
+  'merino-short-mens',      /* short  */
+  'o-cotton-short-mens',    /* short  — the one unavoidable pair, see note */
+  'merino-long-run-sock',   /* access */
   'organic-tote'            /* access */
 ];
 const ORDER_POS = {}; ORDER.forEach((k, i) => ORDER_POS[k] = i + 1);
