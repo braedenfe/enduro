@@ -146,12 +146,32 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 /* flat-lays are shot at different ratios; scale each so the garment reads at a consistent size */
 
 .pcard-img:has(img.main[data-fit="contain"]){background:#fff}
+.pcard-img img[hidden]{display:none}
 @media(hover:hover){
-  /* only fade the main image when there is an alt to fade to */
-  .pcard-img:has(img.alt):hover img.main,
-  .pcard:hover .pcard-img:has(img.alt) img.main{opacity:0}
-  .pcard:hover .pcard-img img.alt{opacity:1;transform:scale(1.04)}
+  /* only fade the main image when there is a visible alt to fade to */
+  .pcard:hover .pcard-img:has(img.alt:not([hidden])) img.main{opacity:0}
+  .pcard:hover .pcard-img img.alt:not([hidden]){opacity:1;transform:scale(1.04)}
 }
+/* crossfade layer: a snapshot of the outgoing photo that fades away over the new one */
+.pcard-img img.fade{opacity:1;transition:opacity .45s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:2}
+.pcard-img img.fade.out{opacity:0}
+/* colour swatches: in the info block under the name, so the photograph stays clean */
+.pcard-swatches{display:flex;gap:2px;padding:0 5px 4px;margin-top:-8px;align-items:center}
+.pcard-swatch{
+  width:32px;height:32px;padding:0;border:0;background:transparent;cursor:pointer;
+  display:grid;place-items:center;border-radius:50%;
+}
+.pcard-swatch::before{
+  content:"";width:14px;height:14px;border-radius:50%;background:var(--sw);
+  /* ring, not border: a gap of white, then a hairline of Ink */
+  box-shadow:0 0 0 3px #fff, 0 0 0 4px transparent;
+  transition:box-shadow .2s ease;
+}
+.pcard-swatch.on::before{box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--ink)}
+.pcard-swatch:focus-visible{outline:none}
+.pcard-swatch:focus-visible::before{box-shadow:0 0 0 3px #fff, 0 0 0 4px var(--forest)}
+.pcard-fibre .col{color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.pcard-img img.fade{transition:none}}
 .pcard-badge{
   position:absolute;top:14px;left:14px;z-index:2;
   font-family:var(--cond);font-size:0.7rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
@@ -1386,6 +1406,7 @@ function applyCardImages() {
     if (!set) return;
     const main = card.querySelector('.pcard-img img.main');
     const alt  = card.querySelector('.pcard-img img.alt');
+    if (card.dataset.colour && CARD_COLOURS[key]) { applyCardColour(card, card.dataset.colour); return; }
     if (main.getAttribute('src') !== set.main) main.src = set.main;
     if (alt.getAttribute('src') !== set.alt) alt.src = set.alt;
     /* filtering changes the imagery, so reset any swiped card to its first photo */
@@ -1396,6 +1417,131 @@ function applyCardImages() {
     }
   });
 }
+/* ───────── CARD COLOUR SWATCHES ───────── */
+/* main/alt/extras map onto the card's img.main, img.alt and img.extra elements in DOM order.
+   Missing slots are hidden, so a colour with two photos still swipes and hovers correctly. */
+const CARD_COLOURS = {
+  'cotton-short-mens': [
+    { name:'Black', hex:'#1C1C1A',
+      main:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg',
+      alt:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-model.jpg',
+      extras:['assets/images/products/cotton-short-mens/cotton-short-mens-black-back-flat.jpg',
+              'assets/images/products/cotton-short-mens/cotton-short-mens-black-back-model.jpg',
+              'assets/images/products/cotton-short-mens/cotton-short-mens-black-detail.jpg'] },
+    { name:'Navy', hex:'#1E2A44',
+      main:'assets/images/products/cotton-short-mens/cotton-short-mens-navy-front-flat.jpg',
+      alt:'assets/images/products/cotton-short-mens/cotton-short-mens-navy-back-flat.jpg',
+      extras:[] }
+  ],
+  'o-cotton-short-mens': [
+    { name:'Black', hex:'#1C1C1A',
+      main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg',
+      alt:null,
+      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg'] },
+    { name:'Navy', hex:'#1E2A44',
+      main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-front-flat.jpg',
+      alt:null,
+      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-back-flat.jpg'] }
+  ],
+  'o-tee': [
+    { name:'Natural White', hex:'#F5F3EE',
+      main:'assets/images/products/o-tee/o-tee-white-front-flat.jpg',
+      alt:'assets/images/products/o-tee/o-tee-white-back-flat.jpg', extras:[] },
+    { name:'Black', hex:'#2C2C2A',
+      main:'assets/images/products/o-tee/o-tee-black-front-flat.jpg',
+      alt:'assets/images/products/o-tee/o-tee-black-back-flat.jpg', extras:[] }
+  ],
+  'enduro-tee': [
+    { name:'Natural White', hex:'#F5F3EE',
+      main:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg',
+      alt:'assets/images/products/enduro-tee/enduro-tee-white-back-flat.jpg', extras:[] },
+    { name:'Black', hex:'#2C2C2A',
+      main:'assets/images/products/enduro-tee/enduro-tee-black-front-flat.jpg',
+      alt:'assets/images/products/enduro-tee/enduro-tee-black-back-flat.jpg', extras:[] }
+  ],
+  /* hidden at launch; inert until the card is uncommented */
+  'wool-long-run-tee': [
+    { name:'Natural White', hex:'#F5F3EE',
+      main:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg',
+      alt:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg',
+      extras:['assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-flat.jpg',
+              'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-model.jpg'] },
+    { name:'Black', hex:'#2C2C2A',
+      main:'assets/images/products/wool-long-run-tee/wool-long-run-tee-black-front-model.jpg',
+      alt:null, extras:[] }
+  ]
+};
+function applyCardColour(card, name) {
+  const cols = CARD_COLOURS[card.dataset.product];
+  if (!cols) return;
+  const col = cols.find(c => c.name === name) || cols[0];
+  const box = card.querySelector('.pcard-img');
+  const main = box.querySelector('img.main');
+  const alt  = box.querySelector('img.alt');
+  const extras = Array.from(box.querySelectorAll('img.extra'));
+  function set(im, src) {
+    if (!im) return;
+    if (src) { if (im.getAttribute('src') !== src) im.src = src; im.hidden = false; }
+    else im.hidden = true;
+  }
+  /* crossfade: pin a copy of the outgoing photo on top, change the real one underneath, fade the copy away */
+  if (main && !main.hidden && main.getAttribute('src') !== col.main && !box.classList.contains('swiped')) {
+    const ghost = main.cloneNode();
+    ghost.className = 'fade'; ghost.removeAttribute('alt'); ghost.removeAttribute('loading');
+    box.insertBefore(ghost, main.nextSibling);
+    requestAnimationFrame(() => requestAnimationFrame(() => ghost.classList.add('out')));
+    ghost.addEventListener('transitionend', () => ghost.remove(), { once: true });
+    setTimeout(() => { if (ghost.parentNode) ghost.remove(); }, 700);
+  }
+  set(main, col.main);
+  set(alt, col.alt);
+  extras.forEach((im, i) => set(im, col.extras[i] || null));
+  const lab = card.querySelector('.pcard-fibre .col');
+  if (lab) lab.textContent = col.name;
+  /* reset any swipe position so the new colour opens on its first photo */
+  box.classList.remove('swiped');
+  box.querySelectorAll('img.on').forEach(im => im.classList.remove('on'));
+  card.dataset.colour = col.name;
+  box.querySelectorAll('.pcard-swatch').forEach(b => b.classList.toggle('on', b.dataset.col === col.name));
+  /* keep the swatch label in sync with the fabric line, e.g. "Black · Running" is not needed; leave copy alone */
+}
+cards.forEach(card => {
+  const cols = CARD_COLOURS[card.dataset.product];
+  if (!cols || cols.length < 2) return;
+  const info = card.querySelector('.pcard-info');
+  const row = document.createElement('div');
+  row.className = 'pcard-swatches';
+  row.setAttribute('role', 'group');
+  row.setAttribute('aria-label', 'Colour');
+  cols.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pcard-swatch' + (i === 0 ? ' on' : '');
+    b.dataset.col = c.name;
+    b.title = c.name;
+    b.setAttribute('aria-label', c.name);
+    b.style.setProperty('--sw', c.hex);
+    row.appendChild(b);
+  });
+  info.insertAdjacentElement('afterend', row);
+  /* name the colour in the fibre line: "Black · Organic Cotton · Running" */
+  const fib = card.querySelector('.pcard-fibre');
+  if (fib && !fib.querySelector('.col')) {
+    fib.insertAdjacentHTML('afterbegin', '<span class="col">' + cols[0].name + '</span> &middot; ');
+  }
+  card.dataset.colour = cols[0].name;
+  /* preload the other colours on first pointer contact so the crossfade never stutters */
+  card.addEventListener('pointerenter', function () {
+    cols.forEach(c => { if (c.name !== card.dataset.colour) { const im = new Image(); im.src = c.main; } });
+  }, { once: true });
+  row.addEventListener('click', function (e) {
+    const b = e.target.closest('.pcard-swatch');
+    if (!b) return;
+    e.preventDefault(); e.stopPropagation();   /* the card is a link */
+    applyCardColour(card, b.dataset.col);
+  });
+});
+
 function cardMatches(card, ignore) {
   return AXES.every(ax => {
     if (ax === ignore || fstate[ax] === 'all') return true;
@@ -1644,6 +1790,8 @@ function addToCart() {
 
 /* ───────── QUICK ADD ───────── */
 const QA_COLOURS = {
+  'cotton-short-mens':   [['Black','#1C1C1A'],['Navy','#1E2A44']],
+  'o-cotton-short-mens': [['Black','#1C1C1A'],['Navy','#1E2A44']],
   'wool-long-run-tee': [['Natural White','#F5F3EE'],['Black','#2C2C2A']],
   'o-tee':             [['Natural White','#F5F3EE'],['Black','#2C2C2A']],
   'enduro-tee':        [['Natural White','#F5F3EE'],['Black','#2C2C2A']]
@@ -1661,7 +1809,8 @@ function buildQuickPanel(card, key) {
   if (cols) {
     html += '<div class="pq-row"><span class="pq-lab">Colour</span><div class="pq-opts">' +
       cols.map(function (c, i) {
-        return '<button type="button" class="pq-opt' + (i === 0 ? ' on' : '') + '" data-col="' + c[0] + '">' +
+        const on = card.dataset.colour ? (c[0] === card.dataset.colour) : (i === 0);
+        return '<button type="button" class="pq-opt' + (on ? ' on' : '') + '" data-col="' + c[0] + '">' +
           '<span class="sw" style="background:' + c[1] + '"></span>' + c[0] + '</button>';
       }).join('') + '</div></div>';
   }
@@ -1789,15 +1938,21 @@ function openQuickAdd(btn) {
 /* ───────── card photo swipe (no visible controls) ───────── */
 (function () {
   document.querySelectorAll('.pcard-img').forEach(function (box) {
-    const imgs = Array.from(box.querySelectorAll('img'));
-    if (imgs.length < 2) return;
+    /* live list: colour swatches hide and show slots, so never cache it */
+    function imgs() { return Array.from(box.querySelectorAll('img:not([hidden])')); }
+    if (imgs().length < 2) return;
     let idx = 0, x0 = null, y0 = null, locked = null;
 
     function show(n) {
-      idx = (n + imgs.length) % imgs.length;
+      const list = imgs();
+      if (list.length < 2) return;
+      idx = (n + list.length) % list.length;
       box.classList.add('swiped');
-      imgs.forEach(function (im, i) { im.classList.toggle('on', i === idx); });
+      list.forEach(function (im, i) { im.classList.toggle('on', i === idx); });
     }
+    /* a colour change resets the swipe index via the 'swiped' class being removed */
+    new MutationObserver(function(){ if (!box.classList.contains('swiped')) idx = 0; })
+      .observe(box, { attributes: true, attributeFilter: ['class'] });
     box.addEventListener('touchstart', function (e) {
       if (e.touches.length !== 1) return;
       x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; locked = null;
