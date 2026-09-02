@@ -769,7 +769,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <a class="pcard" href="pages/product-o-merino-short-mens.html" data-product="o-merino-short-mens" data-sizes="s m l xl" data-cat="shorts" data-activity="running gym" data-fibre="wool" data-gender="men" role="listitem">
       <div class="pcard-img">
         <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 1" loading="lazy" decoding="async">
-        <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-back-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 2" loading="lazy" decoding="async">
+        <img width="1008" height="980" data-fit="contain" class="alt" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-back-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 2" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">Cotton &amp; Merino</span>
         </div>
@@ -1438,12 +1438,12 @@ const CARD_COLOURS = {
     /* Navy leads: it sits next to a black short in the running order */
     { name:'Navy', hex:'#1E2A44',
       main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-front-flat.jpg',
-      alt:null,
-      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-back-flat.jpg'] },
+      alt:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-navy-back-flat.jpg',
+      extras:[] },
     { name:'Black', hex:'#1C1C1A',
       main:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg',
-      alt:null,
-      extras:['assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg'] }
+      alt:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg',
+      extras:[] }
   ],
   'o-tee': [
     { name:'Natural White', hex:'#F5F3EE',
@@ -1508,6 +1508,24 @@ function applyCardColour(card, name) {
   card.querySelectorAll('.pcard-swatch').forEach(b => b.classList.toggle('on', b.dataset.col === col.name));
   /* keep the swatch label in sync with the fabric line, e.g. "Black · Running" is not needed; leave copy alone */
 }
+/* a card can only cross-fade on hover if it has an img.alt; create one if the
+   colour data supplies a hover image but the markup never had a slot for it */
+function ensureAltSlot(card) {
+  const box = card.querySelector('.pcard-img');
+  if (!box || box.querySelector('img.alt')) return;
+  const main = box.querySelector('img.main');
+  if (!main) return;
+  const im = main.cloneNode();
+  im.className = 'alt';
+  im.setAttribute('loading', 'lazy');
+  im.removeAttribute('id');
+  main.insertAdjacentElement('afterend', im);
+}
+Object.keys(CARD_COLOURS).forEach(key => {
+  if (!CARD_COLOURS[key].some(c => c.alt)) return;
+  const card = document.querySelector('.pcard[data-product="' + key + '"]');
+  if (card) ensureAltSlot(card);
+});
 cards.forEach(card => {
   const cols = CARD_COLOURS[card.dataset.product];
   if (!cols || cols.length < 2) return;
