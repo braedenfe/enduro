@@ -128,7 +128,27 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   font-family:var(--cond);font-size:0.86rem;letter-spacing:0.1em;color:var(--ink);transition:all .25s}
 .size-btn:hover{border-color:var(--forest);color:var(--forest)}
 .size-btn.active{background:var(--forest);border-color:var(--forest);color:var(--bone)}
-.size-btn.sold-out{opacity:0.35;text-decoration:line-through;cursor:default}
+.size-btn.sold-out{position:relative;overflow:hidden;color:rgba(14,21,18,0.42);
+  border-color:rgba(14,21,18,0.13);cursor:pointer}
+.size-btn.sold-out::after{content:"";position:absolute;left:8%;right:8%;top:50%;height:1px;
+  background:rgba(14,21,18,0.3);transform:rotate(-18deg)}
+.size-btn.sold-out.asking{border-color:var(--ink);color:var(--ink)}
+/* back-in-stock panel */
+.bis{margin-top:12px;padding:14px;border:1px solid var(--line-dark);border-radius:14px;
+  background:rgba(14,21,18,0.02)}
+.bis[hidden]{display:none}
+.bis-h{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ink);margin:0 0 4px}
+.bis-p{font-size:0.82rem;color:rgba(14,21,18,0.6);margin:0 0 12px;line-height:1.45}
+.bis-row{display:flex;gap:8px;flex-wrap:wrap}
+.bis-row input{flex:1 1 190px;min-width:0;padding:11px 14px;border-radius:99px;
+  border:1px solid var(--line-dark);background:#fff;font-family:var(--sans);font-size:0.9rem;color:var(--ink)}
+.bis-row button{padding:11px 20px;border-radius:99px;border:1px solid var(--forest);
+  background:var(--forest);color:var(--bone);font-family:var(--cond);font-size:0.76rem;
+  letter-spacing:0.18em;text-transform:uppercase;cursor:pointer}
+.bis-row button:disabled{opacity:0.6;cursor:default}
+.bis-msg{margin-top:9px;font-size:0.82rem;color:rgba(14,21,18,0.6)}
+.bis-msg.err{color:#8C2E2E}
 .size-guide{display:inline-block;margin-top:10px;font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
   color:rgba(14,21,18,0.5);border-bottom:1px solid var(--line-dark);padding-bottom:2px;background:none;border-top:none;border-left:none;border-right:none;transition:color .3s}
 .size-guide:hover{color:var(--ink)}
@@ -410,6 +430,15 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
     <div class="sel-label">Size <span id="sel-size">&mdash;</span></div>
     <div class="size-row" id="size-row"><button class="size-btn" style="min-width:74px" onclick="selectSize(this)">XS</button><button class="size-btn" style="min-width:74px" onclick="selectSize(this)">S</button><button class="size-btn" style="min-width:74px" onclick="selectSize(this)">M</button><button class="size-btn" style="min-width:74px" onclick="selectSize(this)">L</button><button class="size-btn sold-out" style="min-width:74px" onclick="selectSize(this)">XL</button><button class="size-btn sold-out" style="min-width:74px" onclick="selectSize(this)">XXL</button></div>
+    <div class="bis" id="bis" hidden>
+      <p class="bis-h" id="bis-h">Sold out</p>
+      <p class="bis-p">Leave your email and we&rsquo;ll let you know the moment it&rsquo;s back. No other messages.</p>
+      <div class="bis-row">
+        <input type="email" id="bis-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+        <button type="button" id="bis-btn" onclick="submitBIS()">Notify me</button>
+      </div>
+      <p class="bis-msg" id="bis-msg"></p>
+    </div>
     <button class="size-guide" onclick="document.querySelectorAll('.acc')[1].querySelector('.acc-head').click();document.getElementById('sizing').scrollIntoView({behavior:'smooth'})">Size guide</button>
 
     <button class="atc" onclick="addToCart()">Pre-order now</button>
@@ -587,10 +616,73 @@ function selectColour(btn, name) {
 
 /* ─── SIZE ─── */
 function selectSize(btn) {
-  if (btn.classList.contains('sold-out')) return;
+  if (btn.classList.contains('sold-out')) { openBIS(btn); return; }
+  closeBIS();
   document.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   document.getElementById('sel-size').textContent = btn.textContent;
+}
+
+/* ---------- back in stock ---------- */
+function closeBIS() {
+  var p = document.getElementById('bis');
+  if (p) p.hidden = true;
+  document.querySelectorAll('.size-btn.asking').forEach(function(b){ b.classList.remove('asking'); });
+}
+function openBIS(btn) {
+  var p = document.getElementById('bis');
+  if (!p) return;
+  var size = btn.textContent.trim();
+  document.querySelectorAll('.size-btn.asking').forEach(function(b){ b.classList.remove('asking'); });
+  btn.classList.add('asking');
+  p.hidden = false;
+  p.dataset.size = size;
+  document.getElementById('bis-h').textContent = 'Size ' + size + ' \u2014 sold out';
+  var m = document.getElementById('bis-msg'); m.textContent = ''; m.classList.remove('err');
+  var b = document.getElementById('bis-btn'); b.disabled = false; b.textContent = 'Notify me';
+  p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function submitBIS() {
+  var p = document.getElementById('bis');
+  var input = document.getElementById('bis-email');
+  var msg = document.getElementById('bis-msg');
+  var btn = document.getElementById('bis-btn');
+  var email = (input.value || '').trim();
+  msg.classList.remove('err');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    msg.textContent = 'Please enter a valid email address.'; msg.classList.add('err'); return;
+  }
+  btn.disabled = true; btn.textContent = 'Sending\u2026';
+  var body = JSON.stringify({
+    data: {
+      type: 'event',
+      attributes: {
+        properties: {
+          ProductName: PAGE.klName,
+          ProductKey: PAGE.key,
+          Size: p.dataset.size,
+          Colour: (document.getElementById('sel-colour') || {}).textContent || '',
+          URL: location.href
+        },
+        metric: { data: { type: 'metric', attributes: { name: 'Back in Stock Requested' } } },
+        profile: { data: { type: 'profile', attributes: { email: email } } }
+      }
+    }
+  });
+  fetch('https://a.klaviyo.com/client/events/?company_id=VMZvez', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
+    body: body
+  }).then(function (res) {
+    if (res.ok || res.status === 202) {
+      msg.textContent = 'Thanks. We\u2019ll email you when size ' + p.dataset.size + ' is back.';
+      btn.textContent = 'Done'; input.value = '';
+    } else { throw new Error('bis failed'); }
+  }).catch(function () {
+    msg.textContent = 'Something went wrong. Please try again.';
+    msg.classList.add('err');
+    btn.disabled = false; btn.textContent = 'Notify me';
+  });
 }
 
 /* ─── CTA ─── */
