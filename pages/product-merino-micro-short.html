@@ -634,6 +634,11 @@ function openBIS(btn) {
   var p = document.getElementById('bis');
   if (!p) return;
   var size = btn.textContent.trim();
+  /* asking about a sold-out size clears any earlier selection, so the
+     pre-order button and the size label never disagree with the panel */
+  document.querySelectorAll('.size-btn.active').forEach(function(b){ b.classList.remove('active'); });
+  var lbl = document.getElementById('sel-size');
+  if (lbl) lbl.innerHTML = '&mdash;';
   document.querySelectorAll('.size-btn.asking').forEach(function(b){ b.classList.remove('asking'); });
   btn.classList.add('asking');
   p.hidden = false;
