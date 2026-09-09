@@ -282,6 +282,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 .drawer-material{font-family:var(--cond);font-size:0.76rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--forest)}
 .drawer-name{font-family:var(--serif);font-weight:500;font-size:1.9rem;line-height:1.05;margin-top:8px;color:var(--ink)}
 .drawer-price{font-size:1.05rem;font-weight:300;margin-top:8px}
+.drawer-preorder{margin:10px 0 0;font-family:var(--cond);font-size:0.74rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:rgba(14,21,18,0.5);text-align:center}
 .drawer-section-title{
   font-family:var(--cond);font-size:0.74rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;
   color:rgba(14,21,18,0.45);margin:26px 0 12px;
@@ -1049,6 +1051,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="drawer-section-title">Select size</div>
       <div class="size-grid" id="drawer-sizes"></div>
       <button class="drawer-atc" id="drawer-atc" onclick="addToCart()">Pre-order now</button>
+        <p class="drawer-preorder" id="drawer-preorder">Pre-order &middot; expected to ship in 6&ndash;8 weeks</p>
 
       <div class="drawer-section-title">Conditions</div>
       <div class="conditions-widget" id="drawer-conditions">
@@ -1755,6 +1758,8 @@ function openDrawer(key) {
   const atc = document.getElementById('drawer-atc');
   if (p.soon) { atc.textContent = 'Notify me at release'; atc.onclick = function(){ closeDrawer(); notifyMe(); }; }
   else { atc.textContent = p.preorder ? 'Pre-order now' : 'Add to cart'; atc.onclick = addToCart; }
+  var dpo = document.getElementById('drawer-preorder');
+  if (dpo) dpo.style.display = p.preorder ? '' : 'none';
 
   const link = document.getElementById('drawer-page-link');
   if (p.page) { link.href = p.page; link.style.display = ''; }
