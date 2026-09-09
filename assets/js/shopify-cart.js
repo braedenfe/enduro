@@ -1063,7 +1063,7 @@
       .care-item[data-tip]{cursor:help}
       .care-item[data-tip]:hover::after,.care-item[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:0;background:#0E1512;color:#F5F2EC;font-family:'DM Sans',sans-serif;font-size:.75rem;line-height:1.4;padding:8px 11px;border-radius:3px;width:max-content;max-width:250px;z-index:20;pointer-events:none}
       #ec-prog{position:fixed;top:0;left:0;height:2px;width:0;background:#1F3D35;z-index:480;transition:width .1s linear}
-      #ec-share{background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0;margin-top:12px}`;
+      #ec-share:not(.size-guide){background:none;border:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5);text-decoration:underline;cursor:pointer;padding:0;margin-top:12px}#ec-share.size-guide{margin-left:14px;background:none;cursor:pointer}`;
     const st2 = document.createElement('style'); st2.textContent = css2; document.head.appendChild(st2);
 
 
@@ -1227,11 +1227,18 @@
 
     /* ---------- share (product pages, where supported) ---------- */
     (function () {
-      const note = document.querySelector('.atc-note');
-      if (!note || !navigator.share) return;
+      if (!navigator.share) return;
+      /* sit beside Size guide / Find my size, not adrift between the notes
+         under the button; fall back to the last note if the links are absent */
+      const fit = document.getElementById('ec-fit-btn');
+      const guide = document.querySelector('.size-guide');
+      const notes = document.querySelectorAll('.atc-note');
+      const anchor = fit || guide || (notes.length ? notes[notes.length - 1] : null);
+      if (!anchor) return;
       const b = document.createElement('button');
       b.id = 'ec-share'; b.type = 'button'; b.textContent = 'Share this';
-      note.after(b);
+      if (fit || guide) b.className = 'size-guide';
+      anchor.after(b);
       b.addEventListener('click', function () {
         navigator.share({
           title: productName('Enduro') + ' \u00B7 Enduro',
