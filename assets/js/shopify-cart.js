@@ -129,18 +129,23 @@
     if (!d.product) { console.warn('[enduro-cart] product not found / not published to Headless:', key); return null; }
     const list = d.product.variants.edges.map(({ node }) => {
       const opt = (n) => { const o = node.selectedOptions.find(x => x.name.toLowerCase() === n); return o ? o.value.toLowerCase() : null; };
-      return { id: node.id, available: node.availableForSale, priceNum: parseFloat(node.price.amount), size: opt('size'), color: opt('color') };
+      return { id: node.id, available: node.availableForSale, priceNum: parseFloat(node.price.amount), size: opt('size'), color: opt('color'), logo: opt('logo') };
     });
     variantCache[key] = list;
     return list;
   }
 
-  function pickVariant(list, size, colorName) {
+  function pickVariant(list, size, colorName, logoName) {
     const s = (size || '').toLowerCase();
     const c = (colorName || '').toLowerCase();
+    const g = (logoName || '').toLowerCase();
     return list.find(v => {
       if (v.size && v.size !== s) return false;
       if (c && v.color && !(c.indexOf(v.color) > -1 || v.color.indexOf(c) > -1)) return false;
+      /* a product with a Logo option must match it exactly, or we could sell
+         the wrong embroidery; products without the option are unaffected */
+      if (v.logo && g && v.logo !== g) return false;
+      if (v.logo && !g) return false;
       return true;
     });
   }
@@ -640,7 +645,7 @@
   }
 
   /* ---------- quick add from a product card (shop page) ---------- */
-  window.ecQuickAdd = async function (key, size, colourName) {
+  window.ecQuickAdd = async function (key, size, colourName, logoName) {
     if (!PRODUCTS[key] || !/^\d+$/.test(PRODUCTS[key])) {
       if (window.showToast) showToast('That option isn\u2019t available yet');
       return false;
@@ -650,7 +655,7 @@
       const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list;
       const v = (sellable && sellable.length === 1)
         ? sellable[0]
-        : (sellable && pickVariant(sellable, size, colourName || null));
+        : (sellable && pickVariant(sellable, size, colourName || null, logoName || null));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return false; }
       const cart = await addToCartFlow(v.id);
       await refresh(cart); openDrawer();
@@ -693,8 +698,10 @@
       const list = await resolveVariants(key);
       const colorEl = document.getElementById('sel-colour');
       const colorName = colorEl ? colorEl.textContent.trim() : null;
+      const logoEl = document.getElementById('sel-logo');
+      const logoName = logoEl ? logoEl.textContent.trim() : null;
       const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list; // $0 variants are gift-only
-      const v = (sellable && sellable.length === 1) ? sellable[0] : (sellable && pickVariant(sellable, size, colorName));
+      const v = (sellable && sellable.length === 1) ? sellable[0] : (sellable && pickVariant(sellable, size, colorName, logoName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
       const cart = await addToCartFlow(v.id);
       await refresh(cart); openDrawer();
