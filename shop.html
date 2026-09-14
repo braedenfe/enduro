@@ -1847,12 +1847,6 @@ const QA_COLOURS = {
   'o-tee':             [['Natural White','#F5F3EE'],['Black','#2C2C2A']],
   'enduro-tee':        [['Natural White','#F5F3EE'],['Black','#2C2C2A']]
 };
-/* Products carrying a third Shopify option for the embroidered mark.
-   Values must match the Shopify option values exactly. */
-const QA_LOGOS = {
-  'o-cotton-short-mens': ['White', 'Stealth'],
-  'o-merino-short-mens': ['White', 'Stealth']
-};
 
 function buildQuickPanel(card, key) {
   const p = products[key];
@@ -1871,13 +1865,6 @@ function buildQuickPanel(card, key) {
           '<span class="sw" style="background:' + c[1] + '"></span>' + c[0] + '</button>';
       }).join('') + '</div></div>';
   }
-  const logos = QA_LOGOS[key];
-  if (logos) {
-    html += '<div class="pq-row"><span class="pq-lab">&Oslash; mark</span><div class="pq-opts">' +
-      logos.map(function (g, i) {
-        return '<button type="button" class="pq-opt' + (i === 0 ? ' on' : '') + '" data-logo="' + g + '">' + g + '</button>';
-      }).join('') + '</div></div>';
-  }
   const sizes = p.sizes || [];
   const single = sizes.length === 1;
   html += '<div class="pq-row"><span class="pq-lab">Size</span><div class="pq-opts">' +
@@ -1894,7 +1881,6 @@ function buildQuickPanel(card, key) {
   const addBtn = panel.querySelector('.pq-add');
   function selectedSize() { const b = panel.querySelector('[data-size].on'); return b ? b.dataset.size : null; }
   function selectedCol() { const b = panel.querySelector('[data-col].on'); return b ? b.dataset.col : null; }
-  function selectedLogo() { const b = panel.querySelector('[data-logo].on'); return b ? b.dataset.logo : null; }
   function sync() {
     const ready = !!selectedSize();
     addBtn.classList.toggle('ready', ready);
@@ -1906,7 +1892,7 @@ function buildQuickPanel(card, key) {
     e.preventDefault(); e.stopPropagation();
     const opt = e.target.closest('.pq-opt');
     if (opt && !opt.disabled) {
-      const group = opt.dataset.size !== undefined ? '[data-size]' : (opt.dataset.logo !== undefined ? '[data-logo]' : '[data-col]');
+      const group = opt.dataset.size !== undefined ? '[data-size]' : '[data-col]';
       panel.querySelectorAll(group).forEach(function (b) { b.classList.remove('on'); });
       opt.classList.add('on');
       sync();
@@ -1917,7 +1903,7 @@ function buildQuickPanel(card, key) {
       if (!size) { showToast('Please select a size.'); return; }
       if (typeof window.ecQuickAdd !== 'function') { showToast('Cart unavailable. Please refresh.'); return; }
       addBtn.disabled = true; addBtn.textContent = 'Adding\u2026';
-      window.ecQuickAdd(key, size, selectedCol(), selectedLogo()).then(function (ok) {
+      window.ecQuickAdd(key, size, selectedCol()).then(function (ok) {
         addBtn.disabled = false;
         if (ok) { closeQuickAdd(card); }
         sync();
