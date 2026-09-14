@@ -399,6 +399,12 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <div class="sel-label">Colour <span>Washed Black</span></div>
     <div class="colour-row"><button class="colour-option active" style="cursor:default"><span class="colour-swatch" style="background:#2C2C2A"></span>Washed Black</button></div>
 
+        <div class="sel-label">&Oslash; mark <span id="sel-logo">White</span></div>
+    <div class="colour-row" id="logo-row">
+      <button class="colour-option active" onclick="selectLogo(this, 'White')"><span class="colour-swatch" style="background:#F5F2EC;box-shadow:inset 0 0 0 1px rgba(14,21,18,.2)"></span>White</button>
+      <button class="colour-option" onclick="selectLogo(this, 'Stealth')"><span class="colour-swatch" style="background:var(--stealth-sw,#1C1C1A)"></span>Stealth</button>
+    </div>
+
     <div class="sel-label">Size <span id="sel-size">&mdash;</span></div>
     <div class="size-row" id="size-row"><button class="size-btn" onclick="selectSize(this)">S</button><button class="size-btn" onclick="selectSize(this)">M</button><button class="size-btn" onclick="selectSize(this)">L</button><button class="size-btn" onclick="selectSize(this)">XL</button></div>
     <button class="size-guide" onclick="document.querySelectorAll('.acc')[1].querySelector('.acc-head').click();document.getElementById('sizing').scrollIntoView({behavior:'smooth'})">Size guide</button>
@@ -554,6 +560,11 @@ applyFit(PAGE.images[0].src);
 })();
 
 /* ─── COLOUR ─── */
+function selectLogo(btn, name) {
+  btn.parentNode.querySelectorAll('.colour-option').forEach(function (b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('sel-logo').textContent = name;
+}
 function selectColour(btn, name) {
   document.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
