@@ -822,7 +822,7 @@
       .ec-fit-row{display:flex;gap:10px;margin-bottom:12px}
       .ec-fit-field{flex:1}
       .ec-fit-field label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-bottom:6px}
-      .ec-fit-field input{width:100%;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;outline:none;box-sizing:border-box}
+      .ec-fit-field input,.ec-fit-field select{width:100%;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;outline:none;box-sizing:border-box;-webkit-appearance:none;appearance:none}.ec-fit-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%230E1512' stroke-width='1.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:11px;padding-right:38px}
       .ec-fit-field input:focus{border-color:#1F3D35}
       #ec-fit-go{display:block;width:100%;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.84rem;letter-spacing:.2em;text-transform:uppercase;padding:14px;cursor:pointer;margin-top:4px}
       #ec-fit-res{font-size:.95rem;color:#0E1512;margin:16px 0 0;min-height:1.2em}
@@ -942,6 +942,13 @@
       const sizeBtns = document.querySelectorAll('.size-btn');
       if (!guideBtn || !sizeBtns.length) return;
       const ORDER = ['XS', 'S', 'M', 'L', 'XL'];
+      /* socks are sized off the foot, so the finder asks for a shoe size.
+         Ranges mirror the Size & Fit panel: M US 5-8, L US 9-12. */
+      const FOOTWEAR = { 'merino-long-run-sock': [
+        { size: 'M', us: [5, 8] },
+        { size: 'L', us: [9, 12] }
+      ] };
+      const shoe = FOOTWEAR[(PAGE && PAGE.key) || ''];
       const btn = document.createElement('button');
       btn.className = 'size-guide'; btn.id = 'ec-fit-btn'; btn.type = 'button';
       btn.textContent = 'Find my size';
@@ -949,14 +956,23 @@
       const ov = document.createElement('div'); ov.id = 'ec-fit-ov';
       ov.innerHTML = '<div id="ec-fit" role="dialog" aria-label="Find your size">' +
         '<button id="ec-fit-x" aria-label="Close">&times;</button>' +
-        '<h3>Find your size</h3><p class="sub">Enter your height and weight for a suggested fit.</p>' +
-        '<div class="ec-fit-row">' +
-        '<div class="ec-fit-field"><label for="ec-fit-h">Height (cm)</label><input id="ec-fit-h" type="number" inputmode="numeric" min="120" max="230" placeholder="178"></div>' +
-        '<div class="ec-fit-field"><label for="ec-fit-w">Weight (kg)</label><input id="ec-fit-w" type="number" inputmode="numeric" min="35" max="180" placeholder="76"></div></div>' +
+        '<h3>Find your size</h3>' +
+        (shoe
+          ? '<p class="sub">Enter your usual shoe size.</p>' +
+            '<div class="ec-fit-row">' +
+            '<div class="ec-fit-field"><label for="ec-fit-region">Region</label>' +
+            '<select id="ec-fit-region"><option value="us">US</option><option value="au">AU / UK</option><option value="eu">EU</option></select></div>' +
+            '<div class="ec-fit-field"><label for="ec-fit-shoe">Shoe size</label><input id="ec-fit-shoe" type="number" inputmode="decimal" step="0.5" min="1" max="50" placeholder="9"></div></div>'
+          : '<p class="sub">Enter your height and weight for a suggested fit.</p>' +
+            '<div class="ec-fit-row">' +
+            '<div class="ec-fit-field"><label for="ec-fit-h">Height (cm)</label><input id="ec-fit-h" type="number" inputmode="numeric" min="120" max="230" placeholder="178"></div>' +
+            '<div class="ec-fit-field"><label for="ec-fit-w">Weight (kg)</label><input id="ec-fit-w" type="number" inputmode="numeric" min="35" max="180" placeholder="76"></div></div>') +
         '<button id="ec-fit-go" type="button">Suggest my size</button>' +
         '<p id="ec-fit-res"></p>' +
         '<button id="ec-fit-sel" type="button"></button>' +
-        '<p class="note">A guide only. Between sizes? We suggest sizing up for a relaxed fit.</p></div>';
+        '<p class="note">' + (shoe
+          ? 'A guide only. Between sizes? Size up for a roomier feel, down for a more compressive one.'
+          : 'A guide only. Between sizes? We suggest sizing up for a relaxed fit.') + '</p></div>';
       document.body.appendChild(ov);
       const open = function () { ov.classList.add('open'); };
       const close = function () { ov.classList.remove('open'); };
@@ -971,7 +987,42 @@
         return !!(g && g.textContent.indexOf('Women') === 0);
       }
       function band(v, arr) { for (let i = 0; i < arr.length; i++) { if (v < arr[i]) return i; } return arr.length; }
+      /* AU/UK men's runs ~1 below US; EU is roughly US + 32.5 for men's.
+         A guide only, which the note under the result makes clear. */
+      function toUS(v, region) {
+        if (region === 'au') return v + 1;
+        if (region === 'eu') return v - 32.5;
+        return v;
+      }
+      function suggestFromShoe() {
+        const res = document.getElementById('ec-fit-res');
+        const sel = document.getElementById('ec-fit-sel');
+        const region = document.getElementById('ec-fit-region').value;
+        const raw = parseFloat(document.getElementById('ec-fit-shoe').value);
+        sel.style.display = 'none';
+        if (!raw) { res.textContent = 'Please enter your shoe size.'; return; }
+        const us = toUS(raw, region);
+        let pick = null;
+        shoe.forEach(function (r) { if (us >= r.us[0] && us <= r.us[1]) pick = r.size; });
+        if (!pick) {
+          /* outside the range: fall to the nearest band rather than saying nothing */
+          const first = shoe[0], last = shoe[shoe.length - 1];
+          if (us < first.us[0]) { pick = first.size; res.innerHTML = 'That is below our smallest size. The closest is <span class="sz">' + pick + '</span>.'; }
+          else { pick = last.size; res.innerHTML = 'That is above our largest size. The closest is <span class="sz">' + pick + '</span>.'; }
+        } else {
+          res.innerHTML = 'We suggest size <span class="sz">' + pick + '</span>.';
+        }
+        const target = Array.prototype.find.call(document.querySelectorAll('.size-btn'), function (x) {
+          return x.textContent.trim() === pick && !x.classList.contains('sold-out');
+        });
+        if (target) {
+          sel.textContent = 'Select ' + pick;
+          sel.style.display = 'block';
+          sel.onclick = function () { target.click(); close(); };
+        }
+      }
       document.getElementById('ec-fit-go').addEventListener('click', function () {
+        if (shoe) { suggestFromShoe(); return; }
         const h = parseFloat(document.getElementById('ec-fit-h').value);
         const w = parseFloat(document.getElementById('ec-fit-w').value);
         const res = document.getElementById('ec-fit-res');
