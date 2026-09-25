@@ -345,6 +345,19 @@ details.sources[open] summary::after{transform:rotate(45deg)}
   .sec-ico{width:40px;height:40px}
   .sec-ico svg{width:21px;height:21px}
 }
+
+/* FAQ accordion, matching faq.html */
+.faq-item{border-bottom:1px solid var(--line-dark)}
+summary.faq-q::-webkit-details-marker{display:none}
+.faq-q{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:22px;
+  padding:22px 0;font-family:var(--serif);font-weight:500;font-size:clamp(1.05rem,2.2vw,1.28rem);line-height:1.25;color:var(--ink);
+  -webkit-tap-highlight-color:transparent}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q .sign{flex:none;width:18px;text-align:center;font-family:var(--sans);font-weight:300;color:var(--forest);transform:translateY(-1px);transition:transform .3s}
+.faq-q .sign::before{content:'+';font-size:1.25rem;line-height:1}
+.faq-item[open] .faq-q .sign::before{content:'\2212'}
+.faq-a{padding:0 0 26px;max-width:68ch}
+.faq-a p{font-weight:300;line-height:1.8;color:rgba(14,21,18,0.78);margin-bottom:12px}
 </style>
 <script src="https://js.squarecdn.com/square-marketplace.js" async></script>
 </head>
@@ -422,18 +435,30 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
 
     <h2 class="sec-h">Common questions</h2>
-    <p class="result">What is natural fibre running clothing?</p>
-    <p>Running apparel built from grown fibres such as merino wool and organic cotton rather than petroleum derived synthetics like polyester and nylon.</p>
-    <p class="result">Is merino wool good for running in summer?</p>
-    <p>Yes, particularly in dry heat. Merino absorbs moisture vapour before it becomes liquid sweat and releases heat as it does so. In high humidity all fibres struggle, and fabric weight matters more than fibre type.</p>
-    <p class="result">What micron merino is best for running?</p>
-    <p>At or below roughly 18.5 micron is comfortable directly against skin. Finer fibres feel softer and cost more. Enduro merino is 17.5 micron.</p>
-    <p class="result">What GSM should a running shirt be?</p>
-    <p>Roughly 120 to 180 gsm is summer weight for a running tee. Heavier fabrics suit cooler conditions or garments that need more structure.</p>
-    <p class="result">Which certifications matter for natural fibre clothing?</p>
-    <p>GOTS for organic cotton, and RWS, ZQ or Woolmark for wool. OEKO-TEX Standard 100 indicates the material has been tested for harmful substances. Uncertified claims cannot be verified.</p>
-    <p class="result">What natural fibre running gear should I buy first?</p>
-    <p>Socks. They take the most friction, sweat and odour, so merino makes the biggest difference there. A tee is next, since it is the garment worn longest after a run.</p>
+    <details class="faq-item">
+      <summary class="faq-q"><span>What is natural fibre running clothing?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>Running apparel built from grown fibres such as merino wool and organic cotton rather than petroleum derived synthetics like polyester and nylon.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q"><span>Is merino wool good for running in summer?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>Yes, particularly in dry heat. Merino absorbs moisture vapour before it becomes liquid sweat and releases heat as it does so. In high humidity all fibres struggle, and fabric weight matters more than fibre type.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q"><span>What micron merino is best for running?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>At or below roughly 18.5 micron is comfortable directly against skin. Finer fibres feel softer and cost more. Enduro merino is 17.5 micron.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q"><span>What GSM should a running shirt be?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>Roughly 120 to 180 gsm is summer weight for a running tee. Heavier fabrics suit cooler conditions or garments that need more structure.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q"><span>Which certifications matter for natural fibre clothing?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>GOTS for organic cotton, and RWS, ZQ or Woolmark for wool. OEKO-TEX Standard 100 indicates the material has been tested for harmful substances. Uncertified claims cannot be verified.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q"><span>What natural fibre running gear should I buy first?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="faq-a"><p>Socks. They take the most friction, sweat and odour, so merino makes the biggest difference there. A tee is next, since it is the garment worn longest after a run.</p></div>
+    </details>
 
 </div>
 </main>
