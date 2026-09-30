@@ -956,6 +956,27 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </a>
 
     <!-- Organic Tote -->
+    <a class="pcard" href="pages/product-organic-cotton-dad-cap.html" data-product="organic-cotton-dad-cap" data-sizes="onesize" data-cat="accessories" data-activity="accessories" data-fibre="cotton" data-gender="men women" role="listitem">
+      <div class="pcard-img">
+        <img width="1008" height="1260" class="main" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-front.jpg" alt="Organic Cotton Dad Cap, view 1" loading="lazy" decoding="async">
+        <img width="1008" height="1260" class="alt" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-back.jpg" alt="Organic Cotton Dad Cap, view 2" loading="lazy" decoding="async">
+        <img width="1008" height="1260" class="extra" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-side.jpg" alt="Organic Cotton Dad Cap, view 3" loading="lazy" decoding="async">
+        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-fabric">100% Organic Cotton</span>
+        </div>
+      <div class="pcard-info">
+        <div>
+          <h2 class="pcard-name">Organic Cotton Dad Cap</h2>
+          <span class="pcard-fibre">Organic Cotton &middot; Everyday</span>
+        </div>
+        <span class="pcard-price">A$60</span>
+      </div>
+      <div class="pcard-actions">
+        <button class="pcard-btn add" type="button" data-qa>Quick add</button>
+        <span class="pcard-btn view">View product</span>
+      </div>
+    </a>
+
     <a class="pcard" href="pages/product-organic-tote.html" data-product="organic-tote" data-sizes="onesize" data-cat="accessories" data-activity="accessories" data-fibre="cotton" data-gender="men women" role="listitem">
       <div class="pcard-img">
         <img width="1008" height="1260" class="main" src="assets/images/products/organic-tote/organic-tote-front.jpg" alt="Organic Tote, view 1" loading="lazy" decoding="async">
@@ -1081,6 +1102,26 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 /* ─── PRODUCT DATA ─── */
 const products = {
+  'organic-cotton-dad-cap': {
+    name: 'Organic Cotton Dad Cap',
+    material: '100% GOTS Organic Cotton',
+    category: 'Everyday \u00b7 Accessories',
+    price: 'A$60',
+    preorder: true,
+    page: 'pages/product-organic-cotton-dad-cap.html',
+    photo: 'assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-front.jpg',
+    desc: 'A lightweight everyday cap in 100% GOTS certified organic cotton. Relaxed six panel construction, curved brim and an adjustable back strap, finished with understated embroidered branding.',
+    fit: 'Unisex, one size. Adjustable back strap.',
+    care: 'Spot clean recommended. For a deeper clean, gently wash cold in a laundry bag. Do not bleach or tumble dry. Reshape and air dry in the shade.',
+    sizes: ['One Size'],
+    soldOut: [],
+    details: [
+      ['Fibre','100% GOTS Organic Cotton'],
+      ['Construction','Relaxed six panel, curved brim'],
+      ['Closure','Adjustable back strap'],
+      ['Origin','Designed in Australia'],
+    ]
+  },
   'organic-tote': {
     name: 'Organic Tote',
     material: 'Organic Cotton',
@@ -1596,6 +1637,7 @@ const ORDER = [
   'enduro-tee',             /* tee    */
   'merino-short-mens',      /* short  */
   'o-cotton-short-mens',    /* short  — the one unavoidable pair, see note */
+  'organic-cotton-dad-cap', /* access */
   'merino-long-run-sock',   /* access */
   'organic-tote'            /* access */
 ];
