@@ -482,7 +482,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <script>
 'use strict';
-const PAGE = {"key": "cotton-long-run-tee", "klName": "FTLR CottonLite&trade; Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}, {"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
+const PAGE = {"key": "cotton-long-run-tee", "klName": "FTLR CottonLite&trade; Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}, {"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}, {"file": "lifestyle", "label": "On the run", "colourOnly": "Natural White", "noGender": true}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
 window.klaviyo = window.klaviyo || [];
 
 /* ─── KLAVIYO: Viewed Product ─── */
@@ -564,11 +564,14 @@ PAGE.gender = 'men';
 function buildImages(){
   const prefix = PAGE.colours[PAGE.currentColour];
   const womens = PAGE.gender === 'women';
-  return PAGE.views.map(function(v){
-    const isModel = v.file.indexOf('model') > -1;
-    const suffix = (isModel && womens) ? '-womens' : '';
-    return { src: '../assets/images/products/' + PAGE.key + '/' + PAGE.key + '-' + prefix + '-' + v.file + suffix + '.jpg', label: PAGE.currentColour + ' - ' + v.label };
-  });
+  return PAGE.views
+    /* a view can be limited to one colour, for shots that exist in that colour only */
+    .filter(function(v){ return !v.colourOnly || v.colourOnly === PAGE.currentColour; })
+    .map(function(v){
+      const isModel = v.file.indexOf('model') > -1;
+      const suffix = (isModel && womens && !v.noGender) ? '-womens' : '';
+      return { src: '../assets/images/products/' + PAGE.key + '/' + PAGE.key + '-' + prefix + '-' + v.file + suffix + '.jpg', label: PAGE.currentColour + ' - ' + v.label };
+    });
 }
 function rebuildGallery(){
   PAGE.images = buildImages();
