@@ -81,6 +81,8 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 @media(min-width:921px){.g-main{max-height:calc(100vh - 120px)}}
 @media(max-width:920px){.g-main{border-radius:0 0 16px 16px;aspect-ratio:auto;height:54vh;width:100%}}
 .g-main img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
+.g-main img{position:absolute;inset:0}
+#g-img2{pointer-events:none}
 .g-main.contain{background:#fff}
 .g-main.contain img{object-fit:contain}
 .g-badge{position:absolute;top:14px;left:14px;z-index:2;font-family:var(--cond);font-size:0.7rem;font-weight:500;
@@ -360,6 +362,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <div class="gallery">
     <div class="g-main" id="g-main">
       <img width="1008" height="1008" id="g-img" src="../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg" alt="FTLR CottonLite&trade; Tee">
+      <img width="1008" height="1008" id="g-img2" alt="" aria-hidden="true" style="opacity:0">
       <span class="g-badge">Pre-order</span><span class="g-badge fabric">100% Cotton</span>
       <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
         <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
@@ -521,6 +524,7 @@ window.klaviyo = window.klaviyo || [];
 /* ─── GALLERY ─── */
 let gIndex = 0;
 let gToken = 0;
+const gImg2 = document.getElementById('g-img2');
 const gImg = document.getElementById('g-img');
 const gCounter = document.getElementById('g-counter');
 
@@ -536,27 +540,33 @@ function setImage(i) {
   gIndex = (i + PAGE.images.length) % PAGE.images.length;
   const next = PAGE.images[gIndex];
   const token = ++gToken;
-  /* fade out, and only fade back in once the next image has actually decoded.
-     swapping src before it loads is what made the old image flash back. */
-  gImg.style.opacity = 0;
-  const show = function () {
-    if (token !== gToken) return;          /* a newer tap won the race */
-    gImg.src = next.src;
-    gImg.alt = next.label;
-    applyFit(next.src);
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { if (token === gToken) gImg.style.opacity = 1; });
-    });
-  };
-  const pre = new Image();
-  let faded = false, loaded = false;
-  const ready = function () { if (faded && loaded) show(); };
-  pre.onload = function () { loaded = true; ready(); };
-  pre.onerror = function () { loaded = true; ready(); };
-  setTimeout(function () { faded = true; ready(); }, 350);
-  pre.src = next.src;
-  if (pre.complete) { loaded = true; ready(); }   /* cached images may not fire onload */
   updateCounter();
+  /* load into the spare layer, decode it, then crossfade. nothing is ever
+     shown mid-decode, which is what caused the flash of the previous photo. */
+  const incoming = gImg2;
+  incoming.src = next.src;
+  incoming.alt = next.label;
+  const reveal = function () {
+    if (token !== gToken) return;
+    applyFit(next.src);
+    incoming.style.opacity = 1;
+    gImg.style.opacity = 0;
+    setTimeout(function () {
+      if (token !== gToken) return;
+      /* settle: the visible image becomes the base layer again */
+      gImg.src = next.src;
+      gImg.alt = next.label;
+      gImg.style.transition = 'none';
+      gImg.style.opacity = 1;
+      incoming.style.transition = 'none';
+      incoming.style.opacity = 0;
+      void gImg.offsetWidth;
+      gImg.style.transition = '';
+      incoming.style.transition = '';
+    }, 380);
+  };
+  if (incoming.decode) { incoming.decode().then(reveal).catch(reveal); }
+  else { incoming.onload = reveal; incoming.onerror = reveal; }
 }
 updateCounter();
 applyFit(PAGE.images[0].src);
@@ -592,7 +602,11 @@ function buildImages(){
 function rebuildGallery(){
   PAGE.images = buildImages();
   gIndex = 0;
+  gToken++;                       /* cancel any crossfade in flight */
+  gImg2.style.opacity = 0;        /* hide the spare layer */
+  gImg.style.opacity = 1;
   gImg.src = PAGE.images[0].src;
+  gImg.alt = PAGE.images[0].label;
   applyFit(PAGE.images[0].src);
   updateCounter();
 }
