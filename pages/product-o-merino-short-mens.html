@@ -80,7 +80,9 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .g-main{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:18px;background:#EAE6DE;touch-action:pan-y}
 @media(min-width:921px){.g-main{max-height:calc(100vh - 120px)}}
 @media(max-width:920px){.g-main{border-radius:0 0 16px 16px;aspect-ratio:auto;height:54vh;width:100%}}
-.g-main img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
+.g-main img{width:100%;height:100%;object-fit:cover}
+.g-layer{position:absolute;inset:0;opacity:0;transition:opacity .28s ease;pointer-events:none}
+.g-layer.on{opacity:1}
 .g-main.contain{background:#fff}
 .g-main.contain img{object-fit:contain}
 .g-badge{position:absolute;top:14px;left:14px;z-index:2;font-family:var(--cond);font-size:0.7rem;font-weight:500;
@@ -364,7 +366,6 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <!-- GALLERY -->
   <div class="gallery">
     <div class="g-main" id="g-main">
-      <img width="1008" height="980" id="g-img" src="../assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg" alt="Ø Merino Lined Short 5″ — Men's">
       <span class="g-badge">Pre-order</span><span class="g-badge fabric">100% Merino Wool</span>
       <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
         <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
@@ -514,31 +515,53 @@ window.klaviyo = window.klaviyo || [];
 })();
 
 /* ─── GALLERY ─── */
+/* Every image is rendered as its own layer and kept in the DOM. Switching is a
+   class toggle, so there is no src swap, no decode wait and no blank frame. */
 let gIndex = 0;
-const gImg = document.getElementById('g-img');
+const gMain = document.getElementById('g-main');
 const gCounter = document.getElementById('g-counter');
+let gLayers = [];
+
+function isFlat(src) { return src.indexOf('-flat') > -1; }
 
 function updateCounter() {
-  const pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+  if (!gCounter) return;
+  const pad = function (n) { return n < 10 ? '0' + n : '' + n; };
   gCounter.textContent = pad(gIndex + 1) + ' / ' + pad(PAGE.images.length);
 }
-function applyFit(src) {
-  // Flat lays and detail shots show uncropped; model shots fill the frame
-  document.getElementById('g-main').classList.toggle('contain', src.indexOf('-flat') > -1);
+
+function buildLayers() {
+  if (!gMain) return;
+  gLayers.forEach(function (im) { im.remove(); });
+  gLayers = PAGE.images.map(function (img, n) {
+    const im = document.createElement('img');
+    im.className = 'g-layer' + (n === 0 ? ' on' : '');
+    im.src = img.src;
+    im.alt = n === 0 ? img.label : '';
+    im.decoding = 'async';
+    if (n > 0) im.setAttribute('aria-hidden', 'true');
+    /* fit is set per layer, so the frame never changes shape mid-swap */
+    im.style.objectFit = isFlat(img.src) ? 'contain' : 'cover';
+    gMain.insertBefore(im, gMain.firstChild);
+    return im;
+  });
+  gMain.classList.toggle('contain', isFlat(PAGE.images[0].src));
 }
+
 function setImage(i) {
-  gIndex = (i + PAGE.images.length) % PAGE.images.length;
-  gImg.style.opacity = 0;
-  setTimeout(function(){
-    gImg.src = PAGE.images[gIndex].src;
-    gImg.alt = PAGE.images[gIndex].label;
-    applyFit(PAGE.images[gIndex].src);
-    gImg.style.opacity = 1;
-  }, 180);
+  if (!gLayers.length) return;
+  gIndex = (i + gLayers.length) % gLayers.length;
+  gLayers.forEach(function (im, n) {
+    im.classList.toggle('on', n === gIndex);
+    if (n === gIndex) { im.removeAttribute('aria-hidden'); im.alt = PAGE.images[n].label; }
+    else { im.setAttribute('aria-hidden', 'true'); im.alt = ''; }
+  });
+  gMain.classList.toggle('contain', isFlat(PAGE.images[gIndex].src));
   updateCounter();
 }
+
+buildLayers();
 updateCounter();
-applyFit(PAGE.images[0].src);
 
 /* Touch swipe */
 (function(){
