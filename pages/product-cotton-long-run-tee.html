@@ -482,7 +482,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
 <script>
 'use strict';
-const PAGE = {"key": "cotton-long-run-tee", "klName": "FTLR CottonLite&trade; Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}, {"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}, {"file": "lifestyle", "label": "On the run", "colourOnly": "Natural White", "noGender": true}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
+const PAGE = {"key": "cotton-long-run-tee", "klName": "FTLR CottonLite&trade; Tee", "klCategories": ["Tees", "Running", "Gym"], "priceNum": 100, "views": [{"file": "front-flat", "label": "Front flat"}, {"file": "back-flat", "label": "Back flat"}, {"file": "front-model", "label": "Front"}, {"file": "back-model", "label": "Back"}, {"file": "lifestyle", "label": "On the run", "colourOnly": "Natural White", "noGender": true}], "colours": {"Natural White": "white", "Black": "black"}, "images": [{"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg", "label": "Natural White - Front flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg", "label": "Natural White - Back flat"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg", "label": "Natural White - Front"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg", "label": "Natural White - Back"}, {"src": "../assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-lifestyle.jpg", "label": "Natural White - On the run"}], "tempMin": 12, "tempMax": 28, "conditions": [{"name": "Rain", "fill": 30}, {"name": "Wind", "fill": 25}]};
 window.klaviyo = window.klaviyo || [];
 
 /* ─── KLAVIYO: Viewed Product ─── */
@@ -520,6 +520,7 @@ window.klaviyo = window.klaviyo || [];
 
 /* ─── GALLERY ─── */
 let gIndex = 0;
+let gToken = 0;
 const gImg = document.getElementById('g-img');
 const gCounter = document.getElementById('g-counter');
 
@@ -533,13 +534,28 @@ function applyFit(src) {
 }
 function setImage(i) {
   gIndex = (i + PAGE.images.length) % PAGE.images.length;
+  const next = PAGE.images[gIndex];
+  const token = ++gToken;
+  /* fade out, and only fade back in once the next image has actually decoded.
+     swapping src before it loads is what made the old image flash back. */
   gImg.style.opacity = 0;
-  setTimeout(function(){
-    gImg.src = PAGE.images[gIndex].src;
-    gImg.alt = PAGE.images[gIndex].label;
-    applyFit(PAGE.images[gIndex].src);
-    gImg.style.opacity = 1;
-  }, 180);
+  const show = function () {
+    if (token !== gToken) return;          /* a newer tap won the race */
+    gImg.src = next.src;
+    gImg.alt = next.label;
+    applyFit(next.src);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { if (token === gToken) gImg.style.opacity = 1; });
+    });
+  };
+  const pre = new Image();
+  let faded = false, loaded = false;
+  const ready = function () { if (faded && loaded) show(); };
+  pre.onload = function () { loaded = true; ready(); };
+  pre.onerror = function () { loaded = true; ready(); };
+  setTimeout(function () { faded = true; ready(); }, 350);
+  pre.src = next.src;
+  if (pre.complete) { loaded = true; ready(); }   /* cached images may not fire onload */
   updateCounter();
 }
 updateCounter();
@@ -580,6 +596,9 @@ function rebuildGallery(){
   applyFit(PAGE.images[0].src);
   updateCounter();
 }
+/* build the gallery from PAGE.views at load. previously PAGE.images was only
+   rebuilt on a colour change, so a newly added view never appeared first time. */
+rebuildGallery();
 function selectColour(btn, name) {
   btn.parentNode.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
