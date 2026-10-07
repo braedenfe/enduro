@@ -24,6 +24,7 @@
     'merino-bandeau':      '15904981254513',
     'o-tee':               '15947967398257',
     'enduro-tee':          '15948280660337',
+    'organic-cotton-dad-cap': '16031761924465',
     'gift-with-purchase':  '15906560278897'
   };
 
@@ -106,7 +107,7 @@
       }
     });
     /* 3. say it next to the price, which is where the misreading happens */
-    if (foreign) {
+    if (foreign && !window.__ecFxDone) {
       document.querySelectorAll('.p-price').forEach(function (el) {
         if (el.parentNode.querySelector('.aud-note')) return;
         const n = document.createElement('span');
@@ -137,7 +138,7 @@
       const zone = shipZoneFor(cc);
       if (!zone) return;                       /* unknown or unserved: leave the full table */
       const country = (g && g.country && String(g.country).length > 2) ? g.country : null;
-      try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), zone: zone, country: country })); } catch (e) {}
+      try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), zone: zone, country: country, cc: cc })); } catch (e) {}
       applyShipZone(zone, country);
     };
     fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(use)
@@ -207,6 +208,106 @@
     if (json.errors) throw new Error(JSON.stringify(json.errors));
     return json.data;
   }
+
+  /* ---------- Local currency pricing ----------
+     Shopify Markets converts at checkout for AU, NZ, US, GB and the EU. This
+     asks the Storefront API for the same converted price and puts it on the
+     page, so what the customer reads matches what they are charged. Falls back
+     silently to the AUD prices already in the markup. */
+  const PRICE_MARKETS = {
+    AU:'AU', NZ:'NZ', US:'US', GB:'GB',
+    AT:'AT', BE:'BE', BG:'BG', HR:'HR', CY:'CY', CZ:'CZ', DK:'DK', EE:'EE', FI:'FI',
+    FR:'FR', DE:'DE', GR:'GR', HU:'HU', IE:'IE', IT:'IT', LV:'LV', LT:'LT', LU:'LU',
+    MT:'MT', NL:'NL', PL:'PL', PT:'PT', RO:'RO', SK:'SK', SI:'SI', ES:'ES', SE:'SE'
+  };
+
+  function fmtMoney(amount, currency) {
+    const n = Math.round(parseFloat(amount));
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style: 'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0
+      }).format(n);
+    } catch (e) { return currency + ' ' + n; }
+  }
+
+  async function localPrices(country) {
+    const keys = Object.keys(PRODUCTS).filter(function (k) { return k !== 'gift-with-purchase'; });
+    const ids = keys.map(function (k) { return 'gid://shopify/Product/' + PRODUCTS[k]; });
+    const data = await gql(
+      'query P($ids:[ID!]!, $c: CountryCode!) @inContext(country: $c) {' +
+      '  nodes(ids: $ids) { ... on Product { id priceRange { minVariantPrice { amount currencyCode } } } }' +
+      '}', { ids: ids, c: country });
+    const out = {};
+    (data.nodes || []).forEach(function (n, i) {
+      if (!n || !n.priceRange) return;
+      out[keys[i]] = n.priceRange.minVariantPrice;
+    });
+    return out;
+  }
+
+  function applyLocalPrices(prices) {
+    const keys = Object.keys(prices);
+    if (!keys.length) return;
+    const cur = prices[keys[0]].currencyCode;
+    if (cur === 'AUD') return;                 /* nothing to change for Australia */
+
+    keys.forEach(function (key) {
+      const p = prices[key];
+      const text = fmtMoney(p.amount, p.currencyCode);
+
+      /* shop grid cards */
+      document.querySelectorAll('.pcard[data-product="' + key + '"] .pcard-price')
+        .forEach(function (el) { el.textContent = text; });
+
+      /* related product cards, on every page */
+      document.querySelectorAll('a[href*="product-' + key + '.html"] .rel-price')
+        .forEach(function (el) { el.textContent = text; });
+
+      /* the product page itself */
+      if (typeof PAGE !== 'undefined' && PAGE && PAGE.key === key) {
+        document.querySelectorAll('.p-price').forEach(function (el) {
+          const note = el.querySelector('.aud-note');
+          el.textContent = text;
+          if (note) el.appendChild(note);
+        });
+      }
+
+      /* the quick-add drawer reads from this map */
+      if (window.__ecProducts && window.__ecProducts[key]) window.__ecProducts[key].price = text;
+    });
+
+    /* the AUD hint is wrong once prices are converted */
+    window.__ecFxDone = true;
+    document.querySelectorAll('.aud-note').forEach(function (n) { n.remove(); });
+    /* Afterpay is an Australian account priced in AUD */
+    document.querySelectorAll('square-placement, .ap-msg').forEach(function (el) { el.style.display = 'none'; });
+    document.querySelectorAll('.ship-zone-note').forEach(function (n) {
+      n.textContent = n.textContent.replace(
+        ' \u2014 checkout converts to your local currency.',
+        '. Shipping shown in Australian dollars; checkout converts with your order.');
+    });
+  }
+
+  (function () {
+    const KEY = 'ec_fx';
+    const run = function (country) {
+      const market = PRICE_MARKETS[String(country || '').toUpperCase()];
+      if (!market || market === 'AU') return;
+      localPrices(market).then(applyLocalPrices).catch(function () {});
+    };
+    try {
+      const c = JSON.parse(localStorage.getItem('ec_ship_zone') || 'null');
+      if (c && c.cc) { run(c.cc); return; }
+    } catch (e) {}
+    const use = function (g) {
+      const cc = g && (g.country_code || g.countryCode);
+      if (cc) run(cc);
+    };
+    fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(use)
+      .catch(function () {
+        fetch('https://ipapi.co/json/').then(function (r) { return r.json(); }).then(use).catch(function () {});
+      });
+  })();
 
   /* ---------- resolve size -> variant (cached) ---------- */
   const variantCache = {};
