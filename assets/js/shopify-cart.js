@@ -53,6 +53,98 @@
     threshold: 150,                   // qualifying AUD subtotal for free standard AUS shipping
     label:     'free standard AUS shipping'
   };
+
+  /* ---------- Shipping zone by IP ----------
+     Shows the visitor the rates that actually apply to them. The lookup is a
+     hint only: Shopify calculates the real rate at checkout, and the full table
+     stays one tap away on the shipping page. Falls back to Australia. */
+  const SHIP_ZONES = {
+    au:   { name: 'Australia',     std: { fee: 10, free: 150, days: '3\u20135' }, exp: { fee: 15, free: 200, days: '1\u20132' } },
+    nz:   { name: 'New Zealand',   std: { fee: 10, free: 150, days: '3\u20135' }, exp: { fee: 20, free: 250, days: '1\u20132' } },
+    intl: { name: 'your country',  std: { fee: 15, free: 250, days: '5\u20138' }, exp: { fee: 30, free: 500, days: '3\u20135' } }
+  };
+  /* countries in the Shopify GLOBAL zone. anything not listed falls back to the
+     full table, so we never quote a rate for somewhere we do not ship. */
+  const SHIP_GLOBAL = ['US','GB','CA','IE','NZ','SG','HK','JP','AT','BE','BG','HR','CY','CZ','DK',
+    'EE','FI','FR','DE','GR','HU','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE'];
+
+  function shipZoneFor(cc) {
+    if (!cc) return null;
+    cc = String(cc).toUpperCase();
+    if (cc === 'AU') return 'au';
+    if (cc === 'NZ') return 'nz';
+    return SHIP_GLOBAL.indexOf(cc) > -1 ? 'intl' : null;
+  }
+
+  function applyShipZone(zone, countryName) {
+    const z = SHIP_ZONES[zone];
+    if (!z) return;
+    /* outside Australia, write AUD in full. "A$" reads as a dollar sign to a US
+       or Canadian visitor, who would otherwise assume their own currency. */
+    const foreign = zone !== 'au';
+    const amt = function (n) { return foreign ? 'AUD ' + n : 'A$' + n; };
+    /* 1. the rate list: show this zone only, with a line saying which */
+    const lists = document.querySelectorAll('.acc-content ul');
+    lists.forEach(function (ul) {
+      const tagged = ul.querySelectorAll('li[data-zone]');
+      if (!tagged.length) return;
+      tagged.forEach(function (li) {
+        li.hidden = li.dataset.zone !== zone;
+        if (!li.hidden && foreign) li.innerHTML = li.innerHTML.replace(/A\$(\d+)/g, 'AUD $1');
+      });
+      const note = ul.parentNode.querySelector('.ship-zone-note');
+      if (note) {
+        note.textContent = 'Showing rates for ' + (countryName || z.name) +
+          (foreign ? '. Shown in Australian dollars \u2014 checkout converts to your local currency.' : '.');
+        note.hidden = false;
+      }
+    });
+    /* 2. the line under the add button */
+    document.querySelectorAll('.atc-note').forEach(function (p) {
+      if (p.textContent.indexOf('Free AUS shipping') > -1) {
+        p.textContent = 'Free standard shipping over ' + amt(z.std.free) + ' \u00b7 30 day free returns';
+      }
+    });
+    /* 3. say it next to the price, which is where the misreading happens */
+    if (foreign) {
+      document.querySelectorAll('.p-price').forEach(function (el) {
+        if (el.parentNode.querySelector('.aud-note')) return;
+        const n = document.createElement('span');
+        n.className = 'aud-note';
+        n.textContent = 'AUD';
+        n.style.cssText = 'font-family:var(--cond);font-size:0.7rem;letter-spacing:0.16em;' +
+          'text-transform:uppercase;color:rgba(14,21,18,0.5);margin-left:8px;vertical-align:middle';
+        el.appendChild(n);
+      });
+    }
+    /* 3. the cart drawer progress bar counts toward their threshold */
+    SHIPPING.threshold = z.std.free;
+    SHIPPING.label = 'free standard shipping';
+    /* redraw the progress bar if the cart is already on screen */
+    if (typeof updateGiftBar === 'function' && typeof current !== 'undefined' && current) {
+      try { updateGiftBar(current); } catch (e) {}
+    }
+  }
+
+  (function () {
+    const KEY = 'ec_ship_zone';
+    try {
+      const c = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (c && Date.now() - c.at < 864e5 && c.zone) { applyShipZone(c.zone, c.country); return; }
+    } catch (e) {}
+    const use = function (g) {
+      const cc = g && (g.country_code || g.countryCode || g.country);
+      const zone = shipZoneFor(cc);
+      if (!zone) return;                       /* unknown or unserved: leave the full table */
+      const country = (g && g.country && String(g.country).length > 2) ? g.country : null;
+      try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), zone: zone, country: country })); } catch (e) {}
+      applyShipZone(zone, country);
+    };
+    fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(use)
+      .catch(function () {
+        fetch('https://ipapi.co/json/').then(function (r) { return r.json(); }).then(use).catch(function () {});
+      });
+  })();
   /* ---------- Bundle: Micro Short + Bandeau (modular) ----------
      When one of each is in the cart, the pair is swapped for the
      matching bundle variant so the set discount applies. */
