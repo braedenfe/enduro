@@ -118,6 +118,7 @@
         el.appendChild(n);
       });
     }
+    if (window.__ecFx) applyShipCurrency();
     /* 3. the cart drawer progress bar counts toward their threshold */
     SHIPPING.threshold = z.std.free;
     SHIPPING.label = 'free standard shipping';
@@ -221,6 +222,43 @@
     MT:'MT', NL:'NL', PL:'PL', PT:'PT', RO:'RO', SK:'SK', SI:'SI', ES:'ES', SE:'SE'
   };
 
+  /* list prices in AUD, used only to derive the exchange rate Shopify is using */
+  const AUD_BASE = {
+    'merino-short-mens': 150, 'o-merino-short-mens': 150, 'merino-short-womens': 150,
+    'cotton-short-mens': 110, 'o-cotton-short-mens': 110, 'cotton-short-womens': 100,
+    'cotton-long-run-tee': 100, 'wool-long-run-tee': 120, 'organic-tote': 20,
+    'merino-long-run-sock': 30, 'merino-micro-short': 100, 'merino-bandeau': 80,
+    'o-tee': 120, 'enduro-tee': 120, 'organic-cotton-dad-cap': 60
+  };
+
+  /* Shipping fees and thresholds are set in AUD and converted by Shopify at
+     checkout. We convert for display using the same rate, rounding fees and
+     thresholds UP so the customer is never short of a threshold they were shown
+     or charged more than the fee they read. */
+  function applyShipCurrency() {
+    const fx = window.__ecFx;
+    if (!fx || !fx.rate) return;
+    const up5 = function (n) { return Math.ceil((n * fx.rate) / 5) * 5; };
+    const up1 = function (n) { return Math.ceil(n * fx.rate); };
+    document.querySelectorAll('li[data-zone]').forEach(function (li) {
+      if (li.hidden || li.dataset.fxDone) return;
+      const z = SHIP_ZONES[li.dataset.zone];
+      if (!z) return;
+      const kind = li.textContent.indexOf('Express') > -1 ? 'exp' : 'std';
+      const r = z[kind];
+      const name = li.textContent.split('\u2014')[0].trim();
+      li.textContent = name + ' \u2014 ' + fmtMoney(up1(r.fee), fx.currency) +
+        ', free over ' + fmtMoney(up5(r.free), fx.currency) + ' \u00b7 ' + r.days + ' days';
+      li.dataset.fxDone = '1';
+    });
+    document.querySelectorAll('.atc-note').forEach(function (p) {
+      const m = p.textContent.match(/Free standard shipping over (?:A\$|AUD )(\d+)/);
+      if (!m) return;
+      p.textContent = 'Free standard shipping over ' + fmtMoney(up5(parseInt(m[1], 10)), fx.currency) +
+        ' \u00b7 30 day free returns';
+    });
+  }
+
   function fmtMoney(amount, currency) {
     const n = Math.round(parseFloat(amount));
     try {
@@ -276,6 +314,14 @@
       if (window.__ecProducts && window.__ecProducts[key]) window.__ecProducts[key].price = text;
     });
 
+    /* derive the rate from Shopify's own numbers, averaged across the range so
+       per-product rounding does not skew it */
+    let sum = 0, n = 0;
+    keys.forEach(function (k) {
+      const aud = AUD_BASE[k];
+      if (aud) { sum += parseFloat(prices[k].amount) / aud; n++; }
+    });
+    if (n) { window.__ecFx = { rate: sum / n, currency: cur }; applyShipCurrency(); }
     /* the AUD hint is wrong once prices are converted */
     window.__ecFxDone = true;
     document.querySelectorAll('.aud-note').forEach(function (n) { n.remove(); });
