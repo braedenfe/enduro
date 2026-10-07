@@ -1882,6 +1882,9 @@ function addToCart() {
 }
 
 /* ───────── QUICK ADD ───────── */
+/* expose for the cart script, which swaps prices into local currency */
+window.__ecProducts = products;
+
 const QA_COLOURS = {
   'cotton-short-mens':   [['Black','#1C1C1A'],['Navy','#1E2A44']],
   'o-cotton-short-mens': [['Black','#1C1C1A'],['Navy','#1E2A44']],
