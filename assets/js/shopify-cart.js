@@ -33,7 +33,22 @@
   if (!CREDS_READY || !HAS_PRODUCTS) return;
 
   const ENDPOINT = 'https://' + SHOP_DOMAIN + '/api/' + API_VERSION + '/graphql.json';
-  const CART_KEY = 'enduro_cart_id';
+  /* Buyer country drives Shopify Markets pricing. Read synchronously so the
+     first cart call already carries it. */
+  let BUYER_CC = 'AU';
+  try {
+    const _c = JSON.parse(localStorage.getItem('ec_ship_zone') || 'null');
+    if (_c && _c.cc) BUYER_CC = String(_c.cc).toUpperCase();
+  } catch (e) {}
+  /* a cart is locked to the currency it was created in, so key it by country */
+  const CART_KEY = 'enduro_cart_id_' + BUYER_CC;
+  try {
+    const _old = localStorage.getItem('enduro_cart_id');
+    if (_old && !localStorage.getItem(CART_KEY) && BUYER_CC === 'AU') {
+      localStorage.setItem(CART_KEY, _old);     /* migrate the pre-existing AUD cart */
+    }
+    if (_old) localStorage.removeItem('enduro_cart_id');
+  } catch (e) {}
   const money = (a, c) => new Intl.NumberFormat(undefined, { style:'currency', currency:c }).format(a);
   const gid = (id) => 'gid://shopify/Product/' + id;
 
@@ -75,6 +90,23 @@
     if (cc === 'AU') return 'au';
     if (cc === 'NZ') return 'nz';
     return SHIP_GLOBAL.indexOf(cc) > -1 ? 'intl' : null;
+  }
+
+  /* Milestones are defined in AUD. Recompute them from that base whenever the
+     zone or the exchange rate changes, so the two async lookups cannot fight. */
+  let SHIP_BASE_AUD = SHIPPING.threshold;
+  const GIFT_BASE_AUD = GIFT.threshold;
+  const GIFT_VALUE_AUD = GIFT.displayValue || 20;
+  function recalcThresholds() {
+    const fx = window.__ecFx;
+    const r = (fx && fx.rate) ? fx.rate : 1;
+    const up5 = function (n) { return r === 1 ? n : Math.ceil((n * r) / 5) * 5; };
+    SHIPPING.threshold = up5(SHIP_BASE_AUD);
+    GIFT.threshold = up5(GIFT_BASE_AUD);
+    GIFT.displayValue = r === 1 ? GIFT_VALUE_AUD : Math.ceil(GIFT_VALUE_AUD * r);
+    if (typeof updateGiftBar === 'function' && typeof current !== 'undefined' && current) {
+      try { updateGiftBar(current); } catch (e) {}
+    }
   }
 
   function applyShipZone(zone, countryName) {
@@ -120,8 +152,9 @@
     }
     if (window.__ecFx) applyShipCurrency();
     /* 3. the cart drawer progress bar counts toward their threshold */
-    SHIPPING.threshold = z.std.free;
+    SHIP_BASE_AUD = z.std.free;
     SHIPPING.label = 'free standard shipping';
+    recalcThresholds();
     /* redraw the progress bar if the cart is already on screen */
     if (typeof updateGiftBar === 'function' && typeof current !== 'undefined' && current) {
       try { updateGiftBar(current); } catch (e) {}
@@ -259,13 +292,19 @@
     });
   }
 
+  const CUR_SYMBOL = { AUD:'A$', USD:'$', NZD:'NZ$', GBP:'\u00a3', EUR:'\u20ac', CAD:'CA$' };
   function fmtMoney(amount, currency) {
     const n = Math.round(parseFloat(amount));
     try {
       return new Intl.NumberFormat(undefined, {
         style: 'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0
       }).format(n);
-    } catch (e) { return currency + ' ' + n; }
+    } catch (e) {}
+    try {
+      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency })
+        .format(n).replace(/[.,]00$/, '');
+    } catch (e) {}
+    return (CUR_SYMBOL[currency] || (currency + ' ')) + n;
   }
 
   async function localPrices(country) {
@@ -321,7 +360,13 @@
       const aud = AUD_BASE[k];
       if (aud) { sum += parseFloat(prices[k].amount) / aud; n++; }
     });
-    if (n) { window.__ecFx = { rate: sum / n, currency: cur }; applyShipCurrency(); }
+    if (n) {
+      const rate = sum / n;
+      window.__ecFx = { rate: rate, currency: cur };
+      /* the progress bar compares against a cart priced in this currency */
+      recalcThresholds();
+      applyShipCurrency();
+    }
     /* the AUD hint is wrong once prices are converted */
     window.__ecFxDone = true;
     document.querySelectorAll('.aud-note').forEach(function (n) { n.remove(); });
@@ -396,22 +441,26 @@
         id title price { amount currencyCode }
         product { id title featuredImage { url altText } } } } } } }`;
 
+  /* every cart call runs in the buyer's market, so Shopify prices the cart in
+     their currency rather than AUD */
   const createCart = (line) => gql(
-    `mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{${CART}} userErrors{message}}}`,
-    { lines:[line] }).then(d => d.cartCreate.cart);
+    `mutation($lines:[CartLineInput!],$cc:CountryCode!) @inContext(country:$cc){cartCreate(input:{lines:$lines,buyerIdentity:{countryCode:$cc}}){cart{${CART}} userErrors{message}}}`,
+    { lines:[line], cc: BUYER_CC }).then(d => d.cartCreate.cart);
   const addLine = (cartId, line) => gql(
-    `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
-    { cartId, lines:[line] }).then(d => d.cartLinesAdd.cart);
-  const getCart = (id) => gql(`query($id:ID!){cart(id:$id){${CART}}}`, { id }).then(d => d.cart);
+    `mutation($cartId:ID!,$lines:[CartLineInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartLinesAdd(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
+    { cartId, lines:[line], cc: BUYER_CC }).then(d => d.cartLinesAdd.cart);
+  const getCart = (id) => gql(
+    `query($id:ID!,$cc:CountryCode!) @inContext(country:$cc){cart(id:$id){${CART}}}`,
+    { id, cc: BUYER_CC }).then(d => d.cart);
   const removeLine = (cartId, lineId) => gql(
-    `mutation($cartId:ID!,$lineIds:[ID!]!){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
-    { cartId, lineIds:[lineId] }).then(d => d.cartLinesRemove.cart);
+    `mutation($cartId:ID!,$lineIds:[ID!]!,$cc:CountryCode!) @inContext(country:$cc){cartLinesRemove(cartId:$cartId,lineIds:$lineIds){cart{${CART}} userErrors{message}}}`,
+    { cartId, lineIds:[lineId], cc: BUYER_CC }).then(d => d.cartLinesRemove.cart);
   const updateLine = (cartId, lineId, quantity) => gql(
-    `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
-    { cartId, lines:[{ id: lineId, quantity }] }).then(d => d.cartLinesUpdate.cart);
+    `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
+    { cartId, lines:[{ id: lineId, quantity }], cc: BUYER_CC }).then(d => d.cartLinesUpdate.cart);
   const updateCodes = (cartId, codes) => gql(
-    `mutation($cartId:ID!,$codes:[String!]!){cartDiscountCodesUpdate(cartId:$cartId,discountCodes:$codes){cart{${CART}} userErrors{message}}}`,
-    { cartId, codes }).then(d => d.cartDiscountCodesUpdate.cart);
+    `mutation($cartId:ID!,$codes:[String!]!,$cc:CountryCode!) @inContext(country:$cc){cartDiscountCodesUpdate(cartId:$cartId,discountCodes:$codes){cart{${CART}} userErrors{message}}}`,
+    { cartId, codes, cc: BUYER_CC }).then(d => d.cartDiscountCodesUpdate.cart);
 
   async function addToCartFlow(variantId) {
     const cartId = localStorage.getItem(CART_KEY);
