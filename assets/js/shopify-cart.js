@@ -71,6 +71,14 @@
     threshold: 150,                   // qualifying AUD subtotal for free standard AUS shipping
     label:     'free standard AUS shipping'
   };
+  /* ---------- Free express milestone ----------
+     Once standard is free, the bar moves on to free express. Thresholds come
+     from SHIP_ZONES below, so each zone gets its own. */
+  const EXPRESS = {
+    enabled:   true,
+    threshold: 200,                   // AUD, replaced by the visitor's zone
+    label:     'free express shipping'
+  };
 
   /* ---------- Shipping zone by IP ----------
      Shows the visitor the rates that actually apply to them. The lookup is a
@@ -97,6 +105,7 @@
   /* Milestones are defined in AUD. Recompute them from that base whenever the
      zone or the exchange rate changes, so the two async lookups cannot fight. */
   let SHIP_BASE_AUD = SHIPPING.threshold;
+  let EXP_BASE_AUD = EXPRESS.threshold;
   const GIFT_BASE_AUD = GIFT.threshold;
   const GIFT_VALUE_AUD = GIFT.displayValue || 20;
   function recalcThresholds() {
@@ -104,6 +113,7 @@
     const r = (fx && fx.rate) ? fx.rate : 1;
     const up5 = function (n) { return r === 1 ? n : Math.ceil((n * r) / 5) * 5; };
     SHIPPING.threshold = up5(SHIP_BASE_AUD);
+    EXPRESS.threshold = up5(EXP_BASE_AUD);
     GIFT.threshold = up5(GIFT_BASE_AUD);
     GIFT.displayValue = r === 1 ? GIFT_VALUE_AUD : Math.ceil(GIFT_VALUE_AUD * r);
     if (typeof updateGiftBar === 'function' && typeof current !== 'undefined' && current) {
@@ -166,6 +176,7 @@
     if (window.__ecFx) applyShipCurrency();
     /* 3. the cart drawer progress bar counts toward their threshold */
     SHIP_BASE_AUD = z.std.free;
+    EXP_BASE_AUD = z.exp.free;
     SHIPPING.label = 'free standard shipping';
     recalcThresholds();
     /* redraw the progress bar if the cart is already on screen */
@@ -580,8 +591,10 @@
     #ec-afterpay square-placement{display:block}
     .ec-gift-track{position:relative;height:4px;border-radius:99px;background:rgba(7,30,4,.12)}
     .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}
-    .ec-gift-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#FAFAF8;border:1.5px solid rgba(7,30,4,.25);transform:translate(-50%,-50%);transition:border-color .45s,background .45s}
-    .ec-gift-dot.passed{width:5px;height:5px;background:#FAFAF8;border-color:transparent}
+    .ec-gift-dot{position:absolute;top:50%;width:3px;height:8px;background:#FAFAF8;transform:translate(-50%,-50%)}
+    .ec-gift-labels{position:relative;height:14px;margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;line-height:14px;color:rgba(14,21,18,.42)}
+    .ec-gift-labels span{position:absolute;top:0;white-space:nowrap;transition:color .45s}
+    .ec-gift-labels span.done{color:#0E1512}
     #ec-sticky{position:fixed;left:0;right:0;bottom:0;z-index:490;display:none;align-items:center;gap:14px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:rgba(250,250,248,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid rgba(14,21,18,.1);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.2,1);font-family:'DM Sans',sans-serif}
     #ec-sticky.show{transform:translateY(0)}
     @media(max-width:920px){#ec-sticky{display:flex}}
@@ -748,51 +761,83 @@
     if (!box) return;
     const giftOn = GIFT.enabled && !!giftProductGid();
     const shipOn = SHIPPING.enabled;
+    const expOn = shipOn && EXPRESS.enabled && EXPRESS.threshold > SHIPPING.threshold;
     if (!giftOn && !shipOn) { box.style.display = 'none'; return; }
     const cur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     const sub = qualifyingSubtotal(cart);
-    const maxT = shipOn ? SHIPPING.threshold : GIFT.threshold;
-    const pct = Math.max(0, Math.min(100, (sub / maxT) * 100));
+    const giftDone = giftOn && sub >= GIFT.threshold;
+    const shipDone = shipOn && sub >= SHIPPING.threshold;
+    const expDone = expOn && sub >= EXPRESS.threshold;
+
+    /* which two milestones the bar spans right now. stage one runs from the
+       tote to free standard shipping; once standard is free it moves on to
+       free express */
+    let mid = null, end, labA = null, labB, doneA = false, doneB;
+    if (expOn && shipDone) {
+      mid = SHIPPING.threshold; end = EXPRESS.threshold;
+      labA = 'Standard ' + money(SHIPPING.threshold, cur); doneA = true;
+      labB = 'Express ' + money(EXPRESS.threshold, cur); doneB = expDone;
+    } else if (shipOn) {
+      end = SHIPPING.threshold;
+      if (giftOn && GIFT.threshold < SHIPPING.threshold) {
+        mid = GIFT.threshold; labA = 'Tote ' + money(GIFT.threshold, cur); doneA = giftDone;
+      }
+      labB = 'Free shipping ' + money(SHIPPING.threshold, cur); doneB = shipDone;
+    } else {
+      end = GIFT.threshold;
+      labB = 'Tote ' + money(GIFT.threshold, cur); doneB = giftDone;
+    }
+
     box.style.display = 'block';
     const fill = document.getElementById('ec-gift-fill');
-    if (fill) fill.style.width = pct + '%';
-    /* mid-track marker for the gift milestone when both are active */
+    if (fill) fill.style.width = Math.max(0, Math.min(100, (sub / end) * 100)) + '%';
     const track = box.querySelector('.ec-gift-track');
     if (track) {
       let dot = document.getElementById('ec-gift-dot');
-      if (giftOn && shipOn && GIFT.threshold < SHIPPING.threshold) {
+      let labs = document.getElementById('ec-gift-labels');
+      if (mid !== null) {
         if (!dot) {
           dot = document.createElement('div');
           dot.id = 'ec-gift-dot'; dot.className = 'ec-gift-dot';
           track.appendChild(dot);
         }
-        dot.style.left = ((GIFT.threshold / SHIPPING.threshold) * 100) + '%';
-        dot.classList.toggle('passed', sub >= GIFT.threshold);
-      } else if (dot) { dot.remove(); }
+        dot.style.left = ((mid / end) * 100) + '%';
+        dot.classList.toggle('passed', sub >= mid);
+        /* name each stage under the bar: the first under the first segment,
+           the second at the end of the track */
+        if (!labs) {
+          labs = document.createElement('div');
+          labs.id = 'ec-gift-labels'; labs.className = 'ec-gift-labels';
+          labs.innerHTML = '<span id="ec-lab-gift" style="left:0"></span><span id="ec-lab-ship" style="right:0"></span>';
+          track.parentNode.insertBefore(labs, track.nextSibling);
+        }
+        const la = document.getElementById('ec-lab-gift'), lb = document.getElementById('ec-lab-ship');
+        la.textContent = labA; lb.textContent = labB;
+        la.classList.toggle('done', doneA);
+        lb.classList.toggle('done', doneB);
+      } else {
+        if (dot) dot.remove();
+        if (labs) labs.remove();
+      }
     }
+
     const check = '<svg class="ec-gift-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     const msg = document.getElementById('ec-gift-msg');
-    const giftDone = giftOn && sub >= GIFT.threshold;
-    const shipDone = shipOn && sub >= SHIPPING.threshold;
+    const amt = function (n) { return '<span class="amt">' + money(n, cur) + '</span>'; };
+    const say = function (t) { msg.innerHTML = check + '<span>' + t + '</span>'; };
     box.classList.toggle('qualified', giftDone || shipDone);
-    if (giftOn && shipOn) {
-      if (!giftDone) {
-        msg.innerHTML = check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) +
-          '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
-      } else if (!shipDone) {
-        msg.innerHTML = check + '<span>' + GIFT.label + ' unlocked. Spend <span class="amt">' + money(SHIPPING.threshold - sub, cur) +
-          '</span> more for ' + SHIPPING.label + '.</span>';
-      } else {
-        msg.innerHTML = check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + ' and ' + SHIPPING.label + '.</span>';
-      }
+    if (giftOn && !giftDone && (!shipOn || GIFT.threshold < SHIPPING.threshold)) {
+      say('Spend ' + amt(GIFT.threshold - sub) + ' more to receive a complimentary ' + GIFT.label + '.');
+    } else if (shipOn && !shipDone) {
+      say((giftDone ? GIFT.label + ' unlocked. ' : '') + 'Spend ' + amt(SHIPPING.threshold - sub) +
+        ' more for ' + SHIPPING.label + '.');
+    } else if (expOn && !expDone) {
+      say('Free standard shipping unlocked. Spend ' + amt(EXPRESS.threshold - sub) + ' more for ' + EXPRESS.label + '.');
     } else if (shipOn) {
-      msg.innerHTML = shipDone
-        ? check + '<span>You\u2019ve qualified for ' + SHIPPING.label + '.</span>'
-        : check + '<span>Spend <span class="amt">' + money(SHIPPING.threshold - sub, cur) + '</span> more for ' + SHIPPING.label + '.</span>';
+      const ship = expOn ? EXPRESS.label : SHIPPING.label;
+      say('You\u2019ve qualified for ' + ship + (giftDone ? ' and a complimentary ' + GIFT.label : '') + '.');
     } else {
-      msg.innerHTML = giftDone
-        ? check + '<span>You\u2019ve qualified for a complimentary ' + GIFT.label + '.</span>'
-        : check + '<span>Spend <span class="amt">' + money(GIFT.threshold - sub, cur) + '</span> more to receive a complimentary ' + GIFT.label + '.</span>';
+      say('You\u2019ve qualified for a complimentary ' + GIFT.label + '.');
     }
   }
 
