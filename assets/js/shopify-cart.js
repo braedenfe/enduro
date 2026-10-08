@@ -49,7 +49,9 @@
     }
     if (_old) localStorage.removeItem('enduro_cart_id');
   } catch (e) {}
-  const money = (a, c) => new Intl.NumberFormat(undefined, { style:'currency', currency:c }).format(a);
+  /* one formatter for every price on the site. narrow symbols, so AUD reads
+     as "$" and a US visitor sees "$" for USD. cents only when there are some. */
+  const money = (a, c) => fmtMoney(a, c);
   const gid = (id) => 'gid://shopify/Product/' + id;
 
   /* ---------- Free gift promotion (modular) ----------
@@ -112,10 +114,11 @@
   function applyShipZone(zone, countryName) {
     const z = SHIP_ZONES[zone];
     if (!z) return;
-    /* outside Australia, write AUD in full. "A$" reads as a dollar sign to a US
-       or Canadian visitor, who would otherwise assume their own currency. */
+    /* AUD is the home currency and is written "$". outside Australia, until
+       local prices arrive, write AUD in full so a US or Canadian visitor does
+       not read it as their own dollar. */
     const foreign = zone !== 'au';
-    const amt = function (n) { return foreign ? 'AUD ' + n : 'A$' + n; };
+    const amt = function (n) { return foreign ? 'AUD ' + n : '$' + n; };
     /* 1. the rate list: show this zone only, with a line saying which */
     const lists = document.querySelectorAll('.acc-content ul');
     lists.forEach(function (ul) {
@@ -123,12 +126,12 @@
       if (!tagged.length) return;
       tagged.forEach(function (li) {
         li.hidden = li.dataset.zone !== zone;
-        if (!li.hidden && foreign) li.innerHTML = li.innerHTML.replace(/A\$(\d+)/g, 'AUD $1');
+        if (!li.hidden && foreign && !li.dataset.fxDone) li.innerHTML = li.innerHTML.replace(/\$(\d+)/g, 'AUD $1');
       });
       const note = ul.parentNode.querySelector('.ship-zone-note');
       if (note) {
         note.textContent = 'Showing rates for ' + (countryName || z.name) +
-          (foreign ? '. Shown in Australian dollars \u2014 checkout converts to your local currency.' : '.');
+          (foreign && !window.__ecFxDone ? '. Shown in Australian dollars. Checkout converts to your local currency.' : '.');
         note.hidden = false;
       }
     });
@@ -140,6 +143,16 @@
     });
     /* 3. say it next to the price, which is where the misreading happens */
     if (foreign && !window.__ecFxDone) {
+      /* card prices too, in case this market has no local pricing */
+      document.querySelectorAll('.pcard-price, .rel-price, .rcard-price').forEach(function (el) {
+        el.textContent = el.textContent.replace(/^\$(\d+)/, 'AUD $1');
+      });
+      [window.__ecProducts, window.__ecQA].forEach(function (map) {
+        if (!map) return;
+        Object.keys(map).forEach(function (k) {
+          if (map[k] && typeof map[k].price === 'string') map[k].price = map[k].price.replace(/^\$(\d+)/, 'AUD $1');
+        });
+      });
       document.querySelectorAll('.p-price').forEach(function (el) {
         if (el.parentNode.querySelector('.aud-note')) return;
         const n = document.createElement('span');
@@ -285,26 +298,29 @@
       li.dataset.fxDone = '1';
     });
     document.querySelectorAll('.atc-note').forEach(function (p) {
-      const m = p.textContent.match(/Free standard shipping over (?:A\$|AUD )(\d+)/);
+      if (p.dataset.fxDone) return;               /* already converted, never convert twice */
+      const m = p.textContent.match(/Free standard shipping over (?:\$|AUD )(\d+)/);
       if (!m) return;
       p.textContent = 'Free standard shipping over ' + fmtMoney(up5(parseInt(m[1], 10)), fx.currency) +
         ' \u00b7 30 day free returns';
+      p.dataset.fxDone = '1';
     });
   }
 
-  const CUR_SYMBOL = { AUD:'A$', USD:'$', NZD:'NZ$', GBP:'\u00a3', EUR:'\u20ac', CAD:'CA$' };
+  const CUR_SYMBOL = { AUD:'$', USD:'$', NZD:'$', GBP:'\u00a3', EUR:'\u20ac', CAD:'$' };
   function fmtMoney(amount, currency) {
-    const n = Math.round(parseFloat(amount));
+    currency = currency || 'AUD';
+    let n = parseFloat(amount) || 0;
+    const whole = Math.abs(n - Math.round(n)) < 0.005;
+    if (whole) n = Math.round(n);
+    const d = whole ? 0 : 2;
     try {
-      return new Intl.NumberFormat(undefined, {
-        style: 'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0
+      return new Intl.NumberFormat('en-AU', {
+        style: 'currency', currency: currency, currencyDisplay: 'narrowSymbol',
+        minimumFractionDigits: d, maximumFractionDigits: d
       }).format(n);
     } catch (e) {}
-    try {
-      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency })
-        .format(n).replace(/[.,]00$/, '');
-    } catch (e) {}
-    return (CUR_SYMBOL[currency] || (currency + ' ')) + n;
+    return (CUR_SYMBOL[currency] || (currency + ' ')) + n.toFixed(d);
   }
 
   async function localPrices(country) {
@@ -349,8 +365,14 @@
         });
       }
 
-      /* the quick-add drawer reads from this map */
+      /* home page rail */
+      document.querySelectorAll('.rcard[data-product="' + key + '"] .rcard-price')
+        .forEach(function (el) { el.textContent = text; });
+
+      /* the quick-add drawers and search read from these */
       if (window.__ecProducts && window.__ecProducts[key]) window.__ecProducts[key].price = text;
+      if (window.__ecQA && window.__ecQA[key]) window.__ecQA[key].price = text;
+      (window.__ecLocal = window.__ecLocal || {})[key] = text;
     });
 
     /* derive the rate from Shopify's own numbers, averaged across the range so
@@ -372,10 +394,9 @@
     document.querySelectorAll('.aud-note').forEach(function (n) { n.remove(); });
     /* Afterpay is an Australian account priced in AUD */
     document.querySelectorAll('square-placement, .ap-msg').forEach(function (el) { el.style.display = 'none'; });
+    /* shipping is now shown in their currency too */
     document.querySelectorAll('.ship-zone-note').forEach(function (n) {
-      n.textContent = n.textContent.replace(
-        ' \u2014 checkout converts to your local currency.',
-        '. Shipping shown in Australian dollars; checkout converts with your order.');
+      n.textContent = n.textContent.replace(' Shown in Australian dollars. Checkout converts to your local currency.', '');
     });
   }
 
@@ -560,7 +581,7 @@
     .ec-gift-track{position:relative;height:4px;border-radius:99px;background:rgba(7,30,4,.12)}
     .ec-gift-fill{height:100%;width:0;border-radius:99px;background:#071e04;transition:width .6s cubic-bezier(.4,0,.1,1)}
     .ec-gift-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#FAFAF8;border:1.5px solid rgba(7,30,4,.25);transform:translate(-50%,-50%);transition:border-color .45s,background .45s}
-    .ec-gift-dot.passed{background:#071e04;border-color:#071e04}
+    .ec-gift-dot.passed{width:5px;height:5px;background:#FAFAF8;border-color:transparent}
     #ec-sticky{position:fixed;left:0;right:0;bottom:0;z-index:490;display:none;align-items:center;gap:14px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:rgba(250,250,248,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid rgba(14,21,18,.1);transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.2,1);font-family:'DM Sans',sans-serif}
     #ec-sticky.show{transform:translateY(0)}
     @media(max-width:920px){#ec-sticky{display:flex}}
@@ -1039,7 +1060,18 @@
     const mainBtn = document.querySelector('.atc');
     if (!mainBtn || !('IntersectionObserver' in window)) return;
     const priceEl = document.querySelector('.p-price');
-    const priceTxt = priceEl ? priceEl.textContent.trim() : '';
+    /* read the price live, without the AUD hint, so the bar follows local pricing */
+    const priceNow = function () {
+      if (!priceEl) return '';
+      const c = priceEl.cloneNode(true);
+      c.querySelectorAll('.aud-note').forEach(function (n) { n.remove(); });
+      return c.textContent.trim();
+    };
+    const sizeNow = function () {
+      const s = document.querySelector('.size-btn.active');
+      return s ? ' \u00B7 Size ' + s.textContent.trim() : '';
+    };
+    const priceTxt = priceNow();
     const bar = document.createElement('div'); bar.id = 'ec-sticky';
     bar.innerHTML = '<div class="ec-sticky-info">' +
       '<div class="ec-sticky-name">' + productName('Add to cart') + '</div>' +
@@ -1061,11 +1093,17 @@
     document.addEventListener('click', function (e) {
       if (!e.target.closest || !e.target.closest('.size-btn')) return;
       setTimeout(function () {
-        const s = document.querySelector('.size-btn.active');
         const sub = document.getElementById('ec-sticky-sub');
-        if (sub) sub.textContent = priceTxt + (s ? ' \u00B7 Size ' + s.textContent.trim() : '');
+        if (sub) sub.textContent = priceNow() + sizeNow();
       }, 0);
     });
+    /* when local prices land, the bar follows. writes go to the bar, never to
+       the price element being observed */
+    if (priceEl) new MutationObserver(function () {
+      const sub = document.getElementById('ec-sticky-sub');
+      const t = priceNow() + sizeNow();
+      if (sub && sub.textContent !== t) sub.textContent = t;
+    }).observe(priceEl, { childList: true, characterData: true, subtree: true });
     /* mirror the main button's label and busy state */
     new MutationObserver(function () {
       btn.disabled = mainBtn.disabled;
@@ -1357,20 +1395,21 @@
     const root = inPages ? '../' : '';
 
     const CATALOGUE = [
-      /* HIDDEN-AT-LAUNCH */ //{ key:'wool-long-run-tee',   name:'Merino Long Run Tee',    fibre:'Merino',        price:'A$120', file:'product-wool-long-run-tee.html',   img:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg' },
-      { key:'cotton-long-run-tee', name:'FTLR CottonLite\u2122 Tee',          fibre:'Organic cotton',price:'A$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
-      { key:'o-tee',               name:'Ø Tee',                  fibre:'Merino',        price:'A$120', file:'product-o-tee.html',               img:'assets/images/products/o-tee/o-tee-white-front-flat.jpg' },
-      { key:'enduro-tee',          name:'Enduro Tee',             fibre:'Merino',        price:'A$120', file:'product-enduro-tee.html',          img:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg' },
-      { key:'merino-short-mens',   name:'FTLR Merino Lined Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
-{ key:'o-merino-short-mens',   name:'\u00d8 Merino Lined Short 5\u2033', fibre:'Merino', price:'A$150', file:'product-o-merino-short-mens.html',   img:'assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg' },
-      /* HIDDEN-AT-LAUNCH */ //{ key:'merino-short-womens', name:'Merino Long Run Short 3\u2033', fibre:'Merino', price:'A$150', file:'product-merino-short-womens.html', img:'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg' },
-      { key:'cotton-short-mens',   name:'FTLR CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-cotton-short-mens.html',   img:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg' },
-      { key:'o-cotton-short-mens', name:'\u00d8 CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'A$110',file:'product-o-cotton-short-mens.html', img:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg' },
-      /* HIDDEN-AT-LAUNCH */ //{ key:'cotton-short-womens', name:'Essential Short 3\u2033', fibre:'Organic cotton',price:'A$100',file:'product-cotton-short-womens.html', img:'assets/images/products/cotton-short-womens/cotton-short-womens-front-flat.jpg' },
-      { key:'merino-micro-short',  name:'Merino Micro Short',     fibre:'Merino',        price:'A$100', file:'product-merino-micro-short.html',  img:'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg' },
-      { key:'merino-bandeau',      name:'Merino Bandeau',         fibre:'Merino',        price:'A$60',  file:'product-merino-bandeau.html',      img:'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg' },
-      { key:'organic-tote',        name:'Organic Tote',           fibre:'Organic cotton',price:'A$20',  file:'product-organic-tote.html',        img:'assets/images/products/organic-tote/organic-tote-front.jpg' },
-{ key:'merino-long-run-sock',        name:'Merino Long Run Sock',           fibre:'95% merino',price:'A$30',  file:'product-merino-long-run-sock.html',        img:'assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg' }
+      /* HIDDEN-AT-LAUNCH */ //{ key:'wool-long-run-tee',   name:'Merino Long Run Tee',    fibre:'Merino',        price:'$120', file:'product-wool-long-run-tee.html',   img:'assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-flat.jpg' },
+      { key:'cotton-long-run-tee', name:'FTLR CottonLite\u2122 Tee',          fibre:'100% cotton',   price:'$100', file:'product-cotton-long-run-tee.html', img:'assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-flat.jpg' },
+      { key:'o-tee',               name:'MerinoLite\u2122 \u00d8 Tee',                  fibre:'Merino',        price:'$120', file:'product-o-tee.html',               img:'assets/images/products/o-tee/o-tee-white-front-flat.jpg' },
+      { key:'enduro-tee',          name:'MerinoLite\u2122 Enduro Tee',             fibre:'Merino',        price:'$120', file:'product-enduro-tee.html',          img:'assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg' },
+      { key:'merino-short-mens',   name:'FTLR Merino Lined Short 5\u2033', fibre:'Merino', price:'$150', file:'product-merino-short-mens.html',   img:'assets/images/products/merino-short-mens/merino-short-mens-front-flat.jpg' },
+{ key:'o-merino-short-mens',   name:'\u00d8 Merino Lined Short 5\u2033', fibre:'Merino', price:'$150', file:'product-o-merino-short-mens.html',   img:'assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg' },
+      /* HIDDEN-AT-LAUNCH */ //{ key:'merino-short-womens', name:'Merino Long Run Short 3\u2033', fibre:'Merino', price:'$150', file:'product-merino-short-womens.html', img:'assets/images/products/merino-short-womens/merino-short-womens-front-flat.jpg' },
+      { key:'cotton-short-mens',   name:'FTLR CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'$110',file:'product-cotton-short-mens.html',   img:'assets/images/products/cotton-short-mens/cotton-short-mens-black-front-flat.jpg' },
+      { key:'o-cotton-short-mens', name:'\u00d8 CottonLite\u2122 Short 5\u2033', fibre:'Organic cotton',price:'$110',file:'product-o-cotton-short-mens.html', img:'assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg' },
+      /* HIDDEN-AT-LAUNCH */ //{ key:'cotton-short-womens', name:'Essential Short 3\u2033', fibre:'Organic cotton',price:'$100',file:'product-cotton-short-womens.html', img:'assets/images/products/cotton-short-womens/cotton-short-womens-front-flat.jpg' },
+      { key:'merino-micro-short',  name:'Merino Micro Short',     fibre:'Merino',        price:'$100', file:'product-merino-micro-short.html',  img:'assets/images/products/merino-micro-short/merino-micro-short-black-front-flat.jpg' },
+      { key:'merino-bandeau',      name:'Merino Bandeau',         fibre:'Merino',        price:'$80',  file:'product-merino-bandeau.html',      img:'assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg' },
+      { key:'organic-tote',        name:'Organic Tote',           fibre:'Organic cotton',price:'$20',  file:'product-organic-tote.html',        img:'assets/images/products/organic-tote/organic-tote-front.jpg' },
+{ key:'merino-long-run-sock',        name:'Merino Long Run Sock',           fibre:'95% merino',price:'$30',  file:'product-merino-long-run-sock.html',        img:'assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg' },
+      { key:'organic-cotton-dad-cap', name:'Organic Cotton Dad Cap', fibre:'Organic cotton',price:'$60',  file:'product-organic-cotton-dad-cap.html', img:'assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-front.jpg' }
     ];
 
     const css2 = `
@@ -1475,7 +1514,7 @@
           return '<a class="ec-sr' + (i === 0 ? ' sel' : '') + '" href="' + base + p.file + '">' +
             '<img src="' + root + p.img + '" alt="" loading="lazy">' +
             '<div><div class="ec-sr-n">' + p.name + '</div><div class="ec-sr-f">' + p.fibre + '</div></div>' +
-            '<span class="ec-sr-p">' + p.price + '</span></a>';
+            '<span class="ec-sr-p">' + ((window.__ecLocal && window.__ecLocal[p.key]) || p.price) + '</span></a>';
         }).join('');
       }
       function mark() {
@@ -1592,6 +1631,8 @@
     const host = document.getElementById('ec-afterpay');
     if (!host) return;
     if (!AFTERPAY.enabled) { host.innerHTML = ''; return; }
+    const cur = cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode;
+    if (cur && cur !== 'AUD') { host.innerHTML = ''; return; }
     const amt = qualifyingSubtotal(cart);
     if (!amt) { host.innerHTML = ''; return; }
     const skus = cart.lines.edges.map(e => e.node.merchandise.product.title).join(',');
