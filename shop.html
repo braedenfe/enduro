@@ -1080,7 +1080,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="drawer-section-title">Select size</div>
       <div class="size-grid" id="drawer-sizes"></div>
       <button class="drawer-atc" id="drawer-atc" onclick="addToCart()">Pre-order now</button>
-        <p class="drawer-preorder" id="drawer-preorder">Pre-order &middot; expected to ship in 6&ndash;8 weeks</p>
+        <p class="drawer-preorder" id="drawer-preorder">Pre-order &middot; expected to ship in 4&ndash;6 weeks</p>
 
       <div class="drawer-section-title">Conditions</div>
       <div class="conditions-widget" id="drawer-conditions">
@@ -1785,6 +1785,15 @@ const drawer   = document.getElementById('product-drawer');
 const backdrop = document.getElementById('drawer-backdrop');
 let currentDrawerProduct = null;
 
+/* pre-order timing per product; anything not listed ships in 4 to 6 weeks */
+const SHIP_TIME = {
+  'merino-long-run-sock': 'in 2&ndash;4 weeks',
+  'cotton-long-run-tee':  'in 2&ndash;4 weeks',
+  'merino-micro-short':   'within 4 weeks',
+  'merino-bandeau':       'within 4 weeks',
+  'o-tee':                'within 4 weeks',
+  'enduro-tee':           'within 4 weeks'
+};
 function openDrawer(key) {
   const p = products[key];
   if (!p) return;
@@ -1816,7 +1825,10 @@ function openDrawer(key) {
   if (p.soon) { atc.textContent = 'Notify me at release'; atc.onclick = function(){ closeDrawer(); notifyMe(); }; }
   else { atc.textContent = p.preorder ? 'Pre-order now' : 'Add to cart'; atc.onclick = addToCart; }
   var dpo = document.getElementById('drawer-preorder');
-  if (dpo) dpo.style.display = p.preorder ? '' : 'none';
+  if (dpo) {
+    dpo.style.display = p.preorder ? '' : 'none';
+    dpo.innerHTML = 'Pre-order &middot; expected to ship ' + (SHIP_TIME[key] || 'in 4&ndash;6 weeks');
+  }
 
   const link = document.getElementById('drawer-page-link');
   if (p.page) { link.href = p.page; link.style.display = ''; }
