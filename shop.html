@@ -475,6 +475,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   background:var(--forest);color:var(--bone);border-color:var(--forest);
 }
 .fbar > *{flex:0 0 auto}
+/* fabric sits in the row on desktop and inside the filter panel on phones */
+.fsec-fab{display:none}
 
 .fbtn-alt:not(.active):hover{color:var(--ink)}
 #fabdrop.set .fbtn-alt{color:var(--forest);border-color:rgba(31,61,53,0.4)}
@@ -580,6 +582,15 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   .fbtn-i{width:14px;height:14px}
   .fbtn-c{width:9px;height:6px}
   .fbtn-n{font-size:0.6rem;padding:2px 6px}
+  /* phones: filter becomes an icon, fabric moves into the panel, and the row
+     scrolls sideways on the narrowest screens rather than clipping */
+  .fbar{gap:6px}
+  .fbtn{padding:12px 11px;letter-spacing:0.1em}
+  .fbtn-t{display:none}
+  #fabdrop{display:none}
+  .fsec-fab{display:block}
+  .fbar{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .fbar::-webkit-scrollbar{display:none}
   .fpanel{
     position:fixed;left:10px;right:10px;bottom:10px;top:auto;width:auto;
     border-radius:24px;transform:translateY(110%);max-height:78vh;
@@ -636,9 +647,9 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 <div id="filters">
   <div class="fbar">
     <div class="fbtn-wrap">
-    <button class="fbtn" type="button" id="fbtn" aria-expanded="false" aria-controls="fpanel">
+    <button class="fbtn" type="button" id="fbtn" aria-expanded="false" aria-controls="fpanel" aria-label="Filter">
       <svg class="fbtn-i" viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5.5h15M5 10h10M8 14.5h4"/></svg>
-      <span>Filter</span><span class="fbtn-n" id="fbtn-n" hidden></span>
+      <span class="fbtn-t">Filter</span><span class="fbtn-n" id="fbtn-n" hidden></span>
     </button>
   <div class="fpanel" id="fpanel" role="dialog" aria-label="Filter products">
     <div class="fpanel-head">
@@ -648,7 +659,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <button class="fpanel-x" type="button" id="fpanel-x" aria-label="Close">&times;</button>
       </div>
     </div>
-    <div class="fpanel-body"><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
+    <div class="fpanel-body"><div class="fsec" data-axis="cat"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Category</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tees" aria-checked="false">T-shirts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="shorts" aria-checked="false">Shorts</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="tops" aria-checked="false">Tops</button><button class="fopt" type="button" role="menuitemradio" data-axis="cat" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec fsec-fab" data-axis="fibre"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Fabric</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="fibre" data-val="wool" aria-checked="false">Merino wool</button><button class="fopt" type="button" role="menuitemradio" data-axis="fibre" data-val="cotton" aria-checked="false">Cotton</button></div></div></div><div class="fsec" data-axis="activity"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Activity</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="running" aria-checked="false">Running</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="gym" aria-checked="false">Gym</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="pilates" aria-checked="false">Pilates</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="sauna" aria-checked="false">Sauna</button><button class="fopt" type="button" role="menuitemradio" data-axis="activity" data-val="accessories" aria-checked="false">Accessories</button></div></div></div><div class="fsec" data-axis="size"><button class="fsec-h" type="button" aria-expanded="false"><span class="fsec-l">Size</span><span class="fsec-v"></span><svg class="fsec-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg></button><div class="fsec-b"><div class="fsec-in"><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xs" aria-checked="false">XS</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="s" aria-checked="false">S</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="m" aria-checked="false">M</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="l" aria-checked="false">L</button><button class="fopt" type="button" role="menuitemradio" data-axis="size" data-val="xl" aria-checked="false">XL</button></div></div></div></div>
     <div class="fpanel-foot">
       <button class="fapply" type="button" id="fapply">View <span id="fapply-n"></span></button>
     </div>
@@ -656,6 +667,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     </div>
     <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="men" aria-pressed="false">Men&rsquo;s</button>
     <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="gender" data-val="women" aria-pressed="false">Women&rsquo;s</button>
+    <button class="fbtn fbtn-alt fbtn-g" type="button" data-axis="cat" data-val="accessories" aria-pressed="false">Accessories</button>
     <div class="fdrop" id="fabdrop">
       <button class="fbtn fbtn-alt" type="button" id="fabbtn" aria-expanded="false" aria-haspopup="true">
         <span class="fab-l">Fabric</span>
@@ -993,7 +1005,8 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 
     <a class="pcard" href="pages/product-merino-long-run-sock.html" data-product="merino-long-run-sock" data-sizes="m l" data-cat="accessories" data-activity="running gym accessories" data-fibre="wool" data-gender="men women" role="listitem">
       <div class="pcard-img">
-        <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
+        <img width="896" height="1195" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
+        <img width="896" height="1195" data-fit="contain" class="alt" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-side-model.jpg" alt="Merino Long Run Sock, view 2" loading="lazy" decoding="async">
         <span class="pcard-badge">Pre-order</span>
         <span class="pcard-fabric">Merino Wool</span>
         </div>
@@ -1672,11 +1685,14 @@ function syncFilterUI(shown) {
     sec.querySelector('.fsec-v').textContent = chosen ? chosen.textContent.trim() : '';
   });
   fgbtns.forEach(b => {
-    const on = fstate.gender === b.dataset.val;
+    const on = fstate[b.dataset.axis] === b.dataset.val;
     b.classList.toggle('active', on);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
-  const n = AXES.filter(a => a !== 'fibre' && a !== 'gender' && fstate[a] !== 'all').length;
+  /* count only what the row itself does not already show */
+  const phone = window.matchMedia('(max-width:760px)').matches;
+  const n = AXES.filter(a => fstate[a] !== 'all' && a !== 'gender' &&
+    !(a === 'fibre' && !phone) && !(a === 'cat' && fstate.cat === 'accessories')).length;
   const badge = document.getElementById('fbtn-n');
   badge.hidden = n === 0; badge.textContent = n;
   document.getElementById('fclear').hidden = AXES.every(a => fstate[a] === 'all');
@@ -1742,8 +1758,11 @@ fopts.forEach(o => {
 fgbtns.forEach(b => {
   b.addEventListener('click', e => {
     e.stopPropagation();
-    const v = b.dataset.val;
-    fstate.gender = (fstate.gender === v) ? 'all' : v;
+    const ax = b.dataset.axis, v = b.dataset.val;
+    fstate[ax] = (fstate[ax] === v) ? 'all' : v;
+    /* Men's, Women's and Accessories act as one choice */
+    if (ax === 'gender' && fstate.gender !== 'all' && fstate.cat === 'accessories') fstate.cat = 'all';
+    if (ax === 'cat' && fstate.cat !== 'all') fstate.gender = 'all';
     if (filtersEl.classList.contains('open')) openPanel(false);
     fabdrop.classList.remove('on'); fabbtn.setAttribute('aria-expanded','false');
     applyFilters();
@@ -1757,6 +1776,7 @@ document.getElementById('fclear').addEventListener('click', () => {
 const _fp = new URLSearchParams(window.location.search);
 const _uf = _fp.get('filter'), _ufib = _fp.get('fibre');
 if (_uf === 'men' || _uf === 'women') fstate.gender = _uf;
+if (_uf === 'accessories') fstate.cat = 'accessories';
 if (_ufib === 'wool' || _ufib === 'cotton') fstate.fibre = _ufib;
 applyFilters();
 
