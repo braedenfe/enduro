@@ -551,14 +551,7 @@ function selectColour(btn, name) {
   document.querySelectorAll('.colour-option').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   document.getElementById('sel-colour').textContent = name;
-  const prefix = PAGE.colours[name];
-  PAGE.images = PAGE.views.map(function(v){
-    return { src: '../assets/images/' + prefix + '-' + v.file + '.png', label: name + ' - ' + v.label };
-  });
-  gIndex = 0;
-  gImg.src = PAGE.images[0].src;
-  applyFit(PAGE.images[0].src);
-  updateCounter();
+  /* one colourway: the gallery already shows it, so nothing to rebuild */
 }
 
 /* ─── SIZE ─── */

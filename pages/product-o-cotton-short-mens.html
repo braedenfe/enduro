@@ -584,11 +584,9 @@ function selectColour(btn, name) {
   PAGE.images = views.map(function(v){
     return { src: PAGE.imgBase + prefix + '-' + v.file + '.jpg', label: name + ' - ' + v.label };
   });
-  gIndex = 0;
-  gImg.src = PAGE.images[0].src;
-  gImg.alt = PAGE.images[0].label;
-  applyFit(PAGE.images[0].src);
-  updateCounter();
+  /* rebuild the layered gallery for the new colour (no src swapping) */
+  buildLayers();
+  setImage(0);
 }
 
 /* ─── SIZE ─── */
