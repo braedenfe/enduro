@@ -1244,11 +1244,20 @@
       const t = mainBtn.textContent.trim();
       if (t && btn.textContent !== t) btn.textContent = t;
     }).observe(mainBtn, { attributes: true, childList: true, characterData: true, subtree: true });
-    /* show whenever the panel button is out of view */
+    /* show whenever the panel button is out of view, and step aside once the
+       footer arrives so its links (Privacy, Terms) can be reached */
+    let btnVisible = true, footVisible = false;
+    const sync = function () { bar.classList.toggle('show', !btnVisible && !footVisible); };
     const io = new IntersectionObserver(function (entries) {
-      bar.classList.toggle('show', !entries[0].isIntersecting);
+      entries.forEach(function (e) {
+        if (e.target === mainBtn) btnVisible = e.isIntersecting;
+        else footVisible = e.isIntersecting;
+      });
+      sync();
     }, { threshold: 0 });
     io.observe(mainBtn);
+    const foot = document.querySelector('footer');
+    if (foot) io.observe(foot);
   })();
 
   /* ============================================================
