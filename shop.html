@@ -575,6 +575,11 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   display:block;width:100%;background:var(--forest);color:var(--bone);border:none;border-radius:99px;cursor:pointer;
   font-family:var(--cond);font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;padding:13px 22px;
 }
+/* only the very narrowest phones move fabric into the filter panel */
+@media(max-width:339px){
+  #fabdrop{display:none}
+  .fsec-fab{display:block}
+}
 @media(max-width:760px){
   #filters{padding:10px 18px}
   .fbar{gap:7px}
@@ -582,13 +587,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   .fbtn-i{width:14px;height:14px}
   .fbtn-c{width:9px;height:6px}
   .fbtn-n{font-size:0.6rem;padding:2px 6px}
-  /* phones: filter becomes an icon and fabric moves into the panel. the row
-     must not scroll: on iOS a scrolling row traps the panel under the scrim */
+  /* phones: filter becomes an icon so all five fit in one row. the row must
+     not scroll: on iOS a scrolling row traps the panel under the scrim */
   .fbar{gap:6px}
   .fbtn{padding:12px 11px;letter-spacing:0.1em}
   .fbtn-t{display:none}
-  #fabdrop{display:none}
-  .fsec-fab{display:block}
+  #fabdrop .fbtn{gap:6px}
+  /* the fabric menu opens from the right so it stays on screen */
+  #fabdrop .fdrop-menu{left:auto;right:0}
   .fpanel{
     position:fixed;left:10px;right:10px;bottom:10px;top:auto;width:auto;
     border-radius:24px;transform:translateY(110%);max-height:78vh;
@@ -672,7 +678,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <svg class="fbtn-c" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.6 6 6.4l5-4.8"/></svg>
       </button>
       <div class="fdrop-menu" role="menu">
-        <button class="fopt fopt-inline" type="button" role="menuitemradio" data-axis="fibre" data-val="wool" aria-checked="false">Merino wool</button>
+        <button class="fopt fopt-inline" type="button" role="menuitemradio" data-axis="fibre" data-val="wool" data-short="Merino" aria-checked="false">Merino wool</button>
         <button class="fopt fopt-inline" type="button" role="menuitemradio" data-axis="fibre" data-val="cotton" aria-checked="false">Cotton</button>
       </div>
     </div>
@@ -1005,7 +1011,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="896" height="1195" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
         <img width="896" height="1195" data-fit="contain" class="alt" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-side-model.jpg" alt="Merino Long Run Sock, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Buy 2 get 1 free</span>
         <span class="pcard-fabric">Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -1688,15 +1694,17 @@ function syncFilterUI(shown) {
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
   /* count only what the row itself does not already show */
-  const phone = window.matchMedia('(max-width:760px)').matches;
+  const fabInRow = getComputedStyle(fabdrop).display !== 'none';
   const n = AXES.filter(a => fstate[a] !== 'all' && a !== 'gender' &&
-    !(a === 'fibre' && !phone) && !(a === 'cat' && fstate.cat === 'accessories')).length;
+    !(a === 'fibre' && fabInRow) && !(a === 'cat' && fstate.cat === 'accessories')).length;
   const badge = document.getElementById('fbtn-n');
   badge.hidden = n === 0; badge.textContent = n;
   document.getElementById('fclear').hidden = AXES.every(a => fstate[a] === 'all');
   const fab = Array.from(document.querySelectorAll('.fopt-inline')).find(o => o.dataset.val === fstate.fibre);
   fabdrop.classList.toggle('set', !!fab);
-  fabdrop.querySelector('.fab-l').textContent = fab ? fab.textContent.trim() : 'Fabric';
+  /* phones show the short name in the pill so the row keeps its width */
+  const shortLab = window.matchMedia('(max-width:760px)').matches && fab && fab.dataset.short;
+  fabdrop.querySelector('.fab-l').textContent = fab ? (shortLab || fab.textContent.trim()) : 'Fabric';
   const label = shown === 1 ? '1 piece' : shown + ' pieces';
   document.getElementById('fapply-n').textContent = label;
 }
