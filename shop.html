@@ -582,15 +582,13 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   .fbtn-i{width:14px;height:14px}
   .fbtn-c{width:9px;height:6px}
   .fbtn-n{font-size:0.6rem;padding:2px 6px}
-  /* phones: filter becomes an icon, fabric moves into the panel, and the row
-     scrolls sideways on the narrowest screens rather than clipping */
+  /* phones: filter becomes an icon and fabric moves into the panel. the row
+     must not scroll: on iOS a scrolling row traps the panel under the scrim */
   .fbar{gap:6px}
   .fbtn{padding:12px 11px;letter-spacing:0.1em}
   .fbtn-t{display:none}
   #fabdrop{display:none}
   .fsec-fab{display:block}
-  .fbar{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .fbar::-webkit-scrollbar{display:none}
   .fpanel{
     position:fixed;left:10px;right:10px;bottom:10px;top:auto;width:auto;
     border-radius:24px;transform:translateY(110%);max-height:78vh;
