@@ -579,6 +579,7 @@
     .ec-chip button{background:none;border:none;color:#1F3D35;font-size:1rem;line-height:1;padding:0 4px;cursor:pointer}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:5px;color:#0E1512}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
+    .ec-assure{margin:12px 0 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5)}
     .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
     .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
     .ec-gift-msg{display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.4;color:#0E1512;margin-bottom:11px}
@@ -624,7 +625,8 @@
       <div id="ec-afterpay"></div>
       <div class="ec-row disc" id="ec-disc-row" style="display:none"><span>Discount</span><span id="ec-disc"></span></div>
       <div class="ec-total" id="ec-total-row" style="display:none"><span>Total</span><span id="ec-total"></span></div>
-      <button class="ec-co" id="ec-co">Checkout</button></div>`;
+      <button class="ec-co" id="ec-co">Checkout</button>
+      <p class="ec-assure">30 day free returns</p></div>`;
   document.body.appendChild(overlay); document.body.appendChild(drawer);
 
   let _scrollY = 0;
@@ -1593,7 +1595,7 @@
       if (!localStorage.getItem(CART_KEY)) return;
       setTimeout(function () {
         if (!current || !current.totalQuantity) return;
-        if (window.showToast) showToast('Your cart is waiting \u2014 ' + current.totalQuantity + ' item' + (current.totalQuantity > 1 ? 's' : '') + ' saved');
+        if (window.showToast) showToast('Your cart is waiting. ' + current.totalQuantity + ' item' + (current.totalQuantity > 1 ? 's' : '') + ' saved.');
       }, 1800);
     })();
 
