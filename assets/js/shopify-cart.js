@@ -231,10 +231,37 @@
   // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
   const isGiftLine = (node) =>
     !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
-  // amount the customer actually pays for non-gift items (the gift is complimentary)
+  /* ---------- Socks: buy 2, the third pair is free ----------
+     The free pairs sit on their own tagged line, added and removed by the site
+     as the paid quantity changes. A Shopify automatic Buy X Get Y discount
+     (buy 2, get 1 at 100% off) makes them free at checkout. */
+  const SOCK_OFFER = { enabled: true, key: 'merino-long-run-sock', buy: 2 };
+  const SOCK_ATTR = '_enduro_free_sock';
+  const isFreeSock = (node) =>
+    !!(node.attributes && node.attributes.some(a => a.key === SOCK_ATTR && a.value === '1'));
+  /* if Shopify is not discounting the free pairs, stop adding them for this
+     visit rather than let a "free" pair be charged at checkout */
+  let sockOfferOff = false;
+  try { sockOfferOff = sessionStorage.getItem('ec_sock_off') === '1'; } catch (e) {}
+
+  // list price of what the customer chose to buy (gift and free pairs excluded)
   const qualifyingSubtotal = (cart) =>
     cart.lines.edges.reduce((sum, { node }) =>
-      isGiftLine(node) ? sum : sum + parseFloat(node.merchandise.price.amount) * node.quantity, 0);
+      (isGiftLine(node) || isFreeSock(node)) ? sum : sum + parseFloat(node.merchandise.price.amount) * node.quantity, 0);
+
+  /* what the customer actually pays for non-gift items, after automatic
+     discounts such as the free third pair of socks. Milestones use this, so the
+     site never promises a tote or free shipping that checkout will not give. */
+  const paidSubtotal = (cart) => {
+    let t = cart.lines.edges.reduce((sum, { node }) => {
+      if (isGiftLine(node)) return sum;
+      const paid = node.cost && node.cost.totalAmount ? parseFloat(node.cost.totalAmount.amount)
+        : parseFloat(node.merchandise.price.amount) * node.quantity;
+      return sum + paid;
+    }, 0);
+    (cart.discountAllocations || []).forEach(d => { t -= parseFloat(d.discountedAmount.amount); });
+    return Math.max(0, t);
+  };
 
   const giftVariantIds = {};
   async function resolveGiftVariant(key) {
@@ -502,7 +529,8 @@
         // check if variant already in cart — if so, increment quantity
         const existing = await getCart(cartId);
         if (existing) {
-          const existingLine = existing.lines.edges.find(({ node }) => node.merchandise.id === variantId);
+          const existingLine = existing.lines.edges.find(({ node }) =>
+            node.merchandise.id === variantId && !isGiftLine(node) && !isFreeSock(node));
           if (existingLine) {
             cart = await updateLine(cartId, existingLine.node.id, existingLine.node.quantity + 1);
           } else {
@@ -672,7 +700,7 @@
     const cartId = localStorage.getItem(CART_KEY);
     if (!cartId) return cart;
     try {
-      const sub = qualifyingSubtotal(cart);
+      const sub = paidSubtotal(cart);
       const giftLine = cart.lines.edges.find(({ node }) => isGiftLine(node));
       if (sub >= GIFT.threshold) {
         const key = desiredGiftKey(cart);
@@ -751,9 +779,53 @@
   }
 
   /* reconcile gift state, then paint */
+  /* keep one free-pair line at floor(paid pairs / 2), in the size most bought */
+  async function reconcileSocks(cart) {
+    if (!SOCK_OFFER.enabled || !cart || !PRODUCTS[SOCK_OFFER.key]) return cart;
+    const cartId = localStorage.getItem(CART_KEY);
+    if (!cartId) return cart;
+    const sockGid = gid(PRODUCTS[SOCK_OFFER.key]);
+    try {
+      const sockLines = cart.lines.edges.map(e => e.node).filter(n => n.merchandise.product.id === sockGid);
+      const paid = sockLines.filter(n => !isFreeSock(n));
+      const free = sockLines.filter(n => isFreeSock(n));
+      const paidQty = paid.reduce((t, n) => t + n.quantity, 0);
+      const want = sockOfferOff ? 0 : Math.floor(paidQty / SOCK_OFFER.buy);
+      let bySize = {}, pick = null;
+      paid.forEach(n => {
+        bySize[n.merchandise.id] = (bySize[n.merchandise.id] || 0) + n.quantity;
+        if (!pick || bySize[n.merchandise.id] >= bySize[pick]) pick = n.merchandise.id;
+      });
+      let c = cart;
+      if (want === 0) {
+        for (const n of free) c = await removeLine(cartId, n.id);
+        return c;
+      }
+      const keep = free.length === 1 && free[0].merchandise.id === pick ? free[0] : null;
+      if (!keep) {
+        for (const n of free) c = await removeLine(cartId, n.id);
+        c = await addLine(cartId, { merchandiseId: pick, quantity: want, attributes: [{ key: SOCK_ATTR, value: '1' }] });
+      } else if (keep.quantity !== want) {
+        c = await updateLine(cartId, keep.id, want);
+      }
+      /* check Shopify actually made them free */
+      const unit = parseFloat(paid[0].merchandise.price.amount);
+      const disc = c.lines.edges.reduce((t, { node }) =>
+        node.merchandise.product.id !== sockGid ? t :
+          t + (node.discountAllocations || []).reduce((u, d) => u + parseFloat(d.discountedAmount.amount), 0), 0);
+      if (disc < want * unit - 0.01) {
+        sockOfferOff = true;
+        try { sessionStorage.setItem('ec_sock_off', '1'); } catch (e) {}
+        for (const { node } of c.lines.edges.filter(({ node }) => isFreeSock(node))) c = await removeLine(cartId, node.id);
+      }
+      return c;
+    } catch (e) { return cart; }   /* fail soft, like the gift */
+  }
+
   async function refresh(cart) {
     const bundled = await reconcileBundle(cart);
-    const updated = await reconcileGift(bundled);
+    const socked = await reconcileSocks(bundled);
+    const updated = await reconcileGift(socked);
     render(updated);
     return updated;
   }
@@ -766,7 +838,7 @@
     const expOn = shipOn && EXPRESS.enabled && EXPRESS.threshold > SHIPPING.threshold;
     if (!giftOn && !shipOn) { box.style.display = 'none'; return; }
     const cur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
-    const sub = qualifyingSubtotal(cart);
+    const sub = paidSubtotal(cart);
     const giftDone = giftOn && sub >= GIFT.threshold;
     const shipDone = shipOn && sub >= SHIPPING.threshold;
     const expDone = expOn && sub >= EXPRESS.threshold;
@@ -868,18 +940,28 @@
         <div><div class="t">${v.product.title}</div><div class="s">Gift</div>
         <div class="p"><s>${money(GIFT.displayValue || v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
       }
+      if (isFreeSock(node)) {
+        const n = node.quantity;
+        return `<div class="ec-line">
+        ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
+        <div><div class="t">${v.product.title}</div><div class="s">${v.title} &middot; ${n > 1 ? n + ' free pairs' : 'Free pair'}</div>
+        <div class="p"><s>${money(parseFloat(v.price.amount) * n, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+      }
+      /* paid socks next to free pairs show their own price; the free pairs carry the saving */
+      const sockGidR = PRODUCTS[SOCK_OFFER.key] ? gid(PRODUCTS[SOCK_OFFER.key]) : null;
+      const hasFreeSock = v.product.id === sockGidR && cart.lines.edges.some(e => isFreeSock(e.node));
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
         <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
         <div class="p">${(function(){
           const cur = v.price.currencyCode;
           const sub = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : v.price.amount * node.quantity;
-          const tot = node.cost ? parseFloat(node.cost.totalAmount.amount) : sub;
+          const tot = hasFreeSock ? sub : (node.cost ? parseFloat(node.cost.totalAmount.amount) : sub);
           return tot < sub ? '<s>' + money(sub, cur) + '</s>' + money(tot, cur) : money(sub, cur);
         })()}</div>
         ${(function(){
           const s = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : 0;
-          const t = node.cost ? parseFloat(node.cost.totalAmount.amount) : s;
+          const t = hasFreeSock ? s : (node.cost ? parseFloat(node.cost.totalAmount.amount) : s);
           return t < s ? '<span class="dtag">Discount applied</span>' : '';
         })()}
         <div class="ec-qty">
@@ -897,6 +979,11 @@
       if (isGiftLine(node)) return; // gift is presented as Complimentary, not as a discount
       (node.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); });
     });
+    /* free pairs are shown as Complimentary too, wherever Shopify allocated the saving */
+    cart.lines.edges.forEach(({ node }) => {
+      if (isFreeSock(node)) savings -= parseFloat(node.merchandise.price.amount) * node.quantity;
+    });
+    savings = Math.max(0, savings);
     (cart.discountAllocations || []).forEach(d => { savings += parseFloat(d.discountedAmount.amount); });
     const discRow = document.getElementById('ec-disc-row');
     const totalRow = document.getElementById('ec-total-row');
@@ -1534,6 +1621,47 @@
         el.id = 'ec-nudge'; el.className = 'ec-nudge';
         el.innerHTML = '<span>Add the ' + p.label + ' to complete the set and the pair price applies.</span>' +
           '<a href="' + base + p.file + '">View</a>';
+        lines.prepend(el);
+      }
+      obs.observe(lines, { childList: true });
+    })();
+
+    /* ---------- buy 2 socks, get the third free: nudge for the free pair ---------- */
+    (function () {
+      const lines = document.getElementById('ec-lines');
+      const SOCK = 'merino-long-run-sock';
+      if (!lines || !PRODUCTS[SOCK]) return;
+      let syncing = false;
+      const obs = new MutationObserver(function () {
+        if (syncing) return;              /* our own edits must not retrigger this */
+        syncing = true;
+        obs.disconnect();
+        try { draw(); } finally {
+          obs.observe(lines, { childList: true });
+          syncing = false;
+        }
+      });
+      function draw() {
+        const old = document.getElementById('ec-sock-nudge'); if (old) old.remove();
+        if (!current || !current.lines) return;
+        const sockGid = gid(PRODUCTS[SOCK]);
+        if (sockOfferOff) return;
+        let qty = 0, size = null;
+        current.lines.edges.forEach(function (e) {
+          if (isGiftLine(e.node) || isFreeSock(e.node) || e.node.merchandise.product.id !== sockGid) return;
+          qty += e.node.quantity;
+          size = e.node.merchandise.title;   /* add the next pair in the size they chose */
+        });
+        if (qty % SOCK_OFFER.buy !== 1) return;
+        const el = document.createElement('div');
+        el.id = 'ec-sock-nudge'; el.className = 'ec-nudge';
+        el.innerHTML = '<span>Add another pair of socks and a third pair is on us.</span><a role="button" tabindex="0">Add</a>';
+        const go = function (e) {
+          e.preventDefault();
+          if (typeof window.ecQuickAdd === 'function') window.ecQuickAdd(SOCK, size);
+        };
+        el.querySelector('a').addEventListener('click', go);
+        el.querySelector('a').addEventListener('keydown', function (e) { if (e.key === 'Enter') go(e); });
         lines.prepend(el);
       }
       obs.observe(lines, { childList: true });
