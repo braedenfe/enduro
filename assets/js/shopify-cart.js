@@ -1780,8 +1780,19 @@
         if (SHIPPING.enabled && paidSubtotal(current) >= SHIPPING.threshold) return;
         const inCart = {};
         current.lines.edges.forEach(function (e) { const k = keyOfProduct(e.node.merchandise.product.id); if (k) inCart[k] = true; });
-        const show = PICKS.filter(function (o) { return PRODUCTS[o.key] && !inCart[o.key]; });
-        if (!show.length) return;
+        /* one piece only: the cheapest that takes the order to free shipping,
+           or failing that the cheapest available */
+        const priceOf = function (k) {
+          if (window.__ecLocalNum && window.__ecLocalNum[k]) return window.__ecLocalNum[k];
+          const c = CATALOGUE.find(function (p) { return p.key === k; });
+          const fx = window.__ecFx;
+          return c ? parseFloat(String(c.price).replace(/[^0-9.]/g, '')) * (fx && fx.rate ? fx.rate : 1) : 0;
+        };
+        const gap = SHIPPING.threshold - paidSubtotal(current);
+        const avail = PICKS.filter(function (o) { return PRODUCTS[o.key] && !inCart[o.key]; })
+          .sort(function (a, b) { return priceOf(a.key) - priceOf(b.key); });
+        if (!avail.length) return;
+        const show = [avail.find(function (o) { return priceOf(o.key) >= gap; }) || avail[0]];
         const el = document.createElement('div');
         el.id = 'ec-suggest'; el.className = 'ec-suggest';
         el.innerHTML = '<div class="sg-h">Pairs well with</div>' + show.map(function (o) {
