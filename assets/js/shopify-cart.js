@@ -231,6 +231,30 @@
   // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
   const isGiftLine = (node) =>
     !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
+  /* ---------- Dispatch timing shown on each cart line ----------
+     Keep in step with the product pages and the shop quick-add (SHIP_TIME in
+     shop.html). Anything not listed is a pre-order shipping in 4 to 6 weeks. */
+  const SHIP_TIME = {
+    'merino-long-run-sock':  'Ships in 2\u20134 weeks',
+    'cotton-long-run-tee':   'Ships in 2\u20134 weeks',
+    'merino-micro-short':    'Ships within 4 weeks',
+    'merino-bandeau':        'Ships within 4 weeks',
+    'o-tee':                 'Ships within 4 weeks',
+    'enduro-tee':            'Ships within 4 weeks',
+    'organic-tote':          'In stock \u00b7 ships in 1\u20132 business days'
+  };
+  const SHIP_TIME_DEFAULT = 'Ships in 4\u20136 weeks';
+  window.EC_SHIP_TIME = SHIP_TIME;
+  const keyOfProduct = (productGid) => {
+    const id = String(productGid || '').split('/').pop();
+    if (typeof BUNDLE !== 'undefined' && BUNDLE.productId === id) return 'merino-micro-short';
+    return Object.keys(PRODUCTS).find(k => PRODUCTS[k] === id) || null;
+  };
+  const shipLine = (productGid) => {
+    const k = keyOfProduct(productGid);
+    return '<div class="ship">' + ((k && SHIP_TIME[k]) || SHIP_TIME_DEFAULT) + '</div>';
+  };
+
   /* ---------- Socks: buy 2, the third pair is free ----------
      The free pairs sit on their own tagged line, added and removed by the site
      as the paid quantity changes. A Shopify automatic Buy X Get Y discount
@@ -411,6 +435,7 @@
       if (window.__ecProducts && window.__ecProducts[key]) window.__ecProducts[key].price = text;
       if (window.__ecQA && window.__ecQA[key]) window.__ecQA[key].price = text;
       (window.__ecLocal = window.__ecLocal || {})[key] = text;
+      (window.__ecLocalNum = window.__ecLocalNum || {})[key] = parseFloat(p.amount);
     });
 
     /* derive the rate from Shopify's own numbers, averaged across the range so
@@ -585,6 +610,24 @@
     .ec-line .t{font-size:.92rem;color:#0E1512}
     .ec-line .s{font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
     .ec-line .p{font-size:.88rem;margin-top:6px;color:#0E1512}
+    .ec-line .ship{font-size:.76rem;color:rgba(14,21,18,.5);margin-top:3px}
+    .ec-code-toggle{display:block;background:none;border:none;padding:0;margin:0 0 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(14,21,18,.55);border-bottom:1px solid rgba(14,21,18,.2);transition:color .2s,border-color .2s}
+    .ec-code-toggle:hover{color:#0E1512;border-color:#0E1512}
+    .ec-suggest{margin:18px 0 4px;padding:14px;border:1px solid rgba(14,21,18,.1);border-radius:6px;display:flex;gap:12px;align-items:center}
+    .ec-suggest img{width:52px;height:64px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto}
+    .ec-suggest .sg-b{flex:1;min-width:0}
+    .ec-suggest .sg-k{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.5)}
+    .ec-suggest .sg-n{font-size:.86rem;color:#0E1512;margin-top:3px;line-height:1.35}
+    .ec-suggest .sg-a{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+    .ec-suggest .sg-a button{border:1px solid rgba(14,21,18,.22);background:none;border-radius:99px;padding:6px 12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#0E1512}
+    .ec-suggest .sg-a button:hover{border-color:#1F3D35;color:#1F3D35}
+    .ec-suggest .sg-a button:disabled{opacity:.5}
+    .ec-empty-go{display:inline-block;margin-top:18px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#1F3D35;border-bottom:1px solid rgba(31,61,53,.4);padding-bottom:3px;text-decoration:none}
+    .ec-empty-picks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:30px;text-align:left}
+    .ec-empty-picks a{text-decoration:none;color:#0E1512}
+    .ec-empty-picks img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:#EAE6DE;display:block}
+    .ec-empty-picks .n{font-size:.76rem;margin-top:7px;line-height:1.3}
+    .ec-empty-picks .pr{font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
     .ec-line .p s{color:rgba(14,21,18,.4);font-weight:300;margin-right:7px}
     .ec-line .dtag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:3px 9px;margin-top:7px}
     .ec-row{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:8px;color:rgba(14,21,18,.75)}
@@ -643,7 +686,8 @@
     </div>
     <div class="ec-lines" id="ec-lines"></div>
     <div class="ec-foot" id="ec-foot" style="display:none">
-      <div class="ec-code" id="ec-code-row">
+      <button class="ec-code-toggle" id="ec-code-toggle" type="button">Have a code?</button>
+      <div class="ec-code" id="ec-code-row" style="display:none">
         <input id="ec-code-input" type="text" placeholder="Discount code" autocomplete="off">
         <button id="ec-code-apply" type="button">Apply</button>
       </div>
@@ -681,6 +725,7 @@
   };
   const openDrawer = () => {
     overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true);
+    if (!current) { render(null); return; }
     ga('view_cart', {
       currency: 'AUD',
       value: qualifyingSubtotal(current),
@@ -928,7 +973,8 @@
     const lines = document.getElementById('ec-lines');
     const foot = document.getElementById('ec-foot');
     if (!cart || cart.totalQuantity === 0) {
-      lines.innerHTML = '<div class="ec-empty">Your cart is empty.</div>'; foot.style.display = 'none';
+      lines.innerHTML = '<div class="ec-empty">Your cart is empty.' +
+        (window.__ecEmptyExtra ? window.__ecEmptyExtra() : '') + '</div>'; foot.style.display = 'none';
       const gEmpty = document.getElementById('ec-gift'); if (gEmpty) gEmpty.style.display = 'none';
       return;
     }
@@ -937,14 +983,14 @@
       if (isGiftLine(node)) {
         return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">Gift</div>
+        <div><div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div>
         <div class="p"><s>${money(GIFT.displayValue || v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
       }
       if (isFreeSock(node)) {
         const n = node.quantity;
         return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">${v.title} &middot; ${n > 1 ? n + ' free pairs' : 'Free pair'}</div>
+        <div><div class="t">${v.product.title}</div><div class="s">${v.title} &middot; ${n > 1 ? n + ' free pairs' : 'Free pair'}</div>${shipLine(v.product.id)}
         <div class="p"><s>${money(parseFloat(v.price.amount) * n, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
       }
       /* paid socks next to free pairs show their own price; the free pairs carry the saving */
@@ -952,7 +998,7 @@
       const hasFreeSock = v.product.id === sockGidR && cart.lines.edges.some(e => isFreeSock(e.node));
       return `<div class="ec-line">
         ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>
+        <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>${shipLine(v.product.id)}
         <div class="p">${(function(){
           const cur = v.price.currencyCode;
           const sub = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : v.price.amount * node.quantity;
@@ -1016,8 +1062,17 @@
         render(await updateCodes(cid, remain));
       } catch (e) {}
     }));
-    document.getElementById('ec-code-row').style.display = appliedCodes.length ? 'none' : 'flex';
+    /* the code field stays tucked away until asked for */
+    document.getElementById('ec-code-row').style.display = (!appliedCodes.length && codeOpen) ? 'flex' : 'none';
+    document.getElementById('ec-code-toggle').style.display = (!appliedCodes.length && !codeOpen) ? 'block' : 'none';
     foot.style.display = 'block';
+    /* the total they will pay for their items, on the button itself */
+    (function () {
+      let t = cart.cost.totalAmount ? parseFloat(cart.cost.totalAmount.amount) : qualifyingSubtotal(cart);
+      const gl = cart.lines.edges.find(({ node }) => isGiftLine(node));
+      if (gl && gl.node.cost) t -= Math.max(0, parseFloat(gl.node.cost.totalAmount.amount));
+      document.getElementById('ec-co').textContent = 'Checkout \u00b7 ' + money(Math.max(0, t), footCur);
+    })();
     updateGiftBar(cart);
     lines.querySelectorAll('.ec-qty button').forEach(b => b.addEventListener('click', async () => {
       const lineId = b.dataset.line, qty = parseInt(b.dataset.qty);
@@ -1030,6 +1085,13 @@
   }
 
   /* ---------- discount codes ---------- */
+  var codeOpen = false;
+  document.getElementById('ec-code-toggle').addEventListener('click', () => {
+    codeOpen = true;
+    document.getElementById('ec-code-toggle').style.display = 'none';
+    document.getElementById('ec-code-row').style.display = 'flex';
+    document.getElementById('ec-code-input').focus();
+  });
   async function applyCode() {
     const input = document.getElementById('ec-code-input');
     const msg = document.getElementById('ec-code-msg');
@@ -1046,6 +1108,7 @@
         msg.textContent = 'That code isn\u2019t valid or doesn\u2019t apply to this cart.';
       } else {
         input.value = '';
+        codeOpen = false;
       }
       render(cart);
     } catch (e) {
@@ -1596,6 +1659,17 @@
         '<path fill-rule="evenodd" d="M82.55,0.00 L99.89,0.00 L85.86,10.44 L87.71,11.90 L89.39,13.80 L90.57,15.99 L91.13,18.07 L91.30,21.27 L91.08,23.29 L90.40,26.15 L89.28,29.24 L87.09,33.50 L84.90,36.70 L81.93,40.12 L78.56,43.21 L74.41,46.24 L70.26,48.65 L65.66,50.79 L60.83,52.53 L56.34,53.76 L52.86,54.49 L48.93,55.11 L43.88,55.61 L40.63,55.78 L35.07,55.78 L30.30,55.50 L25.65,54.94 L17.23,61.22 L0.06,61.22 L13.69,51.07 L13.64,50.84 L12.29,49.89 L10.83,48.43 L9.88,47.08 L9.20,45.74 L8.81,44.67 L8.36,42.37 L8.31,40.07 L8.42,38.72 L8.87,36.25 L9.43,34.23 L10.44,31.59 L11.50,29.41 L14.14,25.25 L17.45,21.32 L21.16,17.90 L23.34,16.22 L26.21,14.31 L28.73,12.85 L31.65,11.39 L35.24,9.88 L37.93,8.92 L41.36,7.91 L46.02,6.85 L50.11,6.17 L54.88,5.67 L59.20,5.44 L64.31,5.44 L69.53,5.72 L74.19,6.23 L82.49,0.06 Z M56.45,15.99 L59.65,16.05 L60.66,16.22 L60.49,16.39 L34.40,35.63 L35.30,33.28 L36.87,30.19 L38.83,27.16 L41.19,24.24 L43.38,22.05 L44.56,21.04 L45.96,19.98 L48.37,18.46 L50.34,17.51 L52.53,16.72 L54.66,16.22 L56.40,16.05 Z M65.10,25.81 L65.21,25.76 L64.70,27.10 L63.47,29.74 L62.18,31.99 L60.77,34.06 L58.31,37.09 L56.40,39.00 L53.93,41.02 L51.68,42.48 L49.72,43.49 L46.80,44.56 L44.84,45.01 L42.99,45.23 L40.40,45.23 L39.11,45.06 L65.04,25.87 Z"/></svg>';
     })();
 
+    /* the drawer helpers (nudges, suggestion) redraw when the cart lines change.
+       Changes made by another helper are not cart changes, so they are ignored;
+       otherwise two helpers would redraw each other forever. */
+    const HELPER_IDS = /^ec-(nudge|sock-nudge|suggest)$/;
+    const onlyHelpers = function (recs) {
+      return recs.every(function (r) {
+        return Array.prototype.concat.apply([], [Array.from(r.addedNodes), Array.from(r.removedNodes)])
+          .every(function (n) { return n.id && HELPER_IDS.test(n.id); });
+      });
+    };
+
     /* ---------- bundle nudge in the drawer ---------- */
     (function () {
       const lines = document.getElementById('ec-lines');
@@ -1605,8 +1679,8 @@
         'merino-bandeau':     { partner:'merino-micro-short', label:'Merino Micro Short', file:'product-merino-micro-short.html' }
       };
       let syncing = false;
-      const obs = new MutationObserver(function () {
-        if (syncing) return;              /* our own edits must not retrigger this */
+      const obs = new MutationObserver(function (recs) {
+        if (syncing || onlyHelpers(recs)) return;              /* our own edits must not retrigger this */
         syncing = true;
         obs.disconnect();
         try { drawNudge(); } finally {
@@ -1641,8 +1715,8 @@
       const SOCK = 'merino-long-run-sock';
       if (!lines || !PRODUCTS[SOCK]) return;
       let syncing = false;
-      const obs = new MutationObserver(function () {
-        if (syncing) return;              /* our own edits must not retrigger this */
+      const obs = new MutationObserver(function (recs) {
+        if (syncing || onlyHelpers(recs)) return;              /* our own edits must not retrigger this */
         syncing = true;
         obs.disconnect();
         try { draw(); } finally {
@@ -1675,6 +1749,89 @@
       }
       obs.observe(lines, { childList: true });
     })();
+
+    /* ---------- one considered suggestion, only when it unlocks something ----------
+       If the next milestone (the tote, then free standard shipping) is within
+       reach, offer the single piece that gets them there. Never a carousel. */
+    (function () {
+      const lines = document.getElementById('ec-lines');
+      if (!lines) return;
+      const PICKS = [
+        { key: 'merino-long-run-sock',   sizes: ['M', 'L'] },
+        { key: 'organic-cotton-dad-cap', sizes: null },
+        { key: 'cotton-long-run-tee',    sizes: ['S', 'M', 'L', 'XL'] }
+      ];
+      const audPrice = function (k) {
+        const c = CATALOGUE.find(function (p) { return p.key === k; });
+        return c ? parseFloat(String(c.price).replace(/[^0-9.]/g, '')) : 0;
+      };
+      const localPrice = function (k) {
+        if (window.__ecLocalNum && window.__ecLocalNum[k]) return window.__ecLocalNum[k];
+        const fx = window.__ecFx;
+        return audPrice(k) * (fx && fx.rate ? fx.rate : 1);
+      };
+      let syncing = false;
+      const obs = new MutationObserver(function (recs) {
+        if (syncing || onlyHelpers(recs)) return;
+        syncing = true;
+        obs.disconnect();
+        try { draw(); } finally {
+          obs.observe(lines, { childList: true });
+          syncing = false;
+        }
+      });
+      function draw() {
+        const old = document.getElementById('ec-suggest'); if (old) old.remove();
+        if (!current || !current.lines || !current.lines.edges.length) return;
+        const cur = (current.cost.subtotalAmount && current.cost.subtotalAmount.currencyCode) || 'AUD';
+        const paid = paidSubtotal(current);
+        let goal = null, what = '';
+        if (GIFT.enabled && paid < GIFT.threshold) { goal = GIFT.threshold; what = 'Unlocks the Enduro Tote'; }
+        else if (SHIPPING.enabled && paid < SHIPPING.threshold) { goal = SHIPPING.threshold; what = 'Unlocks free shipping'; }
+        if (goal === null) return;
+        const gap = goal - paid;
+        const inCart = {};
+        current.lines.edges.forEach(function (e) { const k = keyOfProduct(e.node.merchandise.product.id); if (k) inCart[k] = true; });
+        /* one prompt at a time: the free-pair nudge takes precedence */
+        if (document.getElementById('ec-sock-nudge')) return;
+        const opts = PICKS.filter(function (o) {
+          return PRODUCTS[o.key] && !inCart[o.key] && localPrice(o.key) >= gap;
+        }).sort(function (a, b) { return localPrice(a.key) - localPrice(b.key); });
+        if (!opts.length) return;
+        const o = opts[0];
+        const c = CATALOGUE.find(function (p) { return p.key === o.key; });
+        const priceTxt = (window.__ecLocal && window.__ecLocal[o.key]) || money(localPrice(o.key), cur);
+        const el = document.createElement('div');
+        el.id = 'ec-suggest'; el.className = 'ec-suggest';
+        el.innerHTML = '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt=""></a>' +
+          '<div class="sg-b"><div class="sg-k">' + what + '</div>' +
+          '<div class="sg-n">' + c.name + ' &middot; ' + priceTxt + '</div>' +
+          '<div class="sg-a">' + (o.sizes
+            ? o.sizes.map(function (z) { return '<button type="button" data-size="' + z + '">' + z + '</button>'; }).join('')
+            : '<button type="button" data-size="">Add</button>') + '</div></div>';
+        el.querySelectorAll('button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            el.querySelectorAll('button').forEach(function (x) { x.disabled = true; });
+            if (typeof window.ecQuickAdd === 'function') window.ecQuickAdd(o.key, b.dataset.size || null);
+          });
+        });
+        lines.appendChild(el);
+      }
+      obs.observe(lines, { childList: true });
+    })();
+
+    /* ---------- empty cart: somewhere to go next ---------- */
+    window.__ecEmptyExtra = function () {
+      const picks = ['merino-micro-short', 'o-tee', 'merino-long-run-sock'];
+      return '<br><a class="ec-empty-go" href="' + root + 'shop.html">Shop the collection</a>' +
+        '<div class="ec-empty-picks">' + picks.map(function (k) {
+          const c = CATALOGUE.find(function (p) { return p.key === k; });
+          if (!c) return '';
+          const pr = (window.__ecLocal && window.__ecLocal[k]) || c.price;
+          return '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt="" loading="lazy">' +
+            '<div class="n">' + c.name + '</div><div class="pr">' + pr + '</div></a>';
+        }).join('') + '</div>';
+    };
 
     /* ---------- search overlay ---------- */
     (function () {
