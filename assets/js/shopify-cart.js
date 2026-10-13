@@ -630,6 +630,15 @@
     .ec-head{position:relative;display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(14,21,18,.1)}
     /* a hairline that runs while the cart is updating */
     .ec-head::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:30%;background:#1F3D35;opacity:0;transform:translateX(-100%)}
+    @keyframes ecBump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+    .nav-cart-count.ec-bump{animation:ecBump .45s cubic-bezier(.2,.7,.2,1)}
+    #ec-added{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));z-index:520;transform:translate(-50%,16px);opacity:0;pointer-events:none;
+      display:flex;align-items:center;gap:14px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;padding:12px 22px;cursor:pointer;
+      font-family:'DM Sans',sans-serif;font-size:.85rem;letter-spacing:.02em;transition:opacity .3s,transform .3s cubic-bezier(.2,.7,.2,1);box-shadow:0 10px 26px rgba(14,21,18,.18)}
+    #ec-added span{font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid rgba(245,242,236,.5);padding-bottom:1px}
+    #ec-added.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+    /* sits above the sticky add bar on product pages */
+    body:has(#ec-sticky.show) #ec-added{bottom:calc(92px + env(safe-area-inset-bottom))}
     #ec-drawer.busy .ec-head::after{opacity:1;animation:ecBusy 1s cubic-bezier(.4,0,.2,1) infinite}
     @keyframes ecBusy{0%{transform:translateX(-100%)}100%{transform:translateX(340%)}}
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
@@ -762,6 +771,25 @@
     }
   };
   const setBusy = (on) => drawer.classList.toggle('busy', !!on);
+  /* adding no longer opens the cart: the basket count steps up with a small
+     pulse, and a short note confirms it. Inside the open cart, nothing extra. */
+  function addedNotice() {
+    document.querySelectorAll('.nav-cart-count').forEach(function (b) {
+      b.classList.remove('ec-bump'); void b.offsetWidth; b.classList.add('ec-bump');
+    });
+    if (drawer.classList.contains('open')) return;
+    let t = document.getElementById('ec-added');
+    if (!t) {
+      t = document.createElement('button');
+      t.id = 'ec-added'; t.type = 'button';
+      t.innerHTML = 'Added to cart<span>View</span>';
+      t.addEventListener('click', function () { t.classList.remove('on'); openDrawer(); });
+      document.body.appendChild(t);
+    }
+    clearTimeout(t._h);
+    requestAnimationFrame(function () { t.classList.add('on'); });
+    t._h = setTimeout(function () { t.classList.remove('on'); }, 2600);
+  }
   const openDrawer = (adding) => {
     overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true);
     if (!current) {
@@ -1196,10 +1224,10 @@
         ? sellable[0]
         : (sellable && pickVariant(sellable, size, colourName || null));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return false; }
-      setBusy(true); openDrawer(true);
       const cart = await addToCartFlow(v.id);
       render(cart);
-      refresh(cart).catch(() => {}).finally(() => setBusy(false));
+      addedNotice();
+      refresh(cart).catch(() => {});
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
       klTrack('Added to Cart', {
@@ -1243,10 +1271,11 @@
       const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list; // $0 variants are gift-only
       const v = (sellable && sellable.length === 1) ? sellable[0] : (sellable && pickVariant(sellable, size, colorName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
-      setBusy(true); openDrawer(true);
       const cart = await addToCartFlow(v.id);
       render(cart);
-      refresh(cart).catch(() => {}).finally(() => setBusy(false));
+      addedNotice();
+      if (btn) btn.dataset.ok = '1';
+      refresh(cart).catch(() => {});
       const pageUrl = window.location.href.split('?')[0];
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
@@ -1282,7 +1311,14 @@
       setBusy(false); render(current);   /* put the drawer back as it was */
       if (window.showToast) showToast('Something went wrong. Please try again.');
     } finally {
-      if (btn) { btn.disabled = false; btn.textContent = label; }
+      if (btn) {
+        btn.disabled = false;
+        if (btn.dataset.ok === '1') {
+          delete btn.dataset.ok;
+          btn.textContent = 'Added';
+          setTimeout(function () { btn.textContent = label; }, 1400);
+        } else btn.textContent = label;
+      }
     }
   };
 
