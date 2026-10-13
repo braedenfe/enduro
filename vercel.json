@@ -54,6 +54,11 @@
       "permanent": false
     },
     {
+      "source": "/friends/:code/:product",
+      "destination": "/pages/product-:product.html?ref=:code",
+      "permanent": false
+    },
+    {
       "source": "/archive/(.*)",
       "destination": "/shop.html",
       "permanent": false
