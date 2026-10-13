@@ -644,7 +644,12 @@
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
     .ec-x{background:none;border:none;font-size:1.4rem;color:#0E1512;line-height:1}
     .ec-lines{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 24px}
-    .ec-line{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(14,21,18,.08);align-items:flex-start}
+    .ec-line{position:relative;overflow:hidden;border-bottom:1px solid rgba(14,21,18,.08)}
+    .ec-slide{position:relative;z-index:1;display:flex;gap:12px;padding:14px 0;align-items:flex-start;background:#FAFAF8;touch-action:pan-y;transition:transform .28s cubic-bezier(.2,.7,.2,1)}
+    .ec-line.dragging .ec-slide{transition:none}
+    .ec-del{position:absolute;top:0;right:0;bottom:0;width:88px;border:none;background:#1F3D35;color:#F5F2EC;cursor:pointer;
+      font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase}
+    @media (hover:hover) and (pointer:fine){.ec-del{display:none}}
     .ec-line img,.ec-line .ph{width:52px;height:65px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto}
     .ec-info{flex:1;min-width:0}
     .ec-right{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;text-align:right}
@@ -1057,7 +1062,9 @@
       const cur = v.price.currencyCode;
       const pic = img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div class="ph"></div>';
       /* name and details on the left; price and quantity in a right-hand column */
-      const row = (info, right) => `<div class="ec-line">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div>`;
+      const row = (info, right, removable) => removable
+        ? `<div class="ec-line ec-sw"><button class="ec-del" type="button" data-line="${node.id}" tabindex="-1">Remove</button><div class="ec-slide">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div></div>`
+        : `<div class="ec-line"><div class="ec-slide">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div></div>`;
       if (isGiftLine(node)) {
         return row(`<div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div>`,
           `<div class="p"><s>${money(GIFT.displayValue || v.price.amount, cur)}</s>${money(0, cur)}</div>`);
@@ -1080,7 +1087,7 @@
           <button data-line="${node.id}" data-qty="${node.quantity - 1}" aria-label="Remove one">&#8722;</button>
           <span>${node.quantity}</span>
           <button data-line="${node.id}" data-qty="${node.quantity + 1}" aria-label="Add one">+</button>
-        </div>`);
+        </div>`, true);
     }).join('');
     const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
@@ -1140,6 +1147,12 @@
       document.getElementById('ec-co').textContent = 'Checkout \u00b7 ' + money(Math.max(0, t), footCur);
     })();
     updateGiftBar(cart);
+    lines.querySelectorAll('.ec-del').forEach(b => b.addEventListener('click', async () => {
+      const cid = localStorage.getItem(CART_KEY);
+      b.disabled = true; setBusy(true);
+      try { await refresh(await removeLine(cid, b.dataset.line)); } catch (e) {}
+      finally { setBusy(false); }
+    }));
     lines.querySelectorAll('.ec-qty button').forEach(b => b.addEventListener('click', async () => {
       const lineId = b.dataset.line, qty = parseInt(b.dataset.qty);
       const cid = localStorage.getItem(CART_KEY);
@@ -1149,6 +1162,54 @@
       } catch (e) {}
     }));
   }
+
+  /* ---------- swipe a cart line left to reveal Remove (touch screens) ---------- */
+  (function () {
+    const lines = document.getElementById('ec-lines');
+    const W = 88;
+    let row = null, x0 = 0, y0 = 0, base = 0, dx = 0, mode = null;
+    const slideOf = r => r.querySelector('.ec-slide');
+    const closeAll = (except) => lines.querySelectorAll('.ec-sw.open').forEach(r => {
+      if (r === except) return; r.classList.remove('open'); slideOf(r).style.transform = '';
+    });
+    lines.addEventListener('touchstart', e => {
+      const r = e.target.closest('.ec-sw');
+      if (!r || e.target.closest('.ec-del')) { if (!r) closeAll(); return; }
+      row = r; mode = null; dx = 0;
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+      base = r.classList.contains('open') ? -W : 0;
+    }, { passive: true });
+    lines.addEventListener('touchmove', e => {
+      if (!row) return;
+      const mx = e.touches[0].clientX - x0, my = e.touches[0].clientY - y0;
+      if (!mode) {
+        if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+        mode = Math.abs(mx) > Math.abs(my) ? 'h' : 'v';   /* vertical stays a scroll */
+        if (mode === 'h') { closeAll(row); row.classList.add('dragging'); }
+      }
+      if (mode !== 'h') return;
+      dx = Math.max(-W - 24, Math.min(0, base + mx));
+      slideOf(row).style.transform = 'translateX(' + dx + 'px)';
+    }, { passive: true });
+    lines.addEventListener('touchend', () => {
+      if (!row) return;
+      if (mode === 'h') {
+        row.classList.remove('dragging');
+        const open = dx < -W / 2;
+        row.classList.toggle('open', open);
+        slideOf(row).style.transform = open ? 'translateX(' + (-W) + 'px)' : '';
+      } else if (!mode && row.classList.contains('open')) {
+        /* a tap on an open row closes it, and does nothing else */
+        row.classList.remove('open'); slideOf(row).style.transform = '';
+        swallow = true; setTimeout(() => { swallow = false; }, 400);
+      }
+      row = null; mode = null;
+    });
+    let swallow = false;
+    lines.addEventListener('click', e => {
+      if (swallow) { e.preventDefault(); e.stopPropagation(); swallow = false; }
+    }, true);
+  })();
 
   /* ---------- discount codes ---------- */
   var codeOpen = false;
