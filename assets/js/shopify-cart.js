@@ -486,8 +486,33 @@
 
   /* ---------- resolve size -> variant (cached) ---------- */
   const variantCache = {};
+  /* every product's sizes in one request, fetched quietly after the page loads,
+     so the first add does not wait on a lookup */
+  const shapeVariants = (edges) => edges.map(({ node }) => {
+    const opt = (n) => { const o = node.selectedOptions.find(x => x.name.toLowerCase() === n); return o ? o.value.toLowerCase() : null; };
+    return { id: node.id, available: node.availableForSale, priceNum: parseFloat(node.price.amount), size: opt('size'), color: opt('color') };
+  });
+  let prefetching = null;
+  function prefetchVariants() {
+    if (prefetching) return prefetching;
+    const keys = Object.keys(PRODUCTS).filter(k => /^\d+$/.test(PRODUCTS[k]) && !variantCache[k]);
+    if (!keys.length) return Promise.resolve();
+    prefetching = gql(
+      `query($ids:[ID!]!){ nodes(ids:$ids){ ... on Product { id variants(first:100){ edges{ node{
+        id availableForSale price { amount } selectedOptions{ name value } } } } } } }`,
+      { ids: keys.map(k => gid(PRODUCTS[k])) })
+      .then(d => { (d.nodes || []).forEach((n, i) => { if (n && n.variants) variantCache[keys[i]] = shapeVariants(n.variants.edges); }); })
+      .catch(() => {});
+    return prefetching;
+  }
+  (function () {
+    const go = () => prefetchVariants();
+    if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 2000 }); else setTimeout(go, 600);
+  })();
+
   async function resolveVariants(key) {
     if (variantCache[key]) return variantCache[key];
+    if (prefetching) { await prefetching; if (variantCache[key]) return variantCache[key]; }
     const id = PRODUCTS[key];
     if (!id || !/^\d+$/.test(id)) return null;
     const d = await gql(
@@ -551,8 +576,9 @@
     let cart;
     if (cartId) {
       try {
-        // check if variant already in cart — if so, increment quantity
-        const existing = await getCart(cartId);
+        // check if variant already in cart — if so, increment quantity.
+        // the cart on screen is current, so only re-read it if we have none
+        const existing = (current && current.id === cartId) ? current : await getCart(cartId);
         if (existing) {
           const existingLine = existing.lines.edges.find(({ node }) =>
             node.merchandise.id === variantId && !isGiftLine(node) && !isFreeSock(node));
@@ -601,7 +627,11 @@
     #ec-overlay.open{opacity:1;pointer-events:auto}
     #ec-drawer{position:fixed;top:0;right:0;height:100dvh;overscroll-behavior:contain;width:min(420px,100vw);background:#FAFAF8;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:501;display:flex;flex-direction:column;font-family:'DM Sans',sans-serif;color:#0E1512}
     #ec-drawer.open{transform:translateX(0)}
-    .ec-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(14,21,18,.1)}
+    .ec-head{position:relative;display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid rgba(14,21,18,.1)}
+    /* a hairline that runs while the cart is updating */
+    .ec-head::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:30%;background:#1F3D35;opacity:0;transform:translateX(-100%)}
+    #ec-drawer.busy .ec-head::after{opacity:1;animation:ecBusy 1s cubic-bezier(.4,0,.2,1) infinite}
+    @keyframes ecBusy{0%{transform:translateX(-100%)}100%{transform:translateX(340%)}}
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
     .ec-x{background:none;border:none;font-size:1.4rem;color:#0E1512;line-height:1}
     .ec-lines{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 24px}
@@ -731,9 +761,17 @@
       window.scrollTo(0, _scrollY);
     }
   };
-  const openDrawer = () => {
+  const setBusy = (on) => drawer.classList.toggle('busy', !!on);
+  const openDrawer = (adding) => {
     overlay.classList.add('open'); drawer.classList.add('open'); lockPage(true);
-    if (!current) { render(null); return; }
+    if (!current) {
+      if (adding) {
+        document.getElementById('ec-lines').innerHTML = '<div class="ec-empty">Adding to your cart\u2026</div>';
+        document.getElementById('ec-foot').style.display = 'none';
+        const g = document.getElementById('ec-gift'); if (g) g.style.display = 'none';
+      } else render(null);
+      return;
+    }
     ga('view_cart', {
       currency: 'AUD',
       value: qualifyingSubtotal(current),
@@ -1158,8 +1196,10 @@
         ? sellable[0]
         : (sellable && pickVariant(sellable, size, colourName || null));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return false; }
+      setBusy(true); openDrawer(true);
       const cart = await addToCartFlow(v.id);
-      await refresh(cart); openDrawer();
+      render(cart);
+      refresh(cart).catch(() => {}).finally(() => setBusy(false));
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
       klTrack('Added to Cart', {
@@ -1175,6 +1215,7 @@
       });
       return true;
     } catch (e) {
+      setBusy(false); render(current);   /* put the drawer back as it was */
       if (window.showToast) showToast('Something went wrong. Please try again.');
       return false;
     }
@@ -1202,8 +1243,10 @@
       const sellable = list ? list.filter(x => !(x.priceNum === 0)) : list; // $0 variants are gift-only
       const v = (sellable && sellable.length === 1) ? sellable[0] : (sellable && pickVariant(sellable, size, colorName));
       if (!v) { if (window.showToast) showToast('That option isn\u2019t available'); return; }
+      setBusy(true); openDrawer(true);
       const cart = await addToCartFlow(v.id);
-      await refresh(cart); openDrawer();
+      render(cart);
+      refresh(cart).catch(() => {}).finally(() => setBusy(false));
       const pageUrl = window.location.href.split('?')[0];
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
@@ -1236,6 +1279,7 @@
         items: gaItems(cart)
       });
     } catch (e) {
+      setBusy(false); render(current);   /* put the drawer back as it was */
       if (window.showToast) showToast('Something went wrong. Please try again.');
     } finally {
       if (btn) { btn.disabled = false; btn.textContent = label; }
