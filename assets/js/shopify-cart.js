@@ -605,9 +605,12 @@
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
     .ec-x{background:none;border:none;font-size:1.4rem;color:#0E1512;line-height:1}
     .ec-lines{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 24px}
-    .ec-line{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(14,21,18,.08)}
-    .ec-line img{width:64px;height:80px;object-fit:cover;border-radius:3px;background:#EAE6DE}
-    .ec-line .t{font-size:.92rem;color:#0E1512}
+    .ec-line{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(14,21,18,.08);align-items:flex-start}
+    .ec-line img,.ec-line .ph{width:52px;height:65px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto}
+    .ec-info{flex:1;min-width:0}
+    .ec-right{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+    .ec-right .p{margin-top:0;white-space:nowrap}
+    .ec-line .t{font-size:.9rem;color:#0E1512;line-height:1.3}
     .ec-line .s{font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
     .ec-line .p{font-size:.88rem;margin-top:6px;color:#0E1512}
     .ec-line .ship{font-size:.76rem;color:rgba(14,21,18,.5);margin-top:3px}
@@ -630,12 +633,12 @@
     .ec-empty-picks img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:#EAE6DE;display:block}
     .ec-empty-picks .n{font-size:.76rem;margin-top:7px;line-height:1.3}
     .ec-empty-picks .pr{font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
-    .ec-line .p s{color:rgba(14,21,18,.4);font-weight:300;margin-right:7px}
+    .ec-line .p s{color:rgba(14,21,18,.4);font-weight:300;margin-right:6px}
     .ec-line .dtag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:3px 9px;margin-top:7px}
     .ec-row{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:8px;color:rgba(14,21,18,.75)}
     .ec-row.disc span:last-child{color:#1F3D35;font-weight:500}
     .ec-total{display:flex;justify-content:space-between;font-size:1rem;font-weight:500;margin:2px 0 14px;color:#0E1512}
-    .ec-qty{display:inline-flex;align-items:center;gap:8px;margin-top:8px}
+    .ec-qty{display:inline-flex;align-items:center;gap:6px;margin-top:10px}
     .ec-qty button{width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
     .ec-qty span{font-size:.88rem;min-width:16px;text-align:center;color:#0E1512;font-weight:500}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
@@ -653,7 +656,7 @@
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:5px;color:#0E1512}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
     .ec-assure{margin:12px 0 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5)}
-    .ec-empty{padding:60px 0;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
+    .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
     .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
     .ec-gift-msg{display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.4;color:#0E1512;margin-bottom:11px}
     .ec-gift-msg .amt{font-weight:600}
@@ -982,41 +985,33 @@
     }
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
+      const cur = v.price.currencyCode;
+      const pic = img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div class="ph"></div>';
+      /* name and details on the left; price and quantity in a right-hand column */
+      const row = (info, right) => `<div class="ec-line">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div>`;
       if (isGiftLine(node)) {
-        return `<div class="ec-line">
-        ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div>
-        <div class="p"><s>${money(GIFT.displayValue || v.price.amount, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+        return row(`<div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div>`,
+          `<div class="p"><s>${money(GIFT.displayValue || v.price.amount, cur)}</s>${money(0, cur)}</div>`);
       }
       if (isFreeSock(node)) {
         const n = node.quantity;
-        return `<div class="ec-line">
-        ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">${v.title} &middot; ${n > 1 ? n + ' free pairs' : 'Free pair'}</div>${shipLine(v.product.id)}
-        <div class="p"><s>${money(parseFloat(v.price.amount) * n, v.price.currencyCode)}</s>Complimentary &middot; ${money(0, v.price.currencyCode)}</div></div></div>`;
+        return row(`<div class="t">${v.product.title}</div><div class="s">${v.title} &middot; ${n > 1 ? n + ' free pairs' : 'Free pair'}</div>${shipLine(v.product.id)}`,
+          `<div class="p"><s>${money(parseFloat(v.price.amount) * n, cur)}</s>${money(0, cur)}</div>`);
       }
       /* paid socks next to free pairs show their own price; the free pairs carry the saving */
       const sockGidR = PRODUCTS[SOCK_OFFER.key] ? gid(PRODUCTS[SOCK_OFFER.key]) : null;
       const hasFreeSock = v.product.id === sockGidR && cart.lines.edges.some(e => isFreeSock(e.node));
-      return `<div class="ec-line">
-        ${img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div style="width:64px"></div>'}
-        <div><div class="t">${v.product.title}</div><div class="s">${v.title}</div>${shipLine(v.product.id)}
-        <div class="p">${(function(){
-          const cur = v.price.currencyCode;
-          const sub = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : v.price.amount * node.quantity;
-          const tot = hasFreeSock ? sub : (node.cost ? parseFloat(node.cost.totalAmount.amount) : sub);
-          return tot < sub ? '<s>' + money(sub, cur) + '</s>' + money(tot, cur) : money(sub, cur);
-        })()}</div>
-        ${(function(){
-          const s = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : 0;
-          const t = hasFreeSock ? s : (node.cost ? parseFloat(node.cost.totalAmount.amount) : s);
-          return t < s ? '<span class="dtag">Discount applied</span>' : '';
-        })()}
+      const sub = node.cost ? parseFloat(node.cost.subtotalAmount.amount) : v.price.amount * node.quantity;
+      const tot = hasFreeSock ? sub : (node.cost ? parseFloat(node.cost.totalAmount.amount) : sub);
+      const price = tot < sub ? '<s>' + money(sub, cur) + '</s>' + money(tot, cur) : money(sub, cur);
+      return row(`<div class="t">${v.product.title}</div><div class="s">${v.title}</div>${shipLine(v.product.id)}` +
+          (tot < sub ? '<span class="dtag">Discount applied</span>' : ''),
+        `<div class="p">${price}</div>
         <div class="ec-qty">
-          <button data-line="${node.id}" data-qty="${node.quantity - 1}">&#8722;</button>
+          <button data-line="${node.id}" data-qty="${node.quantity - 1}" aria-label="Remove one">&#8722;</button>
           <span>${node.quantity}</span>
-          <button data-line="${node.id}" data-qty="${node.quantity + 1}">+</button>
-        </div></div></div>`;
+          <button data-line="${node.id}" data-qty="${node.quantity + 1}" aria-label="Add one">+</button>
+        </div>`);
     }).join('');
     const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
@@ -1824,19 +1819,9 @@
 
     /* ---------- empty cart: somewhere to go next ---------- */
     window.__ecEmptyExtra = function () {
-      /* the live range in shop order, tote last; swipe sideways through it */
-      const order = ['merino-micro-short', 'merino-bandeau', 'o-tee', 'enduro-tee', 'cotton-long-run-tee',
-        'merino-short-mens', 'o-merino-short-mens', 'cotton-short-mens', 'o-cotton-short-mens',
-        'merino-long-run-sock', 'organic-cotton-dad-cap', 'organic-tote'];
-      return '<br><a class="ec-empty-go" href="' + root + 'shop.html">Shop the collection</a>' +
-        '<div class="ec-empty-picks">' + order.map(function (k) {
-          const c = CATALOGUE.find(function (p) { return p.key === k; });
-          if (!c) return '';
-          const pr = (window.__ecLocal && window.__ecLocal[k]) || c.price;
-          return '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt="" loading="lazy">' +
-            '<div class="n">' + c.name + '</div><div class="pr">' + pr + '</div></a>';
-        }).join('') + '</div>';
+      return '<br><a class="ec-empty-go" href="' + root + 'shop.html">Shop the collection</a>';
     };
+
 
     /* ---------- search overlay ---------- */
     (function () {
