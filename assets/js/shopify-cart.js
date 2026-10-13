@@ -647,7 +647,7 @@
     .ec-line{position:relative;overflow:hidden;border-bottom:1px solid rgba(14,21,18,.08)}
     .ec-slide{position:relative;z-index:1;display:flex;gap:12px;padding:14px 0;align-items:flex-start;background:#FAFAF8;touch-action:pan-y;transition:transform .28s cubic-bezier(.2,.7,.2,1)}
     .ec-line.dragging .ec-slide{transition:none}
-    .ec-del{position:absolute;top:0;right:0;bottom:0;width:88px;border:none;background:#1F3D35;color:#F5F2EC;cursor:pointer;
+    .ec-del{position:absolute;top:12px;right:0;bottom:12px;width:88px;border:none;border-radius:4px;background:#1F3D35;color:#F5F2EC;cursor:pointer;
       font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase}
     @media (hover:hover) and (pointer:fine){.ec-del{display:none}}
     .ec-line img,.ec-line .ph{width:52px;height:65px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto}
@@ -1166,7 +1166,7 @@
   /* ---------- swipe a cart line left to reveal Remove (touch screens) ---------- */
   (function () {
     const lines = document.getElementById('ec-lines');
-    const W = 88;
+    const W = 88 + 16;   /* panel width plus a clear gap */
     let row = null, x0 = 0, y0 = 0, base = 0, dx = 0, mode = null;
     const slideOf = r => r.querySelector('.ec-slide');
     const closeAll = (except) => lines.querySelectorAll('.ec-sw.open').forEach(r => {
