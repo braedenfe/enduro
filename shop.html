@@ -1728,6 +1728,14 @@ const ORDER_2COL = [
   'organic-cotton-dad-cap', 'o-merino-short-mens',
   'enduro-tee',             'organic-tote'
 ];
+/* Women's view: the Micro Short and Bandeau lead as a pair, then the rest
+   arranged so nothing of a kind touches. Women's shorts slot in when relisted.
+     phone    micro | bandeau / tee | sock / cap | tee / tee | tote
+     desktop  micro | bandeau | tee / sock | tee | cap / tee | tote          */
+const WOMEN_2COL = ['merino-micro-short', 'merino-bandeau', 'merino-short-womens', 'cotton-short-womens',
+  'o-tee', 'merino-long-run-sock', 'organic-cotton-dad-cap', 'cotton-long-run-tee', 'enduro-tee', 'organic-tote'];
+const WOMEN_3COL = ['merino-micro-short', 'merino-bandeau', 'merino-short-womens', 'cotton-short-womens',
+  'o-tee', 'merino-long-run-sock', 'cotton-long-run-tee', 'organic-cotton-dad-cap', 'enduro-tee', 'organic-tote'];
 const TWO_COL = window.matchMedia('(max-width:900px)');
 const ORDER_POS = {};
 function setOrder() {
@@ -1744,9 +1752,10 @@ function applyFilters() {
     card.style.display = ok ? '' : 'none';
     if (ok) shown++;
     const base = ORDER_POS[card.dataset.product] || 99;
-    /* on the women's view, women's shorts come first */
-    const isWomensShort = card.dataset.product === 'merino-short-womens' || card.dataset.product === 'cotton-short-womens';
-    card.style.order = String(fstate.gender === 'women' && isWomensShort ? -1 : base);
+    /* on the women's view the Micro Short and Bandeau lead, as a pair, then
+       the women's shorts (when relisted), then everything else in its usual order */
+    const wpos = fstate.gender === 'women' ? (TWO_COL.matches ? WOMEN_2COL : WOMEN_3COL).indexOf(card.dataset.product) : -1;
+    card.style.order = String(wpos > -1 ? wpos - 50 : base);
   });
   applyCardImages();
   syncFilterUI(shown);
