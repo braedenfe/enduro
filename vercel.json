@@ -3,24 +3,56 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(self \"https://js.squarecdn.com\"), interest-cohort=()" }
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(self \"https://js.squarecdn.com\"), interest-cohort=()"
+        }
       ]
     },
     {
       "source": "/fonts/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
-        { "key": "Content-Type", "value": "font/woff2" }
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "font/woff2"
+        }
       ]
     }
   ],
   "redirects": [
+    {
+      "source": "/friends/:code",
+      "destination": "/?ref=:code",
+      "permanent": false
+    },
     {
       "source": "/archive/(.*)",
       "destination": "/shop.html",
