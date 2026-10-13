@@ -148,7 +148,7 @@
     /* 2. the line under the add button */
     document.querySelectorAll('.atc-note').forEach(function (p) {
       if (p.textContent.indexOf('Free AUS shipping') > -1) {
-        p.textContent = 'Free standard shipping over ' + amt(z.std.free) + ' \u00b7 30 day free returns';
+        (p.querySelector('.t') || p).textContent = 'Free standard shipping over ' + amt(z.std.free) + ' \u00b7 30 day free returns';
       }
     });
     /* 3. say it next to the price, which is where the misreading happens */
@@ -393,7 +393,7 @@
       if (p.dataset.fxDone) return;               /* already converted, never convert twice */
       const m = p.textContent.match(/Free standard shipping over (?:\$|AUD )(\d+)/);
       if (!m) return;
-      p.textContent = 'Free standard shipping over ' + fmtMoney(up5(parseInt(m[1], 10)), fx.currency) +
+      (p.querySelector('.t') || p).textContent = 'Free standard shipping over ' + fmtMoney(up5(parseInt(m[1], 10)), fx.currency) +
         ' \u00b7 30 day free returns';
       p.dataset.fxDone = '1';
     });
@@ -675,7 +675,7 @@
     #ec-drawer.busy .ec-head::after{opacity:1;animation:ecBusy 1s cubic-bezier(.4,0,.2,1) infinite}
     @keyframes ecBusy{0%{transform:translateX(-100%)}100%{transform:translateX(340%)}}
     .ec-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;color:#0E1512}
-    .ec-x{background:none;border:none;font-size:1.4rem;color:#0E1512;line-height:1}
+    .ec-x{background:none;border:none;font-size:1.35rem;color:#0E1512;line-height:1;padding:4px;cursor:pointer}
     .ec-lines{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:8px 24px}
     .ec-line{position:relative;overflow:hidden;border-bottom:1px solid rgba(14,21,18,.08)}
     .ec-slide{position:relative;z-index:1;display:flex;gap:12px;padding:14px 0;align-items:flex-start;background:#FAFAF8;touch-action:pan-y;transition:transform .28s cubic-bezier(.2,.7,.2,1)}
@@ -719,7 +719,7 @@
     .ec-row.disc span:last-child{color:#1F3D35;font-weight:500}
     .ec-total{display:flex;justify-content:space-between;font-size:1rem;font-weight:500;margin:2px 0 14px;color:#0E1512}
     .ec-qty{display:inline-flex;align-items:center;gap:6px;margin-top:10px}
-    .ec-qty button{width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
+    .ec-qty button{display:inline-flex;align-items:center;justify-content:center;padding:0;width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
     .ec-qty span{font-size:.88rem;min-width:16px;text-align:center;color:#0E1512;font-weight:500}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1);color:#0E1512}
@@ -732,10 +732,10 @@
     .ec-code-msg{font-size:.78rem;color:#8C3B2E;margin:-4px 0 10px}
     .ec-code-msg:empty{display:none}
     .ec-chip{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#1F3D35;background:rgba(31,61,53,.08);border-radius:99px;padding:6px 8px 6px 13px;margin-bottom:12px}
-    .ec-chip button{background:none;border:none;color:#1F3D35;font-size:1rem;line-height:1;padding:0 4px;cursor:pointer}
+    .ec-chip button{display:inline-flex;align-items:center;background:none;border:none;color:#1F3D35;font-size:1rem;line-height:1;padding:0 4px;cursor:pointer}
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:5px;color:#0E1512}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
-    .ec-assure{margin:12px 0 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5)}
+    .ec-assure{display:flex;align-items:center;justify-content:center;gap:6px;margin:12px 0 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5)}
     .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
     .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
     .ec-gift-msg{display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.4;color:#0E1512;margin-bottom:11px}
@@ -764,7 +764,7 @@
 
   const overlay = document.createElement('div'); overlay.id = 'ec-overlay';
   const drawer = document.createElement('aside'); drawer.id = 'ec-drawer';
-  drawer.innerHTML = `<div class="ec-head"><h3>Cart</h3><button class="ec-x" aria-label="Close">&times;</button></div>
+  drawer.innerHTML = `<div class="ec-head"><h3>Cart</h3><button class="ec-x" aria-label="Close"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
     <div class="ec-gift" id="ec-gift" style="display:none">
       <div class="ec-gift-msg" id="ec-gift-msg"></div>
       <div class="ec-gift-track"><div class="ec-gift-fill" id="ec-gift-fill"></div></div>
@@ -783,7 +783,7 @@
       <div class="ec-row disc" id="ec-disc-row" style="display:none"><span>Discount</span><span id="ec-disc"></span></div>
       <div class="ec-total" id="ec-total-row" style="display:none"><span>Total</span><span id="ec-total"></span></div>
       <button class="ec-co" id="ec-co">Checkout</button>
-      <p class="ec-assure">30 day free returns</p></div>`;
+      <p class="ec-assure"><svg class="ec-ic" width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>30 day free returns</p></div>`;
   document.body.appendChild(overlay); document.body.appendChild(drawer);
 
   let _scrollY = 0;
@@ -1074,7 +1074,7 @@
       }
     }
 
-    const check = '<svg class="ec-gift-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    const check = '<svg class="ec-gift-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
     const msg = document.getElementById('ec-gift-msg');
     const amt = function (n) { return '<span class="amt">' + money(n, cur) + '</span>'; };
     const say = function (t) { msg.innerHTML = check + '<span>' + t + '</span>'; };
@@ -1139,9 +1139,9 @@
           (tot < sub ? '<span class="dtag">Discount applied</span>' : ''),
         `<div class="p">${price}</div>
         <div class="ec-qty">
-          <button data-line="${node.id}" data-qty="${node.quantity - 1}" aria-label="Remove one">&#8722;</button>
+          <button data-line="${node.id}" data-qty="${node.quantity - 1}" aria-label="Remove one"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
           <span>${node.quantity}</span>
-          <button data-line="${node.id}" data-qty="${node.quantity + 1}" aria-label="Add one">+</button>
+          <button data-line="${node.id}" data-qty="${node.quantity + 1}" aria-label="Add one"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
         </div>`, true);
     }).join('');
     const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
@@ -1180,7 +1180,7 @@
     const chips = document.getElementById('ec-chips');
     const appliedCodes = (cart.discountCodes || []).filter(c => c.applicable);
     chips.innerHTML = appliedCodes.map(c =>
-      '<span class="ec-chip">' + c.code + '<button data-code="' + c.code + '" aria-label="Remove discount code">&times;</button></span>'
+      '<span class="ec-chip">' + c.code + '<button data-code="' + c.code + '" aria-label="Remove discount code"><svg width="0.85em" height="0.85em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></span>'
     ).join('');
     chips.querySelectorAll('button').forEach(b => b.addEventListener('click', async () => {
       const cid = localStorage.getItem(CART_KEY);
@@ -1550,7 +1550,7 @@
       .ec-fit-row{display:flex;gap:10px;margin-bottom:12px}
       .ec-fit-field{flex:1}
       .ec-fit-field label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.55);margin-bottom:6px}
-      .ec-fit-field input,.ec-fit-field select{width:100%;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;outline:none;box-sizing:border-box;-webkit-appearance:none;appearance:none}.ec-fit-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%230E1512' stroke-width='1.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:11px;padding-right:38px}
+      .ec-fit-field input,.ec-fit-field select{width:100%;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;outline:none;box-sizing:border-box;-webkit-appearance:none;appearance:none}.ec-fit-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230E1512' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px;padding-right:38px}
       .ec-fit-field input:focus{border-color:#1F3D35}
       #ec-fit-go{display:block;width:100%;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.84rem;letter-spacing:.2em;text-transform:uppercase;padding:14px;cursor:pointer;margin-top:4px}
       #ec-fit-res{font-size:.95rem;color:#0E1512;margin:16px 0 0;min-height:1.2em}
@@ -1683,7 +1683,7 @@
       guideBtn.after(btn);
       const ov = document.createElement('div'); ov.id = 'ec-fit-ov';
       ov.innerHTML = '<div id="ec-fit" role="dialog" aria-label="Find your size">' +
-        '<button id="ec-fit-x" aria-label="Close">&times;</button>' +
+        '<button id="ec-fit-x" aria-label="Close"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>' +
         '<h3>Find your size</h3>' +
         (shoe
           ? '<p class="sub">Enter your usual shoe size.</p>' +
