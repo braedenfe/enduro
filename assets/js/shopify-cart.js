@@ -233,8 +233,9 @@
     !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
   /* ---------- Affiliate links ----------
      enduroapparel.com.au/friends/john10 redirects (vercel.json) to /?ref=john10.
+     Affiliate codes always start EF_ (EF_JOHN10); the link may leave it off.
      The code is remembered for 30 days, applied to the cart as a discount code,
-     and the order is tagged "Affiliate: JOHN10". Affiliates are managed entirely
+     and the order is tagged "Affiliate: EF_JOHN10". Affiliates are managed entirely
      in Shopify: the code in the link is the Shopify discount code. */
   const REF_KEY = 'ec_ref', REF_DAYS = 30;
   (function () {
@@ -242,8 +243,10 @@
       const u = new URL(window.location.href);
       const raw = u.searchParams.get('ref');
       if (!raw) return;
-      const code = raw.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 40);
-      if (code) localStorage.setItem(REF_KEY, JSON.stringify({ code: code, at: Date.now() }));
+      /* affiliate codes always start EF_ ; the link can leave it off (/friends/ellese10) */
+      let code = raw.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '').slice(0, 40);
+      if (code && code.indexOf('EF_') !== 0) code = 'EF_' + code;
+      if (/^EF_[A-Z0-9]+$/.test(code)) localStorage.setItem(REF_KEY, JSON.stringify({ code: code, at: Date.now() }));
       u.searchParams.delete('ref');   /* keep the address bar clean */
       history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash);
     } catch (e) {}
