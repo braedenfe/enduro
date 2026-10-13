@@ -206,7 +206,7 @@ details.case[open] .case-b{animation:caseIn .45s cubic-bezier(.2,.7,.2,1)}
 details.sources{margin-top:22px;border-top:1px solid var(--line-dark)}
 details.sources summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:20px 2px;font-family:var(--cond);font-size:0.84rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);-webkit-tap-highlight-color:transparent}
 details.sources summary::-webkit-details-marker{display:none}
-details.sources summary::after{content:'+';font-family:var(--sans);font-weight:300;font-size:1.2rem;color:rgba(14,21,18,0.5);transition:transform .3s}
+details.sources summary::after{content:'';display:block;width:1.1rem;height:1.1rem;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E") center/contain no-repeat;color:rgba(14,21,18,0.5);transition:transform .3s}
 details.sources[open] summary::after{transform:rotate(45deg)}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -251,10 +251,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
     <li><a href="journal.html">Journal</a></li>
     <li><a href="community.html">Community</a></li>
   </ul>
-  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
+  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
 </header>
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()">&times;</button>
+  <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   <nav class="mobile-menu-inner" aria-label="Mobile navigation">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -278,41 +278,41 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <span class="jentry-cat">Guide</span>
       <h2 class="jentry-title">What to wear to <span class="em">Pilates.</span></h2>
       <p class="jentry-ex">Reformer, mat and hot classes ask different things of what you wear. Why seams and fit matter more here than in most training, what to avoid, and why merino suits back to back classes.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
 
     <a class="jentry reveal" href="journal-studio-to-sauna.html">
       <span class="jentry-cat">The set</span>
       <h2 class="jentry-title">Studio to <span class="em">sauna.</span></h2>
       <p class="jentry-ex">A Pilates class, a run, then the sauna. One set of Australian merino gets through all three without changing. Breathable, thermoregulating and naturally odour resistant.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
 
     <a class="jentry reveal" href="journal-merino-vs-polyester.html">
       <span class="jentry-cat">Comparison</span>
       <h2 class="jentry-title">Merino or polyester for <span class="em">running.</span></h2>
       <p class="jentry-ex">Odour, temperature regulation, next to skin feel, microplastics, durability and cost. Where merino beats polyester, where it does not, and how to choose for the session in front of you.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
 
     <a class="jentry reveal" href="journal-natural-fibre-guide.html">
       <span class="jentry-cat">Guide</span>
       <h2 class="jentry-title">The natural fibre <span class="em">running guide.</span></h2>
       <p class="jentry-ex">Which fibres matter, how to read micron and gsm, which certifications count, and where natural fibre genuinely outperforms plastic.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
 
     <a class="jentry reveal" href="journal-merino-benefits.html">
       <span class="jentry-cat">On merino</span>
       <h2 class="jentry-title">Merino wool: performance, <span class="em">naturally.</span></h2>
       <p class="jentry-ex">One fibre that works through an Australian summer and a New Zealand winter. Temperature regulation, moisture, breathability and odour resistance, from the high country above Queenstown.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
     <a class="jentry reveal" href="journal-why-natural-fibres.html">
       <span class="jentry-cat">On materials</span>
       <h2 class="jentry-title">Why we choose <span class="em">natural fibres.</span></h2>
       <p class="jentry-ex">We&rsquo;ve never believed performance has to come from plastic. Merino wool, organic cotton, and the case against building activewear from petroleum.</p>
-      <span class="jentry-more">Read entry &rarr;</span>
+      <span class="jentry-more">Read entry <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
     </a>
   </div>
 </main>

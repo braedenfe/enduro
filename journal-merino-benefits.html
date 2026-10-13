@@ -222,7 +222,7 @@ details.case[open] .case-b{animation:caseIn .45s cubic-bezier(.2,.7,.2,1)}
 details.sources{margin-top:22px;border-top:1px solid var(--line-dark)}
 details.sources summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:20px 2px;font-family:var(--cond);font-size:0.84rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);-webkit-tap-highlight-color:transparent}
 details.sources summary::-webkit-details-marker{display:none}
-details.sources summary::after{content:'+';font-family:var(--sans);font-weight:300;font-size:1.2rem;color:rgba(14,21,18,0.5);transition:transform .3s}
+details.sources summary::after{content:'';display:block;width:1.1rem;height:1.1rem;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='M12 5v14'/%3E%3C/svg%3E") center/contain no-repeat;color:rgba(14,21,18,0.5);transition:transform .3s}
 details.sources[open] summary::after{transform:rotate(45deg)}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -291,10 +291,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
     <li><a href="journal.html">Journal</a></li>
     <li><a href="community.html">Community</a></li>
   </ul>
-  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
+  <div class="nav-right"><a href="shop.html" class="nav-cart" aria-label="Cart" onclick="if(window.ecOpenCart){event.preventDefault();window.ecOpenCart();}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg><span class="nav-cart-count">0</span></a><button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()"><span></span><span></span><span></span></button></div>
 </header>
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()">&times;</button>
+  <button class="mobile-menu-close" aria-label="Close menu" onclick="toggleMenu()"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   <nav class="mobile-menu-inner" aria-label="Mobile navigation">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -307,7 +307,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
 
 <main class="doc">
-  <a href="journal.html" class="doc-back">&larr; Journal</a>
+  <a href="journal.html" class="doc-back"><svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Journal</a>
   <header class="doc-head">
     <span class="t-label">Journal</span>
     <h1>Merino wool: performance, <span class="em">naturally.</span></h1>
@@ -332,7 +332,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
       <p><strong>In a nutshell:</strong> Merino wool naturally helps regulate temperature, manage moisture, breathe and resist odour. Combined with a loose, free flowing fit, it creates a different kind of performance layer: soft against the body, unrestricted in movement and designed to let air move naturally.</p>
     </div>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/></svg></span><h2 class="sec-h">Temperature regulation</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg></span><h2 class="sec-h">Temperature regulation</h2></div>
 
     <p>Running can take you through constantly changing conditions. You start cool, your body heats up, you sweat, and the environment around you can change again.</p>
 
@@ -348,10 +348,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <div class="sci">
       <span class="sci-l">The science</span>
-      <p>Wool&rsquo;s natural fibre structure, moisture absorption and insulating properties contribute to its thermoregulatory performance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+      <p>Wool&rsquo;s natural fibre structure, moisture absorption and insulating properties contribute to its thermoregulatory performance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s5.5 6 5.5 9.5a5.5 5.5 0 1 1-11 0C6.5 9 12 3 12 3Z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></span><h2 class="sec-h">Moisture management</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></span><h2 class="sec-h">Moisture management</h2></div>
 
     <p>Sweat is your body&rsquo;s natural cooling system. The important part is what happens next.</p>
 
@@ -367,10 +367,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <div class="sci">
       <span class="sci-l">The science</span>
-      <p>Wool can absorb significantly more moisture vapour than many common apparel fibres, helping regulate humidity next to the skin. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+      <p>Wool can absorb significantly more moisture vapour than many common apparel fibres, helping regulate humidity next to the skin. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h11a3 3 0 1 0-3-3"/><path d="M4 12.5h14a3 3 0 1 1-3 3"/><path d="M4 16.5h7"/></svg></span><h2 class="sec-h">Breathability</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg></span><h2 class="sec-h">Breathability</h2></div>
 
     <p>Breathability isn&rsquo;t just about air passing through a fabric. It&rsquo;s about allowing heat and moisture to move away from your body.</p>
 
@@ -384,10 +384,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <div class="sci">
       <span class="sci-l">The science</span>
-      <p>Wool&rsquo;s moisture vapour buffering properties contribute to its natural breathability. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+      <p>Wool&rsquo;s moisture vapour buffering properties contribute to its natural breathability. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 15.5c3-1 4.5-3.5 4.5-6.5a3 3 0 1 1 6 0c0 3 1.5 5.5 4.5 6.5"/><path d="M5 18.5h14"/></svg></span><h2 class="sec-h">Softness</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></span><h2 class="sec-h">Softness</h2></div>
 
     <p>Performance shouldn&rsquo;t mean sacrificing comfort.</p>
 
@@ -401,7 +401,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <p class="result"><strong>The result:</strong> a relaxed fit that feels as good at kilometre one as it does at kilometre twenty.</p>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.2 3.4C15.2 7.6 12.6 9.8 9.4 12.6 7.4 14.4 8 16.4 10.6 16.6c2.6.2 4-1 3.7-2.8"/></svg></span><h2 class="sec-h">Natural odour resistance</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg></span><h2 class="sec-h">Natural odour resistance</h2></div>
 
     <p>Sweat itself isn&rsquo;t what makes your running clothes smell.</p>
 
@@ -417,10 +417,10 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <div class="sci">
       <span class="sci-l">The science</span>
-      <p>Research has found that wool&rsquo;s moisture management and ability to bind odour compounds contribute to its natural odour resistance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science &rarr;</a></p>
+      <p>Research has found that wool&rsquo;s moisture management and ability to bind odour compounds contribute to its natural odour resistance. <a href="https://www.woolmark.com/about-wool/wool-fibre/" target="_blank" rel="noopener">Read the science <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
 
-    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-7 4.5-12 14-12 0 8-5 12-11 12H5Z"/><path d="M8 16c2-3 4.5-5 8-6.5"/></svg></span><h2 class="sec-h">Performance, without the plastic</h2></div>
+    <div class="sec"><span class="sec-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20"/><path d="M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13"/></svg></span><h2 class="sec-h">Performance, without the plastic</h2></div>
 
     <p>Performance clothing doesn&rsquo;t have to be made from plastic.</p>
 
@@ -434,7 +434,7 @@ details.sources[open] summary::after{transform:rotate(45deg)}
 
     <p>Our merino is grown in Australia and our tees are knitted and made in Melbourne. The high country is simply where the fibre&rsquo;s range is easiest to see.</p>
 
-    <p class="doc-cta"><a href="shop.html">Shop merino &rarr;</a></p>
+    <p class="doc-cta"><a href="shop.html">Shop merino <svg class="ic-arr" width="1.05em" height="1.05em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.14em" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
 
   </div>
 </main>
