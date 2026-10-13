@@ -613,18 +613,20 @@
     .ec-line .ship{font-size:.76rem;color:rgba(14,21,18,.5);margin-top:3px}
     .ec-code-toggle{display:block;background:none;border:none;padding:0;margin:0 0 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(14,21,18,.55);border-bottom:1px solid rgba(14,21,18,.2);transition:color .2s,border-color .2s}
     .ec-code-toggle:hover{color:#0E1512;border-color:#0E1512}
-    .ec-suggest{margin:18px 0 4px;padding:14px;border:1px solid rgba(14,21,18,.1);border-radius:6px;display:flex;gap:12px;align-items:center}
-    .ec-suggest img{width:52px;height:64px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto}
+    .ec-suggest{margin:4px 0 0;padding:16px 0 4px;display:flex;gap:12px;align-items:flex-start}
+    .ec-suggest img{width:40px;height:50px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto;display:block}
     .ec-suggest .sg-b{flex:1;min-width:0}
-    .ec-suggest .sg-k{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,21,18,.5)}
-    .ec-suggest .sg-n{font-size:.86rem;color:#0E1512;margin-top:3px;line-height:1.35}
+    .ec-suggest .sg-n{font-size:.82rem;line-height:1.45;color:rgba(14,21,18,.6)}
+    .ec-suggest .sg-n b{font-weight:400;color:#0E1512}
     .ec-suggest .sg-a{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-    .ec-suggest .sg-a button{border:1px solid rgba(14,21,18,.22);background:none;border-radius:99px;padding:6px 12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#0E1512}
+    .ec-suggest .sg-a button{border:1px solid rgba(14,21,18,.2);background:none;border-radius:99px;padding:4px 11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#0E1512}
     .ec-suggest .sg-a button:hover{border-color:#1F3D35;color:#1F3D35}
     .ec-suggest .sg-a button:disabled{opacity:.5}
     .ec-empty-go{display:inline-block;margin-top:18px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#1F3D35;border-bottom:1px solid rgba(31,61,53,.4);padding-bottom:3px;text-decoration:none}
-    .ec-empty-picks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:30px;text-align:left}
-    .ec-empty-picks a{text-decoration:none;color:#0E1512}
+    .ec-empty-picks{display:flex;gap:12px;margin:30px -24px 0;text-align:left;overflow-x:auto;scroll-snap-type:x mandatory;
+      padding:0 24px 6px;scroll-padding-left:24px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+    .ec-empty-picks::-webkit-scrollbar{display:none}
+    .ec-empty-picks a{flex:0 0 58%;scroll-snap-align:start;text-decoration:none;color:#0E1512}
     .ec-empty-picks img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:#EAE6DE;display:block}
     .ec-empty-picks .n{font-size:.76rem;margin-top:7px;line-height:1.3}
     .ec-empty-picks .pr{font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
@@ -651,7 +653,7 @@
     .ec-sub{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:5px;color:#0E1512}
     .ec-co{display:block;width:100%;text-align:center;padding:16px;border:none;border-radius:99px;background:#1F3D35;color:#F5F2EC;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
     .ec-assure{margin:12px 0 0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5)}
-    .ec-empty{padding:60px 24px;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
+    .ec-empty{padding:60px 0;text-align:center;color:rgba(14,21,18,.5);font-size:.92rem}
     .ec-gift{padding:18px 24px 16px;border-bottom:1px solid rgba(14,21,18,.1);background:#FAFAF8}
     .ec-gift-msg{display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.4;color:#0E1512;margin-bottom:11px}
     .ec-gift-msg .amt{font-weight:600}
@@ -1753,9 +1755,10 @@
     /* ---------- one considered suggestion, only when it unlocks something ----------
        If the next milestone (the tote, then free standard shipping) is within
        reach, offer the single piece that gets them there. Never a carousel. */
+    const SUGGEST_ON = false;   /* switched off for now; set true to bring it back */
     (function () {
       const lines = document.getElementById('ec-lines');
-      if (!lines) return;
+      if (!lines || !SUGGEST_ON) return;
       const PICKS = [
         { key: 'merino-long-run-sock',   sizes: ['M', 'L'] },
         { key: 'organic-cotton-dad-cap', sizes: null },
@@ -1786,8 +1789,8 @@
         const cur = (current.cost.subtotalAmount && current.cost.subtotalAmount.currencyCode) || 'AUD';
         const paid = paidSubtotal(current);
         let goal = null, what = '';
-        if (GIFT.enabled && paid < GIFT.threshold) { goal = GIFT.threshold; what = 'Unlocks the Enduro Tote'; }
-        else if (SHIPPING.enabled && paid < SHIPPING.threshold) { goal = SHIPPING.threshold; what = 'Unlocks free shipping'; }
+        if (GIFT.enabled && paid < GIFT.threshold) { goal = GIFT.threshold; what = 'and the Enduro Tote comes with your order'; }
+        else if (SHIPPING.enabled && paid < SHIPPING.threshold) { goal = SHIPPING.threshold; what = 'and your order ships free'; }
         if (goal === null) return;
         const gap = goal - paid;
         const inCart = {};
@@ -1804,8 +1807,7 @@
         const el = document.createElement('div');
         el.id = 'ec-suggest'; el.className = 'ec-suggest';
         el.innerHTML = '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt=""></a>' +
-          '<div class="sg-b"><div class="sg-k">' + what + '</div>' +
-          '<div class="sg-n">' + c.name + ' &middot; ' + priceTxt + '</div>' +
+          '<div class="sg-b"><div class="sg-n">Add the <b>' + c.name + '</b>, ' + priceTxt + ', ' + what + '.</div>' +
           '<div class="sg-a">' + (o.sizes
             ? o.sizes.map(function (z) { return '<button type="button" data-size="' + z + '">' + z + '</button>'; }).join('')
             : '<button type="button" data-size="">Add</button>') + '</div></div>';
@@ -1822,9 +1824,12 @@
 
     /* ---------- empty cart: somewhere to go next ---------- */
     window.__ecEmptyExtra = function () {
-      const picks = ['merino-micro-short', 'o-tee', 'merino-long-run-sock'];
+      /* the live range in shop order, tote last; swipe sideways through it */
+      const order = ['merino-micro-short', 'merino-bandeau', 'o-tee', 'enduro-tee', 'cotton-long-run-tee',
+        'merino-short-mens', 'o-merino-short-mens', 'cotton-short-mens', 'o-cotton-short-mens',
+        'merino-long-run-sock', 'organic-cotton-dad-cap', 'organic-tote'];
       return '<br><a class="ec-empty-go" href="' + root + 'shop.html">Shop the collection</a>' +
-        '<div class="ec-empty-picks">' + picks.map(function (k) {
+        '<div class="ec-empty-picks">' + order.map(function (k) {
           const c = CATALOGUE.find(function (p) { return p.key === k; });
           if (!c) return '';
           const pr = (window.__ecLocal && window.__ecLocal[k]) || c.price;
