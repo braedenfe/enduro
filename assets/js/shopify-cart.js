@@ -616,13 +616,16 @@
     .ec-line .ship{font-size:.76rem;color:rgba(14,21,18,.5);margin-top:3px}
     .ec-code-toggle{display:block;background:none;border:none;padding:0;margin:0 0 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(14,21,18,.55);border-bottom:1px solid rgba(14,21,18,.2);transition:color .2s,border-color .2s}
     .ec-code-toggle:hover{color:#0E1512;border-color:#0E1512}
-    .ec-suggest{margin:4px 0 0;padding:16px 0 4px;display:flex;gap:12px;align-items:flex-start}
-    .ec-suggest img{width:40px;height:50px;object-fit:cover;border-radius:3px;background:#EAE6DE;flex:0 0 auto;display:block}
-    .ec-suggest .sg-b{flex:1;min-width:0}
-    .ec-suggest .sg-n{font-size:.82rem;line-height:1.45;color:rgba(14,21,18,.6)}
-    .ec-suggest .sg-n b{font-weight:400;color:#0E1512}
-    .ec-suggest .sg-a{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-    .ec-suggest .sg-a button{border:1px solid rgba(14,21,18,.2);background:none;border-radius:99px;padding:4px 11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#0E1512}
+    .ec-suggest{padding:18px 0 4px}
+    .ec-suggest .sg-h{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,21,18,.5);margin-bottom:4px}
+    .ec-suggest .sg-row{display:flex;gap:12px;align-items:center;padding:10px 0}
+    .ec-suggest .sg-row + .sg-row{border-top:1px solid rgba(14,21,18,.06)}
+    .ec-suggest img{width:40px;height:50px;object-fit:cover;border-radius:3px;background:#EAE6DE;display:block}
+    .ec-suggest .sg-n{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:.84rem;line-height:1.3}
+    .ec-suggest .sg-n a{color:#0E1512;text-decoration:none}
+    .ec-suggest .sg-n span{color:rgba(14,21,18,.5);font-size:.8rem}
+    .ec-suggest .sg-a{display:flex;gap:6px;flex:0 0 auto}
+    .ec-suggest .sg-a button{border:1px solid rgba(14,21,18,.2);background:none;border-radius:99px;padding:5px 11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#0E1512}
     .ec-suggest .sg-a button:hover{border-color:#1F3D35;color:#1F3D35}
     .ec-suggest .sg-a button:disabled{opacity:.5}
     .ec-empty-go{display:inline-block;margin-top:18px;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#1F3D35;border-bottom:1px solid rgba(31,61,53,.4);padding-bottom:3px;text-decoration:none}
@@ -1750,24 +1753,17 @@
     /* ---------- one considered suggestion, only when it unlocks something ----------
        If the next milestone (the tote, then free standard shipping) is within
        reach, offer the single piece that gets them there. Never a carousel. */
-    const SUGGEST_ON = false;   /* switched off for now; set true to bring it back */
+    /* ---------- "Add to your order": two accessories, shown until shipping is free ----------
+       Quiet rows under the items, not a carousel. The progress bar already says
+       what the order needs, so these rows make no claims of their own. */
+    const SUGGEST_ON = true;
     (function () {
       const lines = document.getElementById('ec-lines');
       if (!lines || !SUGGEST_ON) return;
       const PICKS = [
-        { key: 'merino-long-run-sock',   sizes: ['M', 'L'] },
         { key: 'organic-cotton-dad-cap', sizes: null },
-        { key: 'cotton-long-run-tee',    sizes: ['S', 'M', 'L', 'XL'] }
+        { key: 'merino-long-run-sock',   sizes: ['M', 'L'] }
       ];
-      const audPrice = function (k) {
-        const c = CATALOGUE.find(function (p) { return p.key === k; });
-        return c ? parseFloat(String(c.price).replace(/[^0-9.]/g, '')) : 0;
-      };
-      const localPrice = function (k) {
-        if (window.__ecLocalNum && window.__ecLocalNum[k]) return window.__ecLocalNum[k];
-        const fx = window.__ecFx;
-        return audPrice(k) * (fx && fx.rate ? fx.rate : 1);
-      };
       let syncing = false;
       const obs = new MutationObserver(function (recs) {
         if (syncing || onlyHelpers(recs)) return;
@@ -1781,35 +1777,39 @@
       function draw() {
         const old = document.getElementById('ec-suggest'); if (old) old.remove();
         if (!current || !current.lines || !current.lines.edges.length) return;
-        const cur = (current.cost.subtotalAmount && current.cost.subtotalAmount.currencyCode) || 'AUD';
-        const paid = paidSubtotal(current);
-        let goal = null, what = '';
-        if (GIFT.enabled && paid < GIFT.threshold) { goal = GIFT.threshold; what = 'and the Enduro Tote comes with your order'; }
-        else if (SHIPPING.enabled && paid < SHIPPING.threshold) { goal = SHIPPING.threshold; what = 'and your order ships free'; }
-        if (goal === null) return;
-        const gap = goal - paid;
+        if (SHIPPING.enabled && paidSubtotal(current) >= SHIPPING.threshold) return;
         const inCart = {};
         current.lines.edges.forEach(function (e) { const k = keyOfProduct(e.node.merchandise.product.id); if (k) inCart[k] = true; });
-        /* one prompt at a time: the free-pair nudge takes precedence */
-        if (document.getElementById('ec-sock-nudge')) return;
-        const opts = PICKS.filter(function (o) {
-          return PRODUCTS[o.key] && !inCart[o.key] && localPrice(o.key) >= gap;
-        }).sort(function (a, b) { return localPrice(a.key) - localPrice(b.key); });
-        if (!opts.length) return;
-        const o = opts[0];
-        const c = CATALOGUE.find(function (p) { return p.key === o.key; });
-        const priceTxt = (window.__ecLocal && window.__ecLocal[o.key]) || money(localPrice(o.key), cur);
+        const show = PICKS.filter(function (o) { return PRODUCTS[o.key] && !inCart[o.key]; });
+        if (!show.length) return;
         const el = document.createElement('div');
         el.id = 'ec-suggest'; el.className = 'ec-suggest';
-        el.innerHTML = '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt=""></a>' +
-          '<div class="sg-b"><div class="sg-n">Add the <b>' + c.name + '</b>, ' + priceTxt + ', ' + what + '.</div>' +
-          '<div class="sg-a">' + (o.sizes
-            ? o.sizes.map(function (z) { return '<button type="button" data-size="' + z + '">' + z + '</button>'; }).join('')
-            : '<button type="button" data-size="">Add</button>') + '</div></div>';
-        el.querySelectorAll('button').forEach(function (b) {
-          b.addEventListener('click', function () {
-            el.querySelectorAll('button').forEach(function (x) { x.disabled = true; });
-            if (typeof window.ecQuickAdd === 'function') window.ecQuickAdd(o.key, b.dataset.size || null);
+        el.innerHTML = '<div class="sg-h">Pairs well with</div>' + show.map(function (o) {
+          const c = CATALOGUE.find(function (p) { return p.key === o.key; });
+          if (!c) return '';
+          const pr = (window.__ecLocal && window.__ecLocal[o.key]) || c.price;
+          return '<div class="sg-row" data-key="' + o.key + '">' +
+            '<a href="' + base + c.file + '"><img src="' + root + c.img + '" alt=""></a>' +
+            '<div class="sg-n"><a href="' + base + c.file + '">' + c.name + '</a><span>' + pr + '</span></div>' +
+            '<div class="sg-a"><button type="button" class="sg-add">Add</button></div></div>';
+        }).join('');
+        /* every row shows the same Add button. Sized pieces reveal their sizes
+           in its place, and the chosen size goes straight in. */
+        el.querySelectorAll('.sg-row').forEach(function (r) {
+          const o = PICKS.find(function (x) { return x.key === r.dataset.key; });
+          const box = r.querySelector('.sg-a');
+          const add = function (size) {
+            box.querySelectorAll('button').forEach(function (x) { x.disabled = true; });
+            if (typeof window.ecQuickAdd === 'function') window.ecQuickAdd(o.key, size);
+          };
+          r.querySelector('.sg-add').addEventListener('click', function () {
+            if (!o.sizes) { add(null); return; }
+            box.innerHTML = o.sizes.map(function (z) {
+              return '<button type="button" data-size="' + z + '" aria-label="Add size ' + z + '">' + z + '</button>';
+            }).join('');
+            box.querySelectorAll('button').forEach(function (b) {
+              b.addEventListener('click', function () { add(b.dataset.size); });
+            });
           });
         });
         lines.appendChild(el);
