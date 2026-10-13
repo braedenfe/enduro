@@ -158,6 +158,8 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pcard-img img.fade.out{opacity:0}
 /* colour swatches: in the info block under the name, so the photograph stays clean */
 .pcard-swatches{display:flex;gap:2px;padding:0 5px 4px;margin-top:-8px;align-items:center}
+.pcard-swatches.single .pcard-swatch{cursor:default}
+.pcard-foot{display:contents}
 .pcard-swatch{
   width:32px;height:32px;padding:0;border:0;background:transparent;cursor:pointer;
   display:grid;place-items:center;border-radius:50%;
@@ -226,8 +228,13 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   .pcard-fabric{top:auto;bottom:9px;left:9px;right:auto}
   /* Quick add stays, full width, opening the same frosted sheet */
   .pcard{display:flex;flex-direction:column}
-  .pcard-actions{display:block;padding:10px 4px 2px;margin-top:auto}   /* buttons line up across a row */
-  .pcard-btn.add{width:100%;padding:11px 6px;font-size:.66rem;letter-spacing:.14em}
+  /* dots on the left, a compact Quick add on the right, pinned to the foot of the card */
+  .pcard-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding:8px 8px 10px 3px}
+  .pcard-foot .pcard-swatches{margin:0;padding:0 0 0 1px}
+  .pcard-swatch{width:24px;height:24px}
+  .pcard-swatch::before{width:12px;height:12px}
+  .pcard-actions{display:block;padding:0;margin-left:auto}
+  .pcard-btn.add{padding:9px 14px;font-size:.62rem;letter-spacing:.14em;white-space:nowrap}
   .pcard-info{display:block;padding:11px 4px 0}
   .pcard-name{font-size:.98rem;line-height:1.2}
   .pcard-price{display:block;margin-top:5px;font-size:.86rem}
@@ -1645,6 +1652,41 @@ cards.forEach(card => {
   });
 });
 
+/* single-colour pieces get their one dot too, so every card reads the same */
+const SINGLE_COLOUR = {
+  'merino-micro-short':     { name:'Black',         hex:'#1C1C1A' },
+  'merino-bandeau':         { name:'Black',         hex:'#1C1C1A' },
+  'cotton-long-run-tee':    { name:'Natural White', hex:'#F5F3EE' },
+  'merino-short-mens':      { name:'Black',         hex:'#1C1C1A' },
+  'o-merino-short-mens':    { name:'Black',         hex:'#1C1C1A' },
+  'organic-cotton-dad-cap': { name:'Black',         hex:'#1C1C1A' },
+  'merino-long-run-sock':   { name:'Natural White', hex:'#F2EFE6' },
+  'organic-tote':           { name:'Natural',       hex:'#ECE6D8' }
+};
+cards.forEach(card => {
+  if (card.querySelector('.pcard-swatches')) return;
+  const one = SINGLE_COLOUR[card.dataset.product];
+  if (!one) return;
+  const row = document.createElement('div');
+  row.className = 'pcard-swatches single';
+  row.setAttribute('aria-label', 'Colour: ' + one.name);
+  row.innerHTML = '<span class="pcard-swatch on" title="' + one.name + '" style="--sw:' + one.hex + '"></span>';
+  card.querySelector('.pcard-info').insertAdjacentElement('afterend', row);
+});
+
+/* colour dots and Quick add share one footer. On desktop it is invisible
+   (display: contents); on phones it lays them out side by side. */
+cards.forEach(card => {
+  const actions = card.querySelector('.pcard-actions');
+  if (!actions) return;
+  const foot = document.createElement('div');
+  foot.className = 'pcard-foot';
+  actions.insertAdjacentElement('beforebegin', foot);
+  const sw = card.querySelector('.pcard-swatches');
+  if (sw) foot.appendChild(sw);
+  foot.appendChild(actions);
+});
+
 function cardMatches(card, ignore) {
   return AXES.every(ax => {
     if (ax === ignore || fstate[ax] === 'all') return true;
@@ -1664,8 +1706,8 @@ function cardMatches(card, ignore) {
      row 4  accessory  | tee        | accessory                            */
 const ORDER = [
   'merino-micro-short',     'merino-bandeau',        'merino-short-mens',
-  'o-tee',                  'o-merino-short-mens',   'cotton-long-run-tee',
-  'cotton-short-mens',      'merino-long-run-sock',  'o-cotton-short-mens',
+  'o-tee',                  'o-cotton-short-mens',   'cotton-long-run-tee',
+  'cotton-short-mens',      'merino-long-run-sock',  'o-merino-short-mens',
   'organic-cotton-dad-cap', 'enduro-tee',            'organic-tote'
 ];
 /* Two-column order, used on phones and tablets. Checked against every
@@ -1681,9 +1723,9 @@ const ORDER = [
 const ORDER_2COL = [
   'o-tee',                  'merino-short-mens',
   'merino-micro-short',     'merino-bandeau',
-  'cotton-long-run-tee',    'o-merino-short-mens',
+  'cotton-long-run-tee',    'o-cotton-short-mens',
   'cotton-short-mens',      'merino-long-run-sock',
-  'organic-cotton-dad-cap', 'o-cotton-short-mens',
+  'organic-cotton-dad-cap', 'o-merino-short-mens',
   'enduro-tee',             'organic-tote'
 ];
 const TWO_COL = window.matchMedia('(max-width:900px)');
