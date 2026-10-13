@@ -626,7 +626,7 @@
     .ec-empty-picks{display:flex;gap:12px;margin:30px -24px 0;text-align:left;overflow-x:auto;scroll-snap-type:x mandatory;
       padding:0 24px 6px;scroll-padding-left:24px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
     .ec-empty-picks::-webkit-scrollbar{display:none}
-    .ec-empty-picks a{flex:0 0 58%;scroll-snap-align:start;text-decoration:none;color:#0E1512}
+    .ec-empty-picks a{flex:0 0 36%;scroll-snap-align:start;text-decoration:none;color:#0E1512}
     .ec-empty-picks img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:#EAE6DE;display:block}
     .ec-empty-picks .n{font-size:.76rem;margin-top:7px;line-height:1.3}
     .ec-empty-picks .pr{font-size:.74rem;color:rgba(14,21,18,.5);margin-top:2px}
