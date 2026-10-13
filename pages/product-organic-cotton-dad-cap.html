@@ -385,6 +385,13 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <div class="gallery">
     <div class="g-main" id="g-main">
       <span class="g-badge">Pre-order</span>
+      <button class="g-nav prev" onclick="setImage(gIndex-1)" aria-label="Previous image">
+        <svg viewBox="0 0 24 24"><polyline points="14.5 5 8 12 14.5 19"/></svg>
+      </button>
+      <button class="g-nav next" onclick="setImage(gIndex+1)" aria-label="Next image">
+        <svg viewBox="0 0 24 24"><polyline points="9.5 5 16 12 9.5 19"/></svg>
+      </button>
+      <span class="g-counter" id="g-counter">01 / 03</span>
     </div>
   </div>
 
