@@ -231,6 +231,33 @@
   // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
   const isGiftLine = (node) =>
     !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
+  /* ---------- Affiliate links ----------
+     enduroapparel.com.au/friends/john10 redirects (vercel.json) to /?ref=john10.
+     The code is remembered for 30 days, applied to the cart as a discount code,
+     and the order is tagged "Affiliate: JOHN10". Affiliates are managed entirely
+     in Shopify: the code in the link is the Shopify discount code. */
+  const REF_KEY = 'ec_ref', REF_DAYS = 30;
+  (function () {
+    try {
+      const u = new URL(window.location.href);
+      const raw = u.searchParams.get('ref');
+      if (!raw) return;
+      const code = raw.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 40);
+      if (code) localStorage.setItem(REF_KEY, JSON.stringify({ code: code, at: Date.now() }));
+      u.searchParams.delete('ref');   /* keep the address bar clean */
+      history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash);
+    } catch (e) {}
+  })();
+  const getRef = () => {
+    try {
+      const r = JSON.parse(localStorage.getItem(REF_KEY) || 'null');
+      if (r && r.code && Date.now() - r.at < REF_DAYS * 864e5) return r;
+      localStorage.removeItem(REF_KEY);
+    } catch (e) {}
+    return null;
+  };
+  const setRef = (r) => { try { r ? localStorage.setItem(REF_KEY, JSON.stringify(r)) : localStorage.removeItem(REF_KEY); } catch (e) {} };
+
   /* ---------- Dispatch timing shown on each cart line ----------
      Keep in step with the product pages and the shop quick-add (SHIP_TIME in
      shop.html). Anything not listed is a pre-order shipping in 4 to 6 weeks. */
@@ -567,6 +594,9 @@
   const updateLine = (cartId, lineId, quantity) => gql(
     `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
     { cartId, lines:[{ id: lineId, quantity }], cc: BUYER_CC }).then(d => d.cartLinesUpdate.cart);
+  const updateAttrs = (cartId, attributes) => gql(
+    `mutation($cartId:ID!,$attributes:[AttributeInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartAttributesUpdate(cartId:$cartId,attributes:$attributes){cart{${CART}} userErrors{message}}}`,
+    { cartId, attributes, cc: BUYER_CC }).then(d => d.cartAttributesUpdate.cart);
   const updateCodes = (cartId, codes) => gql(
     `mutation($cartId:ID!,$codes:[String!]!,$cc:CountryCode!) @inContext(country:$cc){cartDiscountCodesUpdate(cartId:$cartId,discountCodes:$codes){cart{${CART}} userErrors{message}}}`,
     { cartId, codes, cc: BUYER_CC }).then(d => d.cartDiscountCodesUpdate.cart);
@@ -946,10 +976,32 @@
     } catch (e) { return cart; }   /* fail soft, like the gift */
   }
 
+  /* put the affiliate's code on the cart once, and note them on the order */
+  async function reconcileRef(cart) {
+    const ref = getRef();
+    if (!ref || !cart || !cart.totalQuantity) return cart;
+    const cartId = localStorage.getItem(CART_KEY);
+    if (!cartId || ref.done === cartId) return cart;
+    try {
+      let c = cart;
+      const codes = (c.discountCodes || []).filter(x => x.applicable).map(x => x.code);
+      /* a code the customer already entered themselves takes precedence */
+      if (!codes.length) {
+        c = await updateCodes(cartId, [ref.code]);
+        const dc = (c.discountCodes || []).find(x => x.code.toUpperCase() === ref.code);
+        if (!dc || !dc.applicable) c = await updateCodes(cartId, []);   /* not a live code: drop it quietly */
+      }
+      c = await updateAttrs(cartId, [{ key: 'Affiliate', value: ref.code }]);
+      ref.done = cartId; setRef(ref);   /* once per cart, so a removed code stays removed */
+      return c;
+    } catch (e) { return cart; }
+  }
+
   async function refresh(cart) {
     const bundled = await reconcileBundle(cart);
     const socked = await reconcileSocks(bundled);
-    const updated = await reconcileGift(socked);
+    const gifted = await reconcileGift(socked);
+    const updated = await reconcileRef(gifted);
     render(updated);
     return updated;
   }
