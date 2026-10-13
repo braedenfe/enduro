@@ -119,7 +119,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 
 @media(max-width:900px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
-@media(max-width:560px){.product-grid{grid-template-columns:1fr;gap:24px}#grid-wrap{padding-left:20px;padding-right:20px}}
+
 
 .pcard{
   background:var(--white);border-radius:16px;overflow:hidden;display:block;position:relative;
@@ -214,6 +214,23 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .pcard-name{font-family:var(--serif);font-weight:600;font-size:1.3rem;letter-spacing:0.01em;line-height:1.1}
 .pcard-fibre{font-family:var(--cond);font-size:0.74rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(14,21,18,0.5);display:block;margin-top:5px}
 .pcard-price{font-weight:400;font-size:0.98rem;white-space:nowrap}
+@media(max-width:560px){
+  /* phones: two per row, with a trimmed card. tapping the card opens the product */
+  .product-grid{grid-template-columns:repeat(2,1fr);gap:22px 10px}
+  #grid-wrap{padding-left:14px;padding-right:14px}
+  .pcard-fibre,.pcard-btn.view{display:none}
+  /* pills, smaller: status top left, Australian Made beneath it, fabric at the foot of the photo */
+  .pcard-badge,.pcard-fabric{font-size:.54rem;letter-spacing:.14em;padding:4px 9px}
+  .pcard-badge{top:9px;left:9px}
+  .pcard-fabric{top:auto;bottom:9px;left:9px;right:auto}
+  /* Quick add stays, full width, opening the same frosted sheet */
+  .pcard{display:flex;flex-direction:column}
+  .pcard-actions{display:block;padding:10px 4px 2px;margin-top:auto}   /* buttons line up across a row */
+  .pcard-btn.add{width:100%;padding:11px 6px;font-size:.66rem;letter-spacing:.14em}
+  .pcard-info{display:block;padding:11px 4px 0}
+  .pcard-name{font-size:.98rem;line-height:1.2}
+  .pcard-price{display:block;margin-top:5px;font-size:.86rem}
+}
 .pcard-price.soon{font-family:var(--cond);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(14,21,18,0.45)}
 
 /* ───────── EMAIL ───────── */
@@ -698,7 +715,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="812" height="1008" data-fit="contain" class="alt" src="assets/images/products/merino-micro-short/merino-micro-short-black-front-model.jpg" alt="MerinoFlow Micro Short, view 3" loading="lazy" decoding="async">
         <img width="812" height="1008" data-fit="contain" class="extra" src="assets/images/products/merino-micro-short/merino-micro-short-black-back-model.jpg" alt="MerinoFlow Micro Short, view 4" loading="lazy" decoding="async">
         <img width="840" height="1008" data-fit="contain" class="extra" src="assets/images/products/merino-micro-short/merino-micro-short-black-side-flat.jpg" alt="MerinoFlow Micro Short, view 5" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
+        <span class="pcard-badge">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -721,7 +738,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="812" height="1008" data-fit="contain" class="alt" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-model.jpg" alt="MerinoFlow Bandeau, view 2" loading="lazy" decoding="async">
         <img width="1008" height="1008" data-fit="contain" class="extra" src="assets/images/products/merino-bandeau/merino-bandeau-black-front-flat.jpg" alt="MerinoFlow Bandeau, view 3" loading="lazy" decoding="async">
         <img width="1008" height="1008" data-fit="contain" class="extra" src="assets/images/products/merino-bandeau/merino-bandeau-black-back-flat.jpg" alt="MerinoFlow Bandeau, view 4" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
+        <span class="pcard-badge">Australian Made</span>
         <span class="pcard-fabric">Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -744,7 +761,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="1008" height="1120" data-fit="contain" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-flat.jpg" alt="FTLR CottonLite&trade; Tee, view 2" loading="lazy" decoding="async">
         <img width="980" height="1232" class="alt" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-front-model.jpg" alt="FTLR CottonLite&trade; Tee, view 3" loading="lazy" decoding="async">
         <img width="980" height="1232" class="extra" src="assets/images/products/cotton-long-run-tee/cotton-long-run-tee-white-back-model.jpg" alt="FTLR CottonLite&trade; Tee, view 4" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Cotton</span>
         </div>
       <div class="pcard-info">
@@ -768,7 +785,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="896" height="1372" class="alt" src="assets/images/products/merino-short-mens/merino-short-mens-front-model.jpg" alt="FTLR Merino Lined Short 5″, view 3" loading="lazy" decoding="async">
         <img width="896" height="1372" class="extra" src="assets/images/products/merino-short-mens/merino-short-mens-back-model.jpg" alt="FTLR Merino Lined Short 5″, view 4" loading="lazy" decoding="async">
         <img width="896" height="1372" class="extra" src="assets/images/products/merino-short-mens/merino-short-mens-detail.jpg" alt="FTLR Merino Lined Short 5″, view 5" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">Cotton &amp; Merino</span>
         </div>
       <div class="pcard-info">
@@ -788,7 +805,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-front-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 1" loading="lazy" decoding="async">
         <img width="1008" height="980" data-fit="contain" class="alt" src="assets/images/products/o-merino-short-mens/o-merino-short-mens-black-back-flat.jpg" alt="&Oslash; Merino Lined Short 5″, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">Cotton &amp; Merino</span>
         </div>
       <div class="pcard-info">
@@ -812,7 +829,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="896" height="1372" class="alt" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-front-model.jpg" alt="FTLR CottonLite™ Short 5″, view 3" loading="lazy" decoding="async">
         <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-back-model.jpg" alt="FTLR CottonLite™ Short 5″, view 4" loading="lazy" decoding="async">
         <img width="896" height="1372" class="extra" src="assets/images/products/cotton-short-mens/cotton-short-mens-black-detail.jpg" alt="FTLR CottonLite™ Short 5″, view 5" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Organic Cotton</span>
         </div>
       <div class="pcard-info">
@@ -832,7 +849,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="1008" height="980" data-fit="contain" class="main" src="assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-front-flat.jpg" alt="Ø CottonLite™ Short 5″, view 1" loading="lazy" decoding="async">
         <img width="1008" height="980" data-fit="contain" class="extra" src="assets/images/products/o-cotton-short-mens/o-cotton-short-mens-black-back-flat.jpg" alt="Ø CottonLite™ Short 5″, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Organic Cotton</span>
         </div>
       <div class="pcard-info">
@@ -859,7 +876,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="980" height="1232" class="extra" src="assets/images/products/merino-short-womens/merino-short-womens-back-model.jpg" alt="STRATUS Pace Merino Long Run Short 3″, view 4" loading="lazy" decoding="async">
         <img width="1008" height="1120" class="extra" src="assets/images/products/merino-short-womens/merino-short-womens-front-close.jpg" alt="STRATUS Pace Merino Long Run Short 3″, view 5" loading="lazy" decoding="async">
         <img width="1008" height="924" class="extra" src="assets/images/products/merino-short-womens/merino-short-womens-back-close.jpg" alt="STRATUS Pace Merino Long Run Short 3″, view 6" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -884,7 +901,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="980" height="1232" class="extra" src="assets/images/products/cotton-short-womens/cotton-short-womens-back-model.jpg" alt="Essential Short 3″, view 4" loading="lazy" decoding="async">
         <img width="1008" height="1120" class="extra" src="assets/images/products/cotton-short-womens/cotton-short-womens-front-close.jpg" alt="Essential Short 3″, view 5" loading="lazy" decoding="async">
         <img width="1008" height="924" class="extra" src="assets/images/products/cotton-short-womens/cotton-short-womens-back-close.jpg" alt="Essential Short 3″, view 6" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Organic Cotton</span>
         </div>
       <div class="pcard-info">
@@ -910,7 +927,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="812" height="1008" data-fit="contain" class="extra" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-flat.jpg" alt="STRATUS Air Merino Long Run Tee, view 2" loading="lazy" decoding="async">
         <img width="812" height="1008" class="alt" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-front-model.jpg" alt="STRATUS Air Merino Long Run Tee, view 3" loading="lazy" decoding="async">
         <img width="812" height="1008" class="extra" src="assets/images/products/wool-long-run-tee/wool-long-run-tee-white-back-model.jpg" alt="STRATUS Air Merino Long Run Tee, view 4" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
+        <span class="pcard-badge">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -931,7 +948,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="812" height="1008" data-fit="contain" class="main" src="assets/images/products/o-tee/o-tee-white-front-flat.jpg" alt="MerinoLite Ø Tee, view 1" loading="lazy" decoding="async">
         <img width="812" height="1008" data-fit="contain" class="alt" src="assets/images/products/o-tee/o-tee-white-back-flat.jpg" alt="MerinoLite Ø Tee, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
+        <span class="pcard-badge">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -950,7 +967,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="812" height="1008" data-fit="contain" class="main" src="assets/images/products/enduro-tee/enduro-tee-white-front-flat.jpg" alt="MerinoLite Enduro Tee, view 1" loading="lazy" decoding="async">
         <img width="812" height="1008" data-fit="contain" class="alt" src="assets/images/products/enduro-tee/enduro-tee-white-back-flat.jpg" alt="MerinoLite Enduro Tee, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Australian Made</span>
+        <span class="pcard-badge">Australian Made</span>
         <span class="pcard-fabric">100% Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -972,7 +989,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
         <img width="1008" height="1260" class="main" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-front.jpg" alt="Organic Cotton Dad Cap, view 1" loading="lazy" decoding="async">
         <img width="1008" height="1260" class="alt" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-back.jpg" alt="Organic Cotton Dad Cap, view 2" loading="lazy" decoding="async">
         <img width="1008" height="1260" class="extra" src="assets/images/products/organic-cotton-dad-cap/organic-cotton-dad-cap-black-side.jpg" alt="Organic Cotton Dad Cap, view 3" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span>
+        
         <span class="pcard-fabric">100% Organic Cotton</span>
         </div>
       <div class="pcard-info">
@@ -1011,7 +1028,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="pcard-img">
         <img width="896" height="1195" data-fit="contain" class="main" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-front-model.jpg" alt="Merino Long Run Sock, view 1" loading="lazy" decoding="async">
         <img width="896" height="1195" data-fit="contain" class="alt" src="assets/images/products/merino-long-run-sock/merino-long-run-sock-natural-white-side-model.jpg" alt="Merino Long Run Sock, view 2" loading="lazy" decoding="async">
-        <span class="pcard-badge">Pre-order</span><span class="pcard-badge aus">Buy 2 get 1 free</span>
+        <span class="pcard-badge">Buy 2 get 1 free</span>
         <span class="pcard-fabric">Merino Wool</span>
         </div>
       <div class="pcard-info">
@@ -1637,23 +1654,45 @@ function cardMatches(card, ignore) {
 }
 
 /* ───────── RUNNING ORDER ─────────
-   Ordered so no two products of the same category sit next to each other.
-   Four black shorts in a row read as one product when scrolling on a phone. */
+   The grid is checked as a grid: no two shorts, tees or accessories touch side
+   by side or one above the other. Four black shorts together read as one
+   product. Desktop uses three columns, phones and tablets two (below).
+     row 1  short      | bandeau    | short      (the set opens the range)
+     row 2  tee        | short      | tee
+     row 3  short      | accessory  | short
+     row 4  accessory  | tee        | accessory                            */
 const ORDER = [
-  'o-tee',                  /* tee    */
-  'merino-micro-short',     /* short  */
-  'merino-bandeau',         /* top    */
-  'o-merino-short-mens',    /* short  */
-  'cotton-long-run-tee',    /* tee    */
-  'cotton-short-mens',      /* short  */
-  'enduro-tee',             /* tee    */
-  'merino-short-mens',      /* short  */
-  'o-cotton-short-mens',    /* short  — the one unavoidable pair, see note */
-  'organic-cotton-dad-cap', /* access */
-  'merino-long-run-sock',   /* access */
-  'organic-tote'            /* access */
+  'merino-micro-short',     'merino-bandeau',        'merino-short-mens',
+  'o-tee',                  'o-merino-short-mens',   'cotton-long-run-tee',
+  'cotton-short-mens',      'merino-long-run-sock',  'o-cotton-short-mens',
+  'organic-cotton-dad-cap', 'enduro-tee',            'organic-tote'
 ];
-const ORDER_POS = {}; ORDER.forEach((k, i) => ORDER_POS[k] = i + 1);
+/* Two-column order, used on phones and tablets. Checked against every
+   arrangement: no two shorts, tees or accessories touch side by side or one
+   above the other, the Micro Short and Bandeau share a row as a set, white
+   tees alternate with dark shorts, and accessories sit in the lower rows.
+     row 1  tee        | short
+     row 2  short      | bandeau   (the set)
+     row 3  tee        | short
+     row 4  short      | accessory
+     row 5  accessory  | short
+     row 6  tee        | accessory                                          */
+const ORDER_2COL = [
+  'o-tee',                  'merino-short-mens',
+  'merino-micro-short',     'merino-bandeau',
+  'cotton-long-run-tee',    'o-merino-short-mens',
+  'cotton-short-mens',      'merino-long-run-sock',
+  'organic-cotton-dad-cap', 'o-cotton-short-mens',
+  'enduro-tee',             'organic-tote'
+];
+const TWO_COL = window.matchMedia('(max-width:900px)');
+const ORDER_POS = {};
+function setOrder() {
+  Object.keys(ORDER_POS).forEach(k => delete ORDER_POS[k]);
+  (TWO_COL.matches ? ORDER_2COL : ORDER).forEach((k, i) => ORDER_POS[k] = i + 1);
+}
+setOrder();
+if (TWO_COL.addEventListener) TWO_COL.addEventListener('change', () => { setOrder(); applyFilters(); });
 
 function applyFilters() {
   let shown = 0;
