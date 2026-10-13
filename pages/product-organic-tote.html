@@ -139,6 +139,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 /* CONDITIONS */
 .cw{margin-top:18px;padding:16px;border:1px solid var(--line-dark);border-radius:4px;background:var(--white)}
 .cw-head{display:flex;justify-content:space-between;align-items:center}
+.cw-wx{vertical-align:-0.32em;margin:0 6px 0 2px;color:var(--forest)}
 .cw-title{font-family:var(--cond);font-size:0.74rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:rgba(14,21,18,0.5)}
 .unit-toggle{display:flex;gap:4px}
 .unit-btn{font-family:var(--cond);font-size:0.72rem;letter-spacing:0.08em;padding:4px 10px;border-radius:99px;
@@ -181,7 +182,8 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 .features ul{list-style:none;margin-top:12px}
 .features li{padding:10px 0;border-bottom:1px solid var(--line-dark);font-size:0.9rem;font-weight:300;color:rgba(14,21,18,0.75)}
 .feat-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.feat-pill{position:relative;font-family:var(--cond),'Barlow Condensed',sans-serif;font-size:0.82rem;letter-spacing:0.05em;font-weight:500;color:var(--ink);background:rgba(14,21,18,0.05);border:none;border-radius:999px;padding:9px 17px;cursor:pointer;transition:background .25s ease,color .25s ease;-webkit-tap-highlight-color:transparent}
+.feat-ic{flex:none;width:15px;height:15px}
+.feat-pill{position:relative;display:inline-flex;align-items:center;gap:7px;font-family:var(--cond),'Barlow Condensed',sans-serif;font-size:0.82rem;letter-spacing:0.05em;font-weight:500;color:var(--ink);background:rgba(14,21,18,0.05);border:none;border-radius:999px;padding:9px 17px;cursor:pointer;transition:background .25s ease,color .25s ease;-webkit-tap-highlight-color:transparent}
 .feat-pill:hover,.feat-pill.active{background:var(--forest);color:#F5F2EC}
 .feat-pop{position:absolute;left:50%;bottom:calc(100% + 11px);transform:translateX(calc(-50% + var(--shift,0px))) translateY(5px);width:max-content;max-width:240px;background:var(--ink);color:#F5F2EC;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;line-height:1.5;letter-spacing:0;padding:11px 14px;border-radius:12px;box-shadow:0 12px 32px rgba(14,21,18,0.24);opacity:0;visibility:hidden;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.7,.2,1);z-index:40;pointer-events:none;text-align:left;white-space:normal}
 .feat-pill:hover .feat-pop,.feat-pill.active .feat-pop{opacity:1;visibility:visible;transform:translateX(calc(-50% + var(--shift,0px))) translateY(0)}
@@ -402,7 +404,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
     <!-- Features -->
     <div class="features">
       <span class="t-label" style="color:rgba(14,21,18,0.5);font-size:0.74rem">Features</span>
-      <div class="feat-pills"><button class="feat-pill" type="button">GOTS Organic<span class="feat-pop">100% GOTS certified organic cotton canvas, approx. 136 GSM.</span></button><button class="feat-pill" type="button">OEKO-TEX<span class="feat-pop">OEKO-TEX certified fabric, tested for harmful substances.</span></button><button class="feat-pill" type="button">Reinforced straps<span class="feat-pop">Reinforced shoulder straps built to carry a full load.</span></button><button class="feat-pill" type="button">Water-based ink<span class="feat-pop">Printed with water-based, food-safe ink.</span></button><button class="feat-pill" type="button">Natural cotton<span class="feat-pop">Natural, untreated cotton in an undyed finish.</span></button><button class="feat-pill" type="button">Everyday durable<span class="feat-pop">Lightweight yet durable, designed for everyday carry.</span></button></div>
+      <div class="feat-pills"><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></svg>GOTS Organic<span class="feat-pop">100% GOTS certified organic cotton canvas, approx. 136 GSM.</span></button><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></svg>OEKO-TEX<span class="feat-pop">OEKO-TEX certified fabric, tested for harmful substances.</span></button><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg>Reinforced straps<span class="feat-pop">Reinforced shoulder straps built to carry a full load.</span></button><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>Water-based ink<span class="feat-pop">Printed with water-based, food-safe ink.</span></button><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20"/><path d="M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13"/></svg>Natural cotton<span class="feat-pop">Natural, untreated cotton in an undyed finish.</span></button><button class="feat-pill" type="button"><svg class="feat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Everyday durable<span class="feat-pop">Lightweight yet durable, designed for everyday carry.</span></button></div>
     </div>
 
     <!-- Accordions -->
@@ -614,6 +616,23 @@ function togglePanel(head) {
   const line = document.createElement('div'); line.className = 'cw-live'; bar.parentElement.appendChild(line);
   let state = null;
 
+  /* WMO weather code to a Lucide icon and a plain label */
+  const WX_PATHS = {"sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>", "moon": "<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>", "cloud-sun": "<path d=\"M12 2v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"M20 12h2\"/><path d=\"m19.07 4.93-1.41 1.41\"/><path d=\"M15.947 12.65a4 4 0 0 0-5.925-4.128\"/><path d=\"M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z\"/>", "cloud-moon": "<path d=\"M13 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6z\"/><path d=\"M18.376 14.512a6 6 0 0 0 3.461-4.127c.148-.625-.659-.97-1.248-.714a4 4 0 0 1-5.259-5.26c.255-.589-.09-1.395-.716-1.248a6 6 0 0 0-4.594 5.36\"/>", "cloud": "<path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/>", "cloud-fog": "<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 17H7\"/><path d=\"M17 21H9\"/>", "cloud-drizzle": "<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 19v1\"/><path d=\"M8 14v1\"/><path d=\"M16 19v1\"/><path d=\"M16 14v1\"/><path d=\"M12 21v1\"/><path d=\"M12 16v1\"/>", "cloud-rain": "<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 14v6\"/><path d=\"M8 14v6\"/><path d=\"M12 16v6\"/>", "cloud-snow": "<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 15h.01\"/><path d=\"M8 19h.01\"/><path d=\"M12 17h.01\"/><path d=\"M12 21h.01\"/><path d=\"M16 15h.01\"/><path d=\"M16 19h.01\"/>", "cloud-lightning": "<path d=\"M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973\"/><path d=\"m13 12-3 5h4l-3 5\"/>"};
+  function wxIcon(code, day) {
+    let k, label;
+    if (code === 0)                 { k = day ? 'sun' : 'moon'; label = 'Clear'; }
+    else if (code <= 2)             { k = day ? 'cloud-sun' : 'cloud-moon'; label = 'Partly cloudy'; }
+    else if (code === 3)            { k = 'cloud'; label = 'Cloudy'; }
+    else if (code <= 48)            { k = 'cloud-fog'; label = 'Fog'; }
+    else if (code <= 57)            { k = 'cloud-drizzle'; label = 'Drizzle'; }
+    else if (code <= 67)            { k = 'cloud-rain'; label = 'Rain'; }
+    else if (code <= 77)            { k = 'cloud-snow'; label = 'Snow'; }
+    else if (code <= 82)            { k = 'cloud-rain'; label = 'Showers'; }
+    else if (code <= 86)            { k = 'cloud-snow'; label = 'Snow showers'; }
+    else                            { k = 'cloud-lightning'; label = 'Storms'; }
+    return '<svg class="cw-wx" width="1.35em" height="1.35em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="' + label + '"><title>' + label + '</title>' + WX_PATHS[k] + '</svg>';
+  }
+
   function render() {
     if (!state) return;
     const isF = unit === 'f';
@@ -624,7 +643,7 @@ function togglePanel(head) {
     mark.classList.remove('cold', 'mid', 'hot');
     mark.classList.add(state.temp < PAGE.tempMin ? 'cold' : (state.temp > PAGE.tempMax ? 'hot' : 'mid'));
     mark.classList.add('on');
-    let txt = (state.city ? state.city + ' ' : '') + t + (isF ? '\u00b0F' : '\u00b0C');
+    let txt = (state.city ? state.city + ' ' : '') + (state.wx || '') + t + (isF ? '\u00b0F' : '\u00b0C');
     if (state.temp >= PAGE.tempMin && state.temp <= PAGE.tempMax) txt += ' &middot; <span class="in">in range</span>';
     if (state.light) txt += ' &middot; ' + state.light;
     line.innerHTML = txt;
@@ -635,7 +654,7 @@ function togglePanel(head) {
 
   function weather(lat, lon, city) {
     fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
-          '&current=temperature_2m&daily=sunrise,sunset&timezone=auto&forecast_days=2')
+          '&current=temperature_2m,weather_code,is_day&daily=sunrise,sunset&timezone=auto&forecast_days=2')
       .then(function (r) { return r.json(); })
       .then(function (d) {
         const t = d && d.current && d.current.temperature_2m;
@@ -654,7 +673,9 @@ function togglePanel(head) {
           let h = +hm[0]; const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12;
           light = label + ' ' + h + ':' + hm[1] + ap;
         } catch (e) {}
-        state = { temp: t, city: city, light: light };
+        const code = d.current.weather_code;
+        const wx = typeof code === 'number' ? wxIcon(code, d.current.is_day !== 0) : '';
+        state = { temp: t, city: city, light: light, wx: wx };
         render();
       }).catch(function () {});
   }
