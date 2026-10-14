@@ -59,6 +59,16 @@
       "permanent": false
     },
     {
+      "source": "/partners/:code",
+      "destination": "/?partner=:code",
+      "permanent": false
+    },
+    {
+      "source": "/partners/:code/:product",
+      "destination": "/pages/product-:product.html?partner=:code",
+      "permanent": false
+    },
+    {
       "source": "/archive/(.*)",
       "destination": "/shop.html",
       "permanent": false

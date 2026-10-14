@@ -14,10 +14,10 @@
      home page with the code still applied. */
   (function () {
     var path = location.pathname;
-    var m = path.match(/^\/friends\/([A-Za-z0-9_-]+)\//);
+    var m = path.match(/^\/(friends|partners)\/([A-Za-z0-9_-]+)\//);
     if (!m) { gtag("config", "G-R0BFVCRR6E", { page_title: "Page not found: " + path }); return; }
-    var go = function () { location.replace("/?ref=" + encodeURIComponent(m[1])); };
-    gtag("config", "G-R0BFVCRR6E", { page_title: "Affiliate link fixed: " + path, event_callback: go });
+    var go = function () { location.replace("/?" + (m[1] === "partners" ? "partner=" : "ref=") + encodeURIComponent(m[2])); };
+    gtag("config", "G-R0BFVCRR6E", { page_title: (m[1] === "partners" ? "Partner" : "Affiliate") + " link fixed: " + path, event_callback: go });
     setTimeout(go, 900);
   })();
 </script>
