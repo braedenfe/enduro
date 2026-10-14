@@ -9,7 +9,17 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag("js", new Date());
-  gtag("config", "G-R0BFVCRR6E");
+  /* Show the missing address in Analytics (Realtime only lists page titles),
+     and rescue mistyped affiliate links: /friends/name/anything goes to the
+     home page with the code still applied. */
+  (function () {
+    var path = location.pathname;
+    var m = path.match(/^\/friends\/([A-Za-z0-9_-]+)\//);
+    if (!m) { gtag("config", "G-R0BFVCRR6E", { page_title: "Page not found: " + path }); return; }
+    var go = function () { location.replace("/?ref=" + encodeURIComponent(m[1])); };
+    gtag("config", "G-R0BFVCRR6E", { page_title: "Affiliate link fixed: " + path, event_callback: go });
+    setTimeout(go, 900);
+  })();
 </script>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
