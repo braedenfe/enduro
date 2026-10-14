@@ -231,23 +231,25 @@
   // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
   const isGiftLine = (node) =>
     !!(node.attributes && node.attributes.some(a => a.key === GIFT_ATTR && a.value === '1'));
-  /* ---------- Affiliate links ----------
-     enduroapparel.com.au/friends/john10 redirects (vercel.json) to /?ref=john10.
-     Affiliate codes always start EF_ (EF_JOHN10); the link may leave it off.
-     The code is remembered for 30 days, applied to the cart as a discount code,
-     and the order is tagged "Affiliate: EF_JOHN10". Affiliates are managed entirely
-     in Shopify: the code in the link is the Shopify discount code. */
+  /* ---------- Affiliate and partner links ----------
+     enduroapparel.com.au/friends/john10  redirects (vercel.json) to /?ref=john10
+     enduroapparel.com.au/partners/acme15 redirects to /?partner=acme15
+     Affiliate codes start EF_ (EF_JOHN10, earn commission); partner codes start
+     EP_ (EP_ACME15, a brand offering our discount, no commission). Links may
+     leave the prefix off. The code is remembered for 30 days, applied to the
+     cart as a discount code, and the order is tagged "Affiliate: <code>".
+     The code in the link is the Shopify discount code. */
   const REF_KEY = 'ec_ref', REF_DAYS = 30;
   (function () {
     try {
       const u = new URL(window.location.href);
-      const raw = u.searchParams.get('ref');
+      const isPartner = u.searchParams.has('partner');
+      const raw = u.searchParams.get(isPartner ? 'partner' : 'ref');
       if (!raw) return;
-      /* affiliate codes always start EF_ ; the link can leave it off (/friends/ellese10) */
       let code = raw.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '').slice(0, 40);
-      if (code && code.indexOf('EF_') !== 0) code = 'EF_' + code;
-      if (/^EF_[A-Z0-9]+$/.test(code)) localStorage.setItem(REF_KEY, JSON.stringify({ code: code, at: Date.now() }));
-      u.searchParams.delete('ref');   /* keep the address bar clean */
+      if (code && !/^E[FP]_/.test(code)) code = (isPartner ? 'EP_' : 'EF_') + code;
+      if (/^E[FP]_[A-Z0-9]+$/.test(code)) localStorage.setItem(REF_KEY, JSON.stringify({ code: code, at: Date.now() }));
+      u.searchParams.delete('ref'); u.searchParams.delete('partner');   /* keep the address bar clean */
       history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash);
     } catch (e) {}
   })();
