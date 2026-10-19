@@ -265,17 +265,19 @@
 
   /* ---------- Dispatch timing shown on each cart line ----------
      Keep in step with the product pages and the shop quick-add (SHIP_TIME in
-     shop.html). Anything not listed is a pre-order shipping in 4 to 6 weeks. */
+     shop.html). Shorts ship within 4 weeks; anything not listed is a
+     pre-order shipping within 2 weeks. */
   const SHIP_TIME = {
-    'merino-long-run-sock':  'Ships in 2\u20134 weeks',
-    'cotton-long-run-tee':   'Ships in 2\u20134 weeks',
+    'merino-short-mens':     'Ships within 4 weeks',
+    'o-merino-short-mens':   'Ships within 4 weeks',
+    'merino-short-womens':   'Ships within 4 weeks',
+    'cotton-short-mens':     'Ships within 4 weeks',
+    'o-cotton-short-mens':   'Ships within 4 weeks',
+    'cotton-short-womens':   'Ships within 4 weeks',
     'merino-micro-short':    'Ships within 4 weeks',
-    'merino-bandeau':        'Ships within 4 weeks',
-    'o-tee':                 'Ships within 4 weeks',
-    'enduro-tee':            'Ships within 4 weeks',
-    'organic-tote':          'In stock \u00b7 ships in 1\u20132 business days'
+    'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days'
   };
-  const SHIP_TIME_DEFAULT = 'Ships in 4\u20136 weeks';
+  const SHIP_TIME_DEFAULT = 'Ships within 2 weeks';
   window.EC_SHIP_TIME = SHIP_TIME;
   const keyOfProduct = (productGid) => {
     const id = String(productGid || '').split('/').pop();
