@@ -274,7 +274,6 @@
     'cotton-short-mens':     'Ships within 4 weeks',
     'o-cotton-short-mens':   'Ships within 4 weeks',
     'cotton-short-womens':   'Ships within 4 weeks',
-    'merino-micro-short':    'Ships within 4 weeks',
     'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days'
   };
   const SHIP_TIME_DEFAULT = 'Ships within 2 weeks';
