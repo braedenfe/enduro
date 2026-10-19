@@ -1119,7 +1119,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
       <div class="drawer-section-title">Select size</div>
       <div class="size-grid" id="drawer-sizes"></div>
       <button class="drawer-atc" id="drawer-atc" onclick="addToCart()">Pre-order now</button>
-        <p class="drawer-preorder" id="drawer-preorder">Pre-order &middot; expected to ship in 4&ndash;6 weeks</p>
+        <p class="drawer-preorder" id="drawer-preorder">Pre-order &middot; expected to ship within 2 weeks</p>
 
       <div class="drawer-section-title">Conditions</div>
       <div class="conditions-widget" id="drawer-conditions">
@@ -1892,14 +1892,15 @@ const drawer   = document.getElementById('product-drawer');
 const backdrop = document.getElementById('drawer-backdrop');
 let currentDrawerProduct = null;
 
-/* pre-order timing per product; anything not listed ships in 4 to 6 weeks */
+/* pre-order timing per product; shorts ship within 4 weeks, anything not listed within 2 weeks */
 const SHIP_TIME = {
-  'merino-long-run-sock': 'in 2&ndash;4 weeks',
-  'cotton-long-run-tee':  'in 2&ndash;4 weeks',
-  'merino-micro-short':   'within 4 weeks',
-  'merino-bandeau':       'within 4 weeks',
-  'o-tee':                'within 4 weeks',
-  'enduro-tee':           'within 4 weeks'
+  'merino-short-mens':    'within 4 weeks',
+  'o-merino-short-mens':  'within 4 weeks',
+  'merino-short-womens':  'within 4 weeks',
+  'cotton-short-mens':    'within 4 weeks',
+  'o-cotton-short-mens':  'within 4 weeks',
+  'cotton-short-womens':  'within 4 weeks',
+  'merino-micro-short':   'within 4 weeks'
 };
 function openDrawer(key) {
   const p = products[key];
@@ -1934,7 +1935,7 @@ function openDrawer(key) {
   var dpo = document.getElementById('drawer-preorder');
   if (dpo) {
     dpo.style.display = p.preorder ? '' : 'none';
-    dpo.innerHTML = '<svg class="ic" width="1.25em" height="1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.22em;margin-right:7px" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Pre-order &middot; expected to ship ' + (SHIP_TIME[key] || 'in 4&ndash;6 weeks');
+    dpo.innerHTML = '<svg class="ic" width="1.25em" height="1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.22em;margin-right:7px" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Pre-order &middot; expected to ship ' + (SHIP_TIME[key] || 'within 2 weeks');
   }
 
   const link = document.getElementById('drawer-page-link');
