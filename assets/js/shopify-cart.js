@@ -92,7 +92,8 @@
   /* countries in the Shopify GLOBAL zone. anything not listed falls back to the
      full table, so we never quote a rate for somewhere we do not ship. */
   const SHIP_GLOBAL = ['US','GB','CA','IE','NZ','SG','HK','JP','AT','BE','BG','HR','CY','CZ','DK',
-    'EE','FI','FR','DE','GR','HU','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE'];
+    'EE','FI','FR','DE','GR','HU','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE',
+    'KR','TW','MY','TH','PH','ID','VN'];
 
   function shipZoneFor(cc) {
     if (!cc) return null;
