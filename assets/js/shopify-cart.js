@@ -275,7 +275,8 @@
     'cotton-short-mens':     'Ships within 4 weeks',
     'o-cotton-short-mens':   'Ships within 4 weeks',
     'cotton-short-womens':   'Ships within 4 weeks',
-    'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days'
+    'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days',
+    'merino-long-run-sock':   'In stock \u00b7 ships in 1\u20132 business days'
   };
   const SHIP_TIME_DEFAULT = 'Ships within 2 weeks';
   window.EC_SHIP_TIME = SHIP_TIME;
@@ -542,6 +543,31 @@
   (function () {
     const go = () => prefetchVariants();
     if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 2000 }); else setTimeout(go, 600);
+  })();
+
+  /* ---------- live sold-out sizes for stock-held products ----------
+     Products that stop selling at zero in Shopify show a size as sold out once
+     Shopify reports it unavailable. Pre-order products keep selling at zero,
+     so they never trip this. Add a product key here when it moves to stock. */
+  const STOCK_HELD = ['merino-long-run-sock'];
+  (function () {
+    if (typeof PAGE === 'undefined' || !PAGE || STOCK_HELD.indexOf(PAGE.key) < 0) return;
+    resolveVariants(PAGE.key).then(list => {
+      if (!list) return;
+      const btns = Array.from(document.querySelectorAll('.size-btn'));
+      let open = 0;
+      btns.forEach(btn => {
+        const v = pickVariant(list, btn.textContent.trim());
+        if (v && !v.available) {
+          btn.classList.add('sold-out'); btn.classList.remove('active');
+          btn.setAttribute('aria-disabled', 'true'); btn.title = 'Sold out';
+        } else open++;
+      });
+      if (btns.length && !open) {
+        const atc = document.querySelector('.atc');
+        if (atc) { atc.textContent = 'Sold out'; atc.disabled = true; }
+      }
+    }).catch(() => {});
   })();
 
   async function resolveVariants(key) {
