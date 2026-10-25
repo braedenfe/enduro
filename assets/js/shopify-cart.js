@@ -625,7 +625,7 @@
       discountAllocations { discountedAmount { amount currencyCode } }
       merchandise { ... on ProductVariant {
         id title price { amount currencyCode }
-        product { id title featuredImage { url altText } } } } } } }`;
+        product { id title featuredImage { url thumb: url(transform: { maxWidth: 208, maxHeight: 260, crop: CENTER }) altText } } } } } } }`;
 
   /* every cart call runs in the buyer's market, so Shopify prices the cart in
      their currency rather than AUD */
@@ -1208,7 +1208,11 @@
       say('Free express shipping unlocked. Spend ' + amt(SPEND_SOCK.threshold - sub) + ' more for a free ' + SPEND_SOCK.label + '.');
     } else if (shipOn) {
       const ship = expOn ? EXPRESS.label : SHIPPING.label;
-      say('You\u2019ve qualified for ' + ship + (giftDone ? ' and a complimentary ' + GIFT.label : '') + '.');
+      const sockDone = SPEND_SOCK.enabled && !spendSockOff && sub >= SPEND_SOCK.threshold;
+      const extras = [];
+      if (giftDone) extras.push('a complimentary ' + GIFT.label);
+      if (sockDone) extras.push('a free pair of socks');
+      say('You\u2019ve qualified for ' + ship + (extras.length ? (extras.length > 1 ? ', ' + extras[0] + ' and ' + extras[1] : ' and ' + extras[0]) : '') + '.');
     } else {
       say('You\u2019ve qualified for a complimentary ' + GIFT.label + '.');
     }
@@ -1235,7 +1239,7 @@
     lines.innerHTML = cart.lines.edges.map(({ node }) => {
       const v = node.merchandise, img = v.product.featuredImage;
       const cur = v.price.currencyCode;
-      const pic = img ? `<img src="${img.url}" alt="${img.altText||''}">` : '<div class="ph"></div>';
+      const pic = img ? `<img src="${img.thumb || img.url}" alt="${(img.altText||'').replace(/"/g,'&quot;')}" loading="eager" decoding="async" onerror="if(this.dataset.r!=='1'&&this.src!=='${img.url}'){this.dataset.r='1';this.src='${img.url}'}else{this.replaceWith(Object.assign(document.createElement('div'),{className:'ph'}))}">` : '<div class="ph"></div>';
       /* name and details on the left; price and quantity in a right-hand column */
       const row = (info, right, removable) => removable
         ? `<div class="ec-line ec-sw"><button class="ec-del" type="button" data-line="${node.id}" tabindex="-1">Remove</button><div class="ec-slide">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div></div>`
