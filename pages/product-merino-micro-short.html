@@ -941,7 +941,7 @@ const gMain = document.getElementById('g-main');
 const gCounter = document.getElementById('g-counter');
 let gLayers = [];
 
-function isFlat(src) { return src.indexOf('-flat') > -1; }
+function isFlat(src) { return src.indexOf('-flat') > -1 || src.indexOf('-model') > -1; }  /* studio shots on white: show the whole frame */
 
 function updateCounter() {
   if (!gCounter) return;
