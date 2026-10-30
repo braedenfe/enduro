@@ -901,6 +901,15 @@
   const closeDrawer = () => { overlay.classList.remove('open'); drawer.classList.remove('open'); lockPage(false); };
   // expose a global so the nav cart icon can open the cart (named distinctly to avoid the shop page's quick-view openDrawer)
   window.ecOpenCart = openDrawer;
+
+  /* numeric Shopify variant id for a size, used by back in stock sign-ups */
+  window.ecVariantId = async function (key, size, colourName) {
+    try {
+      const list = await resolveVariants(key);
+      const v = list && pickVariant(list, size, colourName);
+      return v ? String(v.id).split('/').pop() : null;
+    } catch (e) { return null; }
+  };
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelector('.ec-x').addEventListener('click', closeDrawer);
 
