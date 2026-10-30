@@ -1031,7 +1031,7 @@ function openBIS(btn) {
   btn.classList.add('asking');
   p.hidden = false;
   p.dataset.size = size;
-  document.getElementById('bis-h').textContent = 'Size ' + size + ' \u2014 sold out';
+  document.getElementById('bis-h').textContent = 'Size ' + size + ' \u00b7 Sold out';
   var m = document.getElementById('bis-msg'); m.textContent = ''; m.classList.remove('err');
   var b = document.getElementById('bis-btn'); b.disabled = false; b.textContent = 'Notify me';
   p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1042,36 +1042,44 @@ function submitBIS() {
   var msg = document.getElementById('bis-msg');
   var btn = document.getElementById('bis-btn');
   var email = (input.value || '').trim();
+  var size = p.dataset.size;
+  var colour = (document.getElementById('sel-colour') || {}).textContent || '';
   msg.classList.remove('err');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     msg.textContent = 'Please enter a valid email address.'; msg.classList.add('err'); return;
   }
-  btn.disabled = true; btn.textContent = 'Sending\u2026';
-  var body = JSON.stringify({
-    data: {
-      type: 'event',
-      attributes: {
-        properties: {
-          ProductName: PAGE.klName,
-          ProductKey: PAGE.key,
-          Size: p.dataset.size,
-          Colour: (document.getElementById('sel-colour') || {}).textContent || '',
-          URL: location.href
-        },
-        metric: { data: { type: 'metric', attributes: { name: 'Back in Stock Requested' } } },
-        profile: { data: { type: 'profile', attributes: { email: email } } }
-      }
-    }
-  });
-  fetch('https://a.klaviyo.com/client/events/?company_id=VMZvez', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'revision': '2024-02-15' },
-    body: body
-  }).then(function (res) {
-    if (res.ok || res.status === 202) {
-      msg.textContent = 'Thanks. We\u2019ll email you when size ' + p.dataset.size + ' is back.';
-      btn.textContent = 'Done'; input.value = '';
-    } else { throw new Error('bis failed'); }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  var KL = 'https://a.klaviyo.com/client/';
+  var CO = '?company_id=VMZvez';
+  var post = function (path, body) {
+    return fetch(KL + path + CO, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/vnd.api+json', 'revision': '2024-10-15' },
+      body: JSON.stringify(body)
+    }).then(function (res) { if (!(res.ok || res.status === 202)) throw new Error('kl ' + res.status); });
+  };
+  /* Klaviyo's native back in stock list: it emails automatically when Shopify
+     stock for this exact variant comes back */
+  var subscribe = function (vid) {
+    if (!vid) throw new Error('no variant');
+    return post('back-in-stock-subscriptions/', { data: {
+      type: 'back-in-stock-subscription',
+      attributes: { channels: ['EMAIL'], profile: { data: { type: 'profile', attributes: { email: email } } } },
+      relationships: { variant: { data: { type: 'catalog-variant', id: '$shopify:::$default:::' + vid } } }
+    } });
+  };
+  /* fallback so a request is never lost if the variant lookup fails */
+  var logEvent = function () {
+    return post('events/', { data: { type: 'event', attributes: {
+      properties: { ProductName: PAGE.klName, ProductKey: PAGE.key, Size: size, Colour: colour, URL: location.href },
+      metric: { data: { type: 'metric', attributes: { name: 'Back in Stock Requested' } } },
+      profile: { data: { type: 'profile', attributes: { email: email } } }
+    } } });
+  };
+  var lookup = typeof window.ecVariantId === 'function' ? window.ecVariantId(PAGE.key, size, colour) : Promise.resolve(null);
+  lookup.then(subscribe).catch(logEvent).then(function () {
+    msg.textContent = 'Thanks. We’ll email you when size ' + size + ' is back.';
+    btn.textContent = 'Done'; input.value = '';
   }).catch(function () {
     msg.textContent = 'Something went wrong. Please try again.';
     msg.classList.add('err');
@@ -1084,13 +1092,13 @@ function addToCart() {
   const size = document.querySelector('.size-btn.active');
   if (!size) { showToast('Please select a size'); return; }
   const colourEl = document.getElementById('sel-colour');
-  const colour = colourEl ? ' \u2014 ' + colourEl.textContent : '';
+  const colour = colourEl ? ' in ' + colourEl.textContent : '';
   klaviyo.push(['track', 'Started Checkout', {
     $value: PAGE.priceNum,
     ItemNames: [PAGE.klName],
     Items: [{ ProductID: PAGE.key, ProductName: PAGE.klName, Quantity: 1, ItemPrice: PAGE.priceNum, Size: size.textContent }]
   }]);
-  showToast(PAGE.klName + colour + ' (' + size.textContent + ') \u2014 Pre-order confirmed \u2713');
+  showToast(PAGE.klName + colour + ' (' + size.textContent + ') \u00b7 Pre-order confirmed \u2713');
 }
 function showToast(msg) {
   const old = document.getElementById('toast');
@@ -1276,7 +1284,7 @@ if (notifyForm) {
   });
 }
 </script>
-<script src="../assets/js/shopify-cart.js?v=20261025"></script>
+<script src="../assets/js/shopify-cart.js?v=20261030"></script>
 <script>
 (function(){
   var pills=document.querySelectorAll('.feat-pill'); if(!pills.length) return;
