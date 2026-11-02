@@ -288,7 +288,11 @@
     'o-cotton-short-mens':   'Ships within 4 weeks',
     'cotton-short-womens':   'Ships within 4 weeks',
     'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days',
-    'merino-long-run-sock':   'In stock \u00b7 ships in 1\u20132 business days'
+    'merino-long-run-sock':   'In stock \u00b7 ships in 1\u20132 business days',
+    'o-tee':                  'In stock \u00b7 ships in 1\u20132 business days',
+    'enduro-tee':             'In stock \u00b7 ships in 1\u20132 business days',
+    'merino-bandeau':         'In stock \u00b7 ships in 1\u20132 business days',
+    'merino-micro-short':     'In stock \u00b7 ships in 1\u20132 business days'
   };
   const SHIP_TIME_DEFAULT = 'Ships within 2 weeks';
   window.EC_SHIP_TIME = SHIP_TIME;
@@ -566,23 +570,37 @@
      Products that stop selling at zero in Shopify show a size as sold out once
      Shopify reports it unavailable. Pre-order products keep selling at zero,
      so they never trip this. Add a product key here when it moves to stock. */
-  const STOCK_HELD = ['merino-long-run-sock'];
+  const STOCK_HELD = ['merino-long-run-sock', 'o-tee', 'enduro-tee', 'merino-bandeau', 'merino-micro-short'];
   (function () {
     if (typeof PAGE === 'undefined' || !PAGE || STOCK_HELD.indexOf(PAGE.key) < 0) return;
-    resolveVariants(PAGE.key).then(list => {
-      if (!list) return;
+    const colourEl = document.getElementById('sel-colour');
+    const apply = (list) => {
+      const colour = colourEl ? colourEl.textContent.trim() : null;
       const btns = Array.from(document.querySelectorAll('.size-btn'));
       let open = 0;
       btns.forEach(btn => {
-        const v = pickVariant(list, btn.textContent.trim());
+        const v = pickVariant(list, btn.textContent.trim(), colour);
         if (v && !v.available) {
           btn.classList.add('sold-out'); btn.classList.remove('active');
           btn.setAttribute('aria-disabled', 'true'); btn.title = 'Sold out';
-        } else open++;
+        } else {
+          btn.classList.remove('sold-out'); btn.removeAttribute('aria-disabled');
+          if (btn.title === 'Sold out') btn.title = '';
+          open++;
+        }
       });
-      if (btns.length && !open) {
-        const atc = document.querySelector('.atc');
-        if (atc) { atc.textContent = 'Sold out'; atc.disabled = true; }
+      const atc = document.querySelector('.atc');
+      if (!atc) return;
+      if (!atc.dataset.label) atc.dataset.label = atc.innerHTML;
+      if (btns.length && !open) { atc.textContent = 'Sold out'; atc.disabled = true; }
+      else if (atc.textContent === 'Sold out') { atc.innerHTML = atc.dataset.label; atc.disabled = false; }
+    };
+    resolveVariants(PAGE.key).then(list => {
+      if (!list) return;
+      apply(list);
+      /* tees come in two colours, so recheck sizes whenever the colour changes */
+      if (colourEl && 'MutationObserver' in window) {
+        new MutationObserver(() => apply(list)).observe(colourEl, { childList: true, characterData: true, subtree: true });
       }
     }).catch(() => {});
   })();
@@ -1495,7 +1513,22 @@
         $value: parseFloat(cart.cost.subtotalAmount.amount),
         AddedItemProductName: m ? m.product.title : key,
         AddedItemProductID: key,
-        AddedItemQuantity: 1
+        AddedItemQuantity: 1,
+        AddedItemSize: size || undefined,
+        AddedItemImageURL: m && m.product.featuredImage ? m.product.featuredImage.url : undefined,
+        CheckoutURL: cart.checkoutUrl,
+        ItemNames: cart.lines.edges.map(({ node }) => node.merchandise.product.title),
+        Items: cart.lines.edges.map(({ node }) => {
+          const mm = node.merchandise;
+          return {
+            ProductID: mm.product.title,
+            ProductName: mm.product.title,
+            Quantity: node.quantity,
+            ItemPrice: parseFloat(mm.price.amount),
+            RowTotal: parseFloat(mm.price.amount) * node.quantity,
+            ImageURL: mm.product.featuredImage ? mm.product.featuredImage.url : undefined
+          };
+        })
       });
       ga('add_to_cart', {
         currency: (cart && cart.cost && cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD',
