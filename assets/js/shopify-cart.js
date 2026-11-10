@@ -96,7 +96,7 @@
      stays one tap away on the shipping page. Falls back to Australia. */
   const SHIP_ZONES = {
     au:   { name: 'Australia',     std: { fee: 10, free: 150, days: '3\u20135' }, exp: { fee: 15, free: 200, days: '1\u20132' } },
-    nz:   { name: 'New Zealand',   std: { fee: 10, free: 150, days: '3\u20135' }, exp: { fee: 20, free: 250, days: '1\u20132' } },
+    nz:   { name: 'New Zealand',   std: { fee: 15, free: 200, days: '3\u20135' }, exp: { fee: 30, free: 350, days: '1\u20132' } },
     intl: { name: 'your country',  std: { fee: 15, free: 250, days: '5\u20138' }, exp: { fee: 30, free: 500, days: '3\u20135' } }
   };
   /* countries in the Shopify GLOBAL zone. anything not listed falls back to the
