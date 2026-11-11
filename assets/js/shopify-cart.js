@@ -281,11 +281,11 @@
      shop.html). Shorts ship within 4 weeks; anything not listed is a
      pre-order shipping within 2 weeks. */
   const SHIP_TIME = {
-    'merino-short-mens':     'Ships within 4 weeks',
-    'o-merino-short-mens':   'Ships within 4 weeks',
+    'merino-short-mens':      'In stock \u00b7 ships in 1\u20132 business days',
+    'o-merino-short-mens':    'In stock \u00b7 ships in 1\u20132 business days',
     'merino-short-womens':   'Ships within 4 weeks',
-    'cotton-short-mens':     'Ships within 4 weeks',
-    'o-cotton-short-mens':   'Ships within 4 weeks',
+    'cotton-short-mens':      'In stock \u00b7 ships in 1\u20132 business days',
+    'o-cotton-short-mens':    'In stock \u00b7 ships in 1\u20132 business days',
     'cotton-short-womens':   'Ships within 4 weeks',
     'organic-tote':           'In stock \u00b7 ships in 1\u20132 business days',
     'merino-long-run-sock':   'In stock \u00b7 ships in 1\u20132 business days',
@@ -570,7 +570,7 @@
      Products that stop selling at zero in Shopify show a size as sold out once
      Shopify reports it unavailable. Pre-order products keep selling at zero,
      so they never trip this. Add a product key here when it moves to stock. */
-  const STOCK_HELD = ['merino-long-run-sock', 'o-tee', 'enduro-tee', 'merino-bandeau', 'merino-micro-short'];
+  const STOCK_HELD = ['merino-long-run-sock', 'o-tee', 'enduro-tee', 'merino-bandeau', 'merino-micro-short', 'cotton-short-mens', 'o-cotton-short-mens', 'merino-short-mens', 'o-merino-short-mens'];
   (function () {
     if (typeof PAGE === 'undefined' || !PAGE || STOCK_HELD.indexOf(PAGE.key) < 0) return;
     const colourEl = document.getElementById('sel-colour');
