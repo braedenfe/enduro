@@ -1,10 +1,12 @@
 /* Ad measurement pixels. Loaded in the <head> of every page.
-   Meta: PageView on every page, ViewContent on product pages,
-   AddToCart from shopify-cart.js via window.adTrack.
-   Checkout and Purchase are tracked by Shopify's Facebook & Instagram
-   app on the checkout itself, so they are not sent from here. */
+   Meta and ChatGPT Ads: page view on every page, product view on product
+   pages, add to cart from shopify-cart.js via window.adTrack.
+   Checkout and purchase happen on Shopify's checkout and are tracked there
+   (Meta by the Facebook & Instagram app, ChatGPT by a Shopify custom pixel),
+   so they are not sent from here. */
 (function () {
   var META_PIXEL_ID = '1516251996931568';
+  var OPENAI_PIXEL_ID = 'M66SKkQ8gBu9twzftJTBq9';
 
   /* page key to Shopify product ID, so events match the Meta catalog */
   var IDS = {
@@ -28,6 +30,15 @@
   fbq('init', META_PIXEL_ID);
   fbq('track', 'PageView');
 
+  /* ChatGPT Ads (OpenAI) pixel. Amounts are integers in cents. */
+  !function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];
+  w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];
+  f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");
+  oaiq('init', { pixelId: OPENAI_PIXEL_ID });
+  function cents(n) { return Math.round(Number(n || 0) * 100); }
+  function oai(event, data) { try { oaiq('measure', event, data); } catch (e) {} }
+  oai('page_viewed', { type: 'contents', contents: [{ id: location.pathname, content_type: 'page' }] });
+
   /* one entry point the site calls; add other ad platforms here later */
   window.adTrack = function (event, data) {
     try {
@@ -38,6 +49,12 @@
           content_name: data.name,
           value: data.value,
           currency: data.currency || 'AUD'
+        });
+        oai('items_added', {
+          type: 'contents',
+          amount: cents(data.value),
+          currency: data.currency || 'AUD',
+          contents: [{ id: idFor(data.key), name: data.name, content_type: 'product', quantity: 1, amount: cents(data.value) }]
         });
       }
     } catch (e) {}
@@ -53,6 +70,10 @@
         content_name: PAGE.klName || document.title,
         value: PAGE.priceNum,
         currency: 'AUD'
+      });
+      oai('contents_viewed', {
+        type: 'contents',
+        contents: [{ id: idFor(PAGE.key), name: PAGE.klName || document.title, content_type: 'product', amount: cents(PAGE.priceNum), currency: 'AUD' }]
       });
     } catch (e) {}
   });
