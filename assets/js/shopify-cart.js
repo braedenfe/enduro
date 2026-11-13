@@ -1509,6 +1509,12 @@
       refresh(cart).catch(() => {});
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
+      if (window.adTrack) window.adTrack('add_to_cart', {
+        key: key,
+        name: m ? m.product.title : key,
+        value: m ? parseFloat(m.price.amount) : undefined,
+        currency: m && m.price.currencyCode ? m.price.currencyCode : 'AUD'
+      });
       klTrack('Added to Cart', {
         $value: parseFloat(cart.cost.subtotalAmount.amount),
         AddedItemProductName: m ? m.product.title : key,
@@ -1574,6 +1580,12 @@
       const justAdded = cart.lines.edges.find(({ node }) => node.merchandise.id === v.id);
       const m = justAdded && justAdded.merchandise;
       const addedImg = m && m.product.featuredImage ? m.product.featuredImage.url : undefined;
+      if (window.adTrack) window.adTrack('add_to_cart', {
+        key: key,
+        name: m ? m.product.title : key,
+        value: m ? parseFloat(m.price.amount) : undefined,
+        currency: m && m.price.currencyCode ? m.price.currencyCode : 'AUD'
+      });
       klTrack('Added to Cart', {
         $value: parseFloat(cart.cost.subtotalAmount.amount),
         AddedItemProductName: m ? m.product.title : ((typeof PAGE !== 'undefined' && PAGE.klName) || key),
