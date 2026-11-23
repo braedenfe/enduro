@@ -635,6 +635,7 @@
 
   /* ---------- Cart API ---------- */
   const CART = `id checkoutUrl totalQuantity
+    attributes { key value }
     cost { subtotalAmount { amount currencyCode } totalAmount { amount currencyCode } }
     discountCodes { code applicable }
     discountAllocations { discountedAmount { amount currencyCode } }
@@ -662,6 +663,11 @@
   const updateLine = (cartId, lineId, quantity) => gql(
     `mutation($cartId:ID!,$lines:[CartLineUpdateInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartLinesUpdate(cartId:$cartId,lines:$lines){cart{${CART}} userErrors{message}}}`,
     { cartId, lines:[{ id: lineId, quantity }], cc: BUYER_CC }).then(d => d.cartLinesUpdate.cart);
+  /* cartAttributesUpdate replaces every cart attribute, so merge with what is there */
+  const mergeAttrs = (cart, add) => {
+    const keep = ((cart && cart.attributes) || []).filter(a => !add.some(b => b.key === a.key));
+    return keep.map(a => ({ key: a.key, value: a.value })).concat(add);
+  };
   const updateAttrs = (cartId, attributes) => gql(
     `mutation($cartId:ID!,$attributes:[AttributeInput!]!,$cc:CountryCode!) @inContext(country:$cc){cartAttributesUpdate(cartId:$cartId,attributes:$attributes){cart{${CART}} userErrors{message}}}`,
     { cartId, attributes, cc: BUYER_CC }).then(d => d.cartAttributesUpdate.cart);
@@ -1076,7 +1082,7 @@
         const dc = (c.discountCodes || []).find(x => x.code.toUpperCase() === ref.code);
         if (!dc || !dc.applicable) c = await updateCodes(cartId, []);   /* not a live code: drop it quietly */
       }
-      c = await updateAttrs(cartId, [{ key: 'Affiliate', value: ref.code }]);
+      c = await updateAttrs(cartId, mergeAttrs(c, [{ key: 'Affiliate', value: ref.code }]));
       ref.done = cartId; setRef(ref);   /* once per cart, so a removed code stays removed */
       return c;
     } catch (e) { return cart; }
@@ -1479,7 +1485,18 @@
       ItemNames: items.map(i => i.ProductName),
       Items: items
     });
-    window.location.href = current.checkoutUrl;
+    /* save the traffic source onto the order, then go to checkout (never wait more than 1.5s) */
+    const go = (c) => { window.location.href = window.enduroSource ? window.enduroSource.decorate(c.checkoutUrl) : c.checkoutUrl; };
+    const cartId = localStorage.getItem(CART_KEY);
+    const srcAttrs = window.enduroSource && window.enduroSource.attrs ? window.enduroSource.attrs() : [];
+    if (!cartId || !srcAttrs.length) return go(current);
+    let left = false;
+    const leave = () => { if (!left) { left = true; go(current); } };
+    const timer = setTimeout(leave, 1500);
+    updateAttrs(cartId, mergeAttrs(current, srcAttrs))
+      .then(c => { if (c) current = c; })
+      .catch(() => {})
+      .finally(() => { clearTimeout(timer); leave(); });
   });
 
   const navList = document.querySelector('.nav-links');

@@ -124,7 +124,23 @@
       }
     }
   } catch (e) {}
+  /* also keep the first page they landed on */
+  try { var lv = read(); if (lv && !lv.l) { lv.l = location.pathname; localStorage.setItem(KEY, JSON.stringify(lv)); } } catch (e) {}
   window.enduroSource = {
+    /* order attributes for Shopify, so each order shows where the customer came from */
+    attrs: function () {
+      var v = read(), p = (v && v.p) || {}, out = [];
+      var src = p.utm_source ? (p.utm_source + (p.utm_medium ? ' / ' + p.utm_medium : '')) : 'direct';
+      out.push({ key: 'Source', value: src });
+      if (p.utm_campaign) out.push({ key: 'Campaign', value: p.utm_campaign });
+      if (p.utm_content) out.push({ key: 'Ad', value: p.utm_content });
+      if (p.utm_term) out.push({ key: 'Term', value: p.utm_term });
+      if (p.fbclid) out.push({ key: 'Click ID', value: 'fbclid' });
+      if (p.gclid) out.push({ key: 'Click ID', value: 'gclid' });
+      if (v && v.l) out.push({ key: 'Landing page', value: v.l });
+      if (v && v.t) out.push({ key: 'First visit', value: new Date(v.t).toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' }) });
+      return out;
+    },
     decorate: function (url) {
       try {
         var v = read(); if (!v) return url;
