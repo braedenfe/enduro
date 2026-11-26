@@ -649,6 +649,14 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   #nav .nav-cart{grid-column:3;grid-row:1;justify-self:end;margin:0}
 }
 </style>
+<style id="kl-reviews-css">
+.p-stars{margin:10px 0 4px;min-height:22px}
+#reviews{max-width:1380px;margin:0 auto;padding:clamp(56px,8vh,96px) 32px clamp(40px,6vh,72px)}
+#reviews h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);letter-spacing:-0.01em;margin-bottom:24px}
+#reviews h2 .em{font-style:italic;color:var(--forest)}
+#reviews .kl-wrap{font-family:var(--sans)}
+@media(max-width:760px){#reviews{padding-left:20px;padding-right:20px}}
+</style>
 </head>
 <body>
 
@@ -697,7 +705,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
   <!-- PANEL -->
   <div class="panel">
     <p class="p-cat t-label">Running &amp; Everyday &middot; Unisex</p>
-    <h1 class="p-name" data-gsm-inline="1">FTLR CottonLite&trade; <span class="em">Tee.</span>&nbsp;&nbsp; <span class="p-meta">Cotton <span class="p-sep">&middot;</span> 110 gsm</span></h1>
+    <h1 class="p-name" data-gsm-inline="1">FTLR CottonLite&trade; <span class="em">Tee.</span>&nbsp;&nbsp; <span class="p-meta">Cotton <span class="p-sep">&middot;</span> 110 gsm</span></h1><div class="p-stars"><div class="klaviyo-star-rating-widget" data-id="15871282184561" data-product-title="FTLR CottonLite™ Tee" data-product-type="Tees"></div></div>
     <div class="p-price-row">
     <div class="p-price">$100</div>
     <square-placement class="ap-msg"
@@ -796,6 +804,7 @@ footer{background:var(--ink);color:var(--bone);padding:64px 32px 36px;border-top
 </div>
 
 <!-- RELATED -->
+<section id="reviews" aria-label="Customer reviews"><h2>Customer <span class="em">reviews.</span></h2><div class="kl-wrap"><div id="klaviyo-reviews-all" data-id="15871282184561"></div></div></section>
 <section id="related" aria-label="You may also like">
   <h2>Complete the <span class="em">kit.</span></h2>
   <div class="rel-grid">
