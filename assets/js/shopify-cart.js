@@ -616,7 +616,12 @@
       { id: gid(id) });
     if (!d.product) { console.warn('[enduro-cart] product not found / not published to Headless:', key); return null; }
     const list = d.product.variants.edges.map(({ node }) => {
-      const opt = (n) => { const o = node.selectedOptions.find(x => x.name.toLowerCase() === n); return o ? o.value.toLowerCase() : null; };
+      /* match option names loosely ("Size", "Accessory size", "Colour"), so a renamed option in Shopify can't send every order to the first variant */
+      const opt = (n) => {
+        const words = n === 'color' ? ['color', 'colour'] : [n];
+        const o = node.selectedOptions.find(x => words.some(w => x.name.toLowerCase().indexOf(w) > -1));
+        return o ? o.value.toLowerCase() : null;
+      };
       return { id: node.id, available: node.availableForSale, priceNum: parseFloat(node.price.amount), size: opt('size'), color: opt('color') };
     });
     variantCache[key] = list;
