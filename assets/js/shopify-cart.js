@@ -239,6 +239,10 @@
   };
 
   const GIFT_ATTR = '_enduro_gift';
+  /* customer can decline the tote; remembered for this cart only */
+  const GIFT_NO_KEY = 'enduro_gift_declined';
+  const giftDeclined = () => { try { const c = localStorage.getItem(CART_KEY); return !!c && localStorage.getItem(GIFT_NO_KEY) === c; } catch (e) { return false; } };
+  const setGiftDeclined = (on) => { try { if (on) localStorage.setItem(GIFT_NO_KEY, localStorage.getItem(CART_KEY) || ''); else localStorage.removeItem(GIFT_NO_KEY); } catch (e) {} };
   const giftProductGid = () =>
     (GIFT.enabled && PRODUCTS[GIFT.productKey]) ? gid(PRODUCTS[GIFT.productKey]) : null;
   // a line counts as "the gift" only if WE tagged it, so a tote the customer buys is unaffected
@@ -798,6 +802,9 @@
     .ec-qty button{display:inline-flex;align-items:center;justify-content:center;padding:0;width:24px;height:24px;border:1px solid rgba(14,21,18,.2);border-radius:50%;background:none;font-size:1rem;line-height:1;cursor:pointer;color:#0E1512}
     .ec-qty span{font-size:.88rem;min-width:16px;text-align:center;color:#0E1512;font-weight:500}
     .ec-rm{background:none;border:none;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,21,18,.45);text-decoration:underline;margin-top:6px}
+    .ec-gift-no{display:block;padding:0;cursor:pointer}
+    .ec-gift-back{padding:12px 24px 4px;font-family:'DM Sans',sans-serif;font-size:.8rem;color:rgba(14,21,18,.6)}
+    .ec-gift-back .ec-rm{margin:0 0 0 4px;padding:0;cursor:pointer}
     .ec-foot{padding:20px 24px;border-top:1px solid rgba(14,21,18,.1);color:#0E1512}
     .ec-code{display:flex;gap:8px;margin-bottom:12px}
     .ec-code input{flex:1;border:1px solid rgba(14,21,18,.18);border-radius:99px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:.85rem;background:#fff;min-width:0;outline:none;text-transform:uppercase}
@@ -951,7 +958,9 @@
     try {
       const sub = paidSubtotal(cart);
       const giftLine = cart.lines.edges.find(({ node }) => isGiftLine(node));
-      if (sub >= GIFT.threshold) {
+      if (sub >= GIFT.threshold && giftDeclined()) {
+        if (giftLine) return await removeLine(cartId, giftLine.node.id);
+      } else if (sub >= GIFT.threshold) {
         const key = desiredGiftKey(cart);
         const wantGid = gid(PRODUCTS[key]);
         if (!giftLine) {
@@ -1238,7 +1247,7 @@
     if (giftOn && !giftDone && (!shipOn || GIFT.threshold < SHIPPING.threshold)) {
       say('Spend ' + amt(GIFT.threshold - sub) + ' more to receive a complimentary ' + GIFT.label + '.');
     } else if (shipOn && !shipDone) {
-      say((giftDone ? GIFT.label + ' unlocked. ' : '') + 'Spend ' + amt(SHIPPING.threshold - sub) +
+      say((giftDone && !giftDeclined() ? GIFT.label + ' unlocked. ' : '') + 'Spend ' + amt(SHIPPING.threshold - sub) +
         ' more for ' + SHIPPING.label + '.');
     } else if (expOn && !expDone) {
       say('Free standard shipping unlocked. Spend ' + amt(EXPRESS.threshold - sub) + ' more for ' + EXPRESS.label + '.');
@@ -1248,7 +1257,7 @@
       const ship = expOn ? EXPRESS.label : SHIPPING.label;
       const sockDone = SPEND_SOCK.enabled && !spendSockOff && sub >= SPEND_SOCK.threshold;
       const extras = [];
-      if (giftDone) extras.push('a complimentary ' + GIFT.label);
+      if (giftDone && !giftDeclined()) extras.push('a complimentary ' + GIFT.label);
       if (sockDone) extras.push('a free pair of socks');
       say('You\u2019ve qualified for ' + ship + (extras.length ? (extras.length > 1 ? ', ' + extras[0] + ' and ' + extras[1] : ' and ' + extras[0]) : '') + '.');
     } else {
@@ -1283,7 +1292,7 @@
         ? `<div class="ec-line ec-sw"><button class="ec-del" type="button" data-line="${node.id}" tabindex="-1">Remove</button><div class="ec-slide">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div></div>`
         : `<div class="ec-line"><div class="ec-slide">${pic}<div class="ec-info">${info}</div><div class="ec-right">${right}</div></div></div>`;
       if (isGiftLine(node)) {
-        return row(`<div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div>`,
+        return row(`<div class="t">${v.product.title}</div><div class="s">Gift</div><div class="ship">Ships with your order</div><button class="ec-rm ec-gift-no" type="button" data-line="${node.id}">No thanks</button>`,
           `<div class="p"><s>${money(GIFT.displayValue || v.price.amount, cur)}</s>${money(0, cur)}</div>`);
       }
       if (isSpendSock(node)) {
@@ -1311,6 +1320,9 @@
           <button data-line="${node.id}" data-qty="${node.quantity + 1}" aria-label="Add one"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
         </div>`, true);
     }).join('');
+    if (GIFT.enabled && giftDeclined() && paidSubtotal(cart) >= GIFT.threshold && !cart.lines.edges.some(({ node }) => isGiftLine(node))) {
+      lines.insertAdjacentHTML('beforeend', '<div class="ec-gift-back">Complimentary ' + GIFT.label + ' removed. <button class="ec-rm" type="button" id="ec-gift-yes">Add it back</button></div>');
+    }
     const footCur = (cart.cost.subtotalAmount && cart.cost.subtotalAmount.currencyCode) || 'AUD';
     document.getElementById('ec-sub').textContent = money(qualifyingSubtotal(cart), footCur);
     updateAfterpay(cart);
@@ -1376,6 +1388,18 @@
       try { await refresh(await removeLine(cid, b.dataset.line)); } catch (e) {}
       finally { setBusy(false); }
     }));
+    lines.querySelectorAll('.ec-gift-no').forEach(b => b.addEventListener('click', async () => {
+      const cid = localStorage.getItem(CART_KEY);
+      setGiftDeclined(true); b.disabled = true; setBusy(true);
+      try { await refresh(await removeLine(cid, b.dataset.line)); } catch (e) {}
+      finally { setBusy(false); }
+    }));
+    const yes = document.getElementById('ec-gift-yes');
+    if (yes) yes.addEventListener('click', async () => {
+      setGiftDeclined(false); yes.disabled = true; setBusy(true);
+      try { await refresh(await reconcileGift(current)); } catch (e) {}
+      finally { setBusy(false); }
+    });
     lines.querySelectorAll('.ec-del').forEach(b => b.addEventListener('click', async () => {
       const cid = localStorage.getItem(CART_KEY);
       b.disabled = true; setBusy(true);
